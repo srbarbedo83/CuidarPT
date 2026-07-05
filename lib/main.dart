@@ -5,6 +5,7 @@ import 'app.dart';
 import 'core/services/notification_service.dart';
 import 'data/local/isar_providers.dart';
 import 'data/local/isar_service.dart';
+import 'features/consultas/services/reagendar_lembretes.dart';
 import 'features/medicacao/services/reagendar_lembretes.dart';
 
 Future<void> main() async {
@@ -13,6 +14,7 @@ Future<void> main() async {
 
   await NotificationService.instance.init();
   await reagendarLembretesMedicacaoPendentes(isar);
+  await reagendarLembretesConsultasPendentes(isar);
 
   runApp(
     ProviderScope(

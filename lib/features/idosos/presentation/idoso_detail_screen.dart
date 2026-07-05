@@ -6,7 +6,11 @@ import 'package:intl/intl.dart';
 
 import '../../../core/utils/horarios.dart';
 import '../../../data/models/idoso.dart';
+import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../consultas/presentation/consulta_form_screen.dart';
+import '../../consultas/providers/consulta_providers.dart';
+import '../../consultas/services/consulta_scheduler.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
@@ -20,6 +24,7 @@ class IdosoDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final medicacaoAsync = ref.watch(medicacaoListProvider(idoso.id));
+    final consultasAsync = ref.watch(consultaListProvider(idoso.id));
 
     return Scaffold(
       appBar: AppBar(
@@ -38,9 +43,12 @@ class IdosoDetailScreen extends ConsumerWidget {
         children: [
           _CabecalhoIdoso(idoso: idoso),
           const Divider(height: 32),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Text('Medicação', style: Theme.of(context).textTheme.titleMedium),
+          _CabecalhoSeccao(
+            titulo: 'Medicação',
+            tooltip: 'Adicionar medicação',
+            onAdicionar: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso)),
+            ),
           ),
           medicacaoAsync.when(
             data: (registos) {
@@ -65,15 +73,60 @@ class IdosoDetailScreen extends ConsumerWidget {
               child: Text('Erro ao carregar medicação: $erro'),
             ),
           ),
-          const SizedBox(height: 80),
+          const Divider(height: 32),
+          _CabecalhoSeccao(
+            titulo: 'Consultas',
+            tooltip: 'Adicionar consulta',
+            onAdicionar: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso)),
+            ),
+          ),
+          consultasAsync.when(
+            data: (consultas) {
+              if (consultas.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('Ainda não há consultas registadas.'),
+                );
+              }
+              return Column(
+                children: consultas
+                    .map((consulta) => _ConsultaTile(idoso: idoso, consulta: consulta))
+                    .toList(),
+              );
+            },
+            loading: () => const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            error: (erro, _) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text('Erro ao carregar consultas: $erro'),
+            ),
+          ),
+          const SizedBox(height: 24),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso)),
-        ),
-        tooltip: 'Adicionar medicação',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+class _CabecalhoSeccao extends StatelessWidget {
+  const _CabecalhoSeccao({required this.titulo, required this.tooltip, required this.onAdicionar});
+
+  final String titulo;
+  final String tooltip;
+  final VoidCallback onAdicionar;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+      child: Row(
+        children: [
+          Expanded(child: Text(titulo, style: Theme.of(context).textTheme.titleMedium)),
+          IconButton(icon: const Icon(Icons.add), tooltip: tooltip, onPressed: onAdicionar),
+        ],
       ),
     );
   }
@@ -168,6 +221,53 @@ class _MedicacaoTile extends ConsumerWidget {
       ),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso, registo: registo)),
+      ),
+    );
+  }
+}
+
+class _ConsultaTile extends ConsumerWidget {
+  const _ConsultaTile({required this.idoso, required this.consulta});
+
+  final Idoso idoso;
+  final RegistoConsulta consulta;
+
+  Future<void> _confirmarApagar(BuildContext context, WidgetRef ref) async {
+    final confirmar = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Apagar consulta'),
+        content: Text('Queres mesmo apagar a consulta de "${consulta.especialidade}"?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+        ],
+      ),
+    );
+    if (confirmar == true) {
+      await ConsultaScheduler.cancelar(consulta);
+      await ref.read(registoConsultaRepositoryProvider).delete(consulta.id);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final proxima = consulta.proximaConsultaData;
+    return ListTile(
+      leading: const Icon(Icons.event_note_outlined),
+      title: Text(consulta.especialidade),
+      subtitle: Text(
+        '${DateFormat('dd/MM/yyyy HH:mm').format(consulta.dataHora)}'
+        '${consulta.local != null ? ' · ${consulta.local}' : ''}'
+        '${proxima != null ? ' · próxima: ${DateFormat('dd/MM/yyyy').format(proxima)}' : ''}',
+      ),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete_outline),
+        tooltip: 'Apagar consulta',
+        onPressed: () => _confirmarApagar(context, ref),
+      ),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: consulta)),
       ),
     );
   }

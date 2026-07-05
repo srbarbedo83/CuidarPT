@@ -105,6 +105,28 @@ class NotificationService {
     );
   }
 
+  /// Agenda um lembrete pontual, sem repetição, para a data/hora indicada.
+  /// Se [data] já tiver passado, não agenda nada.
+  Future<void> agendarUnico({
+    required int id,
+    required String titulo,
+    required String corpo,
+    required DateTime data,
+  }) async {
+    await init();
+    final dataAlvo = tz.TZDateTime.from(data, tz.local);
+    if (dataAlvo.isBefore(tz.TZDateTime.now(tz.local))) return;
+
+    await _plugin.zonedSchedule(
+      id: id,
+      title: titulo,
+      body: corpo,
+      scheduledDate: dataAlvo,
+      notificationDetails: _detalhes,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    );
+  }
+
   Future<void> cancelar(int id) async {
     await init();
     await _plugin.cancel(id: id);

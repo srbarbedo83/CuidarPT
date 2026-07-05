@@ -1,3 +1,4 @@
+import '../../../core/services/notification_ids.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../data/models/registo_medicacao.dart';
 
@@ -6,16 +7,11 @@ import '../../../data/models/registo_medicacao.dart';
 /// Cada combinação de horário (e, se aplicável, dia da semana) tem o seu
 /// próprio ID de notificação, guardado em [RegistoMedicacao.notificacaoIds]
 /// para poder ser cancelado mais tarde. Os IDs são determinísticos
-/// (derivados do ID do registo), por isso reagendar produz sempre os
-/// mesmos IDs — útil para o reagendamento no arranque da app.
+/// (derivados do ID do registo, ver [NotificationIds]), por isso reagendar
+/// produz sempre os mesmos IDs — útil para o reagendamento no arranque da
+/// app.
 class MedicacaoScheduler {
   MedicacaoScheduler._();
-
-  static const _maxCombinacoesPorRegisto = 100;
-
-  static int _gerarId(int registoId, int indice) {
-    return registoId * _maxCombinacoesPorRegisto + indice;
-  }
 
   /// Cancela os lembretes atuais e agenda-os de novo a partir dos dados do
   /// registo. Atualiza `registo.notificacaoIds` — quem chamar deve depois
@@ -39,7 +35,7 @@ class MedicacaoScheduler {
       final minuto = minutos % 60;
 
       if (registo.diasSemana.isEmpty) {
-        final id = _gerarId(registo.id, indice++);
+        final id = NotificationIds.medicacao(registo.id, indice++);
         await NotificationService.instance.agendarRecorrenteDiario(
           id: id,
           titulo: titulo,
@@ -50,7 +46,7 @@ class MedicacaoScheduler {
         novosIds.add(id);
       } else {
         for (final diaSemana in registo.diasSemana) {
-          final id = _gerarId(registo.id, indice++);
+          final id = NotificationIds.medicacao(registo.id, indice++);
           await NotificationService.instance.agendarRecorrenteSemanal(
             id: id,
             titulo: titulo,
