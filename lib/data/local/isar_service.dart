@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../models/estado_subscricao.dart';
 import '../models/idoso.dart';
+import '../models/perfil_relatorio.dart';
 import '../models/registo_consulta.dart';
 import '../models/registo_cuidado_diario.dart';
 import '../models/registo_medicacao.dart';
@@ -21,6 +22,7 @@ class IsarService {
         RegistoMedicacaoSchema,
         RegistoConsultaSchema,
         RegistoCuidadoDiarioSchema,
+        PerfilRelatorioSchema,
       ],
       directory: documentosDir.path,
     );

@@ -15,6 +15,21 @@ class RegistoCuidadoDiarioRepository {
         .watch(fireImmediately: true);
   }
 
+  /// Cuidados diários de um idoso com timestamp dentro de [inicio, fim] —
+  /// usado no relatório PDF.
+  Future<List<RegistoCuidadoDiario>> listarPorIdosoEPeriodo(
+    int idosoId, {
+    required DateTime inicio,
+    required DateTime fim,
+  }) {
+    return _isar.registoCuidadoDiarios
+        .filter()
+        .idosoIdEqualTo(idosoId)
+        .timestampBetween(inicio, fim)
+        .sortByTimestamp()
+        .findAll();
+  }
+
   Future<int> save(RegistoCuidadoDiario registo) {
     return _isar.writeTxn(() => _isar.registoCuidadoDiarios.put(registo));
   }

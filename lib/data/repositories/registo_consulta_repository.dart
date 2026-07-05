@@ -23,6 +23,21 @@ class RegistoConsultaRepository {
     return _isar.registoConsultas.filter().lembreteAtivoEqualTo(true).findAll();
   }
 
+  /// Consultas de um idoso com data dentro de [inicio, fim] — usado no
+  /// relatório PDF.
+  Future<List<RegistoConsulta>> listarPorIdosoEPeriodo(
+    int idosoId, {
+    required DateTime inicio,
+    required DateTime fim,
+  }) {
+    return _isar.registoConsultas
+        .filter()
+        .idosoIdEqualTo(idosoId)
+        .dataHoraBetween(inicio, fim)
+        .sortByDataHora()
+        .findAll();
+  }
+
   Future<int> save(RegistoConsulta consulta) {
     return _isar.writeTxn(() => _isar.registoConsultas.put(consulta));
   }

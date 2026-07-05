@@ -23,6 +23,17 @@ class RegistoMedicacaoRepository {
     return _isar.registoMedicacaos.filter().ativoEqualTo(true).findAll();
   }
 
+  /// Medicação atual (ativa) de um idoso — usada no relatório PDF como
+  /// referência, independentemente do período escolhido.
+  Future<List<RegistoMedicacao>> listarAtivosPorIdoso(int idosoId) {
+    return _isar.registoMedicacaos
+        .filter()
+        .idosoIdEqualTo(idosoId)
+        .ativoEqualTo(true)
+        .sortByNomeMedicamento()
+        .findAll();
+  }
+
   Future<int> save(RegistoMedicacao registo) {
     return _isar.writeTxn(() => _isar.registoMedicacaos.put(registo));
   }

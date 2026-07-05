@@ -18,6 +18,7 @@ import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
+import '../../relatorios/presentation/relatorio_screen.dart';
 import 'idoso_form_screen.dart';
 
 const _maxCuidadosRecentesVisiveis = 15;
@@ -37,6 +38,13 @@ class IdosoDetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(idoso.nome),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf_outlined),
+            tooltip: 'Gerar relatório',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             tooltip: 'Editar perfil',
