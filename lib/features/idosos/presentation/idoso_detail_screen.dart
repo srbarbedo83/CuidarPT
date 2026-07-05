@@ -5,16 +5,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/utils/horarios.dart';
+import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
+import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../consultas/services/consulta_scheduler.dart';
+import '../../cuidados_diarios/presentation/cuidado_diario_form_screen.dart';
+import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
 import 'idoso_form_screen.dart';
+
+const _maxCuidadosRecentesVisiveis = 15;
 
 class IdosoDetailScreen extends ConsumerWidget {
   const IdosoDetailScreen({super.key, required this.idoso});
@@ -25,6 +31,7 @@ class IdosoDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final medicacaoAsync = ref.watch(medicacaoListProvider(idoso.id));
     final consultasAsync = ref.watch(consultaListProvider(idoso.id));
+    final cuidadosAsync = ref.watch(cuidadoDiarioListProvider(idoso.id));
 
     return Scaffold(
       appBar: AppBar(
@@ -102,6 +109,46 @@ class IdosoDetailScreen extends ConsumerWidget {
             error: (erro, _) => Padding(
               padding: const EdgeInsets.all(16),
               child: Text('Erro ao carregar consultas: $erro'),
+            ),
+          ),
+          const Divider(height: 32),
+          _CabecalhoSeccao(
+            titulo: 'Cuidados diários',
+            tooltip: 'Registar cuidado',
+            onAdicionar: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => CuidadoDiarioFormScreen(idoso: idoso)),
+            ),
+          ),
+          cuidadosAsync.when(
+            data: (registos) {
+              if (registos.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('Ainda não há cuidados diários registados.'),
+                );
+              }
+              final visiveis = registos.take(_maxCuidadosRecentesVisiveis).toList();
+              return Column(
+                children: [
+                  ...visiveis.map((registo) => _CuidadoDiarioTile(idoso: idoso, registo: registo)),
+                  if (registos.length > visiveis.length)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text(
+                        'A mostrar os $_maxCuidadosRecentesVisiveis registos mais recentes.',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ),
+                ],
+              );
+            },
+            loading: () => const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            error: (erro, _) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text('Erro ao carregar cuidados diários: $erro'),
             ),
           ),
           const SizedBox(height: 24),
@@ -268,6 +315,54 @@ class _ConsultaTile extends ConsumerWidget {
       ),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: consulta)),
+      ),
+    );
+  }
+}
+
+class _CuidadoDiarioTile extends ConsumerWidget {
+  const _CuidadoDiarioTile({required this.idoso, required this.registo});
+
+  final Idoso idoso;
+  final RegistoCuidadoDiario registo;
+
+  Future<void> _confirmarApagar(BuildContext context, WidgetRef ref) async {
+    final confirmar = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Apagar registo'),
+        content: const Text('Queres mesmo apagar este registo de cuidado diário?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+        ],
+      ),
+    );
+    if (confirmar == true) {
+      await ref.read(registoCuidadoDiarioRepositoryProvider).delete(registo.id);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nota = registo.notaRapida;
+    final humor = registo.humorNivel;
+    return ListTile(
+      leading: Icon(tipoCuidadoDiarioIcone(registo.tipo)),
+      title: Text(
+        '${tipoCuidadoDiarioLabel(registo.tipo)}${humor != null ? ' · nível $humor/5' : ''}',
+      ),
+      subtitle: Text(
+        '${DateFormat('dd/MM/yyyy HH:mm').format(registo.timestamp)}'
+        '${nota != null && nota.isNotEmpty ? ' · $nota' : ''}',
+      ),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete_outline),
+        tooltip: 'Apagar registo',
+        onPressed: () => _confirmarApagar(context, ref),
+      ),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => CuidadoDiarioFormScreen(idoso: idoso, registo: registo)),
       ),
     );
   }
