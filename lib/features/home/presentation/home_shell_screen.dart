@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
+import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
 import '../../subscricao/feature_limits.dart';
@@ -154,7 +155,7 @@ class _IdosoTile extends StatelessWidget {
         title: Text(idoso.nome),
         subtitle: Text(_subtitulo(idoso)),
         onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
+          MaterialPageRoute(builder: (_) => IdosoDetailScreen(idoso: idoso)),
         ),
       ),
     );
