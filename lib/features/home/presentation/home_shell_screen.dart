@@ -12,6 +12,7 @@ import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
+import '../../tempo/presentation/info_local_card.dart';
 
 class HomeShellScreen extends ConsumerWidget {
   const HomeShellScreen({super.key});
@@ -82,15 +83,21 @@ class HomeShellScreen extends ConsumerWidget {
       body: idososAsync.when(
         data: (idosos) {
           if (idosos.isEmpty) {
-            return const _EmptyState();
+            return ListView(
+              children: const [
+                Padding(padding: EdgeInsets.all(16), child: InfoLocalCard()),
+                _EmptyState(),
+              ],
+            );
           }
           return ListView(
-            children: idosos
-                .map((idoso) => _IdosoTile(
-                      idoso: idoso,
-                      onApagar: () => _apagarIdoso(context, ref, idoso),
-                    ))
-                .toList(),
+            children: [
+              const Padding(padding: EdgeInsets.all(16), child: InfoLocalCard()),
+              ...idosos.map((idoso) => _IdosoTile(
+                    idoso: idoso,
+                    onApagar: () => _apagarIdoso(context, ref, idoso),
+                  )),
+            ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),

@@ -10,6 +10,7 @@ import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../calendario/presentation/calendario_screen.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../consultas/services/consulta_scheduler.dart';
@@ -38,6 +39,13 @@ class IdosoDetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(idoso.nome),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.calendar_month_outlined),
+            tooltip: 'Calendário',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => CalendarioScreen(idoso: idoso)),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_outlined),
             tooltip: 'Gerar relatório',

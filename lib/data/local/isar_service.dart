@@ -1,8 +1,12 @@
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../models/estado_avaliacao_app.dart';
 import '../models/estado_subscricao.dart';
 import '../models/idoso.dart';
+import '../models/info_local_cache.dart';
+import '../models/localidade_ipma.dart';
+import '../models/localizacao_selecionada.dart';
 import '../models/perfil_relatorio.dart';
 import '../models/registo_consulta.dart';
 import '../models/registo_cuidado_diario.dart';
@@ -23,6 +27,10 @@ class IsarService {
         RegistoConsultaSchema,
         RegistoCuidadoDiarioSchema,
         PerfilRelatorioSchema,
+        EstadoAvaliacaoAppSchema,
+        LocalidadeIpmaSchema,
+        LocalizacaoSelecionadaSchema,
+        InfoLocalCacheSchema,
       ],
       directory: documentosDir.path,
     );

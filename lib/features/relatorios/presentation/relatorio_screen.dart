@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
+import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
@@ -157,6 +158,10 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
           ),
         ),
       );
+
+      if (mounted) {
+        await mostrarConviteAvaliacaoSeNecessario(context, ref);
+      }
     } finally {
       if (mounted) setState(() => _aGerar = false);
     }
