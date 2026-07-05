@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Regras de Auto Backup para Android 11 (API 30) e anteriores.
+   Inclui a base de dados Isar e os documentos/fotos anexados, guardados
+   na pasta de documentos privada da app.
+-->
+<full-backup-content>
+    <include domain="file" path="." />
+</full-backup-content>

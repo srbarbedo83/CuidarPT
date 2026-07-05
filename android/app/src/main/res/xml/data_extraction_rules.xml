@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Regras de extração de dados para Android 12 (API 31) e posteriores,
+   usadas tanto pelo Auto Backup na conta Google como pela transferência
+   direta entre dispositivos.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="file" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="file" path="." />
+    </device-transfer>
+</data-extraction-rules>
