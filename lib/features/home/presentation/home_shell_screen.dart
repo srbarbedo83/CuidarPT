@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
+import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
@@ -53,7 +54,7 @@ class HomeShellScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final idososAsync = ref.watch(idosoListProvider);
-    final estadoSubscricao = ref.watch(estadoSubscricaoProvider).value;
+    final estadoSubscricao = ref.watch(estadoSubscricaoProvider).valueOrNull;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,6 +70,13 @@ class HomeShellScreen extends ConsumerWidget {
                 ),
               ),
             ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'Definições',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const DefinicoesScreen()),
+            ),
+          ),
         ],
       ),
       body: idososAsync.when(

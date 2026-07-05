@@ -17,5 +17,5 @@ final estadoSubscricaoProvider = StreamProvider<EstadoSubscricao?>((ref) {
 /// `true` durante o trial de 7 dias ou com Premium ativo. Antes do
 /// onboarding estar concluído, considera-se `false`.
 final isPremiumProvider = Provider<bool>((ref) {
-  return ref.watch(estadoSubscricaoProvider).value?.isPremium ?? false;
+  return ref.watch(estadoSubscricaoProvider).valueOrNull?.isPremium ?? false;
 });
