@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 import '../../core/utils/photo_storage.dart';
 import '../models/perfil_relatorio.dart';

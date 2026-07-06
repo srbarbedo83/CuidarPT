@@ -37,26 +37,14 @@ const RegistoConsultaSchema = CollectionSchema(
       name: r'especialidade',
       type: IsarType.string,
     ),
-    r'idosoId': PropertySchema(
-      id: 4,
-      name: r'idosoId',
-      type: IsarType.long,
-    ),
+    r'idosoId': PropertySchema(id: 4, name: r'idosoId', type: IsarType.long),
     r'lembreteAtivo': PropertySchema(
       id: 5,
       name: r'lembreteAtivo',
       type: IsarType.bool,
     ),
-    r'local': PropertySchema(
-      id: 6,
-      name: r'local',
-      type: IsarType.string,
-    ),
-    r'notas': PropertySchema(
-      id: 7,
-      name: r'notas',
-      type: IsarType.string,
-    ),
+    r'local': PropertySchema(id: 6, name: r'local', type: IsarType.string),
+    r'notas': PropertySchema(id: 7, name: r'notas', type: IsarType.string),
     r'notificacaoIds': PropertySchema(
       id: 8,
       name: r'notificacaoIds',
@@ -66,8 +54,9 @@ const RegistoConsultaSchema = CollectionSchema(
       id: 9,
       name: r'proximaConsultaData',
       type: IsarType.dateTime,
-    )
+    ),
   },
+
   estimateSize: _registoConsultaEstimateSize,
   serialize: _registoConsultaSerialize,
   deserialize: _registoConsultaDeserialize,
@@ -84,16 +73,17 @@ const RegistoConsultaSchema = CollectionSchema(
           name: r'idosoId',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
-    )
+    ),
   },
   links: {},
   embeddedSchemas: {},
+
   getId: _registoConsultaGetId,
   getLinks: _registoConsultaGetLinks,
   attach: _registoConsultaAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _registoConsultaEstimateSize(
@@ -199,7 +189,10 @@ List<IsarLinkBase<dynamic>> _registoConsultaGetLinks(RegistoConsulta object) {
 }
 
 void _registoConsultaAttach(
-    IsarCollection<dynamic> col, Id id, RegistoConsulta object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  RegistoConsulta object,
+) {
   object.id = id;
 }
 
@@ -223,17 +216,15 @@ extension RegistoConsultaQueryWhereSort
 extension RegistoConsultaQueryWhere
     on QueryBuilder<RegistoConsulta, RegistoConsulta, QWhereClause> {
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -256,7 +247,7 @@ extension RegistoConsultaQueryWhere
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -265,8 +256,9 @@ extension RegistoConsultaQueryWhere
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -281,105 +273,114 @@ extension RegistoConsultaQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idosoIdEqualTo(int idosoId) {
+  idosoIdEqualTo(int idosoId) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'idosoId',
-        value: [idosoId],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'idosoId', value: [idosoId]),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idosoIdNotEqualTo(int idosoId) {
+  idosoIdNotEqualTo(int idosoId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [],
-              upper: [idosoId],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [idosoId],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [],
+                upper: [idosoId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [idosoId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [idosoId],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [],
-              upper: [idosoId],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [idosoId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [],
+                upper: [idosoId],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idosoIdGreaterThan(
-    int idosoId, {
-    bool include = false,
-  }) {
+  idosoIdGreaterThan(int idosoId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'idosoId',
-        lower: [idosoId],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'idosoId',
+          lower: [idosoId],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idosoIdLessThan(
-    int idosoId, {
-    bool include = false,
-  }) {
+  idosoIdLessThan(int idosoId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'idosoId',
-        lower: [],
-        upper: [idosoId],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'idosoId',
+          lower: [],
+          upper: [idosoId],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterWhereClause>
-      idosoIdBetween(
+  idosoIdBetween(
     int lowerIdosoId,
     int upperIdosoId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'idosoId',
-        lower: [lowerIdosoId],
-        includeLower: includeLower,
-        upper: [upperIdosoId],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'idosoId',
+          lower: [lowerIdosoId],
+          includeLower: includeLower,
+          upper: [upperIdosoId],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -387,221 +388,221 @@ extension RegistoConsultaQueryWhere
 extension RegistoConsultaQueryFilter
     on QueryBuilder<RegistoConsulta, RegistoConsulta, QFilterCondition> {
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      atualizadoEmEqualTo(DateTime value) {
+  atualizadoEmEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'atualizadoEm', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      atualizadoEmGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  atualizadoEmGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      atualizadoEmLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  atualizadoEmLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      atualizadoEmBetween(
+  atualizadoEmBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'atualizadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'atualizadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      criadoEmEqualTo(DateTime value) {
+  criadoEmEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'criadoEm', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      criadoEmGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  criadoEmGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'criadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      criadoEmLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  criadoEmLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'criadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      criadoEmBetween(
+  criadoEmBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'criadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'criadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      dataHoraEqualTo(DateTime value) {
+  dataHoraEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dataHora',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dataHora', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      dataHoraGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  dataHoraGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dataHora',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dataHora',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      dataHoraLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  dataHoraLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dataHora',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dataHora',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      dataHoraBetween(
+  dataHoraBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dataHora',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dataHora',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  especialidadeEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'especialidade',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'especialidade',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeLessThan(
+  especialidadeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'especialidade',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeBetween(
+  especialidadeLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  especialidadeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -609,275 +610,277 @@ extension RegistoConsultaQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'especialidade',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'especialidade',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  especialidadeStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'especialidade',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  especialidadeEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'especialidade',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeContains(String value, {bool caseSensitive = true}) {
+  especialidadeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'especialidade',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeMatches(String pattern, {bool caseSensitive = true}) {
+  especialidadeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'especialidade',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'especialidade',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeIsEmpty() {
+  especialidadeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'especialidade',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'especialidade', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      especialidadeIsNotEmpty() {
+  especialidadeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'especialidade',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'especialidade', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idEqualTo(Id value) {
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idBetween(
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idosoIdEqualTo(int value) {
+  idosoIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'idosoId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idosoId', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idosoIdGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  idosoIdGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'idosoId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idosoId',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idosoIdLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  idosoIdLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'idosoId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idosoId',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      idosoIdBetween(
+  idosoIdBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'idosoId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idosoId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      lembreteAtivoEqualTo(bool value) {
+  lembreteAtivoEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lembreteAtivo',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'lembreteAtivo', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localIsNull() {
+  localIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'local',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'local'),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localIsNotNull() {
+  localIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'local',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'local'),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  localEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'local',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'local',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'local',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localLessThan(
+  localGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'local',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'local',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localBetween(
+  localLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'local',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  localBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -885,153 +888,158 @@ extension RegistoConsultaQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'local',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'local',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  localStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'local',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'local',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  localEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'local',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'local',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localContains(String value, {bool caseSensitive = true}) {
+  localContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'local',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'local',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localMatches(String pattern, {bool caseSensitive = true}) {
+  localMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'local',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'local',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localIsEmpty() {
+  localIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'local',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'local', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      localIsNotEmpty() {
+  localIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'local',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'local', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasIsNull() {
+  notasIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'notas',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'notas'),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasIsNotNull() {
+  notasIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'notas',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'notas'),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  notasEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasLessThan(
+  notasGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasBetween(
+  notasLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  notasBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1039,216 +1047,181 @@ extension RegistoConsultaQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'notas',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'notas',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  notasStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  notasEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasContains(String value, {bool caseSensitive = true}) {
+  notasContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasMatches(String pattern, {bool caseSensitive = true}) {
+  notasMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'notas',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'notas',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasIsEmpty() {
+  notasIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notas',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'notas', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notasIsNotEmpty() {
+  notasIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'notas',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'notas', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsElementEqualTo(int value) {
+  notificacaoIdsElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notificacaoIds',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'notificacaoIds', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsElementGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  notificacaoIdsElementGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'notificacaoIds',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'notificacaoIds',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  notificacaoIdsElementLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'notificacaoIds',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'notificacaoIds',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsElementBetween(
+  notificacaoIdsElementBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'notificacaoIds',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        length,
-        true,
-        length,
-        true,
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'notificacaoIds',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsIsEmpty() {
+  notificacaoIdsLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        0,
-        true,
-        0,
-        true,
-      );
+      return query.listLength(r'notificacaoIds', length, true, length, true);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsIsNotEmpty() {
+  notificacaoIdsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        0,
-        false,
-        999999,
-        true,
-      );
+      return query.listLength(r'notificacaoIds', 0, true, 0, true);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  notificacaoIdsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        0,
-        true,
-        length,
-        include,
-      );
+      return query.listLength(r'notificacaoIds', 0, false, 999999, true);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  notificacaoIdsLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        length,
-        include,
-        999999,
-        true,
-      );
+      return query.listLength(r'notificacaoIds', 0, true, length, include);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      notificacaoIdsLengthBetween(
+  notificacaoIdsLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'notificacaoIds', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  notificacaoIdsLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1266,76 +1239,75 @@ extension RegistoConsultaQueryFilter
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      proximaConsultaDataIsNull() {
+  proximaConsultaDataIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'proximaConsultaData',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'proximaConsultaData'),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      proximaConsultaDataIsNotNull() {
+  proximaConsultaDataIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'proximaConsultaData',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'proximaConsultaData'),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      proximaConsultaDataEqualTo(DateTime? value) {
+  proximaConsultaDataEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'proximaConsultaData',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'proximaConsultaData', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      proximaConsultaDataGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  proximaConsultaDataGreaterThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'proximaConsultaData',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'proximaConsultaData',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      proximaConsultaDataLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  proximaConsultaDataLessThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'proximaConsultaData',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'proximaConsultaData',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
-      proximaConsultaDataBetween(
+  proximaConsultaDataBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'proximaConsultaData',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'proximaConsultaData',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -1349,56 +1321,56 @@ extension RegistoConsultaQueryLinks
 extension RegistoConsultaQuerySortBy
     on QueryBuilder<RegistoConsulta, RegistoConsulta, QSortBy> {
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByAtualizadoEm() {
+  sortByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByAtualizadoEmDesc() {
+  sortByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByCriadoEm() {
+  sortByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByCriadoEmDesc() {
+  sortByCriadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByDataHora() {
+  sortByDataHora() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataHora', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByDataHoraDesc() {
+  sortByDataHoraDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataHora', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByEspecialidade() {
+  sortByEspecialidade() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'especialidade', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByEspecialidadeDesc() {
+  sortByEspecialidadeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'especialidade', Sort.desc);
     });
@@ -1411,21 +1383,21 @@ extension RegistoConsultaQuerySortBy
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByIdosoIdDesc() {
+  sortByIdosoIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByLembreteAtivo() {
+  sortByLembreteAtivo() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lembreteAtivo', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByLembreteAtivoDesc() {
+  sortByLembreteAtivoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lembreteAtivo', Sort.desc);
     });
@@ -1438,7 +1410,7 @@ extension RegistoConsultaQuerySortBy
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByLocalDesc() {
+  sortByLocalDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'local', Sort.desc);
     });
@@ -1451,21 +1423,21 @@ extension RegistoConsultaQuerySortBy
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByNotasDesc() {
+  sortByNotasDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByProximaConsultaData() {
+  sortByProximaConsultaData() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'proximaConsultaData', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      sortByProximaConsultaDataDesc() {
+  sortByProximaConsultaDataDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'proximaConsultaData', Sort.desc);
     });
@@ -1475,56 +1447,56 @@ extension RegistoConsultaQuerySortBy
 extension RegistoConsultaQuerySortThenBy
     on QueryBuilder<RegistoConsulta, RegistoConsulta, QSortThenBy> {
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByAtualizadoEm() {
+  thenByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByAtualizadoEmDesc() {
+  thenByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByCriadoEm() {
+  thenByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByCriadoEmDesc() {
+  thenByCriadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByDataHora() {
+  thenByDataHora() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataHora', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByDataHoraDesc() {
+  thenByDataHoraDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataHora', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByEspecialidade() {
+  thenByEspecialidade() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'especialidade', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByEspecialidadeDesc() {
+  thenByEspecialidadeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'especialidade', Sort.desc);
     });
@@ -1549,21 +1521,21 @@ extension RegistoConsultaQuerySortThenBy
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByIdosoIdDesc() {
+  thenByIdosoIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByLembreteAtivo() {
+  thenByLembreteAtivo() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lembreteAtivo', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByLembreteAtivoDesc() {
+  thenByLembreteAtivoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lembreteAtivo', Sort.desc);
     });
@@ -1576,7 +1548,7 @@ extension RegistoConsultaQuerySortThenBy
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByLocalDesc() {
+  thenByLocalDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'local', Sort.desc);
     });
@@ -1589,21 +1561,21 @@ extension RegistoConsultaQuerySortThenBy
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByNotasDesc() {
+  thenByNotasDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByProximaConsultaData() {
+  thenByProximaConsultaData() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'proximaConsultaData', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
-      thenByProximaConsultaDataDesc() {
+  thenByProximaConsultaDataDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'proximaConsultaData', Sort.desc);
     });
@@ -1613,71 +1585,75 @@ extension RegistoConsultaQuerySortThenBy
 extension RegistoConsultaQueryWhereDistinct
     on QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> {
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByAtualizadoEm() {
+  distinctByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'atualizadoEm');
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByCriadoEm() {
+  distinctByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'criadoEm');
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByDataHora() {
+  distinctByDataHora() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dataHora');
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByEspecialidade({bool caseSensitive = true}) {
+  distinctByEspecialidade({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'especialidade',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'especialidade',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByIdosoId() {
+  distinctByIdosoId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idosoId');
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByLembreteAtivo() {
+  distinctByLembreteAtivo() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lembreteAtivo');
     });
   }
 
-  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByLocal(
-      {bool caseSensitive = true}) {
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByLocal({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'local', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByNotas(
-      {bool caseSensitive = true}) {
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByNotas({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notas', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByNotificacaoIds() {
+  distinctByNotificacaoIds() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notificacaoIds');
     });
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
-      distinctByProximaConsultaData() {
+  distinctByProximaConsultaData() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'proximaConsultaData');
     });
@@ -1693,7 +1669,7 @@ extension RegistoConsultaQueryProperty
   }
 
   QueryBuilder<RegistoConsulta, DateTime, QQueryOperations>
-      atualizadoEmProperty() {
+  atualizadoEmProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'atualizadoEm');
     });
@@ -1712,7 +1688,7 @@ extension RegistoConsultaQueryProperty
   }
 
   QueryBuilder<RegistoConsulta, String, QQueryOperations>
-      especialidadeProperty() {
+  especialidadeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'especialidade');
     });
@@ -1725,7 +1701,7 @@ extension RegistoConsultaQueryProperty
   }
 
   QueryBuilder<RegistoConsulta, bool, QQueryOperations>
-      lembreteAtivoProperty() {
+  lembreteAtivoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lembreteAtivo');
     });
@@ -1744,14 +1720,14 @@ extension RegistoConsultaQueryProperty
   }
 
   QueryBuilder<RegistoConsulta, List<int>, QQueryOperations>
-      notificacaoIdsProperty() {
+  notificacaoIdsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notificacaoIds');
     });
   }
 
   QueryBuilder<RegistoConsulta, DateTime?, QQueryOperations>
-      proximaConsultaDataProperty() {
+  proximaConsultaDataProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'proximaConsultaData');
     });

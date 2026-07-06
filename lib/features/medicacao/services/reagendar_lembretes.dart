@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 import '../../../data/repositories/idoso_repository.dart';
 import '../../../data/repositories/registo_medicacao_repository.dart';

@@ -47,8 +47,9 @@ const EstadoSubscricaoSchema = CollectionSchema(
       id: 5,
       name: r'ultimaValidacaoCompra',
       type: IsarType.dateTime,
-    )
+    ),
   },
+
   estimateSize: _estadoSubscricaoEstimateSize,
   serialize: _estadoSubscricaoSerialize,
   deserialize: _estadoSubscricaoDeserialize,
@@ -57,10 +58,11 @@ const EstadoSubscricaoSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {},
+
   getId: _estadoSubscricaoGetId,
   getLinks: _estadoSubscricaoGetLinks,
   attach: _estadoSubscricaoAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _estadoSubscricaoEstimateSize(
@@ -103,7 +105,7 @@ EstadoSubscricao _estadoSubscricaoDeserialize(
   object.id = id;
   object.plano =
       _EstadoSubscricaoplanoValueEnumMap[reader.readStringOrNull(offsets[0])] ??
-          Plano.free;
+      Plano.free;
   object.premiumExpiraEm = reader.readDateTimeOrNull(offsets[1]);
   object.produtoPlayStoreId = reader.readStringOrNull(offsets[2]);
   object.trialFim = reader.readDateTime(offsets[3]);
@@ -120,9 +122,11 @@ P _estadoSubscricaoDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (_EstadoSubscricaoplanoValueEnumMap[
-              reader.readStringOrNull(offset)] ??
-          Plano.free) as P;
+      return (_EstadoSubscricaoplanoValueEnumMap[reader.readStringOrNull(
+                offset,
+              )] ??
+              Plano.free)
+          as P;
     case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
@@ -156,7 +160,10 @@ List<IsarLinkBase<dynamic>> _estadoSubscricaoGetLinks(EstadoSubscricao object) {
 }
 
 void _estadoSubscricaoAttach(
-    IsarCollection<dynamic> col, Id id, EstadoSubscricao object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  EstadoSubscricao object,
+) {
   object.id = id;
 }
 
@@ -172,17 +179,15 @@ extension EstadoSubscricaoQueryWhereSort
 extension EstadoSubscricaoQueryWhere
     on QueryBuilder<EstadoSubscricao, EstadoSubscricao, QWhereClause> {
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -205,7 +210,7 @@ extension EstadoSubscricaoQueryWhere
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -214,7 +219,7 @@ extension EstadoSubscricaoQueryWhere
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -229,12 +234,14 @@ extension EstadoSubscricaoQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -242,109 +249,111 @@ extension EstadoSubscricaoQueryWhere
 extension EstadoSubscricaoQueryFilter
     on QueryBuilder<EstadoSubscricao, EstadoSubscricao, QFilterCondition> {
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      idEqualTo(Id value) {
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      idBetween(
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoEqualTo(
-    Plano value, {
-    bool caseSensitive = true,
-  }) {
+  planoEqualTo(Plano value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'plano',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'plano',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoGreaterThan(
-    Plano value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'plano',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoLessThan(
+  planoGreaterThan(
     Plano value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'plano',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'plano',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoBetween(
+  planoLessThan(
+    Plano value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'plano',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
+  planoBetween(
     Plano lower,
     Plano upper, {
     bool includeLower = true,
@@ -352,227 +361,231 @@ extension EstadoSubscricaoQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'plano',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'plano',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  planoStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'plano',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'plano',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  planoEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'plano',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'plano',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoContains(String value, {bool caseSensitive = true}) {
+  planoContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'plano',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'plano',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoMatches(String pattern, {bool caseSensitive = true}) {
+  planoMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'plano',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'plano',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoIsEmpty() {
+  planoIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'plano',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'plano', value: ''),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      planoIsNotEmpty() {
+  planoIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'plano',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'plano', value: ''),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      premiumExpiraEmIsNull() {
+  premiumExpiraEmIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'premiumExpiraEm',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'premiumExpiraEm'),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      premiumExpiraEmIsNotNull() {
+  premiumExpiraEmIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'premiumExpiraEm',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'premiumExpiraEm'),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      premiumExpiraEmEqualTo(DateTime? value) {
+  premiumExpiraEmEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'premiumExpiraEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'premiumExpiraEm', value: value),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      premiumExpiraEmGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  premiumExpiraEmGreaterThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'premiumExpiraEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'premiumExpiraEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      premiumExpiraEmLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  premiumExpiraEmLessThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'premiumExpiraEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'premiumExpiraEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      premiumExpiraEmBetween(
+  premiumExpiraEmBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'premiumExpiraEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'premiumExpiraEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdIsNull() {
+  produtoPlayStoreIdIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'produtoPlayStoreId',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'produtoPlayStoreId'),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdIsNotNull() {
+  produtoPlayStoreIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'produtoPlayStoreId',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'produtoPlayStoreId'),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  produtoPlayStoreIdEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'produtoPlayStoreId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'produtoPlayStoreId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'produtoPlayStoreId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdLessThan(
+  produtoPlayStoreIdGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'produtoPlayStoreId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'produtoPlayStoreId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdBetween(
+  produtoPlayStoreIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'produtoPlayStoreId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
+  produtoPlayStoreIdBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -580,270 +593,272 @@ extension EstadoSubscricaoQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'produtoPlayStoreId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'produtoPlayStoreId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  produtoPlayStoreIdStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'produtoPlayStoreId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'produtoPlayStoreId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  produtoPlayStoreIdEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'produtoPlayStoreId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'produtoPlayStoreId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdContains(String value, {bool caseSensitive = true}) {
+  produtoPlayStoreIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'produtoPlayStoreId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'produtoPlayStoreId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdMatches(String pattern, {bool caseSensitive = true}) {
+  produtoPlayStoreIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'produtoPlayStoreId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'produtoPlayStoreId',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdIsEmpty() {
+  produtoPlayStoreIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'produtoPlayStoreId',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'produtoPlayStoreId', value: ''),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      produtoPlayStoreIdIsNotEmpty() {
+  produtoPlayStoreIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'produtoPlayStoreId',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'produtoPlayStoreId', value: ''),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialFimEqualTo(DateTime value) {
+  trialFimEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'trialFim',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'trialFim', value: value),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialFimGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  trialFimGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'trialFim',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'trialFim',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialFimLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  trialFimLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'trialFim',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'trialFim',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialFimBetween(
+  trialFimBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'trialFim',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'trialFim',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialInicioEqualTo(DateTime value) {
+  trialInicioEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'trialInicio',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'trialInicio', value: value),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialInicioGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  trialInicioGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'trialInicio',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'trialInicio',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialInicioLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  trialInicioLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'trialInicio',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'trialInicio',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      trialInicioBetween(
+  trialInicioBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'trialInicio',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'trialInicio',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      ultimaValidacaoCompraIsNull() {
+  ultimaValidacaoCompraIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'ultimaValidacaoCompra',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'ultimaValidacaoCompra'),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      ultimaValidacaoCompraIsNotNull() {
+  ultimaValidacaoCompraIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'ultimaValidacaoCompra',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'ultimaValidacaoCompra'),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      ultimaValidacaoCompraEqualTo(DateTime? value) {
+  ultimaValidacaoCompraEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'ultimaValidacaoCompra',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'ultimaValidacaoCompra',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      ultimaValidacaoCompraGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  ultimaValidacaoCompraGreaterThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'ultimaValidacaoCompra',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'ultimaValidacaoCompra',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      ultimaValidacaoCompraLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  ultimaValidacaoCompraLessThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'ultimaValidacaoCompra',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'ultimaValidacaoCompra',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterFilterCondition>
-      ultimaValidacaoCompraBetween(
+  ultimaValidacaoCompraBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'ultimaValidacaoCompra',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'ultimaValidacaoCompra',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -863,77 +878,77 @@ extension EstadoSubscricaoQuerySortBy
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByPlanoDesc() {
+  sortByPlanoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'plano', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByPremiumExpiraEm() {
+  sortByPremiumExpiraEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'premiumExpiraEm', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByPremiumExpiraEmDesc() {
+  sortByPremiumExpiraEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'premiumExpiraEm', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByProdutoPlayStoreId() {
+  sortByProdutoPlayStoreId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'produtoPlayStoreId', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByProdutoPlayStoreIdDesc() {
+  sortByProdutoPlayStoreIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'produtoPlayStoreId', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByTrialFim() {
+  sortByTrialFim() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialFim', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByTrialFimDesc() {
+  sortByTrialFimDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialFim', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByTrialInicio() {
+  sortByTrialInicio() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialInicio', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByTrialInicioDesc() {
+  sortByTrialInicioDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialInicio', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByUltimaValidacaoCompra() {
+  sortByUltimaValidacaoCompra() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ultimaValidacaoCompra', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      sortByUltimaValidacaoCompraDesc() {
+  sortByUltimaValidacaoCompraDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ultimaValidacaoCompra', Sort.desc);
     });
@@ -949,7 +964,7 @@ extension EstadoSubscricaoQuerySortThenBy
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByIdDesc() {
+  thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
@@ -962,77 +977,77 @@ extension EstadoSubscricaoQuerySortThenBy
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByPlanoDesc() {
+  thenByPlanoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'plano', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByPremiumExpiraEm() {
+  thenByPremiumExpiraEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'premiumExpiraEm', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByPremiumExpiraEmDesc() {
+  thenByPremiumExpiraEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'premiumExpiraEm', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByProdutoPlayStoreId() {
+  thenByProdutoPlayStoreId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'produtoPlayStoreId', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByProdutoPlayStoreIdDesc() {
+  thenByProdutoPlayStoreIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'produtoPlayStoreId', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByTrialFim() {
+  thenByTrialFim() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialFim', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByTrialFimDesc() {
+  thenByTrialFimDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialFim', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByTrialInicio() {
+  thenByTrialInicio() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialInicio', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByTrialInicioDesc() {
+  thenByTrialInicioDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trialInicio', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByUltimaValidacaoCompra() {
+  thenByUltimaValidacaoCompra() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ultimaValidacaoCompra', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QAfterSortBy>
-      thenByUltimaValidacaoCompraDesc() {
+  thenByUltimaValidacaoCompraDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ultimaValidacaoCompra', Sort.desc);
     });
@@ -1041,44 +1056,47 @@ extension EstadoSubscricaoQuerySortThenBy
 
 extension EstadoSubscricaoQueryWhereDistinct
     on QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct> {
-  QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct> distinctByPlano(
-      {bool caseSensitive = true}) {
+  QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct> distinctByPlano({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'plano', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct>
-      distinctByPremiumExpiraEm() {
+  distinctByPremiumExpiraEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'premiumExpiraEm');
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct>
-      distinctByProdutoPlayStoreId({bool caseSensitive = true}) {
+  distinctByProdutoPlayStoreId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'produtoPlayStoreId',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'produtoPlayStoreId',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct>
-      distinctByTrialFim() {
+  distinctByTrialFim() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'trialFim');
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct>
-      distinctByTrialInicio() {
+  distinctByTrialInicio() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'trialInicio');
     });
   }
 
   QueryBuilder<EstadoSubscricao, EstadoSubscricao, QDistinct>
-      distinctByUltimaValidacaoCompra() {
+  distinctByUltimaValidacaoCompra() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ultimaValidacaoCompra');
     });
@@ -1100,35 +1118,35 @@ extension EstadoSubscricaoQueryProperty
   }
 
   QueryBuilder<EstadoSubscricao, DateTime?, QQueryOperations>
-      premiumExpiraEmProperty() {
+  premiumExpiraEmProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'premiumExpiraEm');
     });
   }
 
   QueryBuilder<EstadoSubscricao, String?, QQueryOperations>
-      produtoPlayStoreIdProperty() {
+  produtoPlayStoreIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'produtoPlayStoreId');
     });
   }
 
   QueryBuilder<EstadoSubscricao, DateTime, QQueryOperations>
-      trialFimProperty() {
+  trialFimProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'trialFim');
     });
   }
 
   QueryBuilder<EstadoSubscricao, DateTime, QQueryOperations>
-      trialInicioProperty() {
+  trialInicioProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'trialInicio');
     });
   }
 
   QueryBuilder<EstadoSubscricao, DateTime?, QQueryOperations>
-      ultimaValidacaoCompraProperty() {
+  ultimaValidacaoCompraProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ultimaValidacaoCompra');
     });

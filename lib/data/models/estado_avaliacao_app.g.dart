@@ -22,8 +22,9 @@ const EstadoAvaliacaoAppSchema = CollectionSchema(
       id: 0,
       name: r'jaMostrado',
       type: IsarType.bool,
-    )
+    ),
   },
+
   estimateSize: _estadoAvaliacaoAppEstimateSize,
   serialize: _estadoAvaliacaoAppSerialize,
   deserialize: _estadoAvaliacaoAppDeserialize,
@@ -32,10 +33,11 @@ const EstadoAvaliacaoAppSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {},
+
   getId: _estadoAvaliacaoAppGetId,
   getLinks: _estadoAvaliacaoAppGetLinks,
   attach: _estadoAvaliacaoAppAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _estadoAvaliacaoAppEstimateSize(
@@ -87,12 +89,16 @@ Id _estadoAvaliacaoAppGetId(EstadoAvaliacaoApp object) {
 }
 
 List<IsarLinkBase<dynamic>> _estadoAvaliacaoAppGetLinks(
-    EstadoAvaliacaoApp object) {
+  EstadoAvaliacaoApp object,
+) {
   return [];
 }
 
 void _estadoAvaliacaoAppAttach(
-    IsarCollection<dynamic> col, Id id, EstadoAvaliacaoApp object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  EstadoAvaliacaoApp object,
+) {
   object.id = id;
 }
 
@@ -108,17 +114,14 @@ extension EstadoAvaliacaoAppQueryWhereSort
 extension EstadoAvaliacaoAppQueryWhere
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QWhereClause> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterWhereClause>
-      idEqualTo(Id id) {
+  idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -141,7 +144,7 @@ extension EstadoAvaliacaoAppQueryWhere
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -150,7 +153,7 @@ extension EstadoAvaliacaoAppQueryWhere
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -159,19 +162,21 @@ extension EstadoAvaliacaoAppQueryWhere
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterWhereClause>
-      idBetween(
+  idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -179,68 +184,66 @@ extension EstadoAvaliacaoAppQueryWhere
 extension EstadoAvaliacaoAppQueryFilter
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QFilterCondition> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
-      idEqualTo(Id value) {
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
-      idBetween(
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
-      jaMostradoEqualTo(bool value) {
+  jaMostradoEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'jaMostrado',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'jaMostrado', value: value),
+      );
     });
   }
 }
@@ -254,14 +257,14 @@ extension EstadoAvaliacaoAppQueryLinks
 extension EstadoAvaliacaoAppQuerySortBy
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QSortBy> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-      sortByJaMostrado() {
+  sortByJaMostrado() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'jaMostrado', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-      sortByJaMostradoDesc() {
+  sortByJaMostradoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'jaMostrado', Sort.desc);
     });
@@ -271,28 +274,28 @@ extension EstadoAvaliacaoAppQuerySortBy
 extension EstadoAvaliacaoAppQuerySortThenBy
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QSortThenBy> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-      thenById() {
+  thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-      thenByIdDesc() {
+  thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-      thenByJaMostrado() {
+  thenByJaMostrado() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'jaMostrado', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-      thenByJaMostradoDesc() {
+  thenByJaMostradoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'jaMostrado', Sort.desc);
     });
@@ -302,7 +305,7 @@ extension EstadoAvaliacaoAppQuerySortThenBy
 extension EstadoAvaliacaoAppQueryWhereDistinct
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QDistinct> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QDistinct>
-      distinctByJaMostrado() {
+  distinctByJaMostrado() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'jaMostrado');
     });
@@ -318,7 +321,7 @@ extension EstadoAvaliacaoAppQueryProperty
   }
 
   QueryBuilder<EstadoAvaliacaoApp, bool, QQueryOperations>
-      jaMostradoProperty() {
+  jaMostradoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'jaMostrado');
     });

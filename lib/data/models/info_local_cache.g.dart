@@ -31,8 +31,9 @@ const InfoLocalCacheSchema = CollectionSchema(
       id: 2,
       name: r'previsaoJson',
       type: IsarType.string,
-    )
+    ),
   },
+
   estimateSize: _infoLocalCacheEstimateSize,
   serialize: _infoLocalCacheSerialize,
   deserialize: _infoLocalCacheDeserialize,
@@ -41,10 +42,11 @@ const InfoLocalCacheSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {},
+
   getId: _infoLocalCacheGetId,
   getLinks: _infoLocalCacheGetLinks,
   attach: _infoLocalCacheAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _infoLocalCacheEstimateSize(
@@ -120,7 +122,10 @@ List<IsarLinkBase<dynamic>> _infoLocalCacheGetLinks(InfoLocalCache object) {
 }
 
 void _infoLocalCacheAttach(
-    IsarCollection<dynamic> col, Id id, InfoLocalCache object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  InfoLocalCache object,
+) {
   object.id = id;
 }
 
@@ -136,17 +141,16 @@ extension InfoLocalCacheQueryWhereSort
 extension InfoLocalCacheQueryWhere
     on QueryBuilder<InfoLocalCache, InfoLocalCache, QWhereClause> {
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -169,8 +173,9 @@ extension InfoLocalCacheQueryWhere
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterWhereClause> idGreaterThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -179,8 +184,9 @@ extension InfoLocalCacheQueryWhere
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -195,12 +201,14 @@ extension InfoLocalCacheQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -208,145 +216,147 @@ extension InfoLocalCacheQueryWhere
 extension InfoLocalCacheQueryFilter
     on QueryBuilder<InfoLocalCache, InfoLocalCache, QFilterCondition> {
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      atualizadoEmIsNull() {
+  atualizadoEmIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'atualizadoEm',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'atualizadoEm'),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      atualizadoEmIsNotNull() {
+  atualizadoEmIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'atualizadoEm',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'atualizadoEm'),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      atualizadoEmEqualTo(DateTime? value) {
+  atualizadoEmEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'atualizadoEm', value: value),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      atualizadoEmGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  atualizadoEmGreaterThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      atualizadoEmLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  atualizadoEmLessThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      atualizadoEmBetween(
+  atualizadoEmBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'atualizadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'atualizadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonIsNull() {
+  avisosJsonIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'avisosJson',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'avisosJson'),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonIsNotNull() {
+  avisosJsonIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'avisosJson',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'avisosJson'),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  avisosJsonEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'avisosJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'avisosJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'avisosJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonLessThan(
+  avisosJsonGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'avisosJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'avisosJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonBetween(
+  avisosJsonLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'avisosJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
+  avisosJsonBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -354,122 +364,122 @@ extension InfoLocalCacheQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'avisosJson',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'avisosJson',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  avisosJsonStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'avisosJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'avisosJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  avisosJsonEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'avisosJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'avisosJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonContains(String value, {bool caseSensitive = true}) {
+  avisosJsonContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'avisosJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'avisosJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonMatches(String pattern, {bool caseSensitive = true}) {
+  avisosJsonMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'avisosJson',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'avisosJson',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonIsEmpty() {
+  avisosJsonIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'avisosJson',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'avisosJson', value: ''),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      avisosJsonIsNotEmpty() {
+  avisosJsonIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'avisosJson',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'avisosJson', value: ''),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition> idEqualTo(
-      Id value) {
+    Id value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -480,82 +490,87 @@ extension InfoLocalCacheQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonIsNull() {
+  previsaoJsonIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'previsaoJson',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'previsaoJson'),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonIsNotNull() {
+  previsaoJsonIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'previsaoJson',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'previsaoJson'),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  previsaoJsonEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'previsaoJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'previsaoJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'previsaoJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonLessThan(
+  previsaoJsonGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'previsaoJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'previsaoJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonBetween(
+  previsaoJsonLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'previsaoJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
+  previsaoJsonBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -563,84 +578,86 @@ extension InfoLocalCacheQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'previsaoJson',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'previsaoJson',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  previsaoJsonStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'previsaoJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'previsaoJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  previsaoJsonEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'previsaoJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'previsaoJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonContains(String value, {bool caseSensitive = true}) {
+  previsaoJsonContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'previsaoJson',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'previsaoJson',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonMatches(String pattern, {bool caseSensitive = true}) {
+  previsaoJsonMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'previsaoJson',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'previsaoJson',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonIsEmpty() {
+  previsaoJsonIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'previsaoJson',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'previsaoJson', value: ''),
+      );
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterFilterCondition>
-      previsaoJsonIsNotEmpty() {
+  previsaoJsonIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'previsaoJson',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'previsaoJson', value: ''),
+      );
     });
   }
 }
@@ -654,42 +671,42 @@ extension InfoLocalCacheQueryLinks
 extension InfoLocalCacheQuerySortBy
     on QueryBuilder<InfoLocalCache, InfoLocalCache, QSortBy> {
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      sortByAtualizadoEm() {
+  sortByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      sortByAtualizadoEmDesc() {
+  sortByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      sortByAvisosJson() {
+  sortByAvisosJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'avisosJson', Sort.asc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      sortByAvisosJsonDesc() {
+  sortByAvisosJsonDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'avisosJson', Sort.desc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      sortByPrevisaoJson() {
+  sortByPrevisaoJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'previsaoJson', Sort.asc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      sortByPrevisaoJsonDesc() {
+  sortByPrevisaoJsonDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'previsaoJson', Sort.desc);
     });
@@ -699,28 +716,28 @@ extension InfoLocalCacheQuerySortBy
 extension InfoLocalCacheQuerySortThenBy
     on QueryBuilder<InfoLocalCache, InfoLocalCache, QSortThenBy> {
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      thenByAtualizadoEm() {
+  thenByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      thenByAtualizadoEmDesc() {
+  thenByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      thenByAvisosJson() {
+  thenByAvisosJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'avisosJson', Sort.asc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      thenByAvisosJsonDesc() {
+  thenByAvisosJsonDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'avisosJson', Sort.desc);
     });
@@ -739,14 +756,14 @@ extension InfoLocalCacheQuerySortThenBy
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      thenByPrevisaoJson() {
+  thenByPrevisaoJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'previsaoJson', Sort.asc);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QAfterSortBy>
-      thenByPrevisaoJsonDesc() {
+  thenByPrevisaoJsonDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'previsaoJson', Sort.desc);
     });
@@ -756,21 +773,22 @@ extension InfoLocalCacheQuerySortThenBy
 extension InfoLocalCacheQueryWhereDistinct
     on QueryBuilder<InfoLocalCache, InfoLocalCache, QDistinct> {
   QueryBuilder<InfoLocalCache, InfoLocalCache, QDistinct>
-      distinctByAtualizadoEm() {
+  distinctByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'atualizadoEm');
     });
   }
 
-  QueryBuilder<InfoLocalCache, InfoLocalCache, QDistinct> distinctByAvisosJson(
-      {bool caseSensitive = true}) {
+  QueryBuilder<InfoLocalCache, InfoLocalCache, QDistinct> distinctByAvisosJson({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'avisosJson', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<InfoLocalCache, InfoLocalCache, QDistinct>
-      distinctByPrevisaoJson({bool caseSensitive = true}) {
+  distinctByPrevisaoJson({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'previsaoJson', caseSensitive: caseSensitive);
     });
@@ -786,7 +804,7 @@ extension InfoLocalCacheQueryProperty
   }
 
   QueryBuilder<InfoLocalCache, DateTime?, QQueryOperations>
-      atualizadoEmProperty() {
+  atualizadoEmProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'atualizadoEm');
     });
@@ -799,7 +817,7 @@ extension InfoLocalCacheQueryProperty
   }
 
   QueryBuilder<InfoLocalCache, String?, QQueryOperations>
-      previsaoJsonProperty() {
+  previsaoJsonProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'previsaoJson');
     });

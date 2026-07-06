@@ -17,11 +17,7 @@ const RegistoMedicacaoSchema = CollectionSchema(
   name: r'RegistoMedicacao',
   id: 5997855557492422552,
   properties: {
-    r'ativo': PropertySchema(
-      id: 0,
-      name: r'ativo',
-      type: IsarType.bool,
-    ),
+    r'ativo': PropertySchema(id: 0, name: r'ativo', type: IsarType.bool),
     r'atualizadoEm': PropertySchema(
       id: 1,
       name: r'atualizadoEm',
@@ -47,37 +43,26 @@ const RegistoMedicacaoSchema = CollectionSchema(
       name: r'diasSemana',
       type: IsarType.longList,
     ),
-    r'dose': PropertySchema(
-      id: 6,
-      name: r'dose',
-      type: IsarType.string,
-    ),
+    r'dose': PropertySchema(id: 6, name: r'dose', type: IsarType.string),
     r'horariosMinutos': PropertySchema(
       id: 7,
       name: r'horariosMinutos',
       type: IsarType.longList,
     ),
-    r'idosoId': PropertySchema(
-      id: 8,
-      name: r'idosoId',
-      type: IsarType.long,
-    ),
+    r'idosoId': PropertySchema(id: 8, name: r'idosoId', type: IsarType.long),
     r'nomeMedicamento': PropertySchema(
       id: 9,
       name: r'nomeMedicamento',
       type: IsarType.string,
     ),
-    r'notas': PropertySchema(
-      id: 10,
-      name: r'notas',
-      type: IsarType.string,
-    ),
+    r'notas': PropertySchema(id: 10, name: r'notas', type: IsarType.string),
     r'notificacaoIds': PropertySchema(
       id: 11,
       name: r'notificacaoIds',
       type: IsarType.longList,
-    )
+    ),
   },
+
   estimateSize: _registoMedicacaoEstimateSize,
   serialize: _registoMedicacaoSerialize,
   deserialize: _registoMedicacaoDeserialize,
@@ -94,16 +79,17 @@ const RegistoMedicacaoSchema = CollectionSchema(
           name: r'idosoId',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
-    )
+    ),
   },
   links: {},
   embeddedSchemas: {},
+
   getId: _registoMedicacaoGetId,
   getLinks: _registoMedicacaoGetLinks,
   attach: _registoMedicacaoAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _registoMedicacaoEstimateSize(
@@ -219,7 +205,10 @@ List<IsarLinkBase<dynamic>> _registoMedicacaoGetLinks(RegistoMedicacao object) {
 }
 
 void _registoMedicacaoAttach(
-    IsarCollection<dynamic> col, Id id, RegistoMedicacao object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  RegistoMedicacao object,
+) {
   object.id = id;
 }
 
@@ -243,17 +232,15 @@ extension RegistoMedicacaoQueryWhereSort
 extension RegistoMedicacaoQueryWhere
     on QueryBuilder<RegistoMedicacao, RegistoMedicacao, QWhereClause> {
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -276,7 +263,7 @@ extension RegistoMedicacaoQueryWhere
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -285,7 +272,7 @@ extension RegistoMedicacaoQueryWhere
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -300,105 +287,114 @@ extension RegistoMedicacaoQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idosoIdEqualTo(int idosoId) {
+  idosoIdEqualTo(int idosoId) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'idosoId',
-        value: [idosoId],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'idosoId', value: [idosoId]),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idosoIdNotEqualTo(int idosoId) {
+  idosoIdNotEqualTo(int idosoId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [],
-              upper: [idosoId],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [idosoId],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [],
+                upper: [idosoId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [idosoId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [idosoId],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'idosoId',
-              lower: [],
-              upper: [idosoId],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [idosoId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'idosoId',
+                lower: [],
+                upper: [idosoId],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idosoIdGreaterThan(
-    int idosoId, {
-    bool include = false,
-  }) {
+  idosoIdGreaterThan(int idosoId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'idosoId',
-        lower: [idosoId],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'idosoId',
+          lower: [idosoId],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idosoIdLessThan(
-    int idosoId, {
-    bool include = false,
-  }) {
+  idosoIdLessThan(int idosoId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'idosoId',
-        lower: [],
-        upper: [idosoId],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'idosoId',
+          lower: [],
+          upper: [idosoId],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterWhereClause>
-      idosoIdBetween(
+  idosoIdBetween(
     int lowerIdosoId,
     int upperIdosoId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'idosoId',
-        lower: [lowerIdosoId],
-        includeLower: includeLower,
-        upper: [upperIdosoId],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'idosoId',
+          lower: [lowerIdosoId],
+          includeLower: includeLower,
+          upper: [upperIdosoId],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -406,404 +402,362 @@ extension RegistoMedicacaoQueryWhere
 extension RegistoMedicacaoQueryFilter
     on QueryBuilder<RegistoMedicacao, RegistoMedicacao, QFilterCondition> {
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      ativoEqualTo(bool value) {
+  ativoEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'ativo',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'ativo', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      atualizadoEmEqualTo(DateTime value) {
+  atualizadoEmEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'atualizadoEm', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      atualizadoEmGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  atualizadoEmGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      atualizadoEmLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  atualizadoEmLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      atualizadoEmBetween(
+  atualizadoEmBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'atualizadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'atualizadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      criadoEmEqualTo(DateTime value) {
+  criadoEmEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'criadoEm', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      criadoEmGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  criadoEmGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'criadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      criadoEmLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  criadoEmLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'criadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      criadoEmBetween(
+  criadoEmBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'criadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'criadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataFimIsNull() {
+  dataFimIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'dataFim',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'dataFim'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataFimIsNotNull() {
+  dataFimIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'dataFim',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'dataFim'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataFimEqualTo(DateTime? value) {
+  dataFimEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dataFim',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dataFim', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataFimGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  dataFimGreaterThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dataFim',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dataFim',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataFimLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  dataFimLessThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dataFim',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dataFim',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataFimBetween(
+  dataFimBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dataFim',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dataFim',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataInicioIsNull() {
+  dataInicioIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'dataInicio',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'dataInicio'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataInicioIsNotNull() {
+  dataInicioIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'dataInicio',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'dataInicio'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataInicioEqualTo(DateTime? value) {
+  dataInicioEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dataInicio',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dataInicio', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataInicioGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  dataInicioGreaterThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dataInicio',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dataInicio',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataInicioLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
+  dataInicioLessThan(DateTime? value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dataInicio',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dataInicio',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      dataInicioBetween(
+  dataInicioBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dataInicio',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dataInicio',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaElementEqualTo(int value) {
+  diasSemanaElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'diasSemana',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'diasSemana', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaElementGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  diasSemanaElementGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'diasSemana',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'diasSemana',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  diasSemanaElementLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'diasSemana',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'diasSemana',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaElementBetween(
+  diasSemanaElementBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'diasSemana',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'diasSemana',
-        length,
-        true,
-        length,
-        true,
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'diasSemana',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaIsEmpty() {
+  diasSemanaLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'diasSemana',
-        0,
-        true,
-        0,
-        true,
-      );
+      return query.listLength(r'diasSemana', length, true, length, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaIsNotEmpty() {
+  diasSemanaIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'diasSemana',
-        0,
-        false,
-        999999,
-        true,
-      );
+      return query.listLength(r'diasSemana', 0, true, 0, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  diasSemanaIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'diasSemana',
-        0,
-        true,
-        length,
-        include,
-      );
+      return query.listLength(r'diasSemana', 0, false, 999999, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  diasSemanaLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'diasSemana',
-        length,
-        include,
-        999999,
-        true,
-      );
+      return query.listLength(r'diasSemana', 0, true, length, include);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      diasSemanaLengthBetween(
+  diasSemanaLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'diasSemana', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  diasSemanaLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -821,71 +775,74 @@ extension RegistoMedicacaoQueryFilter
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseIsNull() {
+  doseIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'dose',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'dose'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseIsNotNull() {
+  doseIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'dose',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'dose'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  doseEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dose',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'dose',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dose',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseLessThan(
+  doseGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dose',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dose',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseBetween(
+  doseLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dose',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  doseBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -893,203 +850,174 @@ extension RegistoMedicacaoQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dose',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dose',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  doseStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'dose',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'dose',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  doseEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'dose',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'dose',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseContains(String value, {bool caseSensitive = true}) {
+  doseContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'dose',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'dose',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseMatches(String pattern, {bool caseSensitive = true}) {
+  doseMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'dose',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'dose',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseIsEmpty() {
+  doseIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dose',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dose', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      doseIsNotEmpty() {
+  doseIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'dose',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'dose', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosElementEqualTo(int value) {
+  horariosMinutosElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'horariosMinutos',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'horariosMinutos', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosElementGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  horariosMinutosElementGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'horariosMinutos',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'horariosMinutos',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  horariosMinutosElementLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'horariosMinutos',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'horariosMinutos',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosElementBetween(
+  horariosMinutosElementBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'horariosMinutos',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'horariosMinutos',
-        length,
-        true,
-        length,
-        true,
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'horariosMinutos',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosIsEmpty() {
+  horariosMinutosLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'horariosMinutos',
-        0,
-        true,
-        0,
-        true,
-      );
+      return query.listLength(r'horariosMinutos', length, true, length, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosIsNotEmpty() {
+  horariosMinutosIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'horariosMinutos',
-        0,
-        false,
-        999999,
-        true,
-      );
+      return query.listLength(r'horariosMinutos', 0, true, 0, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  horariosMinutosIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'horariosMinutos',
-        0,
-        true,
-        length,
-        include,
-      );
+      return query.listLength(r'horariosMinutos', 0, false, 999999, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  horariosMinutosLengthLessThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'horariosMinutos', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  horariosMinutosLengthGreaterThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'horariosMinutos',
@@ -1102,7 +1030,7 @@ extension RegistoMedicacaoQueryFilter
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      horariosMinutosLengthBetween(
+  horariosMinutosLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1120,165 +1048,166 @@ extension RegistoMedicacaoQueryFilter
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idEqualTo(Id value) {
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idBetween(
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idosoIdEqualTo(int value) {
+  idosoIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'idosoId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idosoId', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idosoIdGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  idosoIdGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'idosoId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idosoId',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idosoIdLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  idosoIdLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'idosoId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idosoId',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      idosoIdBetween(
+  idosoIdBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'idosoId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idosoId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  nomeMedicamentoEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nomeMedicamento',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'nomeMedicamento',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'nomeMedicamento',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoLessThan(
+  nomeMedicamentoGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'nomeMedicamento',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'nomeMedicamento',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoBetween(
+  nomeMedicamentoLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'nomeMedicamento',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  nomeMedicamentoBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1286,153 +1215,158 @@ extension RegistoMedicacaoQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'nomeMedicamento',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'nomeMedicamento',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  nomeMedicamentoStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'nomeMedicamento',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'nomeMedicamento',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  nomeMedicamentoEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'nomeMedicamento',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'nomeMedicamento',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoContains(String value, {bool caseSensitive = true}) {
+  nomeMedicamentoContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'nomeMedicamento',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'nomeMedicamento',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoMatches(String pattern, {bool caseSensitive = true}) {
+  nomeMedicamentoMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'nomeMedicamento',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'nomeMedicamento',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoIsEmpty() {
+  nomeMedicamentoIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nomeMedicamento',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'nomeMedicamento', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      nomeMedicamentoIsNotEmpty() {
+  nomeMedicamentoIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'nomeMedicamento',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'nomeMedicamento', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasIsNull() {
+  notasIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'notas',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'notas'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasIsNotNull() {
+  notasIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'notas',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'notas'),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  notasEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasLessThan(
+  notasGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasBetween(
+  notasLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  notasBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1440,216 +1374,181 @@ extension RegistoMedicacaoQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'notas',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'notas',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  notasStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  notasEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasContains(String value, {bool caseSensitive = true}) {
+  notasContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasMatches(String pattern, {bool caseSensitive = true}) {
+  notasMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'notas',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'notas',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasIsEmpty() {
+  notasIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notas',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'notas', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notasIsNotEmpty() {
+  notasIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'notas',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'notas', value: ''),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsElementEqualTo(int value) {
+  notificacaoIdsElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notificacaoIds',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'notificacaoIds', value: value),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsElementGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  notificacaoIdsElementGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'notificacaoIds',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'notificacaoIds',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  notificacaoIdsElementLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'notificacaoIds',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'notificacaoIds',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsElementBetween(
+  notificacaoIdsElementBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'notificacaoIds',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        length,
-        true,
-        length,
-        true,
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'notificacaoIds',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsIsEmpty() {
+  notificacaoIdsLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        0,
-        true,
-        0,
-        true,
-      );
+      return query.listLength(r'notificacaoIds', length, true, length, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsIsNotEmpty() {
+  notificacaoIdsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        0,
-        false,
-        999999,
-        true,
-      );
+      return query.listLength(r'notificacaoIds', 0, true, 0, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
+  notificacaoIdsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        0,
-        true,
-        length,
-        include,
-      );
+      return query.listLength(r'notificacaoIds', 0, false, 999999, true);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
+  notificacaoIdsLengthLessThan(int length, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notificacaoIds',
-        length,
-        include,
-        999999,
-        true,
-      );
+      return query.listLength(r'notificacaoIds', 0, true, length, include);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
-      notificacaoIdsLengthBetween(
+  notificacaoIdsLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'notificacaoIds', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  notificacaoIdsLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1682,63 +1581,63 @@ extension RegistoMedicacaoQuerySortBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByAtivoDesc() {
+  sortByAtivoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ativo', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByAtualizadoEm() {
+  sortByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByAtualizadoEmDesc() {
+  sortByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByCriadoEm() {
+  sortByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByCriadoEmDesc() {
+  sortByCriadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByDataFim() {
+  sortByDataFim() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataFim', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByDataFimDesc() {
+  sortByDataFimDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataFim', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByDataInicio() {
+  sortByDataInicio() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataInicio', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByDataInicioDesc() {
+  sortByDataInicioDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataInicio', Sort.desc);
     });
@@ -1751,35 +1650,35 @@ extension RegistoMedicacaoQuerySortBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByDoseDesc() {
+  sortByDoseDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dose', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByIdosoId() {
+  sortByIdosoId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByIdosoIdDesc() {
+  sortByIdosoIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByNomeMedicamento() {
+  sortByNomeMedicamento() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nomeMedicamento', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByNomeMedicamentoDesc() {
+  sortByNomeMedicamentoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nomeMedicamento', Sort.desc);
     });
@@ -1792,7 +1691,7 @@ extension RegistoMedicacaoQuerySortBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      sortByNotasDesc() {
+  sortByNotasDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.desc);
     });
@@ -1808,63 +1707,63 @@ extension RegistoMedicacaoQuerySortThenBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByAtivoDesc() {
+  thenByAtivoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ativo', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByAtualizadoEm() {
+  thenByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByAtualizadoEmDesc() {
+  thenByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByCriadoEm() {
+  thenByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByCriadoEmDesc() {
+  thenByCriadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'criadoEm', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByDataFim() {
+  thenByDataFim() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataFim', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByDataFimDesc() {
+  thenByDataFimDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataFim', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByDataInicio() {
+  thenByDataInicio() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataInicio', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByDataInicioDesc() {
+  thenByDataInicioDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dataInicio', Sort.desc);
     });
@@ -1877,7 +1776,7 @@ extension RegistoMedicacaoQuerySortThenBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByDoseDesc() {
+  thenByDoseDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dose', Sort.desc);
     });
@@ -1890,35 +1789,35 @@ extension RegistoMedicacaoQuerySortThenBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByIdDesc() {
+  thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByIdosoId() {
+  thenByIdosoId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByIdosoIdDesc() {
+  thenByIdosoIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.desc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByNomeMedicamento() {
+  thenByNomeMedicamento() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nomeMedicamento', Sort.asc);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByNomeMedicamentoDesc() {
+  thenByNomeMedicamentoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nomeMedicamento', Sort.desc);
     });
@@ -1931,7 +1830,7 @@ extension RegistoMedicacaoQuerySortThenBy
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
-      thenByNotasDesc() {
+  thenByNotasDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.desc);
     });
@@ -1941,85 +1840,89 @@ extension RegistoMedicacaoQuerySortThenBy
 extension RegistoMedicacaoQueryWhereDistinct
     on QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct> {
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByAtivo() {
+  distinctByAtivo() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ativo');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByAtualizadoEm() {
+  distinctByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'atualizadoEm');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByCriadoEm() {
+  distinctByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'criadoEm');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByDataFim() {
+  distinctByDataFim() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dataFim');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByDataInicio() {
+  distinctByDataInicio() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dataInicio');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByDiasSemana() {
+  distinctByDiasSemana() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'diasSemana');
     });
   }
 
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct> distinctByDose(
-      {bool caseSensitive = true}) {
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct> distinctByDose({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dose', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByHorariosMinutos() {
+  distinctByHorariosMinutos() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'horariosMinutos');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByIdosoId() {
+  distinctByIdosoId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idosoId');
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByNomeMedicamento({bool caseSensitive = true}) {
+  distinctByNomeMedicamento({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'nomeMedicamento',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'nomeMedicamento',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct> distinctByNotas(
-      {bool caseSensitive = true}) {
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct> distinctByNotas({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notas', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
-      distinctByNotificacaoIds() {
+  distinctByNotificacaoIds() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notificacaoIds');
     });
@@ -2041,35 +1944,35 @@ extension RegistoMedicacaoQueryProperty
   }
 
   QueryBuilder<RegistoMedicacao, DateTime, QQueryOperations>
-      atualizadoEmProperty() {
+  atualizadoEmProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'atualizadoEm');
     });
   }
 
   QueryBuilder<RegistoMedicacao, DateTime, QQueryOperations>
-      criadoEmProperty() {
+  criadoEmProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'criadoEm');
     });
   }
 
   QueryBuilder<RegistoMedicacao, DateTime?, QQueryOperations>
-      dataFimProperty() {
+  dataFimProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dataFim');
     });
   }
 
   QueryBuilder<RegistoMedicacao, DateTime?, QQueryOperations>
-      dataInicioProperty() {
+  dataInicioProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dataInicio');
     });
   }
 
   QueryBuilder<RegistoMedicacao, List<int>, QQueryOperations>
-      diasSemanaProperty() {
+  diasSemanaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'diasSemana');
     });
@@ -2082,7 +1985,7 @@ extension RegistoMedicacaoQueryProperty
   }
 
   QueryBuilder<RegistoMedicacao, List<int>, QQueryOperations>
-      horariosMinutosProperty() {
+  horariosMinutosProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'horariosMinutos');
     });
@@ -2095,7 +1998,7 @@ extension RegistoMedicacaoQueryProperty
   }
 
   QueryBuilder<RegistoMedicacao, String, QQueryOperations>
-      nomeMedicamentoProperty() {
+  nomeMedicamentoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nomeMedicamento');
     });
@@ -2108,7 +2011,7 @@ extension RegistoMedicacaoQueryProperty
   }
 
   QueryBuilder<RegistoMedicacao, List<int>, QQueryOperations>
-      notificacaoIdsProperty() {
+  notificacaoIdsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notificacaoIds');
     });

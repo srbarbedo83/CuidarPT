@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 import '../models/localidade_ipma.dart';
 import '../models/localizacao_selecionada.dart';

@@ -47,17 +47,10 @@ const IdosoSchema = CollectionSchema(
       name: r'fotoPath',
       type: IsarType.string,
     ),
-    r'nome': PropertySchema(
-      id: 6,
-      name: r'nome',
-      type: IsarType.string,
-    ),
-    r'notas': PropertySchema(
-      id: 7,
-      name: r'notas',
-      type: IsarType.string,
-    )
+    r'nome': PropertySchema(id: 6, name: r'nome', type: IsarType.string),
+    r'notas': PropertySchema(id: 7, name: r'notas', type: IsarType.string),
   },
+
   estimateSize: _idosoEstimateSize,
   serialize: _idosoSerialize,
   deserialize: _idosoDeserialize,
@@ -66,10 +59,11 @@ const IdosoSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {},
+
   getId: _idosoGetId,
   getLinks: _idosoGetLinks,
   attach: _idosoAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _idosoEstimateSize(
@@ -192,10 +186,7 @@ extension IdosoQueryWhereSort on QueryBuilder<Idoso, Idoso, QWhere> {
 extension IdosoQueryWhere on QueryBuilder<Idoso, Idoso, QWhereClause> {
   QueryBuilder<Idoso, Idoso, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
@@ -221,8 +212,10 @@ extension IdosoQueryWhere on QueryBuilder<Idoso, Idoso, QWhereClause> {
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Idoso, Idoso, QAfterWhereClause> idGreaterThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -230,8 +223,10 @@ extension IdosoQueryWhere on QueryBuilder<Idoso, Idoso, QWhereClause> {
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<Idoso, Idoso, QAfterWhereClause> idLessThan(
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -246,24 +241,26 @@ extension IdosoQueryWhere on QueryBuilder<Idoso, Idoso, QWhereClause> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
 
 extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> atualizadoEmEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'atualizadoEm', value: value),
+      );
     });
   }
 
@@ -272,11 +269,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -285,11 +284,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'atualizadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'atualizadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -300,82 +301,87 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'atualizadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'atualizadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeIsNull() {
+  contactoEmergenciaNomeIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'contactoEmergenciaNome',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'contactoEmergenciaNome'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeIsNotNull() {
+  contactoEmergenciaNomeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'contactoEmergenciaNome',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'contactoEmergenciaNome'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  contactoEmergenciaNomeEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'contactoEmergenciaNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'contactoEmergenciaNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'contactoEmergenciaNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeLessThan(
+  contactoEmergenciaNomeGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'contactoEmergenciaNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'contactoEmergenciaNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeBetween(
+  contactoEmergenciaNomeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'contactoEmergenciaNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
+  contactoEmergenciaNomeBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -383,155 +389,166 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'contactoEmergenciaNome',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'contactoEmergenciaNome',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  contactoEmergenciaNomeStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'contactoEmergenciaNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'contactoEmergenciaNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  contactoEmergenciaNomeEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'contactoEmergenciaNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'contactoEmergenciaNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeContains(String value,
-          {bool caseSensitive = true}) {
+  contactoEmergenciaNomeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'contactoEmergenciaNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'contactoEmergenciaNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeMatches(String pattern,
-          {bool caseSensitive = true}) {
+  contactoEmergenciaNomeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'contactoEmergenciaNome',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'contactoEmergenciaNome',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeIsEmpty() {
+  contactoEmergenciaNomeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'contactoEmergenciaNome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'contactoEmergenciaNome', value: ''),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaNomeIsNotEmpty() {
+  contactoEmergenciaNomeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'contactoEmergenciaNome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          property: r'contactoEmergenciaNome',
+          value: '',
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneIsNull() {
+  contactoEmergenciaTelefoneIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'contactoEmergenciaTelefone',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'contactoEmergenciaTelefone'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneIsNotNull() {
+  contactoEmergenciaTelefoneIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'contactoEmergenciaTelefone',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(
+          property: r'contactoEmergenciaTelefone',
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneEqualTo(
+  contactoEmergenciaTelefoneEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'contactoEmergenciaTelefone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'contactoEmergenciaTelefone',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'contactoEmergenciaTelefone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneLessThan(
+  contactoEmergenciaTelefoneGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'contactoEmergenciaTelefone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'contactoEmergenciaTelefone',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneBetween(
+  contactoEmergenciaTelefoneLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'contactoEmergenciaTelefone',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
+  contactoEmergenciaTelefoneBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -539,96 +556,114 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'contactoEmergenciaTelefone',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'contactoEmergenciaTelefone',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneStartsWith(
+  contactoEmergenciaTelefoneStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'contactoEmergenciaTelefone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'contactoEmergenciaTelefone',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneEndsWith(
+  contactoEmergenciaTelefoneEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'contactoEmergenciaTelefone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'contactoEmergenciaTelefone',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneContains(String value,
-          {bool caseSensitive = true}) {
+  contactoEmergenciaTelefoneContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'contactoEmergenciaTelefone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'contactoEmergenciaTelefone',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneMatches(String pattern,
-          {bool caseSensitive = true}) {
+  contactoEmergenciaTelefoneMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'contactoEmergenciaTelefone',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'contactoEmergenciaTelefone',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneIsEmpty() {
+  contactoEmergenciaTelefoneIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'contactoEmergenciaTelefone',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'contactoEmergenciaTelefone',
+          value: '',
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-      contactoEmergenciaTelefoneIsNotEmpty() {
+  contactoEmergenciaTelefoneIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'contactoEmergenciaTelefone',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          property: r'contactoEmergenciaTelefone',
+          value: '',
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> criadoEmEqualTo(
-      DateTime value) {
+    DateTime value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'criadoEm', value: value),
+      );
     });
   }
 
@@ -637,11 +672,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'criadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -650,11 +687,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'criadoEm',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'criadoEm',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -665,39 +704,41 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'criadoEm',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'criadoEm',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> dataNascimentoIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'dataNascimento',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'dataNascimento'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> dataNascimentoIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'dataNascimento',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'dataNascimento'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> dataNascimentoEqualTo(
-      DateTime? value) {
+    DateTime? value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'dataNascimento',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dataNascimento', value: value),
+      );
     });
   }
 
@@ -706,11 +747,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'dataNascimento',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dataNascimento',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -719,11 +762,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'dataNascimento',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dataNascimento',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -734,29 +779,31 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'dataNascimento',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dataNascimento',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> fotoPathIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'fotoPath',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'fotoPath'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> fotoPathIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'fotoPath',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'fotoPath'),
+      );
     });
   }
 
@@ -765,11 +812,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fotoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -779,12 +828,14 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fotoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -794,12 +845,14 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fotoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -811,14 +864,16 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fotoPath',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'fotoPath',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -827,11 +882,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'fotoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -840,62 +897,67 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'fotoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> fotoPathContains(
-      String value,
-      {bool caseSensitive = true}) {
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'fotoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> fotoPathMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'fotoPath',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'fotoPath',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> fotoPathIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fotoPath',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'fotoPath', value: ''),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> fotoPathIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'fotoPath',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'fotoPath', value: ''),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
@@ -904,11 +966,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -917,11 +981,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -932,13 +998,15 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
@@ -947,11 +1015,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -961,12 +1031,14 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -976,12 +1048,14 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -993,14 +1067,16 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'nome',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'nome',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1009,11 +1085,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1022,67 +1100,75 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'nome',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'nome',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'nome', value: ''),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'nome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'nome', value: ''),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'notas',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'notas'),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'notas',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'notas'),
+      );
     });
   }
 
@@ -1091,11 +1177,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1105,12 +1193,14 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1120,12 +1210,14 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1137,14 +1229,16 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'notas',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'notas',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1153,11 +1247,13 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
@@ -1166,51 +1262,59 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasContains(String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'notas',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'notas',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasMatches(String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'notas',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'notas',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'notas',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'notas', value: ''),
+      );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> notasIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'notas',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'notas', value: ''),
+      );
     });
   }
 }
@@ -1251,7 +1355,7 @@ extension IdosoQuerySortBy on QueryBuilder<Idoso, Idoso, QSortBy> {
   }
 
   QueryBuilder<Idoso, Idoso, QAfterSortBy>
-      sortByContactoEmergenciaTelefoneDesc() {
+  sortByContactoEmergenciaTelefoneDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'contactoEmergenciaTelefone', Sort.desc);
     });
@@ -1350,7 +1454,7 @@ extension IdosoQuerySortThenBy on QueryBuilder<Idoso, Idoso, QSortThenBy> {
   }
 
   QueryBuilder<Idoso, Idoso, QAfterSortBy>
-      thenByContactoEmergenciaTelefoneDesc() {
+  thenByContactoEmergenciaTelefoneDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'contactoEmergenciaTelefone', Sort.desc);
     });
@@ -1436,19 +1540,25 @@ extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByContactoEmergenciaNome(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByContactoEmergenciaNome({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'contactoEmergenciaNome',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'contactoEmergenciaNome',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByContactoEmergenciaTelefone(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByContactoEmergenciaTelefone({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'contactoEmergenciaTelefone',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'contactoEmergenciaTelefone',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
@@ -1464,22 +1574,25 @@ extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByFotoPath(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByFotoPath({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fotoPath', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByNome(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByNome({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nome', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByNotas(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByNotas({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notas', caseSensitive: caseSensitive);
     });
@@ -1500,14 +1613,14 @@ extension IdosoQueryProperty on QueryBuilder<Idoso, Idoso, QQueryProperty> {
   }
 
   QueryBuilder<Idoso, String?, QQueryOperations>
-      contactoEmergenciaNomeProperty() {
+  contactoEmergenciaNomeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'contactoEmergenciaNome');
     });
   }
 
   QueryBuilder<Idoso, String?, QQueryOperations>
-      contactoEmergenciaTelefoneProperty() {
+  contactoEmergenciaTelefoneProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'contactoEmergenciaTelefone');
     });

@@ -27,12 +27,9 @@ const LocalidadeIpmaSchema = CollectionSchema(
       name: r'idAreaAviso',
       type: IsarType.string,
     ),
-    r'nome': PropertySchema(
-      id: 2,
-      name: r'nome',
-      type: IsarType.string,
-    )
+    r'nome': PropertySchema(id: 2, name: r'nome', type: IsarType.string),
   },
+
   estimateSize: _localidadeIpmaEstimateSize,
   serialize: _localidadeIpmaSerialize,
   deserialize: _localidadeIpmaDeserialize,
@@ -49,16 +46,17 @@ const LocalidadeIpmaSchema = CollectionSchema(
           name: r'globalIdLocal',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
-    )
+    ),
   },
   links: {},
   embeddedSchemas: {},
+
   getId: _localidadeIpmaGetId,
   getLinks: _localidadeIpmaGetLinks,
   attach: _localidadeIpmaAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _localidadeIpmaEstimateSize(
@@ -124,7 +122,10 @@ List<IsarLinkBase<dynamic>> _localidadeIpmaGetLinks(LocalidadeIpma object) {
 }
 
 void _localidadeIpmaAttach(
-    IsarCollection<dynamic> col, Id id, LocalidadeIpma object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  LocalidadeIpma object,
+) {
   object.id = id;
 }
 
@@ -148,17 +149,16 @@ extension LocalidadeIpmaQueryWhereSort
 extension LocalidadeIpmaQueryWhere
     on QueryBuilder<LocalidadeIpma, LocalidadeIpma, QWhereClause> {
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -181,8 +181,9 @@ extension LocalidadeIpmaQueryWhere
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause> idGreaterThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -191,8 +192,9 @@ extension LocalidadeIpmaQueryWhere
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -207,105 +209,117 @@ extension LocalidadeIpmaQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause>
-      globalIdLocalEqualTo(int globalIdLocal) {
+  globalIdLocalEqualTo(int globalIdLocal) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'globalIdLocal',
-        value: [globalIdLocal],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'globalIdLocal',
+          value: [globalIdLocal],
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause>
-      globalIdLocalNotEqualTo(int globalIdLocal) {
+  globalIdLocalNotEqualTo(int globalIdLocal) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'globalIdLocal',
-              lower: [],
-              upper: [globalIdLocal],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'globalIdLocal',
-              lower: [globalIdLocal],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalIdLocal',
+                lower: [],
+                upper: [globalIdLocal],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalIdLocal',
+                lower: [globalIdLocal],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'globalIdLocal',
-              lower: [globalIdLocal],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'globalIdLocal',
-              lower: [],
-              upper: [globalIdLocal],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalIdLocal',
+                lower: [globalIdLocal],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'globalIdLocal',
+                lower: [],
+                upper: [globalIdLocal],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause>
-      globalIdLocalGreaterThan(
-    int globalIdLocal, {
-    bool include = false,
-  }) {
+  globalIdLocalGreaterThan(int globalIdLocal, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'globalIdLocal',
-        lower: [globalIdLocal],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'globalIdLocal',
+          lower: [globalIdLocal],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause>
-      globalIdLocalLessThan(
-    int globalIdLocal, {
-    bool include = false,
-  }) {
+  globalIdLocalLessThan(int globalIdLocal, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'globalIdLocal',
-        lower: [],
-        upper: [globalIdLocal],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'globalIdLocal',
+          lower: [],
+          upper: [globalIdLocal],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterWhereClause>
-      globalIdLocalBetween(
+  globalIdLocalBetween(
     int lowerGlobalIdLocal,
     int upperGlobalIdLocal, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'globalIdLocal',
-        lower: [lowerGlobalIdLocal],
-        includeLower: includeLower,
-        upper: [upperGlobalIdLocal],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'globalIdLocal',
+          lower: [lowerGlobalIdLocal],
+          includeLower: includeLower,
+          upper: [upperGlobalIdLocal],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -313,96 +327,93 @@ extension LocalidadeIpmaQueryWhere
 extension LocalidadeIpmaQueryFilter
     on QueryBuilder<LocalidadeIpma, LocalidadeIpma, QFilterCondition> {
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      globalIdLocalEqualTo(int value) {
+  globalIdLocalEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'globalIdLocal',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'globalIdLocal', value: value),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      globalIdLocalGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  globalIdLocalGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'globalIdLocal',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'globalIdLocal',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      globalIdLocalLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  globalIdLocalLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'globalIdLocal',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'globalIdLocal',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      globalIdLocalBetween(
+  globalIdLocalBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'globalIdLocal',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'globalIdLocal',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition> idEqualTo(
-      Id value) {
+    Id value,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
@@ -413,64 +424,69 @@ extension LocalidadeIpmaQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  idAreaAvisoEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'idAreaAviso',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'idAreaAviso',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'idAreaAviso',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoLessThan(
+  idAreaAvisoGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'idAreaAviso',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idAreaAviso',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoBetween(
+  idAreaAvisoLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idAreaAviso',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
+  idAreaAvisoBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -478,135 +494,140 @@ extension LocalidadeIpmaQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'idAreaAviso',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idAreaAviso',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  idAreaAvisoStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'idAreaAviso',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'idAreaAviso',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  idAreaAvisoEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'idAreaAviso',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'idAreaAviso',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoContains(String value, {bool caseSensitive = true}) {
+  idAreaAvisoContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'idAreaAviso',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'idAreaAviso',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoMatches(String pattern, {bool caseSensitive = true}) {
+  idAreaAvisoMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'idAreaAviso',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'idAreaAviso',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoIsEmpty() {
+  idAreaAvisoIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'idAreaAviso',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idAreaAviso', value: ''),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      idAreaAvisoIsNotEmpty() {
+  idAreaAvisoIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'idAreaAviso',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'idAreaAviso', value: ''),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  nomeEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeLessThan(
+  nomeGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeBetween(
+  nomeLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
+  nomeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -614,84 +635,86 @@ extension LocalidadeIpmaQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'nome',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'nome',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  nomeStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  nomeEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeContains(String value, {bool caseSensitive = true}) {
+  nomeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'nome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'nome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeMatches(String pattern, {bool caseSensitive = true}) {
+  nomeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'nome',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'nome',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeIsEmpty() {
+  nomeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'nome', value: ''),
+      );
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterFilterCondition>
-      nomeIsNotEmpty() {
+  nomeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'nome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'nome', value: ''),
+      );
     });
   }
 }
@@ -705,28 +728,28 @@ extension LocalidadeIpmaQueryLinks
 extension LocalidadeIpmaQuerySortBy
     on QueryBuilder<LocalidadeIpma, LocalidadeIpma, QSortBy> {
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      sortByGlobalIdLocal() {
+  sortByGlobalIdLocal() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'globalIdLocal', Sort.asc);
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      sortByGlobalIdLocalDesc() {
+  sortByGlobalIdLocalDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'globalIdLocal', Sort.desc);
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      sortByIdAreaAviso() {
+  sortByIdAreaAviso() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idAreaAviso', Sort.asc);
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      sortByIdAreaAvisoDesc() {
+  sortByIdAreaAvisoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idAreaAviso', Sort.desc);
     });
@@ -748,14 +771,14 @@ extension LocalidadeIpmaQuerySortBy
 extension LocalidadeIpmaQuerySortThenBy
     on QueryBuilder<LocalidadeIpma, LocalidadeIpma, QSortThenBy> {
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      thenByGlobalIdLocal() {
+  thenByGlobalIdLocal() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'globalIdLocal', Sort.asc);
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      thenByGlobalIdLocalDesc() {
+  thenByGlobalIdLocalDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'globalIdLocal', Sort.desc);
     });
@@ -774,14 +797,14 @@ extension LocalidadeIpmaQuerySortThenBy
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      thenByIdAreaAviso() {
+  thenByIdAreaAviso() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idAreaAviso', Sort.asc);
     });
   }
 
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QAfterSortBy>
-      thenByIdAreaAvisoDesc() {
+  thenByIdAreaAvisoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idAreaAviso', Sort.desc);
     });
@@ -803,21 +826,22 @@ extension LocalidadeIpmaQuerySortThenBy
 extension LocalidadeIpmaQueryWhereDistinct
     on QueryBuilder<LocalidadeIpma, LocalidadeIpma, QDistinct> {
   QueryBuilder<LocalidadeIpma, LocalidadeIpma, QDistinct>
-      distinctByGlobalIdLocal() {
+  distinctByGlobalIdLocal() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'globalIdLocal');
     });
   }
 
-  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QDistinct> distinctByIdAreaAviso(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QDistinct>
+  distinctByIdAreaAviso({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idAreaAviso', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QDistinct> distinctByNome(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LocalidadeIpma, LocalidadeIpma, QDistinct> distinctByNome({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nome', caseSensitive: caseSensitive);
     });

@@ -26,8 +26,9 @@ const PerfilRelatorioSchema = CollectionSchema(
       id: 1,
       name: r'logoPath',
       type: IsarType.string,
-    )
+    ),
   },
+
   estimateSize: _perfilRelatorioEstimateSize,
   serialize: _perfilRelatorioSerialize,
   deserialize: _perfilRelatorioDeserialize,
@@ -36,10 +37,11 @@ const PerfilRelatorioSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {},
+
   getId: _perfilRelatorioGetId,
   getLinks: _perfilRelatorioGetLinks,
   attach: _perfilRelatorioAttach,
-  version: '3.1.0+1',
+  version: '3.3.2',
 );
 
 int _perfilRelatorioEstimateSize(
@@ -111,7 +113,10 @@ List<IsarLinkBase<dynamic>> _perfilRelatorioGetLinks(PerfilRelatorio object) {
 }
 
 void _perfilRelatorioAttach(
-    IsarCollection<dynamic> col, Id id, PerfilRelatorio object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  PerfilRelatorio object,
+) {
   object.id = id;
 }
 
@@ -127,17 +132,15 @@ extension PerfilRelatorioQueryWhereSort
 extension PerfilRelatorioQueryWhere
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QWhereClause> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterWhereClause> idEqualTo(
-      Id id) {
+    Id id,
+  ) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -160,7 +163,7 @@ extension PerfilRelatorioQueryWhere
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -169,8 +172,9 @@ extension PerfilRelatorioQueryWhere
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+    Id id, {
+    bool include = false,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -185,12 +189,14 @@ extension PerfilRelatorioQueryWhere
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -198,71 +204,74 @@ extension PerfilRelatorioQueryWhere
 extension PerfilRelatorioQueryFilter
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QFilterCondition> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeIsNull() {
+  cuidadorNomeIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'cuidadorNome',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'cuidadorNome'),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeIsNotNull() {
+  cuidadorNomeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'cuidadorNome',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'cuidadorNome'),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  cuidadorNomeEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cuidadorNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'cuidadorNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'cuidadorNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeLessThan(
+  cuidadorNomeGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'cuidadorNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'cuidadorNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeBetween(
+  cuidadorNomeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'cuidadorNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorNomeBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -270,209 +279,213 @@ extension PerfilRelatorioQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'cuidadorNome',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'cuidadorNome',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  cuidadorNomeStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'cuidadorNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'cuidadorNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  cuidadorNomeEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'cuidadorNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'cuidadorNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeContains(String value, {bool caseSensitive = true}) {
+  cuidadorNomeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'cuidadorNome',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'cuidadorNome',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeMatches(String pattern, {bool caseSensitive = true}) {
+  cuidadorNomeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'cuidadorNome',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'cuidadorNome',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeIsEmpty() {
+  cuidadorNomeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cuidadorNome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'cuidadorNome', value: ''),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      cuidadorNomeIsNotEmpty() {
+  cuidadorNomeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'cuidadorNome',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'cuidadorNome', value: ''),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      idEqualTo(Id value) {
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      idBetween(
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathIsNull() {
+  logoPathIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'logoPath',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'logoPath'),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathIsNotNull() {
+  logoPathIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'logoPath',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'logoPath'),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  logoPathEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'logoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'logoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'logoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathLessThan(
+  logoPathGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'logoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'logoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathBetween(
+  logoPathLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'logoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  logoPathBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -480,84 +493,86 @@ extension PerfilRelatorioQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'logoPath',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'logoPath',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  logoPathStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'logoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'logoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  logoPathEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'logoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'logoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathContains(String value, {bool caseSensitive = true}) {
+  logoPathContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'logoPath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'logoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathMatches(String pattern, {bool caseSensitive = true}) {
+  logoPathMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'logoPath',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'logoPath',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathIsEmpty() {
+  logoPathIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'logoPath',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'logoPath', value: ''),
+      );
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
-      logoPathIsNotEmpty() {
+  logoPathIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'logoPath',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'logoPath', value: ''),
+      );
     });
   }
 }
@@ -571,28 +586,28 @@ extension PerfilRelatorioQueryLinks
 extension PerfilRelatorioQuerySortBy
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QSortBy> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      sortByCuidadorNome() {
+  sortByCuidadorNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cuidadorNome', Sort.asc);
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      sortByCuidadorNomeDesc() {
+  sortByCuidadorNomeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cuidadorNome', Sort.desc);
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      sortByLogoPath() {
+  sortByLogoPath() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'logoPath', Sort.asc);
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      sortByLogoPathDesc() {
+  sortByLogoPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'logoPath', Sort.desc);
     });
@@ -602,14 +617,14 @@ extension PerfilRelatorioQuerySortBy
 extension PerfilRelatorioQuerySortThenBy
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QSortThenBy> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      thenByCuidadorNome() {
+  thenByCuidadorNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cuidadorNome', Sort.asc);
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      thenByCuidadorNomeDesc() {
+  thenByCuidadorNomeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cuidadorNome', Sort.desc);
     });
@@ -628,14 +643,14 @@ extension PerfilRelatorioQuerySortThenBy
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      thenByLogoPath() {
+  thenByLogoPath() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'logoPath', Sort.asc);
     });
   }
 
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
-      thenByLogoPathDesc() {
+  thenByLogoPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'logoPath', Sort.desc);
     });
@@ -645,14 +660,15 @@ extension PerfilRelatorioQuerySortThenBy
 extension PerfilRelatorioQueryWhereDistinct
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct>
-      distinctByCuidadorNome({bool caseSensitive = true}) {
+  distinctByCuidadorNome({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'cuidadorNome', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct> distinctByLogoPath(
-      {bool caseSensitive = true}) {
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct> distinctByLogoPath({
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'logoPath', caseSensitive: caseSensitive);
     });
@@ -668,7 +684,7 @@ extension PerfilRelatorioQueryProperty
   }
 
   QueryBuilder<PerfilRelatorio, String?, QQueryOperations>
-      cuidadorNomeProperty() {
+  cuidadorNomeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'cuidadorNome');
     });
