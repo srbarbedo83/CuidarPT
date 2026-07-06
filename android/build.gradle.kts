@@ -24,14 +24,25 @@ subprojects {
 // que o Android Gradle Plugin 8+ passou a exigir sempre. Isto atribui um
 // namespace a qualquer subprojeto que não tenha um definido, sem precisar
 // de alterar o pacote em si.
-subprojects {
-    afterEvaluate {
-        extensions.findByName("android")?.withGroovyBuilder {
-            val namespaceAtual = getProperty("namespace") as String?
-            if (namespaceAtual.isNullOrEmpty()) {
-                setProperty("namespace", "pt.cuidarpt.patch.${project.name.replace("-", "_").replace(".", "_")}")
-            }
+//
+// O evaluationDependsOn(":app") acima força alguns subprojetos a avaliar
+// mais cedo do que o normal, por isso não podemos assumir que nenhum ainda
+// está por avaliar — testamos o estado antes de decidir entre corrigir já
+// ou esperar pelo afterEvaluate.
+fun patchNamespaceSeNecessario(proj: Project) {
+    proj.extensions.findByName("android")?.withGroovyBuilder {
+        val namespaceAtual = getProperty("namespace") as String?
+        if (namespaceAtual.isNullOrEmpty()) {
+            setProperty("namespace", "pt.cuidarpt.patch.${proj.name.replace("-", "_").replace(".", "_")}")
         }
+    }
+}
+
+subprojects {
+    if (state.executed) {
+        patchNamespaceSeNecessario(this)
+    } else {
+        afterEvaluate { patchNamespaceSeNecessario(this) }
     }
 }
 
