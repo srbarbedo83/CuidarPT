@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/horarios.dart';
 import '../../../core/utils/tipo_cuidado_diario_utils.dart';
@@ -46,10 +47,21 @@ class IdosoDetailScreen extends ConsumerWidget {
       consultas: consultasAsync.valueOrNull ?? const [],
     );
 
+    final telefoneEmergencia = idoso.contactosEmergencia
+        .map((c) => c.telefone)
+        .firstWhere((telefone) => telefone != null && telefone.isNotEmpty, orElse: () => null);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(idoso.nome),
         actions: [
+          if (telefoneEmergencia != null)
+            IconButton(
+              icon: const Icon(Icons.phone_in_talk_outlined, color: Colors.redAccent),
+              tooltip: 'Ligar para contacto de emergência',
+              onPressed: () =>
+                  launchUrl(Uri(scheme: 'tel', path: telefoneEmergencia)),
+            ),
           IconButton(
             icon: const Icon(Icons.calendar_month_outlined),
             tooltip: 'Calendário',
@@ -76,6 +88,7 @@ class IdosoDetailScreen extends ConsumerWidget {
       body: ListView(
         children: [
           _CabecalhoIdoso(idoso: idoso),
+          _ComoSenteHoje(idoso: idoso),
           if (proximo != null) _ProximoEventoCard(proximo: proximo),
           const Divider(height: 32),
           _CabecalhoSeccao(
@@ -186,12 +199,12 @@ class IdosoDetailScreen extends ConsumerWidget {
               child: Text('Erro ao carregar cuidados diários: $erro'),
             ),
           ),
-          const Divider(height: 32),
-          DocumentosSection(idoso: idoso),
           if (idoso.rotinasAtivas && ref.watch(featureLimitsProvider).permiteRotinas) ...[
             const Divider(height: 32),
             RotinaSection(idoso: idoso),
           ],
+          const Divider(height: 32),
+          DocumentosSection(idoso: idoso),
           const SizedBox(height: 24),
         ],
       ),
@@ -277,6 +290,16 @@ class _CabecalhoIdoso extends StatelessWidget {
                     child: const Icon(Icons.accessible, color: Colors.white, size: 16),
                   ),
                 ),
+              if (idoso.acamado)
+                Positioned(
+                  left: -4,
+                  bottom: -4,
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: const Icon(Icons.bed, color: Colors.white, size: 16),
+                  ),
+                ),
             ],
           ),
           const SizedBox(width: 16),
@@ -293,10 +316,121 @@ class _CabecalhoIdoso extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(idoso.notas!, style: Theme.of(context).textTheme.bodySmall),
                   ),
+                if (idoso.preferencias != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if ((idoso.preferencias!.comidaPreferida ?? '').isNotEmpty)
+                          _LinhaPreferencia(
+                            icone: Icons.restaurant_outlined,
+                            texto: idoso.preferencias!.comidaPreferida!,
+                          ),
+                        if ((idoso.preferencias!.musica ?? '').isNotEmpty)
+                          _LinhaPreferencia(
+                            icone: Icons.music_note_outlined,
+                            texto: idoso.preferencias!.musica!,
+                          ),
+                        if ((idoso.preferencias!.interesses ?? '').isNotEmpty)
+                          _LinhaPreferencia(
+                            icone: Icons.interests_outlined,
+                            texto: idoso.preferencias!.interesses!,
+                          ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LinhaPreferencia extends StatelessWidget {
+  const _LinhaPreferencia({required this.icone, required this.texto});
+
+  final IconData icone;
+  final String texto;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Row(
+        children: [
+          Icon(icone, size: 14),
+          const SizedBox(width: 4),
+          Expanded(child: Text(texto, style: Theme.of(context).textTheme.bodySmall)),
+        ],
+      ),
+    );
+  }
+}
+
+class _OpcaoHumor {
+  const _OpcaoHumor(this.emoji, this.rotulo, this.nivel);
+
+  final String emoji;
+  final String rotulo;
+  final int nivel;
+}
+
+const _opcoesHumorDoDia = [
+  _OpcaoHumor('😩', 'Cansado', 2),
+  _OpcaoHumor('😴', 'Sonolento', 2),
+  _OpcaoHumor('⚡', 'Enérgico', 4),
+  _OpcaoHumor('😊', 'Contente', 5),
+];
+
+class _ComoSenteHoje extends ConsumerWidget {
+  const _ComoSenteHoje({required this.idoso});
+
+  final Idoso idoso;
+
+  Future<void> _registar(BuildContext context, WidgetRef ref, _OpcaoHumor opcao) async {
+    final registo = RegistoCuidadoDiario()
+      ..idosoId = idoso.id
+      ..tipo = TipoCuidadoDiario.humor
+      ..humorNivel = opcao.nivel
+      ..notaRapida = opcao.rotulo
+      ..timestamp = DateTime.now();
+    await ref.read(registoCuidadoDiarioRepositoryProvider).save(registo);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registado: ${opcao.rotulo} ${opcao.emoji}')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Como te sentes hoje?', style: Theme.of(context).textTheme.titleSmall),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: [
+                  for (final opcao in _opcoesHumorDoDia)
+                    ActionChip(
+                      avatar: Text(opcao.emoji, style: const TextStyle(fontSize: 16)),
+                      label: Text(opcao.rotulo),
+                      onPressed: () => _registar(context, ref, opcao),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

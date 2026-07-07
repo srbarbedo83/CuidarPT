@@ -17,44 +17,58 @@ const IdosoSchema = CollectionSchema(
   name: r'Idoso',
   id: 2313243858971341846,
   properties: {
+    r'acamado': PropertySchema(id: 0, name: r'acamado', type: IsarType.bool),
     r'atualizadoEm': PropertySchema(
-      id: 0,
+      id: 1,
       name: r'atualizadoEm',
       type: IsarType.dateTime,
     ),
     r'contactosEmergencia': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'contactosEmergencia',
       type: IsarType.objectList,
 
       target: r'ContactoEmergencia',
     ),
     r'criadoEm': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'criadoEm',
       type: IsarType.dateTime,
     ),
     r'dataNascimento': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'dataNascimento',
       type: IsarType.dateTime,
     ),
     r'fotoPath': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'fotoPath',
       type: IsarType.string,
     ),
     r'mobilidadeReduzida': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'mobilidadeReduzida',
       type: IsarType.bool,
     ),
-    r'nome': PropertySchema(id: 6, name: r'nome', type: IsarType.string),
-    r'notas': PropertySchema(id: 7, name: r'notas', type: IsarType.string),
+    r'nome': PropertySchema(id: 7, name: r'nome', type: IsarType.string),
+    r'notas': PropertySchema(id: 8, name: r'notas', type: IsarType.string),
+    r'preferencias': PropertySchema(
+      id: 9,
+      name: r'preferencias',
+      type: IsarType.object,
+
+      target: r'PreferenciasIdoso',
+    ),
     r'rotinasAtivas': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'rotinasAtivas',
       type: IsarType.bool,
+    ),
+    r'sexo': PropertySchema(
+      id: 11,
+      name: r'sexo',
+      type: IsarType.string,
+      enumMap: _IdososexoEnumValueMap,
     ),
   },
 
@@ -65,7 +79,10 @@ const IdosoSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {r'ContactoEmergencia': ContactoEmergenciaSchema},
+  embeddedSchemas: {
+    r'ContactoEmergencia': ContactoEmergenciaSchema,
+    r'PreferenciasIdoso': PreferenciasIdosoSchema,
+  },
 
   getId: _idosoGetId,
   getLinks: _idosoGetLinks,
@@ -104,6 +121,24 @@ int _idosoEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.preferencias;
+    if (value != null) {
+      bytesCount +=
+          3 +
+          PreferenciasIdosoSchema.estimateSize(
+            value,
+            allOffsets[PreferenciasIdoso]!,
+            allOffsets,
+          );
+    }
+  }
+  {
+    final value = object.sexo;
+    if (value != null) {
+      bytesCount += 3 + value.name.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -113,20 +148,28 @@ void _idosoSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.atualizadoEm);
+  writer.writeBool(offsets[0], object.acamado);
+  writer.writeDateTime(offsets[1], object.atualizadoEm);
   writer.writeObjectList<ContactoEmergencia>(
-    offsets[1],
+    offsets[2],
     allOffsets,
     ContactoEmergenciaSchema.serialize,
     object.contactosEmergencia,
   );
-  writer.writeDateTime(offsets[2], object.criadoEm);
-  writer.writeDateTime(offsets[3], object.dataNascimento);
-  writer.writeString(offsets[4], object.fotoPath);
-  writer.writeBool(offsets[5], object.mobilidadeReduzida);
-  writer.writeString(offsets[6], object.nome);
-  writer.writeString(offsets[7], object.notas);
-  writer.writeBool(offsets[8], object.rotinasAtivas);
+  writer.writeDateTime(offsets[3], object.criadoEm);
+  writer.writeDateTime(offsets[4], object.dataNascimento);
+  writer.writeString(offsets[5], object.fotoPath);
+  writer.writeBool(offsets[6], object.mobilidadeReduzida);
+  writer.writeString(offsets[7], object.nome);
+  writer.writeString(offsets[8], object.notas);
+  writer.writeObject<PreferenciasIdoso>(
+    offsets[9],
+    allOffsets,
+    PreferenciasIdosoSchema.serialize,
+    object.preferencias,
+  );
+  writer.writeBool(offsets[10], object.rotinasAtivas);
+  writer.writeString(offsets[11], object.sexo?.name);
 }
 
 Idoso _idosoDeserialize(
@@ -136,23 +179,30 @@ Idoso _idosoDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Idoso();
-  object.atualizadoEm = reader.readDateTime(offsets[0]);
+  object.acamado = reader.readBool(offsets[0]);
+  object.atualizadoEm = reader.readDateTime(offsets[1]);
   object.contactosEmergencia =
       reader.readObjectList<ContactoEmergencia>(
-        offsets[1],
+        offsets[2],
         ContactoEmergenciaSchema.deserialize,
         allOffsets,
         ContactoEmergencia(),
       ) ??
       [];
-  object.criadoEm = reader.readDateTime(offsets[2]);
-  object.dataNascimento = reader.readDateTimeOrNull(offsets[3]);
-  object.fotoPath = reader.readStringOrNull(offsets[4]);
+  object.criadoEm = reader.readDateTime(offsets[3]);
+  object.dataNascimento = reader.readDateTimeOrNull(offsets[4]);
+  object.fotoPath = reader.readStringOrNull(offsets[5]);
   object.id = id;
-  object.mobilidadeReduzida = reader.readBool(offsets[5]);
-  object.nome = reader.readString(offsets[6]);
-  object.notas = reader.readStringOrNull(offsets[7]);
-  object.rotinasAtivas = reader.readBool(offsets[8]);
+  object.mobilidadeReduzida = reader.readBool(offsets[6]);
+  object.nome = reader.readString(offsets[7]);
+  object.notas = reader.readStringOrNull(offsets[8]);
+  object.preferencias = reader.readObjectOrNull<PreferenciasIdoso>(
+    offsets[9],
+    PreferenciasIdosoSchema.deserialize,
+    allOffsets,
+  );
+  object.rotinasAtivas = reader.readBool(offsets[10]);
+  object.sexo = _IdososexoValueEnumMap[reader.readStringOrNull(offsets[11])];
   return object;
 }
 
@@ -164,8 +214,10 @@ P _idosoDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 1:
+      return (reader.readDateTime(offset)) as P;
+    case 2:
       return (reader.readObjectList<ContactoEmergencia>(
                 offset,
                 ContactoEmergenciaSchema.deserialize,
@@ -174,24 +226,42 @@ P _idosoDeserializeProp<P>(
               ) ??
               [])
           as P;
-    case 2:
-      return (reader.readDateTime(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 5:
-      return (reader.readBool(offset)) as P;
-    case 6:
-      return (reader.readString(offset)) as P;
-    case 7:
       return (reader.readStringOrNull(offset)) as P;
-    case 8:
+    case 6:
       return (reader.readBool(offset)) as P;
+    case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readObjectOrNull<PreferenciasIdoso>(
+            offset,
+            PreferenciasIdosoSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
+    case 10:
+      return (reader.readBool(offset)) as P;
+    case 11:
+      return (_IdososexoValueEnumMap[reader.readStringOrNull(offset)]) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _IdososexoEnumValueMap = {
+  r'masculino': r'masculino',
+  r'feminino': r'feminino',
+};
+const _IdososexoValueEnumMap = {
+  r'masculino': Sexo.masculino,
+  r'feminino': Sexo.feminino,
+};
 
 Id _idosoGetId(Idoso object) {
   return object.id;
@@ -284,6 +354,14 @@ extension IdosoQueryWhere on QueryBuilder<Idoso, Idoso, QWhereClause> {
 }
 
 extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> acamadoEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'acamado', value: value),
+      );
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> atualizadoEmEqualTo(
     DateTime value,
   ) {
@@ -1079,12 +1157,190 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> preferenciasIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'preferencias'),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> preferenciasIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'preferencias'),
+      );
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> rotinasAtivasEqualTo(
     bool value,
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.equalTo(property: r'rotinasAtivas', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'sexo'),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'sexo'),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoEqualTo(
+    Sexo? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'sexo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoGreaterThan(
+    Sexo? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'sexo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoLessThan(
+    Sexo? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'sexo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoBetween(
+    Sexo? lower,
+    Sexo? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'sexo',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'sexo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'sexo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'sexo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'sexo',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'sexo', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> sexoIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'sexo', value: ''),
       );
     });
   }
@@ -1098,11 +1354,31 @@ extension IdosoQueryObject on QueryBuilder<Idoso, Idoso, QFilterCondition> {
       return query.object(q, r'contactosEmergencia');
     });
   }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> preferencias(
+    FilterQuery<PreferenciasIdoso> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'preferencias');
+    });
+  }
 }
 
 extension IdosoQueryLinks on QueryBuilder<Idoso, Idoso, QFilterCondition> {}
 
 extension IdosoQuerySortBy on QueryBuilder<Idoso, Idoso, QSortBy> {
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByAcamado() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'acamado', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByAcamadoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'acamado', Sort.desc);
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
@@ -1198,9 +1474,33 @@ extension IdosoQuerySortBy on QueryBuilder<Idoso, Idoso, QSortBy> {
       return query.addSortBy(r'rotinasAtivas', Sort.desc);
     });
   }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortBySexo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sexo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortBySexoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sexo', Sort.desc);
+    });
+  }
 }
 
 extension IdosoQuerySortThenBy on QueryBuilder<Idoso, Idoso, QSortThenBy> {
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByAcamado() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'acamado', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByAcamadoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'acamado', Sort.desc);
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.asc);
@@ -1308,9 +1608,27 @@ extension IdosoQuerySortThenBy on QueryBuilder<Idoso, Idoso, QSortThenBy> {
       return query.addSortBy(r'rotinasAtivas', Sort.desc);
     });
   }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenBySexo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sexo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenBySexoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sexo', Sort.desc);
+    });
+  }
 }
 
 extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByAcamado() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'acamado');
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QDistinct> distinctByAtualizadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'atualizadoEm');
@@ -1364,12 +1682,26 @@ extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
       return query.addDistinctBy(r'rotinasAtivas');
     });
   }
+
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctBySexo({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'sexo', caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension IdosoQueryProperty on QueryBuilder<Idoso, Idoso, QQueryProperty> {
   QueryBuilder<Idoso, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Idoso, bool, QQueryOperations> acamadoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'acamado');
     });
   }
 
@@ -1422,9 +1754,22 @@ extension IdosoQueryProperty on QueryBuilder<Idoso, Idoso, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Idoso, PreferenciasIdoso?, QQueryOperations>
+  preferenciasProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'preferencias');
+    });
+  }
+
   QueryBuilder<Idoso, bool, QQueryOperations> rotinasAtivasProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'rotinasAtivas');
+    });
+  }
+
+  QueryBuilder<Idoso, Sexo?, QQueryOperations> sexoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'sexo');
     });
   }
 }

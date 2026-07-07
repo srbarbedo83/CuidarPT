@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/contacto_emergencia.dart';
 import '../../../data/models/idoso.dart';
+import '../../../data/models/preferencias_idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../subscricao/feature_limits.dart';
 import '../providers/idoso_providers.dart';
@@ -44,10 +45,15 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
   late final TextEditingController _nomeController;
   late final List<_ContactoControllers> _contactos;
   late final TextEditingController _notasController;
+  late final TextEditingController _comidaPreferidaController;
+  late final TextEditingController _musicaController;
+  late final TextEditingController _interessesController;
 
   DateTime? _dataNascimento;
+  Sexo? _sexo;
   String? _fotoPath;
   bool _mobilidadeReduzida = false;
+  bool _acamado = false;
   bool _rotinasAtivas = false;
   bool _aGuardar = false;
 
@@ -63,9 +69,15 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
         .toList();
     if (_contactos.isEmpty) _contactos.add(_ContactoControllers());
     _notasController = TextEditingController(text: idoso?.notas ?? '');
+    _comidaPreferidaController =
+        TextEditingController(text: idoso?.preferencias?.comidaPreferida ?? '');
+    _musicaController = TextEditingController(text: idoso?.preferencias?.musica ?? '');
+    _interessesController = TextEditingController(text: idoso?.preferencias?.interesses ?? '');
     _dataNascimento = idoso?.dataNascimento;
+    _sexo = idoso?.sexo;
     _fotoPath = idoso?.fotoPath;
     _mobilidadeReduzida = idoso?.mobilidadeReduzida ?? false;
+    _acamado = idoso?.acamado ?? false;
     _rotinasAtivas = idoso?.rotinasAtivas ?? false;
   }
 
@@ -88,6 +100,9 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
       contacto.dispose();
     }
     _notasController.dispose();
+    _comidaPreferidaController.dispose();
+    _musicaController.dispose();
+    _interessesController.dispose();
     super.dispose();
   }
 
@@ -134,6 +149,15 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
     final agora = DateTime.now();
     final idoso = widget.idoso ?? Idoso();
     final notas = _notasController.text.trim();
+    final comidaPreferida = _comidaPreferidaController.text.trim();
+    final musica = _musicaController.text.trim();
+    final interesses = _interessesController.text.trim();
+    final preferencias = (comidaPreferida.isEmpty && musica.isEmpty && interesses.isEmpty)
+        ? null
+        : (PreferenciasIdoso()
+          ..comidaPreferida = comidaPreferida.isEmpty ? null : comidaPreferida
+          ..musica = musica.isEmpty ? null : musica
+          ..interesses = interesses.isEmpty ? null : interesses);
     final contactos = _contactos
         .map((c) {
           final nome = c.nomeController.text.trim();
@@ -146,9 +170,12 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
         .toList();
     idoso
       ..nome = _nomeController.text.trim()
+      ..sexo = _sexo
       ..dataNascimento = _dataNascimento
       ..fotoPath = _fotoPath
       ..mobilidadeReduzida = _mobilidadeReduzida
+      ..acamado = _acamado
+      ..preferencias = preferencias
       ..rotinasAtivas = _rotinasAtivas
       ..contactosEmergencia = contactos
       ..notas = notas.isEmpty ? null : notas
@@ -192,6 +219,16 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                           child: const Icon(Icons.accessible, color: Colors.white, size: 18),
                         ),
                       ),
+                    if (_acamado)
+                      Positioned(
+                        left: -4,
+                        bottom: -4,
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          child: const Icon(Icons.bed, color: Colors.white, size: 18),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -199,10 +236,30 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
             const SizedBox(height: 8),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
+              secondary: const Icon(Icons.accessible),
               title: const Text('Mobilidade reduzida'),
-              subtitle: const Text('Mostra um ícone de cadeira de rodas junto à foto'),
               value: _mobilidadeReduzida,
               onChanged: (valor) => setState(() => _mobilidadeReduzida = valor),
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              secondary: const Icon(Icons.bed_outlined),
+              title: const Text('Acamado'),
+              value: _acamado,
+              onChanged: (valor) => setState(() => _acamado = valor),
+            ),
+            const SizedBox(height: 16),
+            Text('Sexo', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 8),
+            SegmentedButton<Sexo>(
+              segments: const [
+                ButtonSegment(value: Sexo.masculino, label: Text('Masculino')),
+                ButtonSegment(value: Sexo.feminino, label: Text('Feminino')),
+              ],
+              selected: _sexo == null ? {} : {_sexo!},
+              emptySelectionAllowed: true,
+              onSelectionChanged: (selecao) =>
+                  setState(() => _sexo = selecao.isEmpty ? null : selecao.first),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -274,6 +331,35 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                 labelText: 'Notas (alergias, condições de saúde)',
               ),
               maxLines: 3,
+            ),
+            const SizedBox(height: 16),
+            Text('Preferências e hábitos', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: _comidaPreferidaController,
+              decoration: const InputDecoration(
+                labelText: 'Comida preferida',
+                prefixIcon: Icon(Icons.restaurant_outlined),
+              ),
+              textCapitalization: TextCapitalization.sentences,
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _musicaController,
+              decoration: const InputDecoration(
+                labelText: 'Música',
+                prefixIcon: Icon(Icons.music_note_outlined),
+              ),
+              textCapitalization: TextCapitalization.sentences,
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: _interessesController,
+              decoration: const InputDecoration(
+                labelText: 'Interesses pessoais',
+                prefixIcon: Icon(Icons.interests_outlined),
+              ),
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 8),
             SwitchListTile(
