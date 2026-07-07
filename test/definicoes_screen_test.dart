@@ -31,6 +31,6 @@ void main() {
     await tester.tap(find.text('Subscrever Premium'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Subscrição Premium'), findsOneWidget);
+    expect(find.text('Já subscrevi — restaurar compra'), findsOneWidget);
   });
 }

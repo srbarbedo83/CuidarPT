@@ -7,30 +7,13 @@ import '../../../data/models/preferencias_app.dart';
 import '../../contactos_cuidadores/presentation/contactos_cuidadores_section.dart';
 import '../../idosos/providers/idoso_providers.dart';
 import '../../subscricao/feature_limits.dart';
+import '../../subscricao/presentation/comprar_premium_sheet.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 import '../providers/definicoes_providers.dart';
 import '../providers/preferencias_providers.dart';
 
 class DefinicoesScreen extends ConsumerWidget {
   const DefinicoesScreen({super.key});
-
-  Future<void> _mostrarInfoSubscricao(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Subscrição Premium'),
-        content: const Text(
-          'A compra do Premium via Google Play estará disponível numa '
-          'próxima atualização.\n\n'
-          'Preços previstos: €1,99/mês, €9,99/6 meses ou €19,99/ano.',
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Entendido')),
-        ],
-      ),
-    );
-  }
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,7 +36,7 @@ class DefinicoesScreen extends ConsumerWidget {
             onEscalaAlterada: (valor) => ref.read(preferenciasRepositoryProvider).definirEscalaTexto(valor),
           ),
           const SizedBox(height: 16),
-          _SeccaoSubscricao(estado: estado, onSubscrever: () => _mostrarInfoSubscricao(context)),
+          _SeccaoSubscricao(estado: estado, onSubscrever: () => mostrarCompraPremium(context)),
           const SizedBox(height: 16),
           _SeccaoPerfis(totalIdosos: idosos.length, maxPerfisIdoso: limites.maxPerfisIdoso),
           const SizedBox(height: 16),

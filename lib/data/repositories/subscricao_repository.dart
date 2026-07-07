@@ -36,4 +36,24 @@ class SubscricaoRepository {
       await _isar.estadoSubscricaos.put(estado);
     });
   }
+
+  /// Marca o plano como Premium a partir de uma compra confirmada pela
+  /// Google Play (ver [CompraPremiumService]). Sem servidor próprio para
+  /// validar recibos, confia-se no estado que a Play Store devolve através
+  /// do purchaseStream/restorePurchases.
+  Future<void> ativarPremium({required String produtoId}) async {
+    final agora = DateTime.now();
+    final atual = await obterAtual() ??
+        (EstadoSubscricao()
+          ..trialInicio = agora
+          ..trialFim = agora);
+    atual
+      ..plano = Plano.premium
+      ..produtoPlayStoreId = produtoId
+      ..ultimaValidacaoCompra = agora;
+
+    await _isar.writeTxn(() async {
+      await _isar.estadoSubscricaos.put(atual);
+    });
+  }
 }
