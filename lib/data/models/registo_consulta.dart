@@ -15,6 +15,9 @@ class RegistoConsulta {
   /// Texto livre — ex.: "Centro de Saúde", "Hospital", "Clínica privada".
   String? local;
 
+  /// Nome do médico, opcional.
+  String? nomeMedico;
+
   /// Data e hora da consulta. Pode ser no passado (registo histórico) ou
   /// no futuro (consulta agendada, com lembrete).
   late DateTime dataHora;

@@ -130,12 +130,13 @@ class RelatorioPdfBuilder {
         _tituloSeccao('Consultas no período'),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Data', 'Especialidade', 'Local', 'Notas'],
+          headers: ['Data', 'Especialidade', 'Local', 'Médico', 'Notas'],
           data: consultas
               .map((consulta) => [
                     _formatoDataHora.format(consulta.dataHora),
                     consulta.especialidade,
                     consulta.local ?? '-',
+                    consulta.nomeMedico ?? '-',
                     consulta.notas ?? '-',
                   ])
               .toList(),

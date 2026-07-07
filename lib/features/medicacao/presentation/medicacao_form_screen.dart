@@ -76,6 +76,24 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
     setState(() => _horariosMinutos = _horariosMinutos.where((m) => m != minutos).toList());
   }
 
+  Future<void> _gerarHorariosPorFrequencia(int intervaloHoras) async {
+    final primeira = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      helpText: 'Primeira toma',
+    );
+    if (primeira == null) return;
+    final primeiraMinutos = primeira.hour * 60 + primeira.minute;
+    final quantidade = 24 ~/ intervaloHoras;
+    final novosHorarios = <int>{
+      for (var i = 0; i < quantidade; i++) (primeiraMinutos + i * intervaloHoras * 60) % 1440,
+    };
+    setState(() {
+      _horariosMinutos = novosHorarios.toList()..sort();
+      _erroHorarios = null;
+    });
+  }
+
   void _alternarDiaSemana(int dia) {
     setState(() {
       _diasSemana = _diasSemana.contains(dia)
@@ -147,7 +165,7 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
             TextFormField(
               controller: _nomeController,
@@ -166,7 +184,31 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
             ),
             const SizedBox(height: 24),
             Text('Horários *', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 4),
+            Text(
+              'Preenchimento rápido por frequência (substitui os horários atuais):',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
             const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ActionChip(
+                  label: const Text('1x por dia'),
+                  onPressed: () => _gerarHorariosPorFrequencia(24),
+                ),
+                ActionChip(
+                  label: const Text('De 12 em 12h'),
+                  onPressed: () => _gerarHorariosPorFrequencia(12),
+                ),
+                ActionChip(
+                  label: const Text('De 8 em 8h'),
+                  onPressed: () => _gerarHorariosPorFrequencia(8),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -199,6 +241,11 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
             Wrap(
               spacing: 8,
               children: [
+                FilterChip(
+                  label: const Text('Todos os dias'),
+                  selected: _diasSemana.isEmpty,
+                  onSelected: (_) => setState(() => _diasSemana = []),
+                ),
                 for (final dia in diasSemanaAbreviados.keys)
                   FilterChip(
                     label: Text(diasSemanaAbreviados[dia]!),

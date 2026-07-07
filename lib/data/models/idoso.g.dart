@@ -22,30 +22,32 @@ const IdosoSchema = CollectionSchema(
       name: r'atualizadoEm',
       type: IsarType.dateTime,
     ),
-    r'contactoEmergenciaNome': PropertySchema(
+    r'contactosEmergencia': PropertySchema(
       id: 1,
-      name: r'contactoEmergenciaNome',
-      type: IsarType.string,
-    ),
-    r'contactoEmergenciaTelefone': PropertySchema(
-      id: 2,
-      name: r'contactoEmergenciaTelefone',
-      type: IsarType.string,
+      name: r'contactosEmergencia',
+      type: IsarType.objectList,
+
+      target: r'ContactoEmergencia',
     ),
     r'criadoEm': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'criadoEm',
       type: IsarType.dateTime,
     ),
     r'dataNascimento': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'dataNascimento',
       type: IsarType.dateTime,
     ),
     r'fotoPath': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'fotoPath',
       type: IsarType.string,
+    ),
+    r'mobilidadeReduzida': PropertySchema(
+      id: 5,
+      name: r'mobilidadeReduzida',
+      type: IsarType.bool,
     ),
     r'nome': PropertySchema(id: 6, name: r'nome', type: IsarType.string),
     r'notas': PropertySchema(id: 7, name: r'notas', type: IsarType.string),
@@ -58,7 +60,7 @@ const IdosoSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'ContactoEmergencia': ContactoEmergenciaSchema},
 
   getId: _idosoGetId,
   getLinks: _idosoGetLinks,
@@ -72,16 +74,16 @@ int _idosoEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.contactosEmergencia.length * 3;
   {
-    final value = object.contactoEmergenciaNome;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.contactoEmergenciaTelefone;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
+    final offsets = allOffsets[ContactoEmergencia]!;
+    for (var i = 0; i < object.contactosEmergencia.length; i++) {
+      final value = object.contactosEmergencia[i];
+      bytesCount += ContactoEmergenciaSchema.estimateSize(
+        value,
+        offsets,
+        allOffsets,
+      );
     }
   }
   {
@@ -107,11 +109,16 @@ void _idosoSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.atualizadoEm);
-  writer.writeString(offsets[1], object.contactoEmergenciaNome);
-  writer.writeString(offsets[2], object.contactoEmergenciaTelefone);
-  writer.writeDateTime(offsets[3], object.criadoEm);
-  writer.writeDateTime(offsets[4], object.dataNascimento);
-  writer.writeString(offsets[5], object.fotoPath);
+  writer.writeObjectList<ContactoEmergencia>(
+    offsets[1],
+    allOffsets,
+    ContactoEmergenciaSchema.serialize,
+    object.contactosEmergencia,
+  );
+  writer.writeDateTime(offsets[2], object.criadoEm);
+  writer.writeDateTime(offsets[3], object.dataNascimento);
+  writer.writeString(offsets[4], object.fotoPath);
+  writer.writeBool(offsets[5], object.mobilidadeReduzida);
   writer.writeString(offsets[6], object.nome);
   writer.writeString(offsets[7], object.notas);
 }
@@ -124,12 +131,19 @@ Idoso _idosoDeserialize(
 ) {
   final object = Idoso();
   object.atualizadoEm = reader.readDateTime(offsets[0]);
-  object.contactoEmergenciaNome = reader.readStringOrNull(offsets[1]);
-  object.contactoEmergenciaTelefone = reader.readStringOrNull(offsets[2]);
-  object.criadoEm = reader.readDateTime(offsets[3]);
-  object.dataNascimento = reader.readDateTimeOrNull(offsets[4]);
-  object.fotoPath = reader.readStringOrNull(offsets[5]);
+  object.contactosEmergencia =
+      reader.readObjectList<ContactoEmergencia>(
+        offsets[1],
+        ContactoEmergenciaSchema.deserialize,
+        allOffsets,
+        ContactoEmergencia(),
+      ) ??
+      [];
+  object.criadoEm = reader.readDateTime(offsets[2]);
+  object.dataNascimento = reader.readDateTimeOrNull(offsets[3]);
+  object.fotoPath = reader.readStringOrNull(offsets[4]);
   object.id = id;
+  object.mobilidadeReduzida = reader.readBool(offsets[5]);
   object.nome = reader.readString(offsets[6]);
   object.notas = reader.readStringOrNull(offsets[7]);
   return object;
@@ -145,15 +159,22 @@ P _idosoDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readObjectList<ContactoEmergencia>(
+                offset,
+                ContactoEmergenciaSchema.deserialize,
+                allOffsets,
+                ContactoEmergencia(),
+              ) ??
+              [])
+          as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
       return (reader.readDateTime(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readDateTimeOrNull(offset)) as P;
-    case 5:
+    case 4:
       return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readBool(offset)) as P;
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
@@ -314,345 +335,66 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeIsNull() {
+  contactosEmergenciaLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'contactoEmergenciaNome'),
+      return query.listLength(
+        r'contactosEmergencia',
+        length,
+        true,
+        length,
+        true,
       );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeIsNotNull() {
+  contactosEmergenciaIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'contactoEmergenciaNome'),
+      return query.listLength(r'contactosEmergencia', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
+  contactosEmergenciaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'contactosEmergencia', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
+  contactosEmergenciaLengthLessThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'contactosEmergencia', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
+  contactosEmergenciaLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'contactosEmergencia',
+        length,
+        include,
+        999999,
+        true,
       );
     });
   }
 
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeEqualTo(String? value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'contactoEmergenciaNome',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'contactoEmergenciaNome',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'contactoEmergenciaNome',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeBetween(
-    String? lower,
-    String? upper, {
+  contactosEmergenciaLengthBetween(
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'contactoEmergenciaNome',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeStartsWith(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'contactoEmergenciaNome',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeEndsWith(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'contactoEmergenciaNome',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'contactoEmergenciaNome',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'contactoEmergenciaNome',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'contactoEmergenciaNome', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaNomeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          property: r'contactoEmergenciaNome',
-          value: '',
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'contactoEmergenciaTelefone'),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(
-          property: r'contactoEmergenciaTelefone',
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'contactoEmergenciaTelefone',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'contactoEmergenciaTelefone',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'contactoEmergenciaTelefone',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'contactoEmergenciaTelefone',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'contactoEmergenciaTelefone',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'contactoEmergenciaTelefone',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneContains(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'contactoEmergenciaTelefone',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneMatches(
-    String pattern, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'contactoEmergenciaTelefone',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'contactoEmergenciaTelefone',
-          value: '',
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterFilterCondition>
-  contactoEmergenciaTelefoneIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          property: r'contactoEmergenciaTelefone',
-          value: '',
-        ),
+      return query.listLength(
+        r'contactosEmergencia',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
       );
     });
   }
@@ -1010,6 +752,16 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> mobilidadeReduzidaEqualTo(
+    bool value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'mobilidadeReduzida', value: value),
+      );
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterFilterCondition> nomeEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1319,7 +1071,15 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
   }
 }
 
-extension IdosoQueryObject on QueryBuilder<Idoso, Idoso, QFilterCondition> {}
+extension IdosoQueryObject on QueryBuilder<Idoso, Idoso, QFilterCondition> {
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> contactosEmergenciaElement(
+    FilterQuery<ContactoEmergencia> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'contactosEmergencia');
+    });
+  }
+}
 
 extension IdosoQueryLinks on QueryBuilder<Idoso, Idoso, QFilterCondition> {}
 
@@ -1333,31 +1093,6 @@ extension IdosoQuerySortBy on QueryBuilder<Idoso, Idoso, QSortBy> {
   QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByContactoEmergenciaNome() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaNome', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByContactoEmergenciaNomeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaNome', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByContactoEmergenciaTelefone() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaTelefone', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy>
-  sortByContactoEmergenciaTelefoneDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaTelefone', Sort.desc);
     });
   }
 
@@ -1397,6 +1132,18 @@ extension IdosoQuerySortBy on QueryBuilder<Idoso, Idoso, QSortBy> {
     });
   }
 
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByMobilidadeReduzida() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mobilidadeReduzida', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByMobilidadeReduzidaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mobilidadeReduzida', Sort.desc);
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nome', Sort.asc);
@@ -1432,31 +1179,6 @@ extension IdosoQuerySortThenBy on QueryBuilder<Idoso, Idoso, QSortThenBy> {
   QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByAtualizadoEmDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'atualizadoEm', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByContactoEmergenciaNome() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaNome', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByContactoEmergenciaNomeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaNome', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByContactoEmergenciaTelefone() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaTelefone', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QAfterSortBy>
-  thenByContactoEmergenciaTelefoneDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'contactoEmergenciaTelefone', Sort.desc);
     });
   }
 
@@ -1508,6 +1230,18 @@ extension IdosoQuerySortThenBy on QueryBuilder<Idoso, Idoso, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByMobilidadeReduzida() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mobilidadeReduzida', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByMobilidadeReduzidaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mobilidadeReduzida', Sort.desc);
+    });
+  }
+
   QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nome', Sort.asc);
@@ -1540,28 +1274,6 @@ extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
     });
   }
 
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByContactoEmergenciaNome({
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(
-        r'contactoEmergenciaNome',
-        caseSensitive: caseSensitive,
-      );
-    });
-  }
-
-  QueryBuilder<Idoso, Idoso, QDistinct> distinctByContactoEmergenciaTelefone({
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(
-        r'contactoEmergenciaTelefone',
-        caseSensitive: caseSensitive,
-      );
-    });
-  }
-
   QueryBuilder<Idoso, Idoso, QDistinct> distinctByCriadoEm() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'criadoEm');
@@ -1579,6 +1291,12 @@ extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fotoPath', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByMobilidadeReduzida() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'mobilidadeReduzida');
     });
   }
 
@@ -1612,17 +1330,10 @@ extension IdosoQueryProperty on QueryBuilder<Idoso, Idoso, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Idoso, String?, QQueryOperations>
-  contactoEmergenciaNomeProperty() {
+  QueryBuilder<Idoso, List<ContactoEmergencia>, QQueryOperations>
+  contactosEmergenciaProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'contactoEmergenciaNome');
-    });
-  }
-
-  QueryBuilder<Idoso, String?, QQueryOperations>
-  contactoEmergenciaTelefoneProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'contactoEmergenciaTelefone');
+      return query.addPropertyName(r'contactosEmergencia');
     });
   }
 
@@ -1641,6 +1352,12 @@ extension IdosoQueryProperty on QueryBuilder<Idoso, Idoso, QQueryProperty> {
   QueryBuilder<Idoso, String?, QQueryOperations> fotoPathProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fotoPath');
+    });
+  }
+
+  QueryBuilder<Idoso, bool, QQueryOperations> mobilidadeReduzidaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'mobilidadeReduzida');
     });
   }
 

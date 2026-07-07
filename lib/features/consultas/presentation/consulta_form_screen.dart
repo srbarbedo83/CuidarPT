@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/utils/consulta_opcoes.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../providers/consulta_providers.dart';
@@ -23,8 +24,9 @@ class ConsultaFormScreen extends ConsumerStatefulWidget {
 
 class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _especialidadeController;
-  late final TextEditingController _localController;
+  late String _especialidade;
+  late String _local;
+  late final TextEditingController _medicoController;
   late final TextEditingController _notasController;
 
   late DateTime _dataHora;
@@ -38,8 +40,9 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   void initState() {
     super.initState();
     final consulta = widget.consulta;
-    _especialidadeController = TextEditingController(text: consulta?.especialidade ?? '');
-    _localController = TextEditingController(text: consulta?.local ?? '');
+    _especialidade = consulta?.especialidade ?? '';
+    _local = consulta?.local ?? '';
+    _medicoController = TextEditingController(text: consulta?.nomeMedico ?? '');
     _notasController = TextEditingController(text: consulta?.notas ?? '');
     _dataHora = consulta?.dataHora ?? DateTime.now();
     _proximaConsultaData = consulta?.proximaConsultaData;
@@ -48,8 +51,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
 
   @override
   void dispose() {
-    _especialidadeController.dispose();
-    _localController.dispose();
+    _medicoController.dispose();
     _notasController.dispose();
     super.dispose();
   }
@@ -93,13 +95,15 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
     setState(() => _aGuardar = true);
 
     final agora = DateTime.now();
-    final local = _localController.text.trim();
+    final local = _local.trim();
+    final medico = _medicoController.text.trim();
     final notas = _notasController.text.trim();
     final consulta = widget.consulta ?? RegistoConsulta();
     consulta
       ..idosoId = widget.idoso.id
-      ..especialidade = _especialidadeController.text.trim()
+      ..especialidade = _especialidade.trim()
       ..local = local.isEmpty ? null : local
+      ..nomeMedico = medico.isEmpty ? null : medico
       ..dataHora = _dataHora
       ..notas = notas.isEmpty ? null : notas
       ..proximaConsultaData = _proximaConsultaData
@@ -124,26 +128,61 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
-            TextFormField(
-              controller: _especialidadeController,
-              decoration: const InputDecoration(
-                labelText: 'Especialidade *',
-                hintText: 'Ex.: Clínica geral, Cardiologia',
-              ),
-              textCapitalization: TextCapitalization.sentences,
-              validator: (valor) =>
-                  (valor == null || valor.trim().isEmpty) ? 'Indica a especialidade' : null,
+            Autocomplete<String>(
+              initialValue: TextEditingValue(text: _especialidade),
+              optionsBuilder: (valor) {
+                if (valor.text.isEmpty) return especialidadesComuns;
+                return especialidadesComuns.where(
+                  (e) => e.toLowerCase().contains(valor.text.toLowerCase()),
+                );
+              },
+              onSelected: (selecionado) => setState(() => _especialidade = selecionado),
+              fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                return TextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: const InputDecoration(
+                    labelText: 'Especialidade *',
+                    hintText: 'Ex.: Clínica geral, Cardiologia',
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (valor) => _especialidade = valor,
+                  validator: (valor) =>
+                      (valor == null || valor.trim().isEmpty) ? 'Indica a especialidade' : null,
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            Autocomplete<String>(
+              initialValue: TextEditingValue(text: _local),
+              optionsBuilder: (valor) {
+                if (valor.text.isEmpty) return locaisComuns;
+                return locaisComuns.where((l) => l.toLowerCase().contains(valor.text.toLowerCase()));
+              },
+              onSelected: (selecionado) => setState(() => _local = selecionado),
+              fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                return TextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: const InputDecoration(
+                    labelText: 'Local',
+                    hintText: 'Ex.: Centro de Saúde, Hospital, Clínica privada',
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (valor) => _local = valor,
+                );
+              },
             ),
             const SizedBox(height: 16),
             TextFormField(
-              controller: _localController,
+              controller: _medicoController,
               decoration: const InputDecoration(
-                labelText: 'Local',
-                hintText: 'Ex.: Centro de Saúde, Hospital, Clínica privada',
+                labelText: 'Nome do médico',
+                hintText: 'Ex.: Dr. António Silva',
               ),
-              textCapitalization: TextCapitalization.sentences,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             ListTile(

@@ -88,7 +88,7 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
     return Scaffold(
       appBar: AppBar(title: Text(_aEditar ? 'Editar registo' : 'Novo registo de cuidado')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
         children: [
           Wrap(
             spacing: 8,

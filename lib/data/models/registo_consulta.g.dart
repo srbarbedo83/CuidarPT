@@ -44,14 +44,19 @@ const RegistoConsultaSchema = CollectionSchema(
       type: IsarType.bool,
     ),
     r'local': PropertySchema(id: 6, name: r'local', type: IsarType.string),
-    r'notas': PropertySchema(id: 7, name: r'notas', type: IsarType.string),
+    r'nomeMedico': PropertySchema(
+      id: 7,
+      name: r'nomeMedico',
+      type: IsarType.string,
+    ),
+    r'notas': PropertySchema(id: 8, name: r'notas', type: IsarType.string),
     r'notificacaoIds': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'notificacaoIds',
       type: IsarType.longList,
     ),
     r'proximaConsultaData': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'proximaConsultaData',
       type: IsarType.dateTime,
     ),
@@ -100,6 +105,12 @@ int _registoConsultaEstimateSize(
     }
   }
   {
+    final value = object.nomeMedico;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.notas;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -122,9 +133,10 @@ void _registoConsultaSerialize(
   writer.writeLong(offsets[4], object.idosoId);
   writer.writeBool(offsets[5], object.lembreteAtivo);
   writer.writeString(offsets[6], object.local);
-  writer.writeString(offsets[7], object.notas);
-  writer.writeLongList(offsets[8], object.notificacaoIds);
-  writer.writeDateTime(offsets[9], object.proximaConsultaData);
+  writer.writeString(offsets[7], object.nomeMedico);
+  writer.writeString(offsets[8], object.notas);
+  writer.writeLongList(offsets[9], object.notificacaoIds);
+  writer.writeDateTime(offsets[10], object.proximaConsultaData);
 }
 
 RegistoConsulta _registoConsultaDeserialize(
@@ -142,9 +154,10 @@ RegistoConsulta _registoConsultaDeserialize(
   object.idosoId = reader.readLong(offsets[4]);
   object.lembreteAtivo = reader.readBool(offsets[5]);
   object.local = reader.readStringOrNull(offsets[6]);
-  object.notas = reader.readStringOrNull(offsets[7]);
-  object.notificacaoIds = reader.readLongList(offsets[8]) ?? [];
-  object.proximaConsultaData = reader.readDateTimeOrNull(offsets[9]);
+  object.nomeMedico = reader.readStringOrNull(offsets[7]);
+  object.notas = reader.readStringOrNull(offsets[8]);
+  object.notificacaoIds = reader.readLongList(offsets[9]) ?? [];
+  object.proximaConsultaData = reader.readDateTimeOrNull(offsets[10]);
   return object;
 }
 
@@ -172,8 +185,10 @@ P _registoConsultaDeserializeProp<P>(
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readLongList(offset) ?? []) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readLongList(offset) ?? []) as P;
+    case 10:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -972,6 +987,165 @@ extension RegistoConsultaQueryFilter
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'nomeMedico'),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'nomeMedico'),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'nomeMedico',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'nomeMedico',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'nomeMedico',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'nomeMedico',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'nomeMedico',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'nomeMedico',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'nomeMedico',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'nomeMedico',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'nomeMedico', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  nomeMedicoIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'nomeMedico', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
   notasIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1416,6 +1590,20 @@ extension RegistoConsultaQuerySortBy
     });
   }
 
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  sortByNomeMedico() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomeMedico', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  sortByNomeMedicoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomeMedico', Sort.desc);
+    });
+  }
+
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy> sortByNotas() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.asc);
@@ -1554,6 +1742,20 @@ extension RegistoConsultaQuerySortThenBy
     });
   }
 
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  thenByNomeMedico() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomeMedico', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  thenByNomeMedicoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomeMedico', Sort.desc);
+    });
+  }
+
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy> thenByNotas() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.asc);
@@ -1637,6 +1839,13 @@ extension RegistoConsultaQueryWhereDistinct
     });
   }
 
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
+  distinctByNomeMedico({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nomeMedico', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByNotas({
     bool caseSensitive = true,
   }) {
@@ -1710,6 +1919,13 @@ extension RegistoConsultaQueryProperty
   QueryBuilder<RegistoConsulta, String?, QQueryOperations> localProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'local');
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, String?, QQueryOperations>
+  nomeMedicoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nomeMedico');
     });
   }
 

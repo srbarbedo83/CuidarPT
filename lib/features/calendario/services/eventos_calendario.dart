@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../../core/utils/horarios.dart';
 import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/registo_consulta.dart';
@@ -5,6 +7,20 @@ import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 
 enum TipoEventoCalendario { medicacao, consulta, cuidado }
+
+/// Cor associada a cada tipo de evento no calendário. As consultas usam uma
+/// cor mais viva porque costumam ser compromissos mais críticos de não
+/// esquecer do que uma toma de medicação recorrente.
+Color corTipoEventoCalendario(TipoEventoCalendario tipo) {
+  switch (tipo) {
+    case TipoEventoCalendario.medicacao:
+      return Colors.blue;
+    case TipoEventoCalendario.consulta:
+      return Colors.redAccent;
+    case TipoEventoCalendario.cuidado:
+      return Colors.teal;
+  }
+}
 
 class EventoCalendario {
   const EventoCalendario({

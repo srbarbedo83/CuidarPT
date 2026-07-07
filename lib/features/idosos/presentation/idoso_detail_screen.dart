@@ -20,6 +20,7 @@ import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
 import '../../relatorios/presentation/relatorio_screen.dart';
+import '../services/proximo_evento.dart';
 import 'idoso_form_screen.dart';
 
 const _maxCuidadosRecentesVisiveis = 15;
@@ -34,6 +35,12 @@ class IdosoDetailScreen extends ConsumerWidget {
     final medicacaoAsync = ref.watch(medicacaoListProvider(idoso.id));
     final consultasAsync = ref.watch(consultaListProvider(idoso.id));
     final cuidadosAsync = ref.watch(cuidadoDiarioListProvider(idoso.id));
+
+    final proximo = proximoEvento(
+      DateTime.now(),
+      medicacoes: medicacaoAsync.valueOrNull ?? const [],
+      consultas: consultasAsync.valueOrNull ?? const [],
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -65,6 +72,7 @@ class IdosoDetailScreen extends ConsumerWidget {
       body: ListView(
         children: [
           _CabecalhoIdoso(idoso: idoso),
+          if (proximo != null) _ProximoEventoCard(proximo: proximo),
           const Divider(height: 32),
           _CabecalhoSeccao(
             titulo: 'Medicação',
@@ -174,6 +182,32 @@ class IdosoDetailScreen extends ConsumerWidget {
   }
 }
 
+class _ProximoEventoCard extends StatelessWidget {
+  const _ProximoEventoCard({required this.proximo});
+
+  final ProximoEvento proximo;
+
+  @override
+  Widget build(BuildContext context) {
+    final ehMedicacao = proximo.tipo == TipoProximoEvento.medicacao;
+    final rotulo = ehMedicacao ? 'Próxima toma' : 'Próxima consulta';
+    final formato = ehMedicacao ? DateFormat('HH:mm') : DateFormat('dd/MM/yyyy HH:mm');
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: ListTile(
+          leading: Icon(ehMedicacao ? Icons.medication_outlined : Icons.event_note_outlined),
+          title: Text('$rotulo: ${proximo.titulo}'),
+          subtitle: Text(
+            '${formato.format(proximo.dataHora)} · ${formatarContagem(DateTime.now(), proximo.dataHora)}',
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CabecalhoSeccao extends StatelessWidget {
   const _CabecalhoSeccao({required this.titulo, required this.tooltip, required this.onAdicionar});
 
@@ -208,10 +242,25 @@ class _CabecalhoIdoso extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 32,
-            backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
-            child: fotoPath == null ? const Icon(Icons.elderly) : null,
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              CircleAvatar(
+                radius: 44,
+                backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
+                child: fotoPath == null ? const Icon(Icons.elderly, size: 36) : null,
+              ),
+              if (idoso.mobilidadeReduzida)
+                Positioned(
+                  right: -4,
+                  bottom: -4,
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: const Icon(Icons.accessible, color: Colors.white, size: 16),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -220,11 +269,8 @@ class _CabecalhoIdoso extends StatelessWidget {
               children: [
                 if (idoso.dataNascimento != null)
                   Text('Nascimento: ${DateFormat('dd/MM/yyyy').format(idoso.dataNascimento!)}'),
-                if (idoso.contactoEmergenciaNome != null || idoso.contactoEmergenciaTelefone != null)
-                  Text(
-                    'Emergência: ${idoso.contactoEmergenciaNome ?? ''} '
-                    '${idoso.contactoEmergenciaTelefone ?? ''}'.trim(),
-                  ),
+                for (final contacto in idoso.contactosEmergencia)
+                  Text('Emergência: ${contacto.nome ?? ''} ${contacto.telefone ?? ''}'.trim()),
                 if (idoso.notas != null && idoso.notas!.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
@@ -322,6 +368,7 @@ class _ConsultaTile extends ConsumerWidget {
       subtitle: Text(
         '${DateFormat('dd/MM/yyyy HH:mm').format(consulta.dataHora)}'
         '${consulta.local != null ? ' · ${consulta.local}' : ''}'
+        '${consulta.nomeMedico != null ? ' · ${consulta.nomeMedico}' : ''}'
         '${proxima != null ? ' · próxima: ${DateFormat('dd/MM/yyyy').format(proxima)}' : ''}',
       ),
       trailing: IconButton(

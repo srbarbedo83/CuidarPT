@@ -175,7 +175,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Gerar relatório')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
         children: [
           Text('Período', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),

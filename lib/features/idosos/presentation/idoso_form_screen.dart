@@ -6,8 +6,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/utils/photo_storage.dart';
+import '../../../data/models/contacto_emergencia.dart';
 import '../../../data/models/idoso.dart';
 import '../providers/idoso_providers.dart';
+
+class _ContactoControllers {
+  _ContactoControllers({String? nome, String? telefone})
+      : nomeController = TextEditingController(text: nome),
+        telefoneController = TextEditingController(text: telefone);
+
+  final TextEditingController nomeController;
+  final TextEditingController telefoneController;
+
+  void dispose() {
+    nomeController.dispose();
+    telefoneController.dispose();
+  }
+}
 
 /// Ecrã de criação/edição do perfil de um idoso.
 ///
@@ -25,12 +40,12 @@ class IdosoFormScreen extends ConsumerStatefulWidget {
 class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nomeController;
-  late final TextEditingController _contactoNomeController;
-  late final TextEditingController _contactoTelefoneController;
+  late final List<_ContactoControllers> _contactos;
   late final TextEditingController _notasController;
 
   DateTime? _dataNascimento;
   String? _fotoPath;
+  bool _mobilidadeReduzida = false;
   bool _aGuardar = false;
 
   bool get _aEditar => widget.idoso != null;
@@ -40,21 +55,32 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
     super.initState();
     final idoso = widget.idoso;
     _nomeController = TextEditingController(text: idoso?.nome ?? '');
-    _contactoNomeController = TextEditingController(text: idoso?.contactoEmergenciaNome ?? '');
-    _contactoTelefoneController =
-        TextEditingController(text: idoso?.contactoEmergenciaTelefone ?? '');
+    _contactos = (idoso?.contactosEmergencia ?? [])
+        .map((c) => _ContactoControllers(nome: c.nome, telefone: c.telefone))
+        .toList();
+    if (_contactos.isEmpty) _contactos.add(_ContactoControllers());
     _notasController = TextEditingController(text: idoso?.notas ?? '');
     _dataNascimento = idoso?.dataNascimento;
     _fotoPath = idoso?.fotoPath;
+    _mobilidadeReduzida = idoso?.mobilidadeReduzida ?? false;
   }
 
   @override
   void dispose() {
     _nomeController.dispose();
-    _contactoNomeController.dispose();
-    _contactoTelefoneController.dispose();
+    for (final contacto in _contactos) {
+      contacto.dispose();
+    }
     _notasController.dispose();
     super.dispose();
+  }
+
+  void _adicionarContacto() {
+    setState(() => _contactos.add(_ContactoControllers()));
+  }
+
+  void _removerContacto(int indice) {
+    setState(() => _contactos.removeAt(indice).dispose());
   }
 
   Future<void> _escolherFoto() async {
@@ -91,15 +117,23 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
 
     final agora = DateTime.now();
     final idoso = widget.idoso ?? Idoso();
-    final contactoNome = _contactoNomeController.text.trim();
-    final contactoTelefone = _contactoTelefoneController.text.trim();
     final notas = _notasController.text.trim();
+    final contactos = _contactos
+        .map((c) {
+          final nome = c.nomeController.text.trim();
+          final telefone = c.telefoneController.text.trim();
+          return ContactoEmergencia()
+            ..nome = nome.isEmpty ? null : nome
+            ..telefone = telefone.isEmpty ? null : telefone;
+        })
+        .where((c) => c.nome != null || c.telefone != null)
+        .toList();
     idoso
       ..nome = _nomeController.text.trim()
       ..dataNascimento = _dataNascimento
       ..fotoPath = _fotoPath
-      ..contactoEmergenciaNome = contactoNome.isEmpty ? null : contactoNome
-      ..contactoEmergenciaTelefone = contactoTelefone.isEmpty ? null : contactoTelefone
+      ..mobilidadeReduzida = _mobilidadeReduzida
+      ..contactosEmergencia = contactos
       ..notas = notas.isEmpty ? null : notas
       ..atualizadoEm = agora;
     if (!_aEditar) {
@@ -118,19 +152,42 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
             Center(
               child: GestureDetector(
                 onTap: _escolherFoto,
-                child: CircleAvatar(
-                  radius: 48,
-                  backgroundImage: _fotoPath != null ? FileImage(File(_fotoPath!)) : null,
-                  child: _fotoPath == null ? const Icon(Icons.add_a_photo, size: 32) : null,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      radius: 48,
+                      backgroundImage: _fotoPath != null ? FileImage(File(_fotoPath!)) : null,
+                      child: _fotoPath == null ? const Icon(Icons.add_a_photo, size: 32) : null,
+                    ),
+                    if (_mobilidadeReduzida)
+                      Positioned(
+                        right: -4,
+                        bottom: -4,
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          child: const Icon(Icons.accessible, color: Colors.white, size: 18),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Mobilidade reduzida'),
+              subtitle: const Text('Mostra um ícone de cadeira de rodas junto à foto'),
+              value: _mobilidadeReduzida,
+              onChanged: (valor) => setState(() => _mobilidadeReduzida = valor),
+            ),
+            const SizedBox(height: 16),
             TextFormField(
               controller: _nomeController,
               decoration: const InputDecoration(labelText: 'Nome *'),
@@ -151,16 +208,47 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
               onTap: _escolherDataNascimento,
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _contactoNomeController,
-              decoration: const InputDecoration(labelText: 'Contacto de emergência — nome'),
-              textCapitalization: TextCapitalization.words,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _contactoTelefoneController,
-              decoration: const InputDecoration(labelText: 'Contacto de emergência — telefone'),
-              keyboardType: TextInputType.phone,
+            Text('Contactos de emergência', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 8),
+            for (var indice = 0; indice < _contactos.length; indice++)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _contactos[indice].nomeController,
+                            decoration: const InputDecoration(labelText: 'Nome'),
+                            textCapitalization: TextCapitalization.words,
+                          ),
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            controller: _contactos[indice].telefoneController,
+                            decoration: const InputDecoration(labelText: 'Telefone'),
+                            keyboardType: TextInputType.phone,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (_contactos.length > 1)
+                      IconButton(
+                        icon: const Icon(Icons.remove_circle_outline),
+                        tooltip: 'Remover contacto',
+                        onPressed: () => _removerContacto(indice),
+                      ),
+                  ],
+                ),
+              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: _adicionarContacto,
+                icon: const Icon(Icons.add),
+                label: const Text('Adicionar contacto'),
+              ),
             ),
             const SizedBox(height: 16),
             TextFormField(

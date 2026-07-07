@@ -64,6 +64,30 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
               });
             },
             onPageChanged: (focado) => _focusedDay = focado,
+            calendarBuilders: CalendarBuilders<EventoCalendario>(
+              markerBuilder: (context, dia, eventosDoDia) {
+                if (eventosDoDia.isEmpty) return null;
+                final tipos = eventosDoDia.map((e) => e.tipo).toSet();
+                return Positioned(
+                  bottom: 1,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (final tipo in tipos)
+                        Container(
+                          width: 6,
+                          height: 6,
+                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                          decoration: BoxDecoration(
+                            color: corTipoEventoCalendario(tipo),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
           const Divider(height: 1),
           Expanded(
@@ -143,7 +167,7 @@ class _ListaEventosDia extends StatelessWidget {
       itemBuilder: (context, indice) {
         final evento = eventos[indice];
         return ListTile(
-          leading: Icon(_icone(evento.tipo)),
+          leading: Icon(_icone(evento.tipo), color: corTipoEventoCalendario(evento.tipo)),
           title: Text(evento.titulo),
           subtitle: evento.subtitulo.isNotEmpty ? Text(evento.subtitulo) : null,
           onTap: () => _abrir(context, evento),
