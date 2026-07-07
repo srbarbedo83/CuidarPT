@@ -25,6 +25,10 @@ class Idoso {
   /// Indica mobilidade reduzida (mostra um ícone de cadeira de rodas junto à foto).
   bool mobilidadeReduzida = false;
 
+  /// Ativa a secção de rotina de higiene/alimentação (Premium), desligada
+  /// por predefinição.
+  bool rotinasAtivas = false;
+
   late DateTime criadoEm;
 
   late DateTime atualizadoEm;

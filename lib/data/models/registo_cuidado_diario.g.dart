@@ -24,18 +24,23 @@ const RegistoCuidadoDiarioSchema = CollectionSchema(
       type: IsarType.long,
     ),
     r'idosoId': PropertySchema(id: 1, name: r'idosoId', type: IsarType.long),
-    r'notaRapida': PropertySchema(
+    r'itemRotinaId': PropertySchema(
       id: 2,
+      name: r'itemRotinaId',
+      type: IsarType.long,
+    ),
+    r'notaRapida': PropertySchema(
+      id: 3,
       name: r'notaRapida',
       type: IsarType.string,
     ),
     r'timestamp': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'timestamp',
       type: IsarType.dateTime,
     ),
     r'tipo': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'tipo',
       type: IsarType.string,
       enumMap: _RegistoCuidadoDiariotipoEnumValueMap,
@@ -108,9 +113,10 @@ void _registoCuidadoDiarioSerialize(
 ) {
   writer.writeLong(offsets[0], object.humorNivel);
   writer.writeLong(offsets[1], object.idosoId);
-  writer.writeString(offsets[2], object.notaRapida);
-  writer.writeDateTime(offsets[3], object.timestamp);
-  writer.writeString(offsets[4], object.tipo.name);
+  writer.writeLong(offsets[2], object.itemRotinaId);
+  writer.writeString(offsets[3], object.notaRapida);
+  writer.writeDateTime(offsets[4], object.timestamp);
+  writer.writeString(offsets[5], object.tipo.name);
 }
 
 RegistoCuidadoDiario _registoCuidadoDiarioDeserialize(
@@ -123,11 +129,12 @@ RegistoCuidadoDiario _registoCuidadoDiarioDeserialize(
   object.humorNivel = reader.readLongOrNull(offsets[0]);
   object.id = id;
   object.idosoId = reader.readLong(offsets[1]);
-  object.notaRapida = reader.readStringOrNull(offsets[2]);
-  object.timestamp = reader.readDateTime(offsets[3]);
+  object.itemRotinaId = reader.readLongOrNull(offsets[2]);
+  object.notaRapida = reader.readStringOrNull(offsets[3]);
+  object.timestamp = reader.readDateTime(offsets[4]);
   object.tipo =
       _RegistoCuidadoDiariotipoValueEnumMap[reader.readStringOrNull(
-        offsets[4],
+        offsets[5],
       )] ??
       TipoCuidadoDiario.higiene;
   return object;
@@ -145,10 +152,12 @@ P _registoCuidadoDiarioDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readDateTime(offset)) as P;
+    case 5:
       return (_RegistoCuidadoDiariotipoValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
@@ -741,6 +750,103 @@ extension RegistoCuidadoDiarioQueryFilter
     RegistoCuidadoDiario,
     QAfterFilterCondition
   >
+  itemRotinaIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'itemRotinaId'),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  itemRotinaIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'itemRotinaId'),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  itemRotinaIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'itemRotinaId', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  itemRotinaIdGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'itemRotinaId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  itemRotinaIdLessThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'itemRotinaId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  itemRotinaIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'itemRotinaId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
   notaRapidaIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1243,6 +1349,20 @@ extension RegistoCuidadoDiarioQuerySortBy
   }
 
   QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  sortByItemRotinaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'itemRotinaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  sortByItemRotinaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'itemRotinaId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
   sortByNotaRapida() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notaRapida', Sort.asc);
@@ -1330,6 +1450,20 @@ extension RegistoCuidadoDiarioQuerySortThenBy
   }
 
   QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  thenByItemRotinaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'itemRotinaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  thenByItemRotinaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'itemRotinaId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
   thenByNotaRapida() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notaRapida', Sort.asc);
@@ -1389,6 +1523,13 @@ extension RegistoCuidadoDiarioQueryWhereDistinct
   }
 
   QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QDistinct>
+  distinctByItemRotinaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'itemRotinaId');
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QDistinct>
   distinctByNotaRapida({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notaRapida', caseSensitive: caseSensitive);
@@ -1433,6 +1574,13 @@ extension RegistoCuidadoDiarioQueryProperty
   QueryBuilder<RegistoCuidadoDiario, int, QQueryOperations> idosoIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idosoId');
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, int?, QQueryOperations>
+  itemRotinaIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'itemRotinaId');
     });
   }
 

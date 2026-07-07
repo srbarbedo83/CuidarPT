@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/contacto_emergencia.dart';
 import '../../../data/models/idoso.dart';
+import '../../../shared/widgets/premium_upsell.dart';
+import '../../subscricao/feature_limits.dart';
 import '../providers/idoso_providers.dart';
 
 class _ContactoControllers {
@@ -46,6 +48,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
   DateTime? _dataNascimento;
   String? _fotoPath;
   bool _mobilidadeReduzida = false;
+  bool _rotinasAtivas = false;
   bool _aGuardar = false;
 
   bool get _aEditar => widget.idoso != null;
@@ -63,6 +66,19 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
     _dataNascimento = idoso?.dataNascimento;
     _fotoPath = idoso?.fotoPath;
     _mobilidadeReduzida = idoso?.mobilidadeReduzida ?? false;
+    _rotinasAtivas = idoso?.rotinasAtivas ?? false;
+  }
+
+  Future<void> _alternarRotinas(bool valor) async {
+    if (valor && !ref.read(featureLimitsProvider).permiteRotinas) {
+      await mostrarLimiteAtingido(
+        context,
+        mensagem: 'A rotina de higiene e alimentação é uma funcionalidade Premium. '
+            'Subscreve o Premium para a ativares.',
+      );
+      return;
+    }
+    setState(() => _rotinasAtivas = valor);
   }
 
   @override
@@ -133,6 +149,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
       ..dataNascimento = _dataNascimento
       ..fotoPath = _fotoPath
       ..mobilidadeReduzida = _mobilidadeReduzida
+      ..rotinasAtivas = _rotinasAtivas
       ..contactosEmergencia = contactos
       ..notas = notas.isEmpty ? null : notas
       ..atualizadoEm = agora;
@@ -257,6 +274,17 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                 labelText: 'Notas (alergias, condições de saúde)',
               ),
               maxLines: 3,
+            ),
+            const SizedBox(height: 8),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Rotina de higiene e alimentação'),
+              subtitle: const Text(
+                'Funcionalidade Premium. Regista itens recorrentes (ex.: banho, '
+                'refeições) e marca-os como feitos no dia.',
+              ),
+              value: _rotinasAtivas,
+              onChanged: _alternarRotinas,
             ),
             const SizedBox(height: 24),
             FilledButton(

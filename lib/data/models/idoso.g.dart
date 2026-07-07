@@ -51,6 +51,11 @@ const IdosoSchema = CollectionSchema(
     ),
     r'nome': PropertySchema(id: 6, name: r'nome', type: IsarType.string),
     r'notas': PropertySchema(id: 7, name: r'notas', type: IsarType.string),
+    r'rotinasAtivas': PropertySchema(
+      id: 8,
+      name: r'rotinasAtivas',
+      type: IsarType.bool,
+    ),
   },
 
   estimateSize: _idosoEstimateSize,
@@ -121,6 +126,7 @@ void _idosoSerialize(
   writer.writeBool(offsets[5], object.mobilidadeReduzida);
   writer.writeString(offsets[6], object.nome);
   writer.writeString(offsets[7], object.notas);
+  writer.writeBool(offsets[8], object.rotinasAtivas);
 }
 
 Idoso _idosoDeserialize(
@@ -146,6 +152,7 @@ Idoso _idosoDeserialize(
   object.mobilidadeReduzida = reader.readBool(offsets[5]);
   object.nome = reader.readString(offsets[6]);
   object.notas = reader.readStringOrNull(offsets[7]);
+  object.rotinasAtivas = reader.readBool(offsets[8]);
   return object;
 }
 
@@ -179,6 +186,8 @@ P _idosoDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1069,6 +1078,16 @@ extension IdosoQueryFilter on QueryBuilder<Idoso, Idoso, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Idoso, Idoso, QAfterFilterCondition> rotinasAtivasEqualTo(
+    bool value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'rotinasAtivas', value: value),
+      );
+    });
+  }
 }
 
 extension IdosoQueryObject on QueryBuilder<Idoso, Idoso, QFilterCondition> {
@@ -1165,6 +1184,18 @@ extension IdosoQuerySortBy on QueryBuilder<Idoso, Idoso, QSortBy> {
   QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByNotasDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByRotinasAtivas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rotinasAtivas', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> sortByRotinasAtivasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rotinasAtivas', Sort.desc);
     });
   }
 }
@@ -1265,6 +1296,18 @@ extension IdosoQuerySortThenBy on QueryBuilder<Idoso, Idoso, QSortThenBy> {
       return query.addSortBy(r'notas', Sort.desc);
     });
   }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByRotinasAtivas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rotinasAtivas', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QAfterSortBy> thenByRotinasAtivasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'rotinasAtivas', Sort.desc);
+    });
+  }
 }
 
 extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
@@ -1313,6 +1356,12 @@ extension IdosoQueryWhereDistinct on QueryBuilder<Idoso, Idoso, QDistinct> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'notas', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Idoso, Idoso, QDistinct> distinctByRotinasAtivas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'rotinasAtivas');
     });
   }
 }
@@ -1370,6 +1419,12 @@ extension IdosoQueryProperty on QueryBuilder<Idoso, Idoso, QQueryProperty> {
   QueryBuilder<Idoso, String?, QQueryOperations> notasProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notas');
+    });
+  }
+
+  QueryBuilder<Idoso, bool, QQueryOperations> rotinasAtivasProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'rotinasAtivas');
     });
   }
 }

@@ -22,6 +22,8 @@ import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
 import '../../relatorios/presentation/relatorio_screen.dart';
+import '../../rotina/presentation/rotina_section.dart';
+import '../../subscricao/feature_limits.dart';
 import '../services/proximo_evento.dart';
 import 'idoso_form_screen.dart';
 
@@ -186,6 +188,10 @@ class IdosoDetailScreen extends ConsumerWidget {
           ),
           const Divider(height: 32),
           DocumentosSection(idoso: idoso),
+          if (idoso.rotinasAtivas && ref.watch(featureLimitsProvider).permiteRotinas) ...[
+            const Divider(height: 32),
+            RotinaSection(idoso: idoso),
+          ],
           const SizedBox(height: 24),
         ],
       ),

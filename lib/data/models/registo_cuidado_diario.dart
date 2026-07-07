@@ -19,6 +19,10 @@ class RegistoCuidadoDiario {
   /// Só usado quando `tipo == TipoCuidadoDiario.humor`, de 1 (mau) a 5 (ótimo).
   int? humorNivel;
 
+  /// Preenchido quando este registo veio de marcar um item de rotina (ver
+  /// [ItemRotina]) como concluído no dia, para saber o que já foi feito hoje.
+  int? itemRotinaId;
+
   @Index()
   late DateTime timestamp;
 }
