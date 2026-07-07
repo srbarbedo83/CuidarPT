@@ -17,13 +17,18 @@ const PreferenciasAppSchema = CollectionSchema(
   name: r'PreferenciasApp',
   id: 2913266274500099162,
   properties: {
-    r'escalaTexto': PropertySchema(
+    r'disclaimerSaudeAceite': PropertySchema(
       id: 0,
+      name: r'disclaimerSaudeAceite',
+      type: IsarType.bool,
+    ),
+    r'escalaTexto': PropertySchema(
+      id: 1,
       name: r'escalaTexto',
       type: IsarType.double,
     ),
     r'tema': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'tema',
       type: IsarType.string,
       enumMap: _PreferenciasApptemaEnumValueMap,
@@ -61,8 +66,9 @@ void _preferenciasAppSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDouble(offsets[0], object.escalaTexto);
-  writer.writeString(offsets[1], object.tema.name);
+  writer.writeBool(offsets[0], object.disclaimerSaudeAceite);
+  writer.writeDouble(offsets[1], object.escalaTexto);
+  writer.writeString(offsets[2], object.tema.name);
 }
 
 PreferenciasApp _preferenciasAppDeserialize(
@@ -72,10 +78,11 @@ PreferenciasApp _preferenciasAppDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PreferenciasApp();
-  object.escalaTexto = reader.readDouble(offsets[0]);
+  object.disclaimerSaudeAceite = reader.readBool(offsets[0]);
+  object.escalaTexto = reader.readDouble(offsets[1]);
   object.id = id;
   object.tema =
-      _PreferenciasApptemaValueEnumMap[reader.readStringOrNull(offsets[1])] ??
+      _PreferenciasApptemaValueEnumMap[reader.readStringOrNull(offsets[2])] ??
       TemaPreferido.sistema;
   return object;
 }
@@ -88,8 +95,10 @@ P _preferenciasAppDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 1:
+      return (reader.readDouble(offset)) as P;
+    case 2:
       return (_PreferenciasApptemaValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
@@ -210,6 +219,18 @@ extension PreferenciasAppQueryWhere
 
 extension PreferenciasAppQueryFilter
     on QueryBuilder<PreferenciasApp, PreferenciasApp, QFilterCondition> {
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  disclaimerSaudeAceiteEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'disclaimerSaudeAceite',
+          value: value,
+        ),
+      );
+    });
+  }
+
   QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
   escalaTextoEqualTo(double value, {double epsilon = Query.epsilon}) {
     return QueryBuilder.apply(this, (query) {
@@ -491,6 +512,20 @@ extension PreferenciasAppQueryLinks
 extension PreferenciasAppQuerySortBy
     on QueryBuilder<PreferenciasApp, PreferenciasApp, QSortBy> {
   QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
+  sortByDisclaimerSaudeAceite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'disclaimerSaudeAceite', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
+  sortByDisclaimerSaudeAceiteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'disclaimerSaudeAceite', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
   sortByEscalaTexto() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'escalaTexto', Sort.asc);
@@ -520,6 +555,20 @@ extension PreferenciasAppQuerySortBy
 
 extension PreferenciasAppQuerySortThenBy
     on QueryBuilder<PreferenciasApp, PreferenciasApp, QSortThenBy> {
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
+  thenByDisclaimerSaudeAceite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'disclaimerSaudeAceite', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
+  thenByDisclaimerSaudeAceiteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'disclaimerSaudeAceite', Sort.desc);
+    });
+  }
+
   QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
   thenByEscalaTexto() {
     return QueryBuilder.apply(this, (query) {
@@ -563,6 +612,13 @@ extension PreferenciasAppQuerySortThenBy
 extension PreferenciasAppQueryWhereDistinct
     on QueryBuilder<PreferenciasApp, PreferenciasApp, QDistinct> {
   QueryBuilder<PreferenciasApp, PreferenciasApp, QDistinct>
+  distinctByDisclaimerSaudeAceite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'disclaimerSaudeAceite');
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QDistinct>
   distinctByEscalaTexto() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'escalaTexto');
@@ -583,6 +639,13 @@ extension PreferenciasAppQueryProperty
   QueryBuilder<PreferenciasApp, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, bool, QQueryOperations>
+  disclaimerSaudeAceiteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'disclaimerSaudeAceite');
     });
   }
 

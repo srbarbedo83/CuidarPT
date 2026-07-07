@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../definicoes/providers/preferencias_providers.dart';
 import '../../relatorios/providers/perfil_relatorio_providers.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 
@@ -124,6 +125,48 @@ class _PerguntaEmail extends StatelessWidget {
   }
 }
 
+class _PerguntaDisclaimerSaude extends StatelessWidget {
+  const _PerguntaDisclaimerSaude({required this.aceite, required this.onAlterado});
+
+  final bool aceite;
+  final ValueChanged<bool> onAlterado;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.health_and_safety_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 32),
+          Text(
+            'Antes de começar',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'O CuidarPT é uma ferramenta de organização de cuidados. Não é um '
+            'dispositivo médico e não substitui a avaliação, o diagnóstico ou '
+            'o tratamento de um profissional de saúde. Em caso de emergência, '
+            'contacte sempre os serviços de saúde.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          CheckboxListTile(
+            value: aceite,
+            onChanged: (valor) => onAlterado(valor ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+            title: const Text('Li e percebi'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -137,8 +180,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   var _paginaAtual = 0;
   var _aIniciar = false;
   var _quantosIdosos = 1;
+  var _disclaimerAceite = false;
 
-  static final _totalPaginas = _slides.length + 2;
+  static final _totalPaginas = _slides.length + 3;
 
   @override
   void dispose() {
@@ -150,6 +194,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Future<void> _comecar() async {
     setState(() => _aIniciar = true);
     await ref.read(subscricaoRepositoryProvider).iniciarTrialSeNecessario();
+    await ref.read(preferenciasRepositoryProvider).aceitarDisclaimerSaude();
     final email = _emailController.text.trim();
     if (email.isNotEmpty) {
       await ref.read(perfilRelatorioRepositoryProvider).guardarEmail(email);
@@ -178,6 +223,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   }
                   if (indice == _slides.length + 1) {
                     return _PerguntaEmail(controller: _emailController);
+                  }
+                  if (indice == _slides.length + 2) {
+                    return _PerguntaDisclaimerSaude(
+                      aceite: _disclaimerAceite,
+                      onAlterado: (valor) => setState(() => _disclaimerAceite = valor),
+                    );
                   }
                   final slide = _slides[indice];
                   return Padding(
@@ -227,7 +278,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: _aIniciar
+                  onPressed: _aIniciar || (ultimaPagina && !_disclaimerAceite)
                       ? null
                       : () {
                           if (ultimaPagina) {

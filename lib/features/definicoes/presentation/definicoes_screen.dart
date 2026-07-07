@@ -250,13 +250,35 @@ class _SeccaoSobre extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Sobre', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Sobre',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             Text('CuidarPT${versao != null ? ' — versão $versao' : ''}'),
             const SizedBox(height: 4),
             Text(
               'Todos os dados ficam guardados apenas neste telemóvel.',
               style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'O CuidarPT não é um dispositivo médico e não substitui a avaliação, '
+              'o diagnóstico ou o tratamento de um profissional de saúde.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () => launchUrl(
+                Uri.parse('https://srbarbedo83.github.io/CuidarPT/privacidade.html'),
+              ),
+              child: Text(
+                'Política de privacidade',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.underline),
+              ),
             ),
           ],
         ),

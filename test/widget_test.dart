@@ -43,6 +43,16 @@ void main() {
     await tester.tap(find.text('Seguinte'));
     await tester.pumpAndSettle();
     expect(find.text('O teu email (opcional)'), findsOneWidget);
+    expect(find.text('Começar'), findsNothing);
+
+    await tester.tap(find.text('Seguinte'));
+    await tester.pumpAndSettle();
+    expect(find.text('Antes de começar'), findsOneWidget);
     expect(find.text('Começar'), findsOneWidget);
+    expect(tester.widget<FilledButton>(find.byType(FilledButton)).onPressed, isNull);
+
+    await tester.tap(find.text('Li e percebi'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<FilledButton>(find.byType(FilledButton)).onPressed, isNotNull);
   });
 }

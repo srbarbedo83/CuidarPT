@@ -32,4 +32,12 @@ class PreferenciasRepository {
       await _isar.preferenciasApps.put(atual);
     });
   }
+
+  Future<void> aceitarDisclaimerSaude() async {
+    final atual = await obterAtual() ?? PreferenciasApp();
+    atual.disclaimerSaudeAceite = true;
+    await _isar.writeTxn(() async {
+      await _isar.preferenciasApps.put(atual);
+    });
+  }
 }

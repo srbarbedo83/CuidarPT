@@ -15,4 +15,9 @@ class PreferenciasApp {
 
   /// Fator de escala do texto: 0.85 (pequeno), 1.0 (médio), 1.3 (grande).
   double escalaTexto = 1.0;
+
+  /// `true` depois de o utilizador confirmar, no onboarding, que percebeu
+  /// que a app não substitui aconselhamento, diagnóstico ou tratamento
+  /// médico profissional.
+  bool disclaimerSaudeAceite = false;
 }
