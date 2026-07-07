@@ -12,6 +12,7 @@ class FeatureLimits {
     required this.permiteExportacaoManual,
     required this.permiteAvisosOficiais,
     required this.permiteRotinas,
+    required this.permiteSinaisVitais,
   });
 
   /// `null` significa sem limite.
@@ -21,6 +22,7 @@ class FeatureLimits {
   final bool permiteExportacaoManual;
   final bool permiteAvisosOficiais;
   final bool permiteRotinas;
+  final bool permiteSinaisVitais;
 
   factory FeatureLimits.paraPlano(bool isPremium) {
     if (isPremium) {
@@ -31,6 +33,7 @@ class FeatureLimits {
         permiteExportacaoManual: true,
         permiteAvisosOficiais: true,
         permiteRotinas: true,
+        permiteSinaisVitais: true,
       );
     }
     return const FeatureLimits(
@@ -40,6 +43,7 @@ class FeatureLimits {
       permiteExportacaoManual: false,
       permiteAvisosOficiais: false,
       permiteRotinas: false,
+      permiteSinaisVitais: false,
     );
   }
 }

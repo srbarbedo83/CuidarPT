@@ -12,6 +12,7 @@ void main() {
       expect(limites.permiteExportacaoManual, isFalse);
       expect(limites.permiteAvisosOficiais, isFalse);
       expect(limites.permiteRotinas, isFalse);
+      expect(limites.permiteSinaisVitais, isFalse);
     });
 
     test('plano premium (ou trial ativo) remove limites', () {
@@ -23,6 +24,7 @@ void main() {
       expect(limites.permiteExportacaoManual, isTrue);
       expect(limites.permiteAvisosOficiais, isTrue);
       expect(limites.permiteRotinas, isTrue);
+      expect(limites.permiteSinaisVitais, isTrue);
     });
   });
 }
