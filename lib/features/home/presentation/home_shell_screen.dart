@@ -11,6 +11,7 @@ import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
+import '../../idosos/services/avisos_perfil.dart';
 import '../../relatorios/presentation/relatorio_screen.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
@@ -171,6 +172,7 @@ class _IdosoCardDestacado extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fotoPath = idoso.fotoPath;
+    final avisos = avisosPerfilIncompleto(idoso);
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Card(
@@ -205,10 +207,25 @@ class _IdosoCardDestacado extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  idoso.nome,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        idoso.nome,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    if (avisos.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Tooltip(
+                          message: avisos.join('\n'),
+                          child: Icon(Icons.warning_amber_rounded, size: 20, color: Colors.amber.shade800),
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodyMedium),
@@ -249,6 +266,7 @@ class _IdosoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fotoPath = idoso.fotoPath;
+    final avisos = avisosPerfilIncompleto(idoso);
     return Dismissible(
       key: ValueKey(idoso.id),
       direction: DismissDirection.endToStart,
@@ -267,7 +285,19 @@ class _IdosoTile extends StatelessWidget {
           backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
           child: fotoPath == null ? const Icon(Icons.elderly) : null,
         ),
-        title: Text(idoso.nome),
+        title: Row(
+          children: [
+            Flexible(child: Text(idoso.nome)),
+            if (avisos.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(left: 6),
+                child: Tooltip(
+                  message: avisos.join('\n'),
+                  child: Icon(Icons.warning_amber_rounded, size: 16, color: Colors.amber.shade800),
+                ),
+              ),
+          ],
+        ),
         subtitle: Text(_subtituloIdoso(idoso)),
         trailing: IconButton(
           icon: const Icon(Icons.picture_as_pdf_outlined),

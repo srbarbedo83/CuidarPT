@@ -7,6 +7,13 @@ void main() {
   final agora = DateTime(2026, 7, 15, 10, 30);
 
   group('calcularIntervaloRelatorio', () {
+    test('hoje começa à meia-noite e termina ao fim do dia', () {
+      final intervalo = calcularIntervaloRelatorio(PeriodoRelatorio.hoje, agora: agora);
+
+      expect(intervalo.inicio, DateTime(2026, 7, 15));
+      expect(intervalo.fim, DateTime(2026, 7, 15, 23, 59, 59));
+    });
+
     test('últimos 7 dias termina hoje e começa 7 dias antes', () {
       final intervalo = calcularIntervaloRelatorio(PeriodoRelatorio.ultimos7Dias, agora: agora);
 

@@ -251,6 +251,11 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             spacing: 8,
             children: [
               ChoiceChip(
+                label: const Text('Hoje'),
+                selected: _periodo == PeriodoRelatorio.hoje,
+                onSelected: (_) => setState(() => _periodo = PeriodoRelatorio.hoje),
+              ),
+              ChoiceChip(
                 label: const Text('Últimos 7 dias'),
                 selected: _periodo == PeriodoRelatorio.ultimos7Dias,
                 onSelected: (_) => setState(() => _periodo = PeriodoRelatorio.ultimos7Dias),

@@ -24,12 +24,32 @@ class CalendarioScreen extends ConsumerStatefulWidget {
   ConsumerState<CalendarioScreen> createState() => _CalendarioScreenState();
 }
 
+const _rotulosFiltro = {
+  TipoEventoCalendario.medicacao: 'Medicação',
+  TipoEventoCalendario.consulta: 'Consultas',
+  TipoEventoCalendario.tratamento: 'Tratamentos',
+  TipoEventoCalendario.cuidado: 'Cuidados diários',
+};
+
 class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
+  Set<TipoEventoCalendario> _filtro = TipoEventoCalendario.values.toSet();
 
   bool _mesmoDia(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  void _alternarFiltro(TipoEventoCalendario tipo) {
+    setState(() {
+      _filtro = _filtro.contains(tipo)
+          ? _filtro.where((t) => t != tipo).toSet()
+          : {..._filtro, tipo};
+    });
+  }
+
+  List<EventoCalendario> _filtrar(List<EventoCalendario> eventos) {
+    return eventos.where((e) => _filtro.contains(e.tipo)).toList();
   }
 
   @override
@@ -39,13 +59,29 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
     final cuidados = ref.watch(cuidadoDiarioListProvider(widget.idoso.id)).valueOrNull ?? const [];
 
     List<EventoCalendario> eventosDoDiaSelecionado() {
-      return eventosDoDia(_selectedDay, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados);
+      return _filtrar(
+        eventosDoDia(_selectedDay, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
+      );
     }
 
     return Scaffold(
       appBar: AppBar(title: Text('Calendário · ${widget.idoso.nome}')),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Wrap(
+              spacing: 8,
+              children: [
+                for (final tipo in TipoEventoCalendario.values)
+                  FilterChip(
+                    label: Text(_rotulosFiltro[tipo]!),
+                    selected: _filtro.contains(tipo),
+                    onSelected: (_) => _alternarFiltro(tipo),
+                  ),
+              ],
+            ),
+          ),
           TableCalendar<EventoCalendario>(
             locale: 'pt_PT',
             firstDay: DateTime(2000),
@@ -55,8 +91,9 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
             availableCalendarFormats: const {CalendarFormat.month: 'Mês'},
             startingDayOfWeek: StartingDayOfWeek.monday,
             selectedDayPredicate: (dia) => _mesmoDia(dia, _selectedDay),
-            eventLoader: (dia) =>
-                eventosDoDia(dia, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
+            eventLoader: (dia) => _filtrar(
+              eventosDoDia(dia, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
+            ),
             onDaySelected: (selecionado, focado) {
               setState(() {
                 _selectedDay = selecionado;

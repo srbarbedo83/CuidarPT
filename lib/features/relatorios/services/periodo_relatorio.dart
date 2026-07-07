@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' show DateTimeRange;
 
-enum PeriodoRelatorio { ultimos7Dias, ultimos30Dias, personalizado }
+enum PeriodoRelatorio { hoje, ultimos7Dias, ultimos30Dias, personalizado }
 
 /// Calcula o intervalo [inicio, fim] do relatório para o [periodo] escolhido.
 /// [agora] só existe para tornar a função testável — por omissão usa a data
@@ -12,8 +12,11 @@ enum PeriodoRelatorio { ultimos7Dias, ultimos30Dias, personalizado }
 }) {
   final referencia = agora ?? DateTime.now();
   final fimDoDia = DateTime(referencia.year, referencia.month, referencia.day, 23, 59, 59);
+  final inicioDoDia = DateTime(referencia.year, referencia.month, referencia.day);
 
   switch (periodo) {
+    case PeriodoRelatorio.hoje:
+      return (inicio: inicioDoDia, fim: fimDoDia);
     case PeriodoRelatorio.ultimos7Dias:
       return (inicio: fimDoDia.subtract(const Duration(days: 7)), fim: fimDoDia);
     case PeriodoRelatorio.ultimos30Dias:
