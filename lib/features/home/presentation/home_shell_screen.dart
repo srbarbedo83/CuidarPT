@@ -22,7 +22,7 @@ class HomeShellScreen extends ConsumerWidget {
     if (limite != null && totalAtual >= limite) {
       await mostrarLimiteAtingido(
         context,
-        mensagem: 'O plano Grátis permite $limite perfil de idoso. '
+        mensagem: 'O plano Grátis permite $limite ${limite == 1 ? 'perfil' : 'perfis'} de idoso. '
             'Subscreve o Premium para adicionares mais perfis.',
       );
       return;

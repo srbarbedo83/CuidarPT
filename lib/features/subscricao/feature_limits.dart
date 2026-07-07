@@ -31,7 +31,7 @@ class FeatureLimits {
       );
     }
     return const FeatureLimits(
-      maxPerfisIdoso: 1,
+      maxPerfisIdoso: 2,
       permitePdfPersonalizado: false,
       permiteHistoricoIlimitado: false,
       permiteExportacaoManual: false,

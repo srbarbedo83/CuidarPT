@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FeatureLimits', () {
-    test('plano grátis limita a 1 perfil de idoso e bloqueia extras Premium', () {
+    test('plano grátis limita a 2 perfis de idoso e bloqueia extras Premium', () {
       final limites = FeatureLimits.paraPlano(false);
 
-      expect(limites.maxPerfisIdoso, 1);
+      expect(limites.maxPerfisIdoso, 2);
       expect(limites.permitePdfPersonalizado, isFalse);
       expect(limites.permiteHistoricoIlimitado, isFalse);
       expect(limites.permiteExportacaoManual, isFalse);

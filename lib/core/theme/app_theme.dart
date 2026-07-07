@@ -10,4 +10,13 @@ class AppTheme {
       visualDensity: VisualDensity.comfortable,
     );
   }
+
+  static ThemeData get escuro {
+    return ThemeData(
+      colorSchemeSeed: Colors.indigo,
+      brightness: Brightness.dark,
+      useMaterial3: true,
+      visualDensity: VisualDensity.comfortable,
+    );
+  }
 }

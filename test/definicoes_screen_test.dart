@@ -26,7 +26,7 @@ void main() {
     expect(find.text('Subscrição'), findsOneWidget);
     expect(find.text('Perfis de idosos'), findsOneWidget);
     expect(find.text('Sobre'), findsOneWidget);
-    expect(find.text('€1,99/mês ou €19,99/ano'), findsOneWidget);
+    expect(find.text('€1,99/mês · €9,99/6 meses · €19,99/ano'), findsOneWidget);
 
     await tester.tap(find.text('Subscrever Premium'));
     await tester.pumpAndSettle();

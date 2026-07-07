@@ -3,19 +3,32 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
+import 'data/models/preferencias_app.dart';
+import 'features/definicoes/providers/preferencias_providers.dart';
 import 'features/home/presentation/home_shell_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/subscricao/providers/subscricao_providers.dart';
 
-class CuidarPTApp extends StatelessWidget {
+class CuidarPTApp extends ConsumerWidget {
   const CuidarPTApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tema = ref.watch(temaPreferidoProvider);
+    final escalaTexto = ref.watch(escalaTextoProvider);
+
+    final ThemeMode themeMode = switch (tema) {
+      TemaPreferido.sistema => ThemeMode.system,
+      TemaPreferido.claro => ThemeMode.light,
+      TemaPreferido.escuro => ThemeMode.dark,
+    };
+
     return MaterialApp(
       title: 'CuidarPT',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.claro,
+      darkTheme: AppTheme.escuro,
+      themeMode: themeMode,
       locale: const Locale('pt', 'PT'),
       supportedLocales: const [Locale('pt', 'PT'), Locale('pt')],
       localizationsDelegates: const [
@@ -23,6 +36,14 @@ class CuidarPTApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(escalaTexto),
+          ),
+          child: child!,
+        );
+      },
       home: const _AppStartupGate(),
     );
   }

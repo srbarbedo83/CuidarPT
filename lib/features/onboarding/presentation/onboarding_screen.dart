@@ -39,6 +39,51 @@ const _slides = [
   ),
 ];
 
+class _PerguntaQuantosIdosos extends StatelessWidget {
+  const _PerguntaQuantosIdosos({required this.quantidade, required this.onAlterado});
+
+  final int quantidade;
+  final ValueChanged<int> onAlterado;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.groups_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 32),
+          Text(
+            'Quantos idosos vais acompanhar?',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 24),
+          SegmentedButton<int>(
+            segments: const [
+              ButtonSegment(value: 1, label: Text('1')),
+              ButtonSegment(value: 2, label: Text('2')),
+              ButtonSegment(value: 3, label: Text('3+')),
+            ],
+            selected: {quantidade},
+            onSelectionChanged: (selecao) => onAlterado(selecao.first),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            quantidade >= 3
+                ? 'O plano Grátis permite até 2 perfis de idosos. Para 3 ou mais, '
+                    'vais precisar do Premium — já incluído nos teus 7 dias grátis.'
+                : 'O plano Grátis permite até 2 perfis de idosos.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -50,6 +95,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _controller = PageController();
   var _paginaAtual = 0;
   var _aIniciar = false;
+  var _quantosIdosos = 1;
+
+  static final _totalPaginas = _slides.length + 1;
 
   @override
   void dispose() {
@@ -64,7 +112,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ultimaPagina = _paginaAtual == _slides.length - 1;
+    final ultimaPagina = _paginaAtual == _totalPaginas - 1;
 
     return Scaffold(
       body: SafeArea(
@@ -73,9 +121,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _controller,
-                itemCount: _slides.length,
+                itemCount: _totalPaginas,
                 onPageChanged: (indice) => setState(() => _paginaAtual = indice),
                 itemBuilder: (context, indice) {
+                  if (indice == _slides.length) {
+                    return _PerguntaQuantosIdosos(
+                      quantidade: _quantosIdosos,
+                      onAlterado: (valor) => setState(() => _quantosIdosos = valor),
+                    );
+                  }
                   final slide = _slides[indice];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -104,7 +158,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                _slides.length,
+                _totalPaginas,
                 (indice) => AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   margin: const EdgeInsets.symmetric(horizontal: 4),
