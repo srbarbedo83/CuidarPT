@@ -18,29 +18,34 @@ const RegistoCuidadoDiarioSchema = CollectionSchema(
   name: r'RegistoCuidadoDiario',
   id: 3943698607774551920,
   properties: {
-    r'humorNivel': PropertySchema(
+    r'fotoPath': PropertySchema(
       id: 0,
+      name: r'fotoPath',
+      type: IsarType.string,
+    ),
+    r'humorNivel': PropertySchema(
+      id: 1,
       name: r'humorNivel',
       type: IsarType.long,
     ),
-    r'idosoId': PropertySchema(id: 1, name: r'idosoId', type: IsarType.long),
+    r'idosoId': PropertySchema(id: 2, name: r'idosoId', type: IsarType.long),
     r'itemRotinaId': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'itemRotinaId',
       type: IsarType.long,
     ),
     r'notaRapida': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'notaRapida',
       type: IsarType.string,
     ),
     r'timestamp': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'timestamp',
       type: IsarType.dateTime,
     ),
     r'tipo': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'tipo',
       type: IsarType.string,
       enumMap: _RegistoCuidadoDiariotipoEnumValueMap,
@@ -96,6 +101,12 @@ int _registoCuidadoDiarioEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.fotoPath;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.notaRapida;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -111,12 +122,13 @@ void _registoCuidadoDiarioSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.humorNivel);
-  writer.writeLong(offsets[1], object.idosoId);
-  writer.writeLong(offsets[2], object.itemRotinaId);
-  writer.writeString(offsets[3], object.notaRapida);
-  writer.writeDateTime(offsets[4], object.timestamp);
-  writer.writeString(offsets[5], object.tipo.name);
+  writer.writeString(offsets[0], object.fotoPath);
+  writer.writeLong(offsets[1], object.humorNivel);
+  writer.writeLong(offsets[2], object.idosoId);
+  writer.writeLong(offsets[3], object.itemRotinaId);
+  writer.writeString(offsets[4], object.notaRapida);
+  writer.writeDateTime(offsets[5], object.timestamp);
+  writer.writeString(offsets[6], object.tipo.name);
 }
 
 RegistoCuidadoDiario _registoCuidadoDiarioDeserialize(
@@ -126,15 +138,16 @@ RegistoCuidadoDiario _registoCuidadoDiarioDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = RegistoCuidadoDiario();
-  object.humorNivel = reader.readLongOrNull(offsets[0]);
+  object.fotoPath = reader.readStringOrNull(offsets[0]);
+  object.humorNivel = reader.readLongOrNull(offsets[1]);
   object.id = id;
-  object.idosoId = reader.readLong(offsets[1]);
-  object.itemRotinaId = reader.readLongOrNull(offsets[2]);
-  object.notaRapida = reader.readStringOrNull(offsets[3]);
-  object.timestamp = reader.readDateTime(offsets[4]);
+  object.idosoId = reader.readLong(offsets[2]);
+  object.itemRotinaId = reader.readLongOrNull(offsets[3]);
+  object.notaRapida = reader.readStringOrNull(offsets[4]);
+  object.timestamp = reader.readDateTime(offsets[5]);
   object.tipo =
       _RegistoCuidadoDiariotipoValueEnumMap[reader.readStringOrNull(
-        offsets[5],
+        offsets[6],
       )] ??
       TipoCuidadoDiario.higiene;
   return object;
@@ -148,16 +161,18 @@ P _registoCuidadoDiarioDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
-    case 1:
-      return (reader.readLong(offset)) as P;
-    case 2:
-      return (reader.readLongOrNull(offset)) as P;
-    case 3:
       return (reader.readStringOrNull(offset)) as P;
+    case 1:
+      return (reader.readLongOrNull(offset)) as P;
+    case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
+      return (reader.readLongOrNull(offset)) as P;
     case 4:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
+      return (reader.readDateTime(offset)) as P;
+    case 6:
       return (_RegistoCuidadoDiariotipoValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
@@ -506,6 +521,213 @@ extension RegistoCuidadoDiarioQueryFilter
           RegistoCuidadoDiario,
           QFilterCondition
         > {
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'fotoPath'),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'fotoPath'),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'fotoPath',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'fotoPath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'fotoPath',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'fotoPath', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<
+    RegistoCuidadoDiario,
+    RegistoCuidadoDiario,
+    QAfterFilterCondition
+  >
+  fotoPathIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'fotoPath', value: ''),
+      );
+    });
+  }
+
   QueryBuilder<
     RegistoCuidadoDiario,
     RegistoCuidadoDiario,
@@ -1321,6 +1543,20 @@ extension RegistoCuidadoDiarioQueryLinks
 extension RegistoCuidadoDiarioQuerySortBy
     on QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QSortBy> {
   QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  sortByFotoPath() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fotoPath', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  sortByFotoPathDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fotoPath', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
   sortByHumorNivel() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'humorNivel', Sort.asc);
@@ -1407,6 +1643,20 @@ extension RegistoCuidadoDiarioQuerySortBy
 
 extension RegistoCuidadoDiarioQuerySortThenBy
     on QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QSortThenBy> {
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  thenByFotoPath() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fotoPath', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
+  thenByFotoPathDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fotoPath', Sort.desc);
+    });
+  }
+
   QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QAfterSortBy>
   thenByHumorNivel() {
     return QueryBuilder.apply(this, (query) {
@@ -1509,6 +1759,13 @@ extension RegistoCuidadoDiarioQuerySortThenBy
 extension RegistoCuidadoDiarioQueryWhereDistinct
     on QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QDistinct> {
   QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QDistinct>
+  distinctByFotoPath({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fotoPath', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, RegistoCuidadoDiario, QDistinct>
   distinctByHumorNivel() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'humorNivel');
@@ -1561,6 +1818,13 @@ extension RegistoCuidadoDiarioQueryProperty
   QueryBuilder<RegistoCuidadoDiario, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<RegistoCuidadoDiario, String?, QQueryOperations>
+  fotoPathProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fotoPath');
     });
   }
 

@@ -584,8 +584,14 @@ class _CuidadoDiarioTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final nota = registo.notaRapida;
     final humor = registo.humorNivel;
+    final fotoPath = registo.fotoPath;
     return ListTile(
-      leading: Icon(tipoCuidadoDiarioIcone(registo.tipo)),
+      leading: fotoPath != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.file(File(fotoPath), width: 40, height: 40, fit: BoxFit.cover),
+            )
+          : Icon(tipoCuidadoDiarioIcone(registo.tipo)),
       title: Text(
         '${tipoCuidadoDiarioLabel(registo.tipo)}${humor != null ? ' · nível $humor/5' : ''}',
       ),

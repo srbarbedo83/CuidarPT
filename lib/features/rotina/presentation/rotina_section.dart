@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/item_rotina.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
@@ -11,6 +15,9 @@ import '../providers/rotina_providers.dart';
 bool _mesmoDia(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
+
+const _sugestoesHigiene = ['Banho', 'Escovar os dentes', 'Higiene íntima', 'Pentear/arranjar cabelo'];
+const _sugestoesAlimentacao = ['Pequeno-almoço', 'Almoço', 'Lanche', 'Jantar', 'Hidratação/Água'];
 
 /// Secção Premium de rotina de higiene/alimentação no perfil do idoso.
 /// Minimizada por padrão (ExpansionTile fechado); lista itens recorrentes
@@ -38,6 +45,23 @@ class RotinaSection extends ConsumerWidget {
                 ],
                 selected: {categoria},
                 onSelectionChanged: (selecao) => setStateDialog(() => categoria = selecao.first),
+              ),
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    for (final sugestao in categoria == CategoriaRotina.higiene
+                        ? _sugestoesHigiene
+                        : _sugestoesAlimentacao)
+                      ActionChip(
+                        label: Text(sugestao),
+                        onPressed: () => setStateDialog(() => nomeController.text = sugestao),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -73,6 +97,39 @@ class RotinaSection extends ConsumerWidget {
 
   Future<void> _apagarItem(WidgetRef ref, ItemRotina item) {
     return ref.read(itemRotinaRepositoryProvider).delete(item.id);
+  }
+
+  Future<void> _adicionarFoto(BuildContext context, WidgetRef ref, RegistoCuidadoDiario registo) async {
+    final origem = await showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_camera_outlined),
+              title: const Text('Tirar fotografia'),
+              onTap: () => Navigator.of(context).pop(ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: const Text('Escolher da galeria'),
+              onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (origem == null || !context.mounted) return;
+
+    final ficheiro = await ImagePicker().pickImage(source: origem, maxWidth: 1600, imageQuality: 85);
+    if (ficheiro == null) return;
+
+    final caminhoAnterior = registo.fotoPath;
+    final caminhoGuardado = await PhotoStorage.guardarFotoRefeicao(File(ficheiro.path));
+    registo.fotoPath = caminhoGuardado;
+    await ref.read(registoCuidadoDiarioRepositoryProvider).save(registo);
+    await PhotoStorage.apagarFoto(caminhoAnterior);
   }
 
   RegistoCuidadoDiario? _conclusaoHoje(ItemRotina item, List<RegistoCuidadoDiario> cuidadosHoje) {
@@ -122,10 +179,23 @@ class RotinaSection extends ConsumerWidget {
                 subtitle: Text(item.categoria == CategoriaRotina.higiene ? 'Higiene' : 'Alimentação'),
                 value: _conclusaoHoje(item, cuidadosHoje) != null,
                 onChanged: (valor) => _alternarConcluido(ref, item, valor ?? false, cuidadosHoje),
-                secondary: IconButton(
-                  icon: const Icon(Icons.delete_outline),
-                  tooltip: 'Apagar item',
-                  onPressed: () => _apagarItem(ref, item),
+                secondary: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (item.categoria == CategoriaRotina.alimentacao &&
+                        _conclusaoHoje(item, cuidadosHoje) != null)
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt_outlined),
+                        tooltip: 'Foto do prato',
+                        onPressed: () =>
+                            _adicionarFoto(context, ref, _conclusaoHoje(item, cuidadosHoje)!),
+                      ),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      tooltip: 'Apagar item',
+                      onPressed: () => _apagarItem(ref, item),
+                    ),
+                  ],
                 ),
               ),
             Padding(

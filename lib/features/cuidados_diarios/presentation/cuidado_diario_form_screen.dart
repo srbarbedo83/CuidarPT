@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/utils/photo_storage.dart';
 import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
@@ -26,6 +30,7 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
   late TipoCuidadoDiario _tipo;
   late DateTime _timestamp;
   int _humorNivel = 3;
+  String? _fotoPath;
   bool _aGuardar = false;
 
   bool get _aEditar => widget.registo != null;
@@ -38,6 +43,7 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
     _tipo = registo?.tipo ?? TipoCuidadoDiario.higiene;
     _timestamp = registo?.timestamp ?? DateTime.now();
     _humorNivel = registo?.humorNivel ?? 3;
+    _fotoPath = registo?.fotoPath;
   }
 
   @override
@@ -66,6 +72,39 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
     setState(() => _timestamp = DateTime(data.year, data.month, data.day, hora.hour, hora.minute));
   }
 
+  Future<void> _escolherFotoPrato() async {
+    final origem = await showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_camera_outlined),
+              title: const Text('Tirar fotografia'),
+              onTap: () => Navigator.of(context).pop(ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: const Text('Escolher da galeria'),
+              onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (origem == null || !mounted) return;
+
+    final ficheiro = await ImagePicker().pickImage(source: origem, maxWidth: 1600, imageQuality: 85);
+    if (ficheiro == null || !mounted) return;
+
+    final caminhoAnterior = _fotoPath;
+    final caminhoGuardado = await PhotoStorage.guardarFotoRefeicao(File(ficheiro.path));
+    if (!mounted) return;
+    setState(() => _fotoPath = caminhoGuardado);
+    await PhotoStorage.apagarFoto(caminhoAnterior);
+  }
+
   Future<void> _guardar() async {
     setState(() => _aGuardar = true);
 
@@ -76,6 +115,7 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
       ..tipo = _tipo
       ..notaRapida = nota.isEmpty ? null : nota
       ..humorNivel = _tipo == TipoCuidadoDiario.humor ? _humorNivel : null
+      ..fotoPath = _tipo == TipoCuidadoDiario.alimentacao ? _fotoPath : null
       ..timestamp = _timestamp;
 
     await ref.read(registoCuidadoDiarioRepositoryProvider).save(registo);
@@ -103,6 +143,33 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
                 ),
             ],
           ),
+          if (_tipo == TipoCuidadoDiario.alimentacao) ...[
+            const SizedBox(height: 24),
+            Text('Foto do prato (opcional)', style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 4),
+            Text(
+              'Guardada só neste telemóvel. Não entra no relatório PDF.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                if (_fotoPath != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(File(_fotoPath!), width: 72, height: 72, fit: BoxFit.cover),
+                    ),
+                  ),
+                TextButton.icon(
+                  onPressed: _escolherFotoPrato,
+                  icon: const Icon(Icons.camera_alt_outlined),
+                  label: Text(_fotoPath == null ? 'Adicionar foto' : 'Alterar foto'),
+                ),
+              ],
+            ),
+          ],
           if (_tipo == TipoCuidadoDiario.humor) ...[
             const SizedBox(height: 24),
             Text('Nível de humor', style: Theme.of(context).textTheme.titleSmall),

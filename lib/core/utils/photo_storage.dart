@@ -43,6 +43,10 @@ class PhotoStorage {
     return _guardar(origem, pasta: 'documentos_idosos');
   }
 
+  static Future<String> guardarFotoRefeicao(File origem) {
+    return _guardar(origem, pasta: 'fotos_refeicoes');
+  }
+
   /// Apaga uma foto previamente guardada, se ainda existir.
   static Future<void> apagarFoto(String? caminho) async {
     if (caminho == null) return;

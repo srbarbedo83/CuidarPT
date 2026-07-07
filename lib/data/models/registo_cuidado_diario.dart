@@ -23,6 +23,10 @@ class RegistoCuidadoDiario {
   /// [ItemRotina]) como concluído no dia, para saber o que já foi feito hoje.
   int? itemRotinaId;
 
+  /// Foto do prato (só usada em registos de alimentação), guardada na pasta
+  /// privada da app. Nunca sai do telemóvel nem entra no relatório PDF.
+  String? fotoPath;
+
   @Index()
   late DateTime timestamp;
 }
