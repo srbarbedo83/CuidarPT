@@ -121,18 +121,22 @@ class RelatorioPdfBuilder {
     if (consultas.isEmpty) {
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [_tituloSeccao('Consultas no período'), pw.Text('Sem consultas registadas no período.')],
+        children: [
+          _tituloSeccao('Consultas e tratamentos no período'),
+          pw.Text('Sem consultas ou tratamentos registados no período.'),
+        ],
       );
     }
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _tituloSeccao('Consultas no período'),
+        _tituloSeccao('Consultas e tratamentos no período'),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Data', 'Especialidade', 'Local', 'Médico', 'Notas'],
+          headers: ['Tipo', 'Data', 'Especialidade/Tratamento', 'Local', 'Profissional', 'Notas'],
           data: consultas
               .map((consulta) => [
+                    consulta.tipo == TipoRegistoConsulta.tratamento ? 'Tratamento' : 'Consulta',
                     _formatoDataHora.format(consulta.dataHora),
                     consulta.especialidade,
                     consulta.local ?? '-',

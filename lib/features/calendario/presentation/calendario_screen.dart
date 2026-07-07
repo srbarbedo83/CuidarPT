@@ -129,6 +129,8 @@ class _ListaEventosDia extends StatelessWidget {
         return Icons.medication_outlined;
       case TipoEventoCalendario.consulta:
         return Icons.event_note_outlined;
+      case TipoEventoCalendario.tratamento:
+        return Icons.healing_outlined;
       case TipoEventoCalendario.cuidado:
         return Icons.favorite_outline;
     }
@@ -143,6 +145,7 @@ class _ListaEventosDia extends StatelessWidget {
           MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso, registo: registo)),
         );
       case TipoEventoCalendario.consulta:
+      case TipoEventoCalendario.tratamento:
         final registo = consultas.where((c) => c.id == evento.registoId).firstOrNull;
         if (registo == null) return;
         Navigator.of(context).push(

@@ -60,6 +60,12 @@ const RegistoConsultaSchema = CollectionSchema(
       name: r'proximaConsultaData',
       type: IsarType.dateTime,
     ),
+    r'tipo': PropertySchema(
+      id: 11,
+      name: r'tipo',
+      type: IsarType.string,
+      enumMap: _RegistoConsultatipoEnumValueMap,
+    ),
   },
 
   estimateSize: _registoConsultaEstimateSize,
@@ -117,6 +123,7 @@ int _registoConsultaEstimateSize(
     }
   }
   bytesCount += 3 + object.notificacaoIds.length * 8;
+  bytesCount += 3 + object.tipo.name.length * 3;
   return bytesCount;
 }
 
@@ -137,6 +144,7 @@ void _registoConsultaSerialize(
   writer.writeString(offsets[8], object.notas);
   writer.writeLongList(offsets[9], object.notificacaoIds);
   writer.writeDateTime(offsets[10], object.proximaConsultaData);
+  writer.writeString(offsets[11], object.tipo.name);
 }
 
 RegistoConsulta _registoConsultaDeserialize(
@@ -158,6 +166,9 @@ RegistoConsulta _registoConsultaDeserialize(
   object.notas = reader.readStringOrNull(offsets[8]);
   object.notificacaoIds = reader.readLongList(offsets[9]) ?? [];
   object.proximaConsultaData = reader.readDateTimeOrNull(offsets[10]);
+  object.tipo =
+      _RegistoConsultatipoValueEnumMap[reader.readStringOrNull(offsets[11])] ??
+      TipoRegistoConsulta.consulta;
   return object;
 }
 
@@ -190,10 +201,25 @@ P _registoConsultaDeserializeProp<P>(
       return (reader.readLongList(offset) ?? []) as P;
     case 10:
       return (reader.readDateTimeOrNull(offset)) as P;
+    case 11:
+      return (_RegistoConsultatipoValueEnumMap[reader.readStringOrNull(
+                offset,
+              )] ??
+              TipoRegistoConsulta.consulta)
+          as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _RegistoConsultatipoEnumValueMap = {
+  r'consulta': r'consulta',
+  r'tratamento': r'tratamento',
+};
+const _RegistoConsultatipoValueEnumMap = {
+  r'consulta': TipoRegistoConsulta.consulta,
+  r'tratamento': TipoRegistoConsulta.tratamento,
+};
 
 Id _registoConsultaGetId(RegistoConsulta object) {
   return object.id;
@@ -1484,6 +1510,147 @@ extension RegistoConsultaQueryFilter
       );
     });
   }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoEqualTo(TipoRegistoConsulta value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'tipo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoGreaterThan(
+    TipoRegistoConsulta value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'tipo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoLessThan(
+    TipoRegistoConsulta value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'tipo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoBetween(
+    TipoRegistoConsulta lower,
+    TipoRegistoConsulta upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'tipo',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'tipo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'tipo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'tipo',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'tipo',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'tipo', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  tipoIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'tipo', value: ''),
+      );
+    });
+  }
 }
 
 extension RegistoConsultaQueryObject
@@ -1628,6 +1795,19 @@ extension RegistoConsultaQuerySortBy
   sortByProximaConsultaDataDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'proximaConsultaData', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy> sortByTipo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tipo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  sortByTipoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tipo', Sort.desc);
     });
   }
 }
@@ -1782,6 +1962,19 @@ extension RegistoConsultaQuerySortThenBy
       return query.addSortBy(r'proximaConsultaData', Sort.desc);
     });
   }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy> thenByTipo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tipo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  thenByTipoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tipo', Sort.desc);
+    });
+  }
 }
 
 extension RegistoConsultaQueryWhereDistinct
@@ -1867,6 +2060,14 @@ extension RegistoConsultaQueryWhereDistinct
       return query.addDistinctBy(r'proximaConsultaData');
     });
   }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByTipo({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tipo', caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension RegistoConsultaQueryProperty
@@ -1946,6 +2147,13 @@ extension RegistoConsultaQueryProperty
   proximaConsultaDataProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'proximaConsultaData');
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, TipoRegistoConsulta, QQueryOperations>
+  tipoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tipo');
     });
   }
 }

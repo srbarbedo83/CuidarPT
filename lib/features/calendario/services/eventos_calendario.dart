@@ -6,7 +6,7 @@ import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 
-enum TipoEventoCalendario { medicacao, consulta, cuidado }
+enum TipoEventoCalendario { medicacao, consulta, tratamento, cuidado }
 
 /// Cor associada a cada tipo de evento no calendário. As consultas usam uma
 /// cor mais viva porque costumam ser compromissos mais críticos de não
@@ -17,6 +17,8 @@ Color corTipoEventoCalendario(TipoEventoCalendario tipo) {
       return Colors.blue;
     case TipoEventoCalendario.consulta:
       return Colors.redAccent;
+    case TipoEventoCalendario.tratamento:
+      return Colors.purple;
     case TipoEventoCalendario.cuidado:
       return Colors.teal;
   }
@@ -86,7 +88,9 @@ List<EventoCalendario> eventosDoDia(
     final minutos = consulta.dataHora.minute.toString().padLeft(2, '0');
     eventos.add(
       EventoCalendario(
-        tipo: TipoEventoCalendario.consulta,
+        tipo: consulta.tipo == TipoRegistoConsulta.tratamento
+            ? TipoEventoCalendario.tratamento
+            : TipoEventoCalendario.consulta,
         titulo: consulta.especialidade,
         subtitulo: '$horas:$minutos',
         registoId: consulta.id,

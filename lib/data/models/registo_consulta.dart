@@ -2,6 +2,8 @@ import 'package:isar_community/isar.dart';
 
 part 'registo_consulta.g.dart';
 
+enum TipoRegistoConsulta { consulta, tratamento }
+
 @collection
 class RegistoConsulta {
   Id id = Isar.autoIncrement;
@@ -9,7 +11,11 @@ class RegistoConsulta {
   @Index()
   late int idosoId;
 
-  /// Ex.: "Clínica geral", "Cardiologia", "Ortopedia".
+  @Enumerated(EnumType.name)
+  TipoRegistoConsulta tipo = TipoRegistoConsulta.consulta;
+
+  /// Para consultas: especialidade (ex.: "Cardiologia"). Para tratamentos:
+  /// o próprio nome do tratamento (ex.: "Fisioterapia", "Penso").
   late String especialidade;
 
   /// Texto livre — ex.: "Centro de Saúde", "Hospital", "Clínica privada".

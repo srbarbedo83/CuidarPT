@@ -24,6 +24,7 @@ class ConsultaFormScreen extends ConsumerStatefulWidget {
 
 class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   final _formKey = GlobalKey<FormState>();
+  late TipoRegistoConsulta _tipo;
   late String _especialidade;
   late String _local;
   late final TextEditingController _medicoController;
@@ -35,11 +36,13 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   bool _aGuardar = false;
 
   bool get _aEditar => widget.consulta != null;
+  bool get _ehTratamento => _tipo == TipoRegistoConsulta.tratamento;
 
   @override
   void initState() {
     super.initState();
     final consulta = widget.consulta;
+    _tipo = consulta?.tipo ?? TipoRegistoConsulta.consulta;
     _especialidade = consulta?.especialidade ?? '';
     _local = consulta?.local ?? '';
     _medicoController = TextEditingController(text: consulta?.nomeMedico ?? '');
@@ -101,6 +104,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
     final consulta = widget.consulta ?? RegistoConsulta();
     consulta
       ..idosoId = widget.idoso.id
+      ..tipo = _tipo
       ..especialidade = _especialidade.trim()
       ..local = local.isEmpty ? null : local
       ..nomeMedico = medico.isEmpty ? null : medico
@@ -123,18 +127,33 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tituloEcra = _aEditar
+        ? (_ehTratamento ? 'Editar tratamento' : 'Editar consulta')
+        : (_ehTratamento ? 'Novo tratamento' : 'Nova consulta');
+    final opcoesEspecialidade = _ehTratamento ? tratamentosComuns : especialidadesComuns;
+
     return Scaffold(
-      appBar: AppBar(title: Text(_aEditar ? 'Editar consulta' : 'Nova consulta')),
+      appBar: AppBar(title: Text(tituloEcra)),
       body: Form(
         key: _formKey,
         child: ListView(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
+            SegmentedButton<TipoRegistoConsulta>(
+              segments: const [
+                ButtonSegment(value: TipoRegistoConsulta.consulta, label: Text('Consulta médica')),
+                ButtonSegment(value: TipoRegistoConsulta.tratamento, label: Text('Tratamento')),
+              ],
+              selected: {_tipo},
+              onSelectionChanged: (selecao) => setState(() => _tipo = selecao.first),
+            ),
+            const SizedBox(height: 16),
             Autocomplete<String>(
+              key: ValueKey(_tipo),
               initialValue: TextEditingValue(text: _especialidade),
               optionsBuilder: (valor) {
-                if (valor.text.isEmpty) return especialidadesComuns;
-                return especialidadesComuns.where(
+                if (valor.text.isEmpty) return opcoesEspecialidade;
+                return opcoesEspecialidade.where(
                   (e) => e.toLowerCase().contains(valor.text.toLowerCase()),
                 );
               },
@@ -143,14 +162,17 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                 return TextFormField(
                   controller: controller,
                   focusNode: focusNode,
-                  decoration: const InputDecoration(
-                    labelText: 'Especialidade *',
-                    hintText: 'Ex.: Clínica geral, Cardiologia',
+                  decoration: InputDecoration(
+                    labelText: _ehTratamento ? 'Tipo de tratamento *' : 'Especialidade *',
+                    hintText: _ehTratamento
+                        ? 'Ex.: Fisioterapia, Enfermagem'
+                        : 'Ex.: Clínica geral, Cardiologia',
                   ),
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (valor) => _especialidade = valor,
-                  validator: (valor) =>
-                      (valor == null || valor.trim().isEmpty) ? 'Indica a especialidade' : null,
+                  validator: (valor) => (valor == null || valor.trim().isEmpty)
+                      ? (_ehTratamento ? 'Indica o tipo de tratamento' : 'Indica a especialidade')
+                      : null,
                 );
               },
             ),
@@ -178,9 +200,9 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _medicoController,
-              decoration: const InputDecoration(
-                labelText: 'Nome do médico',
-                hintText: 'Ex.: Dr. António Silva',
+              decoration: InputDecoration(
+                labelText: _ehTratamento ? 'Profissional' : 'Nome do médico',
+                hintText: _ehTratamento ? 'Ex.: Enf. Maria Santos' : 'Ex.: Dr. António Silva',
               ),
               textCapitalization: TextCapitalization.words,
             ),
@@ -195,7 +217,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             const SizedBox(height: 16),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Próxima consulta (opcional)'),
+              title: Text(_ehTratamento ? 'Próximo tratamento (opcional)' : 'Próxima consulta (opcional)'),
               subtitle: Text(
                 _proximaConsultaData != null
                     ? DateFormat('dd/MM/yyyy').format(_proximaConsultaData!)
@@ -212,7 +234,11 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('Lembrete ativo'),
-              subtitle: const Text('Avisa antes da consulta e da próxima consulta, se forem futuras'),
+              subtitle: Text(
+                _ehTratamento
+                    ? 'Avisa antes do tratamento e do próximo, se forem futuros'
+                    : 'Avisa antes da consulta e da próxima consulta, se forem futuras',
+              ),
               value: _lembreteAtivo,
               onChanged: (valor) => setState(() => _lembreteAtivo = valor),
             ),

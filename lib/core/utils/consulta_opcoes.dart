@@ -27,6 +27,20 @@ const especialidadesComuns = [
   'Medicina dentária',
 ];
 
+/// Sugestões comuns para o nome do tratamento (quando não é uma consulta
+/// médica) — ex.: fisioterapia, mudança de penso, análises.
+const tratamentosComuns = [
+  'Fisioterapia',
+  'Enfermagem / mudança de penso',
+  'Injeção',
+  'Vacina',
+  'Análises ao sangue',
+  'Podologia',
+  'Psicologia',
+  'Terapia da fala',
+  'Terapia ocupacional',
+];
+
 const locaisComuns = [
   'Centro de Saúde',
   'Hospital',

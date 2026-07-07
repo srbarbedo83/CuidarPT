@@ -108,8 +108,8 @@ class IdosoDetailScreen extends ConsumerWidget {
           ),
           const Divider(height: 32),
           _CabecalhoSeccao(
-            titulo: 'Consultas',
-            tooltip: 'Adicionar consulta',
+            titulo: 'Consultas e tratamentos',
+            tooltip: 'Adicionar consulta ou tratamento',
             onAdicionar: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso)),
             ),
@@ -119,7 +119,7 @@ class IdosoDetailScreen extends ConsumerWidget {
               if (consultas.isEmpty) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('Ainda não há consultas registadas.'),
+                  child: Text('Ainda não há consultas ou tratamentos registados.'),
                 );
               }
               return Column(
@@ -356,8 +356,10 @@ class _ConsultaTile extends ConsumerWidget {
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar consulta'),
-        content: Text('Queres mesmo apagar a consulta de "${consulta.especialidade}"?'),
+        title: Text(consulta.tipo == TipoRegistoConsulta.tratamento
+            ? 'Apagar tratamento'
+            : 'Apagar consulta'),
+        content: Text('Queres mesmo apagar "${consulta.especialidade}"?'),
         actions: [
           TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
           TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
@@ -373,8 +375,9 @@ class _ConsultaTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proxima = consulta.proximaConsultaData;
+    final ehTratamento = consulta.tipo == TipoRegistoConsulta.tratamento;
     return ListTile(
-      leading: const Icon(Icons.event_note_outlined),
+      leading: Icon(ehTratamento ? Icons.healing_outlined : Icons.event_note_outlined),
       title: Text(consulta.especialidade),
       subtitle: Text(
         '${DateFormat('dd/MM/yyyy HH:mm').format(consulta.dataHora)}'
