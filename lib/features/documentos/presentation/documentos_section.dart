@@ -113,16 +113,25 @@ class DocumentosSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final documentosAsync = ref.watch(documentoListProvider(idoso.id));
+    final documentos = ref.watch(documentoListProvider(idoso.id)).valueOrNull ?? const [];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ExpansionTile(
+      title: Text(
+        'Documentos',
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(documentos.isEmpty ? 'Nenhum documento' : '${documentos.length} documentos'),
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              Expanded(child: Text('Documentos', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(
+                child: Text(
+                  'Receitas e exames guardados apenas neste telemóvel.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
               IconButton(
                 icon: const Icon(Icons.add),
                 tooltip: 'Adicionar documento',
@@ -131,84 +140,66 @@ class DocumentosSection extends ConsumerWidget {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'Receitas e exames guardados apenas neste telemóvel.',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
         const SizedBox(height: 8),
-        documentosAsync.when(
-          data: (documentos) {
-            if (documentos.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text('Ainda não há documentos guardados.'),
-              );
-            }
-            return SizedBox(
-              height: 140,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: documentos.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 12),
-                itemBuilder: (context, indice) {
-                  final documento = documentos[indice];
-                  return GestureDetector(
-                    onTap: () => _ver(context, documento),
-                    child: Column(
-                      children: [
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                File(documento.caminhoFicheiro),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
+        if (documentos.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text('Ainda não há documentos guardados.'),
+          )
+        else
+          SizedBox(
+            height: 140,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: documentos.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 12),
+              itemBuilder: (context, indice) {
+                final documento = documentos[indice];
+                return GestureDetector(
+                  onTap: () => _ver(context, documento),
+                  child: Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.file(
+                              File(documento.caminhoFicheiro),
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
                             ),
-                            Positioned(
-                              right: -8,
-                              top: -8,
-                              child: IconButton(
-                                icon: const Icon(Icons.cancel, size: 20),
-                                tooltip: 'Apagar documento',
-                                onPressed: () => _apagar(context, ref, documento),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 100,
-                          child: Text(
-                            documento.titulo,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodySmall,
                           ),
+                          Positioned(
+                            right: -8,
+                            top: -8,
+                            child: IconButton(
+                              icon: const Icon(Icons.cancel, size: 20),
+                              tooltip: 'Apagar documento',
+                              onPressed: () => _apagar(context, ref, documento),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          documento.titulo,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-          loading: () => const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
-          error: (erro, _) => Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text('Erro ao carregar documentos: $erro'),
-          ),
-        ),
+        const SizedBox(height: 8),
       ],
     );
   }

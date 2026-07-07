@@ -18,4 +18,11 @@ class InfoProfissional {
 
   String? contacto;
   String? notas;
+
+  /// Especialidade indicada manualmente, para complementar as que já são
+  /// detetadas automaticamente a partir das consultas.
+  String? especialidade;
+
+  /// Instituição associada — hospital, clínica, farmácia, etc.
+  String? instituicao;
 }

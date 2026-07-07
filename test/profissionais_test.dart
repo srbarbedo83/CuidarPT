@@ -69,5 +69,22 @@ void main() {
       expect(profissionais.single.contacto, isNull);
       expect(profissionais.single.notas, isNull);
     });
+
+    test('junta instituição e especialidade manual, complementando as detetadas', () {
+      final consultas = [_consulta(especialidade: 'Cardiologia', nomeMedico: 'Dr. António Silva')];
+      final infos = [
+        InfoProfissional()
+          ..idosoId = 1
+          ..nome = 'Dr. António Silva'
+          ..instituicao = 'Hospital de Santa Maria'
+          ..especialidade = 'Medicina Interna',
+      ];
+
+      final profissionais = profissionaisDoIdoso(consultas, infos: infos);
+
+      expect(profissionais.single.instituicao, 'Hospital de Santa Maria');
+      expect(profissionais.single.especialidadeManual, 'Medicina Interna');
+      expect(profissionais.single.especialidades, {'Cardiologia', 'Medicina Interna'});
+    });
   });
 }

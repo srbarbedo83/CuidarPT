@@ -114,7 +114,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
               Expanded(
                 child: TextFormField(
                   controller: _sistolicaController,
-                  decoration: const InputDecoration(labelText: 'Sistólica'),
+                  decoration: const InputDecoration(labelText: 'Sistólica (máxima)'),
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -122,7 +122,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
               Expanded(
                 child: TextFormField(
                   controller: _diastolicaController,
-                  decoration: const InputDecoration(labelText: 'Diastólica'),
+                  decoration: const InputDecoration(labelText: 'Diastólica (mínima)'),
                   keyboardType: TextInputType.number,
                 ),
               ),

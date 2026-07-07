@@ -22,9 +22,19 @@ const InfoProfissionalSchema = CollectionSchema(
       name: r'contacto',
       type: IsarType.string,
     ),
-    r'idosoId': PropertySchema(id: 1, name: r'idosoId', type: IsarType.long),
-    r'nome': PropertySchema(id: 2, name: r'nome', type: IsarType.string),
-    r'notas': PropertySchema(id: 3, name: r'notas', type: IsarType.string),
+    r'especialidade': PropertySchema(
+      id: 1,
+      name: r'especialidade',
+      type: IsarType.string,
+    ),
+    r'idosoId': PropertySchema(id: 2, name: r'idosoId', type: IsarType.long),
+    r'instituicao': PropertySchema(
+      id: 3,
+      name: r'instituicao',
+      type: IsarType.string,
+    ),
+    r'nome': PropertySchema(id: 4, name: r'nome', type: IsarType.string),
+    r'notas': PropertySchema(id: 5, name: r'notas', type: IsarType.string),
   },
 
   estimateSize: _infoProfissionalEstimateSize,
@@ -81,6 +91,18 @@ int _infoProfissionalEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.especialidade;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.instituicao;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.nome.length * 3;
   {
     final value = object.notas;
@@ -98,9 +120,11 @@ void _infoProfissionalSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.contacto);
-  writer.writeLong(offsets[1], object.idosoId);
-  writer.writeString(offsets[2], object.nome);
-  writer.writeString(offsets[3], object.notas);
+  writer.writeString(offsets[1], object.especialidade);
+  writer.writeLong(offsets[2], object.idosoId);
+  writer.writeString(offsets[3], object.instituicao);
+  writer.writeString(offsets[4], object.nome);
+  writer.writeString(offsets[5], object.notas);
 }
 
 InfoProfissional _infoProfissionalDeserialize(
@@ -111,10 +135,12 @@ InfoProfissional _infoProfissionalDeserialize(
 ) {
   final object = InfoProfissional();
   object.contacto = reader.readStringOrNull(offsets[0]);
+  object.especialidade = reader.readStringOrNull(offsets[1]);
   object.id = id;
-  object.idosoId = reader.readLong(offsets[1]);
-  object.nome = reader.readString(offsets[2]);
-  object.notas = reader.readStringOrNull(offsets[3]);
+  object.idosoId = reader.readLong(offsets[2]);
+  object.instituicao = reader.readStringOrNull(offsets[3]);
+  object.nome = reader.readString(offsets[4]);
+  object.notas = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -128,10 +154,14 @@ P _infoProfissionalDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -555,6 +585,165 @@ extension InfoProfissionalQueryFilter
   }
 
   QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'especialidade'),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'especialidade'),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'especialidade',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'especialidade',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'especialidade',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'especialidade', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  especialidadeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'especialidade', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
   idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -660,6 +849,165 @@ extension InfoProfissionalQueryFilter
           upper: upper,
           includeUpper: includeUpper,
         ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'instituicao'),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'instituicao'),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'instituicao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'instituicao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'instituicao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'instituicao',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'instituicao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'instituicao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'instituicao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'instituicao',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'instituicao', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterFilterCondition>
+  instituicaoIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'instituicao', value: ''),
       );
     });
   }
@@ -988,6 +1336,20 @@ extension InfoProfissionalQuerySortBy
   }
 
   QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  sortByEspecialidade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'especialidade', Sort.asc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  sortByEspecialidadeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'especialidade', Sort.desc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
   sortByIdosoId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.asc);
@@ -998,6 +1360,20 @@ extension InfoProfissionalQuerySortBy
   sortByIdosoIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  sortByInstituicao() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'instituicao', Sort.asc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  sortByInstituicaoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'instituicao', Sort.desc);
     });
   }
 
@@ -1044,6 +1420,20 @@ extension InfoProfissionalQuerySortThenBy
     });
   }
 
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  thenByEspecialidade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'especialidade', Sort.asc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  thenByEspecialidadeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'especialidade', Sort.desc);
+    });
+  }
+
   QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1068,6 +1458,20 @@ extension InfoProfissionalQuerySortThenBy
   thenByIdosoIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idosoId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  thenByInstituicao() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'instituicao', Sort.asc);
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QAfterSortBy>
+  thenByInstituicaoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'instituicao', Sort.desc);
     });
   }
 
@@ -1108,9 +1512,26 @@ extension InfoProfissionalQueryWhereDistinct
   }
 
   QueryBuilder<InfoProfissional, InfoProfissional, QDistinct>
+  distinctByEspecialidade({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(
+        r'especialidade',
+        caseSensitive: caseSensitive,
+      );
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QDistinct>
   distinctByIdosoId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idosoId');
+    });
+  }
+
+  QueryBuilder<InfoProfissional, InfoProfissional, QDistinct>
+  distinctByInstituicao({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'instituicao', caseSensitive: caseSensitive);
     });
   }
 
@@ -1145,9 +1566,23 @@ extension InfoProfissionalQueryProperty
     });
   }
 
+  QueryBuilder<InfoProfissional, String?, QQueryOperations>
+  especialidadeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'especialidade');
+    });
+  }
+
   QueryBuilder<InfoProfissional, int, QQueryOperations> idosoIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idosoId');
+    });
+  }
+
+  QueryBuilder<InfoProfissional, String?, QQueryOperations>
+  instituicaoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'instituicao');
     });
   }
 

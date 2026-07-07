@@ -282,7 +282,19 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
               onTap: _escolherDataNascimento,
             ),
             const SizedBox(height: 16),
-            Text('Contactos de emergência', style: Theme.of(context).textTheme.titleSmall),
+            Row(
+              children: [
+                Icon(Icons.emergency_outlined, color: Colors.red.shade700, size: 20),
+                const SizedBox(width: 6),
+                Text(
+                  'Contactos de emergência',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Colors.red.shade700,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
             for (var indice = 0; indice < _contactos.length; indice++)
               Padding(

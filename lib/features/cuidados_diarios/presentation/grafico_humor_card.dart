@@ -37,7 +37,12 @@ class _GraficoHumorCardState extends ConsumerState<GraficoHumorCard> {
           children: [
             Row(
               children: [
-                Expanded(child: Text('Humor', style: Theme.of(context).textTheme.titleMedium)),
+                Expanded(
+                  child: Text(
+                    'Estado de Humor',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
                 SegmentedButton<int>(
                   segments: const [
                     ButtonSegment(value: 7, label: Text('7 dias')),

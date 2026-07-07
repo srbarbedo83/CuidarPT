@@ -16,7 +16,6 @@ import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/presentation/profissionais_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../consultas/services/consulta_scheduler.dart';
-import '../../cuidados_diarios/presentation/cuidado_diario_form_screen.dart';
 import '../../cuidados_diarios/presentation/grafico_humor_card.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../documentos/presentation/documentos_section.dart';
@@ -31,8 +30,6 @@ import '../../subscricao/feature_limits.dart';
 import '../services/proximo_evento.dart';
 import 'idoso_form_screen.dart';
 import 'notas_section.dart';
-
-const _maxCuidadosRecentesVisiveis = 15;
 
 class IdosoDetailScreen extends ConsumerWidget {
   const IdosoDetailScreen({super.key, required this.idoso});
@@ -57,7 +54,7 @@ class IdosoDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(idoso.nome),
+        title: Text(idoso.nome, style: const TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           if (telefoneEmergencia != null)
             IconButton(
@@ -174,48 +171,6 @@ class IdosoDetailScreen extends ConsumerWidget {
               child: Text('Erro ao carregar consultas: $erro'),
             ),
           ),
-          const Divider(height: 32),
-          _CabecalhoSeccao(
-            titulo: 'Notas do dia a dia',
-            tooltip: 'Adicionar nota',
-            onAdicionar: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => CuidadoDiarioFormScreen(idoso: idoso)),
-            ),
-          ),
-          cuidadosAsync.when(
-            data: (todosRegistos) {
-              final registos =
-                  todosRegistos.where((r) => r.tipo == TipoCuidadoDiario.outro).toList();
-              if (registos.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('Ainda não há notas registadas.'),
-                );
-              }
-              final visiveis = registos.take(_maxCuidadosRecentesVisiveis).toList();
-              return Column(
-                children: [
-                  ...visiveis.map((registo) => _CuidadoDiarioTile(idoso: idoso, registo: registo)),
-                  if (registos.length > visiveis.length)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Text(
-                        'A mostrar os $_maxCuidadosRecentesVisiveis registos mais recentes.',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ),
-                ],
-              );
-            },
-            loading: () => const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            error: (erro, _) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text('Erro ao carregar cuidados diários: $erro'),
-            ),
-          ),
           if (idoso.rotinasAtivas && ref.watch(featureLimitsProvider).permiteRotinas) ...[
             const Divider(height: 32),
             RotinaSection(idoso: idoso),
@@ -292,7 +247,12 @@ class _CabecalhoSeccao extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
       child: Row(
         children: [
-          Expanded(child: Text(titulo, style: Theme.of(context).textTheme.titleMedium)),
+          Expanded(
+            child: Text(
+              titulo,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
           IconButton(icon: const Icon(Icons.add), tooltip: tooltip, onPressed: onAdicionar),
         ],
       ),
@@ -420,8 +380,10 @@ class _OpcaoHumor {
 }
 
 const _opcoesHumorDoDia = [
+  _OpcaoHumor('🤕', 'Com dores', 1),
   _OpcaoHumor('😩', 'Cansado', 2),
   _OpcaoHumor('😴', 'Sonolento', 2),
+  _OpcaoHumor('🙂', 'Normal', 3),
   _OpcaoHumor('⚡', 'Enérgico', 4),
   _OpcaoHumor('😊', 'Contente', 5),
 ];
@@ -610,43 +572,3 @@ class _ConsultaTile extends ConsumerWidget {
   }
 }
 
-class _CuidadoDiarioTile extends ConsumerWidget {
-  const _CuidadoDiarioTile({required this.idoso, required this.registo});
-
-  final Idoso idoso;
-  final RegistoCuidadoDiario registo;
-
-  Future<void> _confirmarApagar(BuildContext context, WidgetRef ref) async {
-    final confirmar = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Apagar nota'),
-        content: const Text('Queres mesmo apagar esta nota?'),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
-        ],
-      ),
-    );
-    if (confirmar == true) {
-      await ref.read(registoCuidadoDiarioRepositoryProvider).delete(registo.id);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      leading: const Icon(Icons.sticky_note_2_outlined),
-      title: Text(registo.notaRapida ?? ''),
-      subtitle: Text(DateFormat('dd/MM/yyyy HH:mm').format(registo.timestamp)),
-      trailing: IconButton(
-        icon: const Icon(Icons.delete_outline),
-        tooltip: 'Apagar nota',
-        onPressed: () => _confirmarApagar(context, ref),
-      ),
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => CuidadoDiarioFormScreen(idoso: idoso, registo: registo)),
-      ),
-    );
-  }
-}

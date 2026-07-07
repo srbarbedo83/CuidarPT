@@ -9,7 +9,6 @@ import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
-import '../../cuidados_diarios/presentation/cuidado_diario_form_screen.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
@@ -189,11 +188,9 @@ class _ListaEventosDia extends StatelessWidget {
           MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: registo)),
         );
       case TipoEventoCalendario.cuidado:
-        final registo = cuidados.where((c) => c.id == evento.registoId).firstOrNull;
-        if (registo == null) return;
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => CuidadoDiarioFormScreen(idoso: idoso, registo: registo)),
-        );
+        // Sem ecrã de edição dedicado — os registos de cuidados diários
+        // editam-se nas suas secções próprias (rotina, humor).
+        return;
     }
   }
 

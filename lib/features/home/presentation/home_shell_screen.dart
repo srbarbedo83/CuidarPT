@@ -74,7 +74,7 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CuidarPT'),
+        title: const Text('CuidarPT', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           if (estadoSubscricao != null && estadoSubscricao.trialAtivo)
             Padding(
@@ -213,7 +213,10 @@ class _IdosoCardDestacado extends StatelessWidget {
                     Flexible(
                       child: Text(
                         idoso.nome,
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -287,7 +290,7 @@ class _IdosoTile extends StatelessWidget {
         ),
         title: Row(
           children: [
-            Flexible(child: Text(idoso.nome)),
+            Flexible(child: Text(idoso.nome, style: const TextStyle(fontWeight: FontWeight.bold))),
             if (avisos.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(left: 6),

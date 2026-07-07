@@ -27,48 +27,71 @@ void main() {
       expect(alertasSinaisVitais(registo), isEmpty);
     });
 
-    test('alerta de hipertensão quando sistólica ou diastólica estão elevadas', () {
+    test('alerta de atenção (amarelo) para hipertensão', () {
       final registo = _registo(sistolica: 150, diastolica: 95);
 
-      expect(alertasSinaisVitais(registo), contains('Pressão arterial elevada (hipertensão)'));
+      final alertas = alertasSinaisVitais(registo);
+      expect(alertas.single.mensagem, 'Pressão arterial elevada (hipertensão)');
+      expect(alertas.single.gravidade, GravidadeAlerta.atencao);
     });
 
-    test('alerta de crise hipertensiva com valores muito altos', () {
+    test('alerta grave (vermelho) com crise hipertensiva', () {
       final registo = _registo(sistolica: 185, diastolica: 125);
 
-      expect(alertasSinaisVitais(registo), contains('Pressão arterial muito elevada (possível crise hipertensiva)'));
+      final alertas = alertasSinaisVitais(registo);
+      expect(alertas.single.mensagem, 'Pressão arterial muito elevada (possível crise hipertensiva)');
+      expect(alertas.single.gravidade, GravidadeAlerta.grave);
     });
 
-    test('alerta de hipotensão quando pressão está baixa', () {
+    test('alerta de atenção com hipotensão', () {
       final registo = _registo(sistolica: 85, diastolica: 55);
 
-      expect(alertasSinaisVitais(registo), contains('Pressão arterial baixa (hipotensão)'));
+      expect(alertasSinaisVitais(registo).single.gravidade, GravidadeAlerta.atencao);
     });
 
-    test('alerta de febre com temperatura elevada', () {
-      final registo = _registo(temperatura: 38.5);
-
-      expect(alertasSinaisVitais(registo), contains('Febre'));
+    test('alerta de atenção com febre e grave com febre alta', () {
+      expect(alertasSinaisVitais(_registo(temperatura: 38.5)).single.gravidade, GravidadeAlerta.atencao);
+      expect(alertasSinaisVitais(_registo(temperatura: 39.5)).single.gravidade, GravidadeAlerta.grave);
     });
 
-    test('alerta de hipotermia com temperatura muito baixa', () {
-      final registo = _registo(temperatura: 34.5);
-
-      expect(alertasSinaisVitais(registo), contains('Temperatura corporal muito baixa (hipotermia)'));
+    test('alerta grave com hipotermia', () {
+      expect(alertasSinaisVitais(_registo(temperatura: 34.5)).single.gravidade, GravidadeAlerta.grave);
     });
 
-    test('alerta de hipoglicemia e hiperglicemia', () {
-      expect(alertasSinaisVitais(_registo(glicemia: 60)), contains('Glicemia baixa (hipoglicemia)'));
-      expect(alertasSinaisVitais(_registo(glicemia: 190)), contains('Glicemia muito elevada'));
+    test('alerta grave com hipoglicemia e hiperglicemia muito elevada', () {
+      expect(alertasSinaisVitais(_registo(glicemia: 60)).single.gravidade, GravidadeAlerta.grave);
+      expect(alertasSinaisVitais(_registo(glicemia: 190)).single.gravidade, GravidadeAlerta.grave);
     });
 
-    test('alerta de bradicardia e taquicardia', () {
-      expect(alertasSinaisVitais(_registo(frequenciaCardiaca: 50)), contains('Frequência cardíaca baixa (bradicardia)'));
-      expect(alertasSinaisVitais(_registo(frequenciaCardiaca: 110)), contains('Frequência cardíaca elevada (taquicardia)'));
+    test('alerta de atenção com glicemia moderadamente elevada', () {
+      expect(alertasSinaisVitais(_registo(glicemia: 150)).single.gravidade, GravidadeAlerta.atencao);
+    });
+
+    test('alerta de atenção com bradicardia e taquicardia', () {
+      expect(alertasSinaisVitais(_registo(frequenciaCardiaca: 50)).single.gravidade, GravidadeAlerta.atencao);
+      expect(alertasSinaisVitais(_registo(frequenciaCardiaca: 110)).single.gravidade, GravidadeAlerta.atencao);
     });
 
     test('ignora sinais não registados (null)', () {
       expect(alertasSinaisVitais(_registo()), isEmpty);
+    });
+  });
+
+  group('piorGravidade', () {
+    test('devolve null quando não há alertas', () {
+      expect(piorGravidade(const []), isNull);
+    });
+
+    test('devolve grave se houver pelo menos um alerta grave', () {
+      final alertas = alertasSinaisVitais(_registo(sistolica: 185, diastolica: 70, glicemia: 150));
+
+      expect(piorGravidade(alertas), GravidadeAlerta.grave);
+    });
+
+    test('devolve atenção se só houver alertas de atenção', () {
+      final alertas = alertasSinaisVitais(_registo(sistolica: 150, diastolica: 95));
+
+      expect(piorGravidade(alertas), GravidadeAlerta.atencao);
     });
   });
 }

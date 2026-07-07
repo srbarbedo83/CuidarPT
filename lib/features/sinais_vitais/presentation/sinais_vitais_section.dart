@@ -56,9 +56,14 @@ class SinaisVitaisSection extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
           child: Row(
             children: [
-              Expanded(child: Text('Sinais vitais', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(
+                child: Text(
+                  'Sinais vitais',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
               IconButton(
-                icon: const Icon(Icons.show_chart),
+                icon: Icon(Icons.show_chart, color: Theme.of(context).colorScheme.primary),
                 tooltip: 'Histórico em gráfico',
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => SinaisVitaisHistoricoScreen(idoso: idoso)),
@@ -155,11 +160,17 @@ class _SinaisVitaisTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final alertas = alertasSinaisVitais(registo);
+    final gravidade = piorGravidade(alertas);
+    final cor = switch (gravidade) {
+      GravidadeAlerta.grave => Colors.red.shade700,
+      GravidadeAlerta.atencao => Colors.amber.shade800,
+      null => Colors.green.shade700,
+    };
 
     return ListTile(
       leading: Icon(
-        alertas.isEmpty ? Icons.monitor_heart_outlined : Icons.warning_amber_rounded,
-        color: alertas.isEmpty ? null : Colors.amber.shade800,
+        gravidade == null ? Icons.check_circle_outline : Icons.warning_amber_rounded,
+        color: cor,
       ),
       title: Text(_resumo()),
       subtitle: Column(
@@ -170,8 +181,8 @@ class _SinaisVitaisTile extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
-                alertas.join(' · '),
-                style: TextStyle(color: Colors.amber.shade800, fontWeight: FontWeight.w600),
+                alertas.map((a) => a.mensagem).join(' · '),
+                style: TextStyle(color: cor, fontWeight: FontWeight.w600),
               ),
             ),
         ],

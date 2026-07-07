@@ -48,7 +48,12 @@ class _NotasSectionState extends ConsumerState<NotasSection> {
         children: [
           Row(
             children: [
-              Expanded(child: Text('Notas', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(
+                child: Text(
+                  'Notas',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
               IconButton(
                 icon: Icon(_aEditar ? Icons.close : Icons.edit_outlined),
                 tooltip: _aEditar ? 'Cancelar' : 'Editar notas',

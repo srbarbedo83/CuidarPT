@@ -4,55 +4,97 @@ import '../../../data/models/registo_sinais_vitais.dart';
 const alertaSinaisVitaisAviso =
     'Valores de referência gerais da OMS para adultos em repouso. Não substitui avaliação médica.';
 
+/// Gravidade de um alerta, usada para escolher a cor (amarelo/vermelho).
+enum GravidadeAlerta { atencao, grave }
+
+class AlertaSinalVital {
+  const AlertaSinalVital({required this.mensagem, required this.gravidade});
+
+  final String mensagem;
+  final GravidadeAlerta gravidade;
+}
+
 /// Devolve alertas em texto para valores de [registo] fora dos intervalos
 /// de referência da OMS para adultos em repouso (pressão arterial,
 /// temperatura, glicemia e frequência cardíaca). Não é um diagnóstico —
 /// serve apenas para chamar a atenção do cuidador.
-List<String> alertasSinaisVitais(RegistoSinaisVitais registo) {
-  final alertas = <String>[];
+List<AlertaSinalVital> alertasSinaisVitais(RegistoSinaisVitais registo) {
+  final alertas = <AlertaSinalVital>[];
 
   final sistolica = registo.pressaoSistolica;
   final diastolica = registo.pressaoDiastolica;
   if (sistolica != null && diastolica != null) {
     if (sistolica >= 180 || diastolica >= 120) {
-      alertas.add('Pressão arterial muito elevada (possível crise hipertensiva)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Pressão arterial muito elevada (possível crise hipertensiva)',
+        gravidade: GravidadeAlerta.grave,
+      ));
     } else if (sistolica >= 140 || diastolica >= 90) {
-      alertas.add('Pressão arterial elevada (hipertensão)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Pressão arterial elevada (hipertensão)',
+        gravidade: GravidadeAlerta.atencao,
+      ));
     } else if (sistolica < 90 || diastolica < 60) {
-      alertas.add('Pressão arterial baixa (hipotensão)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Pressão arterial baixa (hipotensão)',
+        gravidade: GravidadeAlerta.atencao,
+      ));
     }
   }
 
   final temperatura = registo.temperatura;
   if (temperatura != null) {
     if (temperatura >= 39) {
-      alertas.add('Febre alta');
+      alertas.add(const AlertaSinalVital(mensagem: 'Febre alta', gravidade: GravidadeAlerta.grave));
     } else if (temperatura >= 38) {
-      alertas.add('Febre');
+      alertas.add(const AlertaSinalVital(mensagem: 'Febre', gravidade: GravidadeAlerta.atencao));
     } else if (temperatura < 35) {
-      alertas.add('Temperatura corporal muito baixa (hipotermia)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Temperatura corporal muito baixa (hipotermia)',
+        gravidade: GravidadeAlerta.grave,
+      ));
     }
   }
 
   final glicemia = registo.glicemia;
   if (glicemia != null) {
     if (glicemia < 70) {
-      alertas.add('Glicemia baixa (hipoglicemia)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Glicemia baixa (hipoglicemia)',
+        gravidade: GravidadeAlerta.grave,
+      ));
     } else if (glicemia >= 180) {
-      alertas.add('Glicemia muito elevada');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Glicemia muito elevada',
+        gravidade: GravidadeAlerta.grave,
+      ));
     } else if (glicemia >= 140) {
-      alertas.add('Glicemia elevada');
+      alertas.add(const AlertaSinalVital(mensagem: 'Glicemia elevada', gravidade: GravidadeAlerta.atencao));
     }
   }
 
   final frequencia = registo.frequenciaCardiaca;
   if (frequencia != null) {
     if (frequencia < 60) {
-      alertas.add('Frequência cardíaca baixa (bradicardia)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Frequência cardíaca baixa (bradicardia)',
+        gravidade: GravidadeAlerta.atencao,
+      ));
     } else if (frequencia > 100) {
-      alertas.add('Frequência cardíaca elevada (taquicardia)');
+      alertas.add(const AlertaSinalVital(
+        mensagem: 'Frequência cardíaca elevada (taquicardia)',
+        gravidade: GravidadeAlerta.atencao,
+      ));
     }
   }
 
   return alertas;
+}
+
+/// Pior gravidade entre os alertas, `null` se não houver nenhum.
+GravidadeAlerta? piorGravidade(List<AlertaSinalVital> alertas) {
+  if (alertas.isEmpty) return null;
+  return alertas.any((a) => a.gravidade == GravidadeAlerta.grave)
+      ? GravidadeAlerta.grave
+      : GravidadeAlerta.atencao;
 }

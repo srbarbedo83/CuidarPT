@@ -201,7 +201,10 @@ class RotinaSection extends ConsumerWidget {
       data: (itens) {
         final ativos = itens.where((i) => i.ativo).toList();
         return ExpansionTile(
-          title: const Text('Rotina de higiene, alimentação e sono'),
+          title: Text(
+            'Rotina de higiene, alimentação e sono',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
           subtitle: Text(ativos.isEmpty ? 'Nenhum item' : '${ativos.length} itens'),
           children: [
             for (final item in ativos)
