@@ -11,4 +11,8 @@ class PerfilRelatorio {
 
   String? cuidadorNome;
   String? logoPath;
+
+  /// Email do cuidador, capturado no onboarding (opcional), usado para
+  /// pré-preencher o destinatário ao partilhar um relatório.
+  String? cuidadorEmail;
 }

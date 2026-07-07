@@ -17,13 +17,18 @@ const PerfilRelatorioSchema = CollectionSchema(
   name: r'PerfilRelatorio',
   id: 1286114972680320648,
   properties: {
-    r'cuidadorNome': PropertySchema(
+    r'cuidadorEmail': PropertySchema(
       id: 0,
+      name: r'cuidadorEmail',
+      type: IsarType.string,
+    ),
+    r'cuidadorNome': PropertySchema(
+      id: 1,
       name: r'cuidadorNome',
       type: IsarType.string,
     ),
     r'logoPath': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'logoPath',
       type: IsarType.string,
     ),
@@ -51,6 +56,12 @@ int _perfilRelatorioEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.cuidadorEmail;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.cuidadorNome;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -71,8 +82,9 @@ void _perfilRelatorioSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.cuidadorNome);
-  writer.writeString(offsets[1], object.logoPath);
+  writer.writeString(offsets[0], object.cuidadorEmail);
+  writer.writeString(offsets[1], object.cuidadorNome);
+  writer.writeString(offsets[2], object.logoPath);
 }
 
 PerfilRelatorio _perfilRelatorioDeserialize(
@@ -82,9 +94,10 @@ PerfilRelatorio _perfilRelatorioDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PerfilRelatorio();
-  object.cuidadorNome = reader.readStringOrNull(offsets[0]);
+  object.cuidadorEmail = reader.readStringOrNull(offsets[0]);
+  object.cuidadorNome = reader.readStringOrNull(offsets[1]);
   object.id = id;
-  object.logoPath = reader.readStringOrNull(offsets[1]);
+  object.logoPath = reader.readStringOrNull(offsets[2]);
   return object;
 }
 
@@ -98,6 +111,8 @@ P _perfilRelatorioDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
+      return (reader.readStringOrNull(offset)) as P;
+    case 2:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -203,6 +218,165 @@ extension PerfilRelatorioQueryWhere
 
 extension PerfilRelatorioQueryFilter
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QFilterCondition> {
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'cuidadorEmail'),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'cuidadorEmail'),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'cuidadorEmail',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'cuidadorEmail',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'cuidadorEmail',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'cuidadorEmail',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'cuidadorEmail',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'cuidadorEmail',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'cuidadorEmail',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'cuidadorEmail',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'cuidadorEmail', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
+  cuidadorEmailIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'cuidadorEmail', value: ''),
+      );
+    });
+  }
+
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterFilterCondition>
   cuidadorNomeIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -586,6 +760,20 @@ extension PerfilRelatorioQueryLinks
 extension PerfilRelatorioQuerySortBy
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QSortBy> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
+  sortByCuidadorEmail() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cuidadorEmail', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
+  sortByCuidadorEmailDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cuidadorEmail', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
   sortByCuidadorNome() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cuidadorNome', Sort.asc);
@@ -616,6 +804,20 @@ extension PerfilRelatorioQuerySortBy
 
 extension PerfilRelatorioQuerySortThenBy
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QSortThenBy> {
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
+  thenByCuidadorEmail() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cuidadorEmail', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
+  thenByCuidadorEmailDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'cuidadorEmail', Sort.desc);
+    });
+  }
+
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QAfterSortBy>
   thenByCuidadorNome() {
     return QueryBuilder.apply(this, (query) {
@@ -660,6 +862,16 @@ extension PerfilRelatorioQuerySortThenBy
 extension PerfilRelatorioQueryWhereDistinct
     on QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct> {
   QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct>
+  distinctByCuidadorEmail({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(
+        r'cuidadorEmail',
+        caseSensitive: caseSensitive,
+      );
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, PerfilRelatorio, QDistinct>
   distinctByCuidadorNome({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'cuidadorNome', caseSensitive: caseSensitive);
@@ -680,6 +892,13 @@ extension PerfilRelatorioQueryProperty
   QueryBuilder<PerfilRelatorio, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<PerfilRelatorio, String?, QQueryOperations>
+  cuidadorEmailProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'cuidadorEmail');
     });
   }
 

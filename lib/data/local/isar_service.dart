@@ -1,6 +1,7 @@
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../models/contacto_cuidador.dart';
 import '../models/estado_avaliacao_app.dart';
 import '../models/estado_subscricao.dart';
 import '../models/idoso.dart';
@@ -37,6 +38,7 @@ class IsarService {
         PreferenciasAppSchema,
         RegistoDocumentoSchema,
         ItemRotinaSchema,
+        ContactoCuidadorSchema,
       ],
       directory: documentosDir.path,
     );

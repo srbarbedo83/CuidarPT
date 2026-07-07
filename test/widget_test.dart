@@ -38,6 +38,11 @@ void main() {
     await tester.tap(find.text('Seguinte'));
     await tester.pumpAndSettle();
     expect(find.text('Quantos idosos vais acompanhar?'), findsOneWidget);
+    expect(find.text('Começar'), findsNothing);
+
+    await tester.tap(find.text('Seguinte'));
+    await tester.pumpAndSettle();
+    expect(find.text('O teu email (opcional)'), findsOneWidget);
     expect(find.text('Começar'), findsOneWidget);
   });
 }

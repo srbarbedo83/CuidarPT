@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/models/estado_subscricao.dart';
 import '../../../data/models/preferencias_app.dart';
+import '../../contactos_cuidadores/presentation/contactos_cuidadores_section.dart';
 import '../../idosos/providers/idoso_providers.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
@@ -56,6 +57,8 @@ class DefinicoesScreen extends ConsumerWidget {
           _SeccaoSubscricao(estado: estado, onSubscrever: () => _mostrarInfoSubscricao(context)),
           const SizedBox(height: 16),
           _SeccaoPerfis(totalIdosos: idosos.length, maxPerfisIdoso: limites.maxPerfisIdoso),
+          const SizedBox(height: 16),
+          const ContactosCuidadoresSection(),
           const SizedBox(height: 16),
           const InfoLocalCard(),
           const SizedBox(height: 16),

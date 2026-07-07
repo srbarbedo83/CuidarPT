@@ -11,6 +11,7 @@ import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../consultas/providers/consulta_providers.dart';
+import '../../contactos_cuidadores/providers/contacto_cuidador_providers.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../subscricao/feature_limits.dart';
@@ -18,6 +19,63 @@ import '../providers/perfil_relatorio_providers.dart';
 import '../services/periodo_relatorio.dart';
 import '../services/relatorio_pdf_builder.dart';
 import 'relatorio_preview_screen.dart';
+
+/// Se houver 2 ou mais destinatários possíveis (o próprio email do
+/// onboarding + contactos de cuidadores guardados), deixa escolher quais
+/// pré-preencher ao partilhar. Com 0 ou 1 disponíveis, não interrompe o
+/// fluxo — usa-os automaticamente.
+Future<List<String>> _escolherDestinatarios(
+  BuildContext context, {
+  required String? emailProprio,
+  required List<String> emailsContactos,
+}) async {
+  final opcoes = <String, String>{
+    if (emailProprio != null && emailProprio.isNotEmpty) emailProprio: 'Eu mesmo ($emailProprio)',
+    for (final email in emailsContactos) email: email,
+  };
+  if (opcoes.length < 2) return opcoes.keys.toList();
+
+  final selecionados = {...opcoes.keys};
+  final resultado = await showDialog<Set<String>>(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setStateDialog) => AlertDialog(
+        title: const Text('Partilhar com quem?'),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              for (final entry in opcoes.entries)
+                CheckboxListTile(
+                  title: Text(entry.value),
+                  value: selecionados.contains(entry.key),
+                  onChanged: (marcado) => setStateDialog(() {
+                    if (marcado == true) {
+                      selecionados.add(entry.key);
+                    } else {
+                      selecionados.remove(entry.key);
+                    }
+                  }),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(<String>{}),
+            child: const Text('Nenhum'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(selecionados),
+            child: const Text('Continuar'),
+          ),
+        ],
+      ),
+    ),
+  );
+  return (resultado ?? selecionados).toList();
+}
 
 class RelatorioScreen extends ConsumerStatefulWidget {
   const RelatorioScreen({super.key, required this.idoso});
@@ -140,11 +198,21 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
         logoBytes = await File(_logoPath!).readAsBytes();
       }
 
+      final perfil = await ref.read(perfilRelatorioRepositoryProvider).obterAtual();
+      final contactos = await ref.read(contactoCuidadorListProvider.future);
+      if (!mounted) return;
+      final emailsPartilha = await _escolherDestinatarios(
+        context,
+        emailProprio: perfil.cuidadorEmail,
+        emailsContactos: contactos.map((c) => c.email).toList(),
+      );
+
       if (!mounted) return;
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => RelatorioPreviewScreen(
             nomeFicheiro: 'relatorio_${widget.idoso.nome.replaceAll(' ', '_')}.pdf',
+            emailsPartilha: emailsPartilha,
             gerarPdf: (_) => RelatorioPdfBuilder.construir(
               idoso: widget.idoso,
               inicio: intervalo.inicio,

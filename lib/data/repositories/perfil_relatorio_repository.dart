@@ -30,6 +30,14 @@ class PerfilRelatorioRepository {
     });
   }
 
+  Future<void> guardarEmail(String? cuidadorEmail) {
+    return _isar.writeTxn(() async {
+      final perfil = await _isar.perfilRelatorios.get(_idUnico) ?? PerfilRelatorio();
+      perfil.cuidadorEmail = cuidadorEmail;
+      await _isar.perfilRelatorios.put(perfil);
+    });
+  }
+
   Future<void> apagarLogo() async {
     final perfil = await obterAtual();
     await PhotoStorage.apagarFoto(perfil.logoPath);

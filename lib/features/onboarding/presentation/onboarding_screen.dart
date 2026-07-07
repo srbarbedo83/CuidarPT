@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../relatorios/providers/perfil_relatorio_providers.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 
 class _OnboardingSlide {
@@ -84,6 +85,45 @@ class _PerguntaQuantosIdosos extends StatelessWidget {
   }
 }
 
+class _PerguntaEmail extends StatelessWidget {
+  const _PerguntaEmail({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.email_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 32),
+          Text(
+            'O teu email (opcional)',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Usamos apenas para pré-preencher o destinatário quando partilhas '
+            'um relatório. Fica guardado só neste telemóvel.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 24),
+          TextField(
+            controller: controller,
+            keyboardType: TextInputType.emailAddress,
+            textAlign: TextAlign.center,
+            decoration: const InputDecoration(hintText: 'nome@exemplo.com'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -93,21 +133,27 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _controller = PageController();
+  final _emailController = TextEditingController();
   var _paginaAtual = 0;
   var _aIniciar = false;
   var _quantosIdosos = 1;
 
-  static final _totalPaginas = _slides.length + 1;
+  static final _totalPaginas = _slides.length + 2;
 
   @override
   void dispose() {
     _controller.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   Future<void> _comecar() async {
     setState(() => _aIniciar = true);
     await ref.read(subscricaoRepositoryProvider).iniciarTrialSeNecessario();
+    final email = _emailController.text.trim();
+    if (email.isNotEmpty) {
+      await ref.read(perfilRelatorioRepositoryProvider).guardarEmail(email);
+    }
   }
 
   @override
@@ -129,6 +175,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       quantidade: _quantosIdosos,
                       onAlterado: (valor) => setState(() => _quantosIdosos = valor),
                     );
+                  }
+                  if (indice == _slides.length + 1) {
+                    return _PerguntaEmail(controller: _emailController);
                   }
                   final slide = _slides[indice];
                   return Padding(
