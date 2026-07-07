@@ -15,6 +15,7 @@ import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../consultas/services/consulta_scheduler.dart';
 import '../../cuidados_diarios/presentation/cuidado_diario_form_screen.dart';
+import '../../cuidados_diarios/presentation/grafico_humor_card.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
@@ -151,9 +152,16 @@ class IdosoDetailScreen extends ConsumerWidget {
                   child: Text('Ainda não há cuidados diários registados.'),
                 );
               }
+              final temHumor = registos.any((r) => r.tipo == TipoCuidadoDiario.humor);
               final visiveis = registos.take(_maxCuidadosRecentesVisiveis).toList();
               return Column(
                 children: [
+                  if (temHumor)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: GraficoHumorCard(idosoId: idoso.id),
+                    ),
+                  if (temHumor) const SizedBox(height: 12),
                   ...visiveis.map((registo) => _CuidadoDiarioTile(idoso: idoso, registo: registo)),
                   if (registos.length > visiveis.length)
                     Padding(

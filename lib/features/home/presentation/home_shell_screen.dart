@@ -10,6 +10,7 @@ import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
+import '../../relatorios/presentation/relatorio_screen.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 
@@ -84,6 +85,14 @@ class HomeShellScreen extends ConsumerWidget {
           if (idosos.isEmpty) {
             return const _EmptyState();
           }
+          if (idosos.length == 1) {
+            final unico = idosos.single;
+            return ListView(
+              children: [
+                _IdosoCardDestacado(idoso: unico, onApagar: () => _apagarIdoso(context, ref, unico)),
+              ],
+            );
+          }
           return ListView(
             children: idosos
                 .map((idoso) => _IdosoTile(
@@ -133,6 +142,90 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
+String _subtituloIdoso(Idoso idoso) {
+  final dataNascimento = idoso.dataNascimento;
+  if (dataNascimento == null) return 'Data de nascimento não definida';
+  return 'Nascimento: ${DateFormat('dd/MM/yyyy').format(dataNascimento)}';
+}
+
+class _IdosoCardDestacado extends StatelessWidget {
+  const _IdosoCardDestacado({required this.idoso, required this.onApagar});
+
+  final Idoso idoso;
+  final VoidCallback onApagar;
+
+  @override
+  Widget build(BuildContext context) {
+    final fotoPath = idoso.fotoPath;
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Card(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => IdosoDetailScreen(idoso: idoso)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      radius: 64,
+                      backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
+                      child: fotoPath == null ? const Icon(Icons.elderly, size: 56) : null,
+                    ),
+                    if (idoso.mobilidadeReduzida)
+                      Positioned(
+                        right: -4,
+                        bottom: -4,
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          child: const Icon(Icons.accessible, color: Colors.white, size: 20),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  idoso.nome,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FilledButton.icon(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+                      ),
+                      icon: const Icon(Icons.picture_as_pdf_outlined),
+                      label: const Text('Gerar relatório'),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: onApagar,
+                      icon: const Icon(Icons.delete_outline),
+                      tooltip: 'Apagar perfil',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _IdosoTile extends StatelessWidget {
   const _IdosoTile({required this.idoso, required this.onApagar});
 
@@ -161,17 +254,18 @@ class _IdosoTile extends StatelessWidget {
           child: fotoPath == null ? const Icon(Icons.elderly) : null,
         ),
         title: Text(idoso.nome),
-        subtitle: Text(_subtitulo(idoso)),
+        subtitle: Text(_subtituloIdoso(idoso)),
+        trailing: IconButton(
+          icon: const Icon(Icons.picture_as_pdf_outlined),
+          tooltip: 'Gerar relatório',
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+          ),
+        ),
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => IdosoDetailScreen(idoso: idoso)),
         ),
       ),
     );
-  }
-
-  String _subtitulo(Idoso idoso) {
-    final dataNascimento = idoso.dataNascimento;
-    if (dataNascimento == null) return 'Data de nascimento não definida';
-    return 'Nascimento: ${DateFormat('dd/MM/yyyy').format(dataNascimento)}';
   }
 }
