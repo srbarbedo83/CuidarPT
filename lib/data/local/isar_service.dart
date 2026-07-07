@@ -9,6 +9,7 @@ import '../models/localidade_ipma.dart';
 import '../models/localizacao_selecionada.dart';
 import '../models/perfil_relatorio.dart';
 import '../models/preferencias_app.dart';
+import '../models/registo_documento.dart';
 import '../models/registo_consulta.dart';
 import '../models/registo_cuidado_diario.dart';
 import '../models/registo_medicacao.dart';
@@ -33,6 +34,7 @@ class IsarService {
         LocalizacaoSelecionadaSchema,
         InfoLocalCacheSchema,
         PreferenciasAppSchema,
+        RegistoDocumentoSchema,
       ],
       directory: documentosDir.path,
     );

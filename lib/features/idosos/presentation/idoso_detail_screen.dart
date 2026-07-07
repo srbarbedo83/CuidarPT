@@ -17,6 +17,7 @@ import '../../consultas/services/consulta_scheduler.dart';
 import '../../cuidados_diarios/presentation/cuidado_diario_form_screen.dart';
 import '../../cuidados_diarios/presentation/grafico_humor_card.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
+import '../../documentos/presentation/documentos_section.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
@@ -183,6 +184,8 @@ class IdosoDetailScreen extends ConsumerWidget {
               child: Text('Erro ao carregar cuidados diários: $erro'),
             ),
           ),
+          const Divider(height: 32),
+          DocumentosSection(idoso: idoso),
           const SizedBox(height: 24),
         ],
       ),
