@@ -1,3 +1,4 @@
+import 'package:cuidarpt/data/models/info_profissional.dart';
 import 'package:cuidarpt/data/models/registo_consulta.dart';
 import 'package:cuidarpt/features/consultas/services/profissionais.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -42,6 +43,31 @@ void main() {
       final profissionais = profissionaisDoIdoso(consultas);
 
       expect(profissionais.map((p) => p.nome), ['Ana Costa', 'Zé Manel']);
+    });
+
+    test('junta contacto e notas guardados para o profissional', () {
+      final consultas = [_consulta(especialidade: 'Cardiologia', nomeMedico: 'Dr. António Silva')];
+      final infos = [
+        InfoProfissional()
+          ..idosoId = 1
+          ..nome = 'Dr. António Silva'
+          ..contacto = '912345678'
+          ..notas = 'Prefere ligações de manhã',
+      ];
+
+      final profissionais = profissionaisDoIdoso(consultas, infos: infos);
+
+      expect(profissionais.single.contacto, '912345678');
+      expect(profissionais.single.notas, 'Prefere ligações de manhã');
+    });
+
+    test('profissional sem info guardada fica com contacto e notas nulos', () {
+      final consultas = [_consulta(especialidade: 'Cardiologia', nomeMedico: 'Dr. António Silva')];
+
+      final profissionais = profissionaisDoIdoso(consultas);
+
+      expect(profissionais.single.contacto, isNull);
+      expect(profissionais.single.notas, isNull);
     });
   });
 }

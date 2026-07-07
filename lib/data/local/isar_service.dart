@@ -6,6 +6,7 @@ import '../models/estado_avaliacao_app.dart';
 import '../models/estado_subscricao.dart';
 import '../models/idoso.dart';
 import '../models/info_local_cache.dart';
+import '../models/info_profissional.dart';
 import '../models/item_rotina.dart';
 import '../models/localidade_ipma.dart';
 import '../models/localizacao_selecionada.dart';
@@ -41,6 +42,7 @@ class IsarService {
         ItemRotinaSchema,
         ContactoCuidadorSchema,
         RegistoSinaisVitaisSchema,
+        InfoProfissionalSchema,
       ],
       directory: documentosDir.path,
     );

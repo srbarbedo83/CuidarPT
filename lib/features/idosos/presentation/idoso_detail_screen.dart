@@ -24,11 +24,13 @@ import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
 import '../../relatorios/presentation/relatorio_screen.dart';
+import '../../relatorios/services/periodo_relatorio.dart';
 import '../../rotina/presentation/rotina_section.dart';
 import '../../sinais_vitais/presentation/sinais_vitais_section.dart';
 import '../../subscricao/feature_limits.dart';
 import '../services/proximo_evento.dart';
 import 'idoso_form_screen.dart';
+import 'notas_section.dart';
 
 const _maxCuidadosRecentesVisiveis = 15;
 
@@ -228,7 +230,22 @@ class IdosoDetailScreen extends ConsumerWidget {
             ),
           ],
           const Divider(height: 32),
+          NotasSection(idoso: idoso),
+          const Divider(height: 32),
           DocumentosSection(idoso: idoso),
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: OutlinedButton.icon(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => RelatorioScreen(idoso: idoso, periodoInicial: PeriodoRelatorio.hoje),
+                ),
+              ),
+              icon: const Icon(Icons.summarize_outlined),
+              label: const Text('Gerar relatório diário'),
+            ),
+          ),
           const SizedBox(height: 24),
         ],
       ),

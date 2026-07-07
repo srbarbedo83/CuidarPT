@@ -78,9 +78,13 @@ Future<List<String>> _escolherDestinatarios(
 }
 
 class RelatorioScreen extends ConsumerStatefulWidget {
-  const RelatorioScreen({super.key, required this.idoso});
+  const RelatorioScreen({super.key, required this.idoso, this.periodoInicial = PeriodoRelatorio.ultimos7Dias});
 
   final Idoso idoso;
+
+  /// Período pré-selecionado ao abrir o ecrã (ex.: [PeriodoRelatorio.hoje]
+  /// quando se acede pelo botão de relatório diário).
+  final PeriodoRelatorio periodoInicial;
 
   @override
   ConsumerState<RelatorioScreen> createState() => _RelatorioScreenState();
@@ -89,7 +93,7 @@ class RelatorioScreen extends ConsumerStatefulWidget {
 class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
   final _cuidadorNomeController = TextEditingController();
 
-  PeriodoRelatorio _periodo = PeriodoRelatorio.ultimos7Dias;
+  late PeriodoRelatorio _periodo = widget.periodoInicial;
   DateTimeRange? _intervaloPersonalizado;
   String? _logoPath;
   bool _perfilCarregado = false;
