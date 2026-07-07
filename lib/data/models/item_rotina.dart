@@ -2,10 +2,11 @@ import 'package:isar_community/isar.dart';
 
 part 'item_rotina.g.dart';
 
-enum CategoriaRotina { higiene, alimentacao }
+enum CategoriaRotina { higiene, alimentacao, sono }
 
-/// Um item recorrente da rotina de higiene/alimentação de um idoso (ex.:
-/// "Banho", "Pequeno-almoço"), funcionalidade Premium. As conclusões diárias
+/// Um item recorrente da rotina de higiene/alimentação/sono de um idoso
+/// (ex.: "Banho", "Pequeno-almoço", "Sesta"), funcionalidade Premium. As
+/// conclusões diárias
 /// ficam registadas em [RegistoCuidadoDiario.itemRotinaId].
 @collection
 class ItemRotina {

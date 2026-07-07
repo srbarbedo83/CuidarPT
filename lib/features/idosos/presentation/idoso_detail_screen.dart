@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/horarios.dart';
-import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
@@ -174,30 +174,25 @@ class IdosoDetailScreen extends ConsumerWidget {
           ),
           const Divider(height: 32),
           _CabecalhoSeccao(
-            titulo: 'Cuidados diários',
-            tooltip: 'Registar cuidado',
+            titulo: 'Notas do dia a dia',
+            tooltip: 'Adicionar nota',
             onAdicionar: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => CuidadoDiarioFormScreen(idoso: idoso)),
             ),
           ),
           cuidadosAsync.when(
-            data: (registos) {
+            data: (todosRegistos) {
+              final registos =
+                  todosRegistos.where((r) => r.tipo == TipoCuidadoDiario.outro).toList();
               if (registos.isEmpty) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('Ainda não há cuidados diários registados.'),
+                  child: Text('Ainda não há notas registadas.'),
                 );
               }
-              final temHumor = registos.any((r) => r.tipo == TipoCuidadoDiario.humor);
               final visiveis = registos.take(_maxCuidadosRecentesVisiveis).toList();
               return Column(
                 children: [
-                  if (temHumor)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: GraficoHumorCard(idosoId: idoso.id),
-                    ),
-                  if (temHumor) const SizedBox(height: 12),
                   ...visiveis.map((registo) => _CuidadoDiarioTile(idoso: idoso, registo: registo)),
                   if (registos.length > visiveis.length)
                     Padding(
@@ -225,6 +220,13 @@ class IdosoDetailScreen extends ConsumerWidget {
           ],
           const Divider(height: 32),
           SinaisVitaisSection(idoso: idoso),
+          if ((cuidadosAsync.valueOrNull ?? const []).any((r) => r.tipo == TipoCuidadoDiario.humor)) ...[
+            const Divider(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: GraficoHumorCard(idosoId: idoso.id),
+            ),
+          ],
           const Divider(height: 32),
           DocumentosSection(idoso: idoso),
           const SizedBox(height: 24),
@@ -407,28 +409,46 @@ const _opcoesHumorDoDia = [
   _OpcaoHumor('😊', 'Contente', 5),
 ];
 
-class _ComoSenteHoje extends ConsumerWidget {
+bool _mesmoDiaHumor(DateTime a, DateTime b) {
+  return a.year == b.year && a.month == b.month && a.day == b.day;
+}
+
+class _ComoSenteHoje extends ConsumerStatefulWidget {
   const _ComoSenteHoje({required this.idoso});
 
   final Idoso idoso;
 
-  Future<void> _registar(BuildContext context, WidgetRef ref, _OpcaoHumor opcao) async {
-    final registo = RegistoCuidadoDiario()
-      ..idosoId = idoso.id
-      ..tipo = TipoCuidadoDiario.humor
+  @override
+  ConsumerState<_ComoSenteHoje> createState() => _ComoSenteHojeState();
+}
+
+class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
+  bool _aMudar = false;
+
+  Future<void> _registar(_OpcaoHumor opcao, RegistoCuidadoDiario? existente) async {
+    final registo = existente ?? RegistoCuidadoDiario()
+      ..idosoId = widget.idoso.id
+      ..tipo = TipoCuidadoDiario.humor;
+    registo
       ..humorNivel = opcao.nivel
       ..notaRapida = opcao.rotulo
       ..timestamp = DateTime.now();
     await ref.read(registoCuidadoDiarioRepositoryProvider).save(registo);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registado: ${opcao.rotulo} ${opcao.emoji}')),
-      );
-    }
+    if (mounted) setState(() => _aMudar = false);
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final cuidados =
+        ref.watch(cuidadoDiarioListProvider(widget.idoso.id)).valueOrNull ?? const [];
+    final agora = DateTime.now();
+    final registoHoje = cuidados.firstWhereOrNull(
+      (c) => c.tipo == TipoCuidadoDiario.humor && _mesmoDiaHumor(c.timestamp, agora),
+    );
+    final opcaoAtual = registoHoje == null
+        ? null
+        : _opcoesHumorDoDia.firstWhereOrNull((o) => o.rotulo == registoHoje.notaRapida);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Card(
@@ -437,19 +457,32 @@ class _ComoSenteHoje extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Como te sentes hoje?', style: Theme.of(context).textTheme.titleSmall),
+              Text('Como se sente hoje?', style: Theme.of(context).textTheme.titleSmall),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                children: [
-                  for (final opcao in _opcoesHumorDoDia)
-                    ActionChip(
-                      avatar: Text(opcao.emoji, style: const TextStyle(fontSize: 16)),
-                      label: Text(opcao.rotulo),
-                      onPressed: () => _registar(context, ref, opcao),
+              if (opcaoAtual != null && !_aMudar)
+                Row(
+                  children: [
+                    Text(opcaoAtual.emoji, style: const TextStyle(fontSize: 24)),
+                    const SizedBox(width: 8),
+                    Expanded(child: Text(opcaoAtual.rotulo)),
+                    TextButton(
+                      onPressed: () => setState(() => _aMudar = true),
+                      child: const Text('Mudar'),
                     ),
-                ],
-              ),
+                  ],
+                )
+              else
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    for (final opcao in _opcoesHumorDoDia)
+                      ActionChip(
+                        avatar: Text(opcao.emoji, style: const TextStyle(fontSize: 16)),
+                        label: Text(opcao.rotulo),
+                        onPressed: () => _registar(opcao, registoHoje),
+                      ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -570,8 +603,8 @@ class _CuidadoDiarioTile extends ConsumerWidget {
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar registo'),
-        content: const Text('Queres mesmo apagar este registo de cuidado diário?'),
+        title: const Text('Apagar nota'),
+        content: const Text('Queres mesmo apagar esta nota?'),
         actions: [
           TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
           TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
@@ -585,26 +618,13 @@ class _CuidadoDiarioTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nota = registo.notaRapida;
-    final humor = registo.humorNivel;
-    final fotoPath = registo.fotoPath;
     return ListTile(
-      leading: fotoPath != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.file(File(fotoPath), width: 40, height: 40, fit: BoxFit.cover),
-            )
-          : Icon(tipoCuidadoDiarioIcone(registo.tipo)),
-      title: Text(
-        '${tipoCuidadoDiarioLabel(registo.tipo)}${humor != null ? ' · nível $humor/5' : ''}',
-      ),
-      subtitle: Text(
-        '${DateFormat('dd/MM/yyyy HH:mm').format(registo.timestamp)}'
-        '${nota != null && nota.isNotEmpty ? ' · $nota' : ''}',
-      ),
+      leading: const Icon(Icons.sticky_note_2_outlined),
+      title: Text(registo.notaRapida ?? ''),
+      subtitle: Text(DateFormat('dd/MM/yyyy HH:mm').format(registo.timestamp)),
       trailing: IconButton(
         icon: const Icon(Icons.delete_outline),
-        tooltip: 'Apagar registo',
+        tooltip: 'Apagar nota',
         onPressed: () => _confirmarApagar(context, ref),
       ),
       onTap: () => Navigator.of(context).push(

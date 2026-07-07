@@ -364,10 +364,10 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
             const SizedBox(height: 8),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Rotina de higiene e alimentação'),
+              title: const Text('Rotina de higiene, alimentação e sono'),
               subtitle: const Text(
                 'Funcionalidade Premium. Regista itens recorrentes (ex.: banho, '
-                'refeições) e marca-os como feitos no dia.',
+                'refeições, sesta) e marca-os como feitos no dia.',
               ),
               value: _rotinasAtivas,
               onChanged: _alternarRotinas,

@@ -1,17 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/utils/photo_storage.dart';
-import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../providers/cuidado_diario_providers.dart';
 
-/// Ecrã de registo rápido de um cuidado diário de [idoso].
+/// Ecrã de registo rápido de uma nota manual de [idoso].
+///
+/// Higiene, alimentação, sono e humor têm secções próprias no perfil —
+/// este ecrã serve só para notas livres.
 ///
 /// Se [registo] for `null`, cria um novo registo; caso contrário, edita o
 /// registo existente (mesmo `id`).
@@ -27,10 +25,7 @@ class CuidadoDiarioFormScreen extends ConsumerStatefulWidget {
 
 class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScreen> {
   late final TextEditingController _notaController;
-  late TipoCuidadoDiario _tipo;
   late DateTime _timestamp;
-  int _humorNivel = 3;
-  String? _fotoPath;
   bool _aGuardar = false;
 
   bool get _aEditar => widget.registo != null;
@@ -40,10 +35,7 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
     super.initState();
     final registo = widget.registo;
     _notaController = TextEditingController(text: registo?.notaRapida ?? '');
-    _tipo = registo?.tipo ?? TipoCuidadoDiario.higiene;
     _timestamp = registo?.timestamp ?? DateTime.now();
-    _humorNivel = registo?.humorNivel ?? 3;
-    _fotoPath = registo?.fotoPath;
   }
 
   @override
@@ -72,39 +64,6 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
     setState(() => _timestamp = DateTime(data.year, data.month, data.day, hora.hour, hora.minute));
   }
 
-  Future<void> _escolherFotoPrato() async {
-    final origem = await showModalBottomSheet<ImageSource>(
-      context: context,
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_camera_outlined),
-              title: const Text('Tirar fotografia'),
-              onTap: () => Navigator.of(context).pop(ImageSource.camera),
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library_outlined),
-              title: const Text('Escolher da galeria'),
-              onTap: () => Navigator.of(context).pop(ImageSource.gallery),
-            ),
-          ],
-        ),
-      ),
-    );
-    if (origem == null || !mounted) return;
-
-    final ficheiro = await ImagePicker().pickImage(source: origem, maxWidth: 1600, imageQuality: 85);
-    if (ficheiro == null || !mounted) return;
-
-    final caminhoAnterior = _fotoPath;
-    final caminhoGuardado = await PhotoStorage.guardarFotoRefeicao(File(ficheiro.path));
-    if (!mounted) return;
-    setState(() => _fotoPath = caminhoGuardado);
-    await PhotoStorage.apagarFoto(caminhoAnterior);
-  }
-
   Future<void> _guardar() async {
     setState(() => _aGuardar = true);
 
@@ -112,10 +71,8 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
     final registo = widget.registo ?? RegistoCuidadoDiario();
     registo
       ..idosoId = widget.idoso.id
-      ..tipo = _tipo
+      ..tipo = TipoCuidadoDiario.outro
       ..notaRapida = nota.isEmpty ? null : nota
-      ..humorNivel = _tipo == TipoCuidadoDiario.humor ? _humorNivel : null
-      ..fotoPath = _tipo == TipoCuidadoDiario.alimentacao ? _fotoPath : null
       ..timestamp = _timestamp;
 
     await ref.read(registoCuidadoDiarioRepositoryProvider).save(registo);
@@ -126,71 +83,15 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_aEditar ? 'Editar registo' : 'Novo registo de cuidado')),
+      appBar: AppBar(title: Text(_aEditar ? 'Editar nota' : 'Nova nota')),
       body: ListView(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
         children: [
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final tipo in TipoCuidadoDiario.values)
-                ChoiceChip(
-                  avatar: Icon(tipoCuidadoDiarioIcone(tipo), size: 18),
-                  label: Text(tipoCuidadoDiarioLabel(tipo)),
-                  selected: _tipo == tipo,
-                  onSelected: (_) => setState(() => _tipo = tipo),
-                ),
-            ],
-          ),
-          if (_tipo == TipoCuidadoDiario.alimentacao) ...[
-            const SizedBox(height: 24),
-            Text('Foto do prato (opcional)', style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 4),
-            Text(
-              'Guardada só neste telemóvel. Não entra no relatório PDF.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                if (_fotoPath != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(File(_fotoPath!), width: 72, height: 72, fit: BoxFit.cover),
-                    ),
-                  ),
-                TextButton.icon(
-                  onPressed: _escolherFotoPrato,
-                  icon: const Icon(Icons.camera_alt_outlined),
-                  label: Text(_fotoPath == null ? 'Adicionar foto' : 'Alterar foto'),
-                ),
-              ],
-            ),
-          ],
-          if (_tipo == TipoCuidadoDiario.humor) ...[
-            const SizedBox(height: 24),
-            Text('Nível de humor', style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (var nivel = 1; nivel <= 5; nivel++)
-                  _NivelHumorBotao(
-                    nivel: nivel,
-                    selecionado: _humorNivel == nivel,
-                    onTap: () => setState(() => _humorNivel = nivel),
-                  ),
-              ],
-            ),
-          ],
-          const SizedBox(height: 24),
           TextFormField(
             controller: _notaController,
-            decoration: const InputDecoration(labelText: 'Nota rápida (opcional)'),
-            maxLines: 3,
+            decoration: const InputDecoration(labelText: 'Nota'),
+            maxLines: 4,
+            autofocus: true,
           ),
           const SizedBox(height: 16),
           ListTile(
@@ -212,31 +113,6 @@ class _CuidadoDiarioFormScreenState extends ConsumerState<CuidadoDiarioFormScree
                 : const Text('Guardar'),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _NivelHumorBotao extends StatelessWidget {
-  const _NivelHumorBotao({required this.nivel, required this.selecionado, required this.onTap});
-
-  final int nivel;
-  final bool selecionado;
-  final VoidCallback onTap;
-
-  static const _emojis = {1: '😞', 2: '🙁', 3: '😐', 4: '🙂', 5: '😄'};
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
-      child: CircleAvatar(
-        radius: 24,
-        backgroundColor: selecionado
-            ? Theme.of(context).colorScheme.primaryContainer
-            : Theme.of(context).colorScheme.surfaceContainerHighest,
-        child: Text(_emojis[nivel]!, style: const TextStyle(fontSize: 20)),
       ),
     );
   }

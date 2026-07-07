@@ -28,19 +28,12 @@ Idoso _idosoFalso() {
 }
 
 void main() {
-  testWidgets('CuidadoDiarioFormScreen só mostra nível de humor quando tipo é Humor', (tester) async {
+  testWidgets('CuidadoDiarioFormScreen mostra só o campo de nota e a data', (tester) async {
     await _pumpComTamanhoGrande(tester, CuidadoDiarioFormScreen(idoso: _idosoFalso()));
 
-    expect(find.text('Nível de humor'), findsNothing);
-
-    await tester.tap(find.text('Humor'));
-    await tester.pump();
-
-    expect(find.text('Nível de humor'), findsOneWidget);
-
-    await tester.tap(find.text('Higiene'));
-    await tester.pump();
-
-    expect(find.text('Nível de humor'), findsNothing);
+    expect(find.text('Nova nota'), findsOneWidget);
+    expect(find.text('Nota'), findsOneWidget);
+    expect(find.text('Data e hora'), findsOneWidget);
+    expect(find.text('Guardar'), findsOneWidget);
   });
 }

@@ -18,6 +18,40 @@ bool _mesmoDia(DateTime a, DateTime b) {
 
 const _sugestoesHigiene = ['Banho', 'Escovar os dentes', 'Higiene íntima', 'Pentear/arranjar cabelo'];
 const _sugestoesAlimentacao = ['Pequeno-almoço', 'Almoço', 'Lanche', 'Jantar', 'Hidratação/Água'];
+const _sugestoesSono = ['Sesta', 'Deitar à noite', 'Acordar'];
+
+String _labelCategoria(CategoriaRotina categoria) {
+  switch (categoria) {
+    case CategoriaRotina.higiene:
+      return 'Higiene';
+    case CategoriaRotina.alimentacao:
+      return 'Alimentação';
+    case CategoriaRotina.sono:
+      return 'Sono';
+  }
+}
+
+List<String> _sugestoesPorCategoria(CategoriaRotina categoria) {
+  switch (categoria) {
+    case CategoriaRotina.higiene:
+      return _sugestoesHigiene;
+    case CategoriaRotina.alimentacao:
+      return _sugestoesAlimentacao;
+    case CategoriaRotina.sono:
+      return _sugestoesSono;
+  }
+}
+
+TipoCuidadoDiario _tipoCuidadoParaCategoria(CategoriaRotina categoria) {
+  switch (categoria) {
+    case CategoriaRotina.higiene:
+      return TipoCuidadoDiario.higiene;
+    case CategoriaRotina.alimentacao:
+      return TipoCuidadoDiario.alimentacao;
+    case CategoriaRotina.sono:
+      return TipoCuidadoDiario.sono;
+  }
+}
 
 /// Secção Premium de rotina de higiene/alimentação no perfil do idoso.
 /// Minimizada por padrão (ExpansionTile fechado); lista itens recorrentes
@@ -42,6 +76,7 @@ class RotinaSection extends ConsumerWidget {
                 segments: const [
                   ButtonSegment(value: CategoriaRotina.higiene, label: Text('Higiene')),
                   ButtonSegment(value: CategoriaRotina.alimentacao, label: Text('Alimentação')),
+                  ButtonSegment(value: CategoriaRotina.sono, label: Text('Sono')),
                 ],
                 selected: {categoria},
                 onSelectionChanged: (selecao) => setStateDialog(() => categoria = selecao.first),
@@ -53,9 +88,7 @@ class RotinaSection extends ConsumerWidget {
                   spacing: 8,
                   runSpacing: 4,
                   children: [
-                    for (final sugestao in categoria == CategoriaRotina.higiene
-                        ? _sugestoesHigiene
-                        : _sugestoesAlimentacao)
+                    for (final sugestao in _sugestoesPorCategoria(categoria))
                       ActionChip(
                         label: Text(sugestao),
                         onPressed: () => setStateDialog(() => nomeController.text = sugestao),
@@ -146,9 +179,7 @@ class RotinaSection extends ConsumerWidget {
     if (concluido) {
       final registo = RegistoCuidadoDiario()
         ..idosoId = idoso.id
-        ..tipo = item.categoria == CategoriaRotina.higiene
-            ? TipoCuidadoDiario.higiene
-            : TipoCuidadoDiario.alimentacao
+        ..tipo = _tipoCuidadoParaCategoria(item.categoria)
         ..itemRotinaId = item.id
         ..notaRapida = item.nome
         ..timestamp = DateTime.now();
@@ -170,13 +201,13 @@ class RotinaSection extends ConsumerWidget {
       data: (itens) {
         final ativos = itens.where((i) => i.ativo).toList();
         return ExpansionTile(
-          title: const Text('Rotina de higiene e alimentação'),
+          title: const Text('Rotina de higiene, alimentação e sono'),
           subtitle: Text(ativos.isEmpty ? 'Nenhum item' : '${ativos.length} itens'),
           children: [
             for (final item in ativos)
               CheckboxListTile(
                 title: Text(item.nome),
-                subtitle: Text(item.categoria == CategoriaRotina.higiene ? 'Higiene' : 'Alimentação'),
+                subtitle: Text(_labelCategoria(item.categoria)),
                 value: _conclusaoHoje(item, cuidadosHoje) != null,
                 onChanged: (valor) => _alternarConcluido(ref, item, valor ?? false, cuidadosHoje),
                 secondary: Row(

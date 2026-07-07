@@ -133,10 +133,12 @@ P _itemRotinaDeserializeProp<P>(
 const _ItemRotinacategoriaEnumValueMap = {
   r'higiene': r'higiene',
   r'alimentacao': r'alimentacao',
+  r'sono': r'sono',
 };
 const _ItemRotinacategoriaValueEnumMap = {
   r'higiene': CategoriaRotina.higiene,
   r'alimentacao': CategoriaRotina.alimentacao,
+  r'sono': CategoriaRotina.sono,
 };
 
 Id _itemRotinaGetId(ItemRotina object) {
