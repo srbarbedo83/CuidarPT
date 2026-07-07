@@ -8,7 +8,6 @@ import '../../contactos_cuidadores/presentation/contactos_cuidadores_section.dar
 import '../../idosos/providers/idoso_providers.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
-import '../../tempo/presentation/info_local_card.dart';
 import '../providers/definicoes_providers.dart';
 import '../providers/preferencias_providers.dart';
 
@@ -59,8 +58,6 @@ class DefinicoesScreen extends ConsumerWidget {
           _SeccaoPerfis(totalIdosos: idosos.length, maxPerfisIdoso: limites.maxPerfisIdoso),
           const SizedBox(height: 16),
           const ContactosCuidadoresSection(),
-          const SizedBox(height: 16),
-          const InfoLocalCard(),
           const SizedBox(height: 16),
           _SeccaoSobre(versao: packageInfo?.version),
         ],
