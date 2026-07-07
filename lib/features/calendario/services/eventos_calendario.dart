@@ -42,6 +42,16 @@ bool _mesmoDia(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
 
+bool _consultaOcorreNoDia(RegistoConsulta consulta, DateTime dia) {
+  if (!consulta.recorrente) {
+    return _mesmoDia(consulta.dataHora, dia);
+  }
+  final inicio = consulta.dataHora;
+  if (dia.isBefore(DateTime(inicio.year, inicio.month, inicio.day))) return false;
+  return consulta.diasSemanaRecorrencia.isEmpty ||
+      consulta.diasSemanaRecorrencia.contains(dia.weekday);
+}
+
 bool _medicacaoAtivaNoDia(RegistoMedicacao medicacao, DateTime dia) {
   if (!medicacao.ativo) return false;
 
@@ -83,7 +93,7 @@ List<EventoCalendario> eventosDoDia(
   }
 
   for (final consulta in consultas) {
-    if (!_mesmoDia(consulta.dataHora, dia)) continue;
+    if (!_consultaOcorreNoDia(consulta, dia)) continue;
     final horas = consulta.dataHora.hour.toString().padLeft(2, '0');
     final minutos = consulta.dataHora.minute.toString().padLeft(2, '0');
     eventos.add(

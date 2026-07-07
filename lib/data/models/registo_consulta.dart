@@ -31,7 +31,17 @@ class RegistoConsulta {
   String? notas;
 
   /// Data prevista de uma consulta de seguimento, se o médico a marcou.
+  /// Só usado quando [recorrente] é `false`.
   DateTime? proximaConsultaData;
+
+  /// Só aplicável a tratamentos: repete-se diariamente (ou nos dias de
+  /// [diasSemanaRecorrencia]) à hora de [dataHora], em vez de ser um
+  /// compromisso pontual.
+  bool recorrente = false;
+
+  /// Dias da semana da recorrência, 1 (segunda) a 7 (domingo). Vazio
+  /// significa todos os dias.
+  List<int> diasSemanaRecorrencia = [];
 
   /// Permite desligar os lembretes sem apagar o registo.
   bool lembreteAtivo = true;

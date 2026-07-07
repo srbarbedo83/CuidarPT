@@ -101,11 +101,12 @@ class RelatorioPdfBuilder {
         _tituloSeccao('Medicação atual'),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Medicamento', 'Dose', 'Horários', 'Dias'],
+          headers: ['Medicamento', 'Dose', 'Via', 'Horários', 'Dias'],
           data: registos
               .map((registo) => [
                     registo.nomeMedicamento,
                     registo.dose ?? '-',
+                    registo.viaAdministracao ?? '-',
                     registo.horariosMinutos.map(formatarHorario).join(', '),
                     formatarDiasSemana(registo.diasSemana),
                   ])

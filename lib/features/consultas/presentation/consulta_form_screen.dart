@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/utils/consulta_opcoes.dart';
+import '../../../core/utils/horarios.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../providers/consulta_providers.dart';
 import '../services/consulta_scheduler.dart';
+import '../services/profissionais.dart';
 
 /// Ecrã de criação/edição de uma consulta médica de [idoso].
 ///
@@ -27,11 +29,13 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   late TipoRegistoConsulta _tipo;
   late String _especialidade;
   late String _local;
-  late final TextEditingController _medicoController;
+  late String _medico;
   late final TextEditingController _notasController;
 
   late DateTime _dataHora;
   DateTime? _proximaConsultaData;
+  bool _recorrente = false;
+  late List<int> _diasSemanaRecorrencia;
   bool _lembreteAtivo = true;
   bool _aGuardar = false;
 
@@ -45,16 +49,17 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
     _tipo = consulta?.tipo ?? TipoRegistoConsulta.consulta;
     _especialidade = consulta?.especialidade ?? '';
     _local = consulta?.local ?? '';
-    _medicoController = TextEditingController(text: consulta?.nomeMedico ?? '');
+    _medico = consulta?.nomeMedico ?? '';
     _notasController = TextEditingController(text: consulta?.notas ?? '');
     _dataHora = consulta?.dataHora ?? DateTime.now();
     _proximaConsultaData = consulta?.proximaConsultaData;
+    _recorrente = consulta?.recorrente ?? false;
+    _diasSemanaRecorrencia = List.of(consulta?.diasSemanaRecorrencia ?? []);
     _lembreteAtivo = consulta?.lembreteAtivo ?? true;
   }
 
   @override
   void dispose() {
-    _medicoController.dispose();
     _notasController.dispose();
     super.dispose();
   }
@@ -79,6 +84,14 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
     setState(() => _dataHora = DateTime(data.year, data.month, data.day, hora.hour, hora.minute));
   }
 
+  void _alternarDiaSemanaRecorrencia(int dia) {
+    setState(() {
+      _diasSemanaRecorrencia = _diasSemanaRecorrencia.contains(dia)
+          ? _diasSemanaRecorrencia.where((d) => d != dia).toList()
+          : [..._diasSemanaRecorrencia, dia];
+    });
+  }
+
   Future<void> _escolherProximaConsulta() async {
     final agora = DateTime.now();
     final escolhida = await showDatePicker(
@@ -99,7 +112,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
 
     final agora = DateTime.now();
     final local = _local.trim();
-    final medico = _medicoController.text.trim();
+    final medico = _medico.trim();
     final notas = _notasController.text.trim();
     final consulta = widget.consulta ?? RegistoConsulta();
     consulta
@@ -110,7 +123,9 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
       ..nomeMedico = medico.isEmpty ? null : medico
       ..dataHora = _dataHora
       ..notas = notas.isEmpty ? null : notas
-      ..proximaConsultaData = _proximaConsultaData
+      ..proximaConsultaData = _ehTratamento && _recorrente ? null : _proximaConsultaData
+      ..recorrente = _ehTratamento && _recorrente
+      ..diasSemanaRecorrencia = _ehTratamento && _recorrente ? _diasSemanaRecorrencia : []
       ..lembreteAtivo = _lembreteAtivo
       ..atualizadoEm = agora;
     if (!_aEditar) {
@@ -131,6 +146,8 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
         ? (_ehTratamento ? 'Editar tratamento' : 'Editar consulta')
         : (_ehTratamento ? 'Novo tratamento' : 'Nova consulta');
     final opcoesEspecialidade = _ehTratamento ? tratamentosComuns : especialidadesComuns;
+    final consultasDoIdoso = ref.watch(consultaListProvider(widget.idoso.id)).valueOrNull ?? const [];
+    final nomesProfissionais = profissionaisDoIdoso(consultasDoIdoso).map((p) => p.nome).toList();
 
     return Scaffold(
       appBar: AppBar(title: Text(tituloEcra)),
@@ -180,8 +197,9 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             Autocomplete<String>(
               initialValue: TextEditingValue(text: _local),
               optionsBuilder: (valor) {
-                if (valor.text.isEmpty) return locaisComuns;
-                return locaisComuns.where((l) => l.toLowerCase().contains(valor.text.toLowerCase()));
+                final opcoes = [...locaisComuns, ...hospitaisComuns];
+                if (valor.text.isEmpty) return opcoes;
+                return opcoes.where((l) => l.toLowerCase().contains(valor.text.toLowerCase()));
               },
               onSelected: (selecionado) => setState(() => _local = selecionado),
               fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
@@ -198,46 +216,100 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
               },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _medicoController,
-              decoration: InputDecoration(
-                labelText: _ehTratamento ? 'Profissional' : 'Nome do médico',
-                hintText: _ehTratamento ? 'Ex.: Enf. Maria Santos' : 'Ex.: Dr. António Silva',
-              ),
-              textCapitalization: TextCapitalization.words,
+            Autocomplete<String>(
+              initialValue: TextEditingValue(text: _medico),
+              optionsBuilder: (valor) {
+                if (valor.text.isEmpty) return nomesProfissionais;
+                return nomesProfissionais.where(
+                  (nome) => nome.toLowerCase().contains(valor.text.toLowerCase()),
+                );
+              },
+              onSelected: (selecionado) => setState(() => _medico = selecionado),
+              fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                return TextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: InputDecoration(
+                    labelText: _ehTratamento ? 'Profissional' : 'Nome do médico',
+                    hintText: _ehTratamento ? 'Ex.: Enf. Maria Santos' : 'Ex.: Dr. António Silva',
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                  onChanged: (valor) => _medico = valor,
+                );
+              },
             ),
             const SizedBox(height: 16),
+            if (_ehTratamento)
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Tratamento recorrente'),
+                subtitle: const Text('Repete-se diariamente ou em dias específicos da semana'),
+                value: _recorrente,
+                onChanged: (valor) => setState(() => _recorrente = valor),
+              ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Data e hora'),
+              title: Text(_ehTratamento && _recorrente ? 'Data e hora de início' : 'Data e hora'),
               subtitle: Text(DateFormat('dd/MM/yyyy HH:mm').format(_dataHora)),
               trailing: const Icon(Icons.calendar_today),
               onTap: _escolherDataHora,
             ),
-            const SizedBox(height: 16),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(_ehTratamento ? 'Próximo tratamento (opcional)' : 'Próxima consulta (opcional)'),
-              subtitle: Text(
-                _proximaConsultaData != null
-                    ? DateFormat('dd/MM/yyyy').format(_proximaConsultaData!)
-                    : 'Sem data definida',
+            if (_ehTratamento && _recorrente) ...[
+              const SizedBox(height: 16),
+              Text('Dias da semana', style: Theme.of(context).textTheme.titleSmall),
+              const SizedBox(height: 4),
+              Text(
+                'Não escolhas nenhum para repetir todos os dias.',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-              trailing: _proximaConsultaData != null
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () => setState(() => _proximaConsultaData = null),
-                    )
-                  : const Icon(Icons.calendar_today),
-              onTap: _escolherProximaConsulta,
-            ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: [
+                  FilterChip(
+                    label: const Text('Todos os dias'),
+                    selected: _diasSemanaRecorrencia.isEmpty,
+                    onSelected: (_) => setState(() => _diasSemanaRecorrencia = []),
+                  ),
+                  for (final dia in diasSemanaAbreviados.keys)
+                    FilterChip(
+                      label: Text(diasSemanaAbreviados[dia]!),
+                      selected: _diasSemanaRecorrencia.contains(dia),
+                      onSelected: (_) => _alternarDiaSemanaRecorrencia(dia),
+                    ),
+                ],
+              ),
+            ],
+            if (!(_ehTratamento && _recorrente)) ...[
+              const SizedBox(height: 16),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title:
+                    Text(_ehTratamento ? 'Próximo tratamento (opcional)' : 'Próxima consulta (opcional)'),
+                subtitle: Text(
+                  _proximaConsultaData != null
+                      ? DateFormat('dd/MM/yyyy').format(_proximaConsultaData!)
+                      : 'Sem data definida',
+                ),
+                trailing: _proximaConsultaData != null
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () => setState(() => _proximaConsultaData = null),
+                      )
+                    : const Icon(Icons.calendar_today),
+                onTap: _escolherProximaConsulta,
+              ),
+            ],
+            const SizedBox(height: 16),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('Lembrete ativo'),
               subtitle: Text(
-                _ehTratamento
-                    ? 'Avisa antes do tratamento e do próximo, se forem futuros'
-                    : 'Avisa antes da consulta e da próxima consulta, se forem futuras',
+                _ehTratamento && _recorrente
+                    ? 'Avisa todos os dias (ou nos dias escolhidos) à hora definida'
+                    : _ehTratamento
+                        ? 'Avisa antes do tratamento e do próximo, se forem futuros'
+                        : 'Avisa antes da consulta e da próxima consulta, se forem futuras',
               ),
               value: _lembreteAtivo,
               onChanged: (valor) => setState(() => _lembreteAtivo = valor),

@@ -13,6 +13,7 @@ import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../../calendario/presentation/calendario_screen.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
+import '../../consultas/presentation/profissionais_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../consultas/services/consulta_scheduler.dart';
 import '../../cuidados_diarios/presentation/cuidado_diario_form_screen.dart';
@@ -76,12 +77,30 @@ class IdosoDetailScreen extends ConsumerWidget {
               MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.edit_outlined),
-            tooltip: 'Editar perfil',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
-            ),
+          PopupMenuButton<VoidCallback>(
+            onSelected: (acao) => acao(),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => ProfissionaisScreen(idoso: idoso)),
+                ),
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.badge_outlined),
+                  title: Text('Profissionais'),
+                ),
+              ),
+              PopupMenuItem(
+                value: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
+                ),
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.edit_outlined),
+                  title: Text('Editar perfil'),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -470,7 +489,8 @@ class _MedicacaoTile extends ConsumerWidget {
       ),
       title: Text(registo.nomeMedicamento),
       subtitle: Text(
-        '${registo.dose != null ? '${registo.dose} · ' : ''}$horarios · '
+        '${registo.dose != null ? '${registo.dose} · ' : ''}'
+        '${registo.viaAdministracao != null ? '${registo.viaAdministracao} · ' : ''}$horarios · '
         '${formatarDiasSemana(registo.diasSemana)}'
         '${registo.ativo ? '' : ' · pausada'}',
       ),

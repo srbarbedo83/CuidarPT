@@ -51,3 +51,29 @@ const locaisComuns = [
   'Telemedicina',
   'Lar/Residência sénior',
 ];
+
+/// Alguns dos hospitais e centros hospitalares públicos mais conhecidos em
+/// Portugal, como atalho para o campo "Local". Não é uma lista exaustiva —
+/// o utilizador pode sempre escrever outro nome.
+const hospitaisComuns = [
+  'Hospital de Santa Maria (Lisboa)',
+  'Hospital de São José (CHULC, Lisboa)',
+  'Hospital Curry Cabral (Lisboa)',
+  'Hospital Garcia de Orta (Almada)',
+  'Hospital Beatriz Ângelo (Loures)',
+  'Hospital Prof. Dr. Fernando Fonseca (Amadora-Sintra)',
+  'Hospital de São Francisco Xavier (Lisboa)',
+  'IPO Lisboa',
+  'Hospital de São João (Porto)',
+  'Centro Hospitalar Universitário do Porto (Santo António)',
+  'Hospital Pedro Hispano (Matosinhos)',
+  'IPO Porto',
+  'Hospital de Braga',
+  'Centro Hospitalar Universitário de Coimbra',
+  'IPO Coimbra',
+  'Hospital do Espírito Santo (Évora)',
+  'Hospital de Faro',
+  'Hospital Distrital de Santarém',
+  'Hospital de Leiria',
+  'Centro Hospitalar de Vila Nova de Gaia/Espinho',
+];

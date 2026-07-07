@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/utils/horarios.dart';
+import '../../../core/utils/medicacao_opcoes.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../providers/medicacao_providers.dart';
@@ -27,6 +28,7 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
   late final TextEditingController _nomeController;
   late final TextEditingController _doseController;
   late final TextEditingController _notasController;
+  late String _viaAdministracao;
 
   late List<int> _horariosMinutos;
   late List<int> _diasSemana;
@@ -45,6 +47,7 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
     _nomeController = TextEditingController(text: registo?.nomeMedicamento ?? '');
     _doseController = TextEditingController(text: registo?.dose ?? '');
     _notasController = TextEditingController(text: registo?.notas ?? '');
+    _viaAdministracao = registo?.viaAdministracao ?? '';
     _horariosMinutos = List.of(registo?.horariosMinutos ?? []);
     _diasSemana = List.of(registo?.diasSemana ?? []);
     _dataInicio = registo?.dataInicio ?? DateTime.now();
@@ -134,11 +137,13 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
     final agora = DateTime.now();
     final dose = _doseController.text.trim();
     final notas = _notasController.text.trim();
+    final via = _viaAdministracao.trim();
     final registo = widget.registo ?? RegistoMedicacao();
     registo
       ..idosoId = widget.idoso.id
       ..nomeMedicamento = _nomeController.text.trim()
       ..dose = dose.isEmpty ? null : dose
+      ..viaAdministracao = via.isEmpty ? null : via
       ..horariosMinutos = _horariosMinutos
       ..diasSemana = _diasSemana
       ..dataInicio = _dataInicio
@@ -181,6 +186,28 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
                 labelText: 'Dose',
                 hintText: 'Ex.: 1 comprimido, 500 mg, 10 gotas',
               ),
+            ),
+            const SizedBox(height: 16),
+            Autocomplete<String>(
+              initialValue: TextEditingValue(text: _viaAdministracao),
+              optionsBuilder: (valor) {
+                if (valor.text.isEmpty) return viasAdministracaoComuns;
+                return viasAdministracaoComuns.where(
+                  (v) => v.toLowerCase().contains(valor.text.toLowerCase()),
+                );
+              },
+              onSelected: (selecionado) => setState(() => _viaAdministracao = selecionado),
+              fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+                return TextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: const InputDecoration(
+                    labelText: 'Via de administração',
+                    hintText: 'Ex.: Oral, Intravenosa',
+                  ),
+                  onChanged: (valor) => _viaAdministracao = valor,
+                );
+              },
             ),
             const SizedBox(height: 24),
             Text('Horários *', style: Theme.of(context).textTheme.titleSmall),

@@ -61,6 +61,11 @@ const RegistoMedicacaoSchema = CollectionSchema(
       name: r'notificacaoIds',
       type: IsarType.longList,
     ),
+    r'viaAdministracao': PropertySchema(
+      id: 12,
+      name: r'viaAdministracao',
+      type: IsarType.string,
+    ),
   },
 
   estimateSize: _registoMedicacaoEstimateSize,
@@ -114,6 +119,12 @@ int _registoMedicacaoEstimateSize(
     }
   }
   bytesCount += 3 + object.notificacaoIds.length * 8;
+  {
+    final value = object.viaAdministracao;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -135,6 +146,7 @@ void _registoMedicacaoSerialize(
   writer.writeString(offsets[9], object.nomeMedicamento);
   writer.writeString(offsets[10], object.notas);
   writer.writeLongList(offsets[11], object.notificacaoIds);
+  writer.writeString(offsets[12], object.viaAdministracao);
 }
 
 RegistoMedicacao _registoMedicacaoDeserialize(
@@ -157,6 +169,7 @@ RegistoMedicacao _registoMedicacaoDeserialize(
   object.nomeMedicamento = reader.readString(offsets[9]);
   object.notas = reader.readStringOrNull(offsets[10]);
   object.notificacaoIds = reader.readLongList(offsets[11]) ?? [];
+  object.viaAdministracao = reader.readStringOrNull(offsets[12]);
   return object;
 }
 
@@ -191,6 +204,8 @@ P _registoMedicacaoDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 11:
       return (reader.readLongList(offset) ?? []) as P;
+    case 12:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1564,6 +1579,165 @@ extension RegistoMedicacaoQueryFilter
       );
     });
   }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'viaAdministracao'),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'viaAdministracao'),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'viaAdministracao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'viaAdministracao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'viaAdministracao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'viaAdministracao',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'viaAdministracao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'viaAdministracao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'viaAdministracao',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'viaAdministracao',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'viaAdministracao', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterFilterCondition>
+  viaAdministracaoIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'viaAdministracao', value: ''),
+      );
+    });
+  }
 }
 
 extension RegistoMedicacaoQueryObject
@@ -1694,6 +1868,20 @@ extension RegistoMedicacaoQuerySortBy
   sortByNotasDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'notas', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
+  sortByViaAdministracao() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'viaAdministracao', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
+  sortByViaAdministracaoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'viaAdministracao', Sort.desc);
     });
   }
 }
@@ -1835,6 +2023,20 @@ extension RegistoMedicacaoQuerySortThenBy
       return query.addSortBy(r'notas', Sort.desc);
     });
   }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
+  thenByViaAdministracao() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'viaAdministracao', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QAfterSortBy>
+  thenByViaAdministracaoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'viaAdministracao', Sort.desc);
+    });
+  }
 }
 
 extension RegistoMedicacaoQueryWhereDistinct
@@ -1927,6 +2129,16 @@ extension RegistoMedicacaoQueryWhereDistinct
       return query.addDistinctBy(r'notificacaoIds');
     });
   }
+
+  QueryBuilder<RegistoMedicacao, RegistoMedicacao, QDistinct>
+  distinctByViaAdministracao({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(
+        r'viaAdministracao',
+        caseSensitive: caseSensitive,
+      );
+    });
+  }
 }
 
 extension RegistoMedicacaoQueryProperty
@@ -2014,6 +2226,13 @@ extension RegistoMedicacaoQueryProperty
   notificacaoIdsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notificacaoIds');
+    });
+  }
+
+  QueryBuilder<RegistoMedicacao, String?, QQueryOperations>
+  viaAdministracaoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'viaAdministracao');
     });
   }
 }

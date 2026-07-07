@@ -17,6 +17,11 @@ class ConsultaScheduler {
       return;
     }
 
+    if (consulta.recorrente) {
+      consulta.notificacaoIds = await _reagendarRecorrente(consulta, nomeIdoso: nomeIdoso);
+      return;
+    }
+
     final agora = DateTime.now();
     final novosIds = <int>[];
     var indice = 0;
@@ -45,6 +50,46 @@ class ConsultaScheduler {
     }
 
     consulta.notificacaoIds = novosIds;
+  }
+
+  static Future<List<int>> _reagendarRecorrente(
+    RegistoConsulta consulta, {
+    required String nomeIdoso,
+  }) async {
+    final titulo = 'Tratamento · $nomeIdoso';
+    final corpo =
+        consulta.local == null ? consulta.especialidade : '${consulta.especialidade} — ${consulta.local}';
+    final hora = consulta.dataHora.hour;
+    final minuto = consulta.dataHora.minute;
+
+    final novosIds = <int>[];
+    var indice = 0;
+
+    if (consulta.diasSemanaRecorrencia.isEmpty) {
+      final id = NotificationIds.consulta(consulta.id, indice++);
+      await NotificationService.instance.agendarRecorrenteDiario(
+        id: id,
+        titulo: titulo,
+        corpo: corpo,
+        hora: hora,
+        minuto: minuto,
+      );
+      novosIds.add(id);
+    } else {
+      for (final diaSemana in consulta.diasSemanaRecorrencia) {
+        final id = NotificationIds.consulta(consulta.id, indice++);
+        await NotificationService.instance.agendarRecorrenteSemanal(
+          id: id,
+          titulo: titulo,
+          corpo: corpo,
+          diaSemana: diaSemana,
+          hora: hora,
+          minuto: minuto,
+        );
+        novosIds.add(id);
+      }
+    }
+    return novosIds;
   }
 
   static Future<void> cancelar(RegistoConsulta consulta) async {

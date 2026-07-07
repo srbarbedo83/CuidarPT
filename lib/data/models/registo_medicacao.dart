@@ -15,6 +15,9 @@ class RegistoMedicacao {
   /// Texto livre: "1 comprimido", "500 mg", "10 gotas".
   String? dose;
 
+  /// Ex.: "Oral", "Intravenosa", "Tópica".
+  String? viaAdministracao;
+
   /// Horários de toma, em minutos desde a meia-noite (0-1439).
   List<int> horariosMinutos = [];
 

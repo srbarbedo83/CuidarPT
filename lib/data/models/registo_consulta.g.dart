@@ -32,36 +32,46 @@ const RegistoConsultaSchema = CollectionSchema(
       name: r'dataHora',
       type: IsarType.dateTime,
     ),
-    r'especialidade': PropertySchema(
+    r'diasSemanaRecorrencia': PropertySchema(
       id: 3,
+      name: r'diasSemanaRecorrencia',
+      type: IsarType.longList,
+    ),
+    r'especialidade': PropertySchema(
+      id: 4,
       name: r'especialidade',
       type: IsarType.string,
     ),
-    r'idosoId': PropertySchema(id: 4, name: r'idosoId', type: IsarType.long),
+    r'idosoId': PropertySchema(id: 5, name: r'idosoId', type: IsarType.long),
     r'lembreteAtivo': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'lembreteAtivo',
       type: IsarType.bool,
     ),
-    r'local': PropertySchema(id: 6, name: r'local', type: IsarType.string),
+    r'local': PropertySchema(id: 7, name: r'local', type: IsarType.string),
     r'nomeMedico': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'nomeMedico',
       type: IsarType.string,
     ),
-    r'notas': PropertySchema(id: 8, name: r'notas', type: IsarType.string),
+    r'notas': PropertySchema(id: 9, name: r'notas', type: IsarType.string),
     r'notificacaoIds': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'notificacaoIds',
       type: IsarType.longList,
     ),
     r'proximaConsultaData': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'proximaConsultaData',
       type: IsarType.dateTime,
     ),
+    r'recorrente': PropertySchema(
+      id: 12,
+      name: r'recorrente',
+      type: IsarType.bool,
+    ),
     r'tipo': PropertySchema(
-      id: 11,
+      id: 13,
       name: r'tipo',
       type: IsarType.string,
       enumMap: _RegistoConsultatipoEnumValueMap,
@@ -103,6 +113,7 @@ int _registoConsultaEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.diasSemanaRecorrencia.length * 8;
   bytesCount += 3 + object.especialidade.length * 3;
   {
     final value = object.local;
@@ -136,15 +147,17 @@ void _registoConsultaSerialize(
   writer.writeDateTime(offsets[0], object.atualizadoEm);
   writer.writeDateTime(offsets[1], object.criadoEm);
   writer.writeDateTime(offsets[2], object.dataHora);
-  writer.writeString(offsets[3], object.especialidade);
-  writer.writeLong(offsets[4], object.idosoId);
-  writer.writeBool(offsets[5], object.lembreteAtivo);
-  writer.writeString(offsets[6], object.local);
-  writer.writeString(offsets[7], object.nomeMedico);
-  writer.writeString(offsets[8], object.notas);
-  writer.writeLongList(offsets[9], object.notificacaoIds);
-  writer.writeDateTime(offsets[10], object.proximaConsultaData);
-  writer.writeString(offsets[11], object.tipo.name);
+  writer.writeLongList(offsets[3], object.diasSemanaRecorrencia);
+  writer.writeString(offsets[4], object.especialidade);
+  writer.writeLong(offsets[5], object.idosoId);
+  writer.writeBool(offsets[6], object.lembreteAtivo);
+  writer.writeString(offsets[7], object.local);
+  writer.writeString(offsets[8], object.nomeMedico);
+  writer.writeString(offsets[9], object.notas);
+  writer.writeLongList(offsets[10], object.notificacaoIds);
+  writer.writeDateTime(offsets[11], object.proximaConsultaData);
+  writer.writeBool(offsets[12], object.recorrente);
+  writer.writeString(offsets[13], object.tipo.name);
 }
 
 RegistoConsulta _registoConsultaDeserialize(
@@ -157,17 +170,19 @@ RegistoConsulta _registoConsultaDeserialize(
   object.atualizadoEm = reader.readDateTime(offsets[0]);
   object.criadoEm = reader.readDateTime(offsets[1]);
   object.dataHora = reader.readDateTime(offsets[2]);
-  object.especialidade = reader.readString(offsets[3]);
+  object.diasSemanaRecorrencia = reader.readLongList(offsets[3]) ?? [];
+  object.especialidade = reader.readString(offsets[4]);
   object.id = id;
-  object.idosoId = reader.readLong(offsets[4]);
-  object.lembreteAtivo = reader.readBool(offsets[5]);
-  object.local = reader.readStringOrNull(offsets[6]);
-  object.nomeMedico = reader.readStringOrNull(offsets[7]);
-  object.notas = reader.readStringOrNull(offsets[8]);
-  object.notificacaoIds = reader.readLongList(offsets[9]) ?? [];
-  object.proximaConsultaData = reader.readDateTimeOrNull(offsets[10]);
+  object.idosoId = reader.readLong(offsets[5]);
+  object.lembreteAtivo = reader.readBool(offsets[6]);
+  object.local = reader.readStringOrNull(offsets[7]);
+  object.nomeMedico = reader.readStringOrNull(offsets[8]);
+  object.notas = reader.readStringOrNull(offsets[9]);
+  object.notificacaoIds = reader.readLongList(offsets[10]) ?? [];
+  object.proximaConsultaData = reader.readDateTimeOrNull(offsets[11]);
+  object.recorrente = reader.readBool(offsets[12]);
   object.tipo =
-      _RegistoConsultatipoValueEnumMap[reader.readStringOrNull(offsets[11])] ??
+      _RegistoConsultatipoValueEnumMap[reader.readStringOrNull(offsets[13])] ??
       TipoRegistoConsulta.consulta;
   return object;
 }
@@ -186,22 +201,26 @@ P _registoConsultaDeserializeProp<P>(
     case 2:
       return (reader.readDateTime(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongList(offset) ?? []) as P;
     case 4:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readLongList(offset) ?? []) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLongList(offset) ?? []) as P;
     case 11:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 12:
+      return (reader.readBool(offset)) as P;
+    case 13:
       return (_RegistoConsultatipoValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
@@ -589,6 +608,135 @@ extension RegistoConsultaQueryFilter
           upper: upper,
           includeUpper: includeUpper,
         ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaElementEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'diasSemanaRecorrencia',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaElementGreaterThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'diasSemanaRecorrencia',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaElementLessThan(int value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'diasSemanaRecorrencia',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaElementBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'diasSemanaRecorrencia',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'diasSemanaRecorrencia',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'diasSemanaRecorrencia', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'diasSemanaRecorrencia', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaLengthLessThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'diasSemanaRecorrencia',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'diasSemanaRecorrencia',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  diasSemanaRecorrenciaLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'diasSemanaRecorrencia',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
       );
     });
   }
@@ -1512,6 +1660,15 @@ extension RegistoConsultaQueryFilter
   }
 
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
+  recorrenteEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'recorrente', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterFilterCondition>
   tipoEqualTo(TipoRegistoConsulta value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1798,6 +1955,20 @@ extension RegistoConsultaQuerySortBy
     });
   }
 
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  sortByRecorrente() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recorrente', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  sortByRecorrenteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recorrente', Sort.desc);
+    });
+  }
+
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy> sortByTipo() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tipo', Sort.asc);
@@ -1963,6 +2134,20 @@ extension RegistoConsultaQuerySortThenBy
     });
   }
 
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  thenByRecorrente() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recorrente', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy>
+  thenByRecorrenteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recorrente', Sort.desc);
+    });
+  }
+
   QueryBuilder<RegistoConsulta, RegistoConsulta, QAfterSortBy> thenByTipo() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tipo', Sort.asc);
@@ -1997,6 +2182,13 @@ extension RegistoConsultaQueryWhereDistinct
   distinctByDataHora() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dataHora');
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
+  distinctByDiasSemanaRecorrencia() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'diasSemanaRecorrencia');
     });
   }
 
@@ -2061,6 +2253,13 @@ extension RegistoConsultaQueryWhereDistinct
     });
   }
 
+  QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct>
+  distinctByRecorrente() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'recorrente');
+    });
+  }
+
   QueryBuilder<RegistoConsulta, RegistoConsulta, QDistinct> distinctByTipo({
     bool caseSensitive = true,
   }) {
@@ -2094,6 +2293,13 @@ extension RegistoConsultaQueryProperty
   QueryBuilder<RegistoConsulta, DateTime, QQueryOperations> dataHoraProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dataHora');
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, List<int>, QQueryOperations>
+  diasSemanaRecorrenciaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'diasSemanaRecorrencia');
     });
   }
 
@@ -2147,6 +2353,12 @@ extension RegistoConsultaQueryProperty
   proximaConsultaDataProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'proximaConsultaData');
+    });
+  }
+
+  QueryBuilder<RegistoConsulta, bool, QQueryOperations> recorrenteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'recorrente');
     });
   }
 

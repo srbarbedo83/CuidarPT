@@ -101,6 +101,51 @@ void main() {
       );
     });
 
+    test('tratamento recorrente diário aparece em qualquer dia a partir do início', () {
+      final tratamento = RegistoConsulta()
+        ..id = 2
+        ..idosoId = 1
+        ..tipo = TipoRegistoConsulta.tratamento
+        ..especialidade = 'Fisioterapia'
+        ..dataHora = DateTime(2026, 7, 6, 10, 0)
+        ..recorrente = true
+        ..criadoEm = agora
+        ..atualizadoEm = agora;
+
+      expect(
+        eventosDoDia(DateTime(2026, 7, 10), medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        hasLength(1),
+      );
+      expect(
+        eventosDoDia(DateTime(2026, 7, 5), medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        isEmpty,
+      );
+    });
+
+    test('tratamento recorrente semanal só aparece nos dias escolhidos', () {
+      final segunda = DateTime(2026, 7, 6);
+      final terca = DateTime(2026, 7, 7);
+      final tratamento = RegistoConsulta()
+        ..id = 3
+        ..idosoId = 1
+        ..tipo = TipoRegistoConsulta.tratamento
+        ..especialidade = 'Fisioterapia'
+        ..dataHora = DateTime(2026, 7, 1, 10, 0)
+        ..recorrente = true
+        ..diasSemanaRecorrencia = [DateTime.monday]
+        ..criadoEm = agora
+        ..atualizadoEm = agora;
+
+      expect(
+        eventosDoDia(segunda, medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        hasLength(1),
+      );
+      expect(
+        eventosDoDia(terca, medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        isEmpty,
+      );
+    });
+
     test('cuidado diário só aparece no dia exato do timestamp', () {
       final dia = DateTime(2026, 7, 6);
       final cuidado = RegistoCuidadoDiario()
