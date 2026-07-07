@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
+import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
@@ -14,8 +15,21 @@ import '../../relatorios/presentation/relatorio_screen.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 
-class HomeShellScreen extends ConsumerWidget {
+class HomeShellScreen extends ConsumerStatefulWidget {
   const HomeShellScreen({super.key});
+
+  @override
+  ConsumerState<HomeShellScreen> createState() => _HomeShellScreenState();
+}
+
+class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) mostrarConviteAvaliacaoSeNecessario(context, ref);
+    });
+  }
 
   Future<void> _adicionarIdoso(BuildContext context, WidgetRef ref, int totalAtual) async {
     final limites = ref.read(featureLimitsProvider);
@@ -53,7 +67,7 @@ class HomeShellScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final idososAsync = ref.watch(idosoListProvider);
     final estadoSubscricao = ref.watch(estadoSubscricaoProvider).valueOrNull;
 

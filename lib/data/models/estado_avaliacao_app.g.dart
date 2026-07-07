@@ -18,10 +18,10 @@ const EstadoAvaliacaoAppSchema = CollectionSchema(
   name: r'EstadoAvaliacaoApp',
   id: 8078084135223201094,
   properties: {
-    r'jaMostrado': PropertySchema(
+    r'ultimaVezMostrado': PropertySchema(
       id: 0,
-      name: r'jaMostrado',
-      type: IsarType.bool,
+      name: r'ultimaVezMostrado',
+      type: IsarType.dateTime,
     ),
   },
 
@@ -55,7 +55,7 @@ void _estadoAvaliacaoAppSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.jaMostrado);
+  writer.writeDateTime(offsets[0], object.ultimaVezMostrado);
 }
 
 EstadoAvaliacaoApp _estadoAvaliacaoAppDeserialize(
@@ -66,7 +66,7 @@ EstadoAvaliacaoApp _estadoAvaliacaoAppDeserialize(
 ) {
   final object = EstadoAvaliacaoApp();
   object.id = id;
-  object.jaMostrado = reader.readBool(offsets[0]);
+  object.ultimaVezMostrado = reader.readDateTimeOrNull(offsets[0]);
   return object;
 }
 
@@ -78,7 +78,7 @@ P _estadoAvaliacaoAppDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -239,10 +239,74 @@ extension EstadoAvaliacaoAppQueryFilter
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
-  jaMostradoEqualTo(bool value) {
+  ultimaVezMostradoIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'jaMostrado', value: value),
+        const FilterCondition.isNull(property: r'ultimaVezMostrado'),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
+  ultimaVezMostradoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'ultimaVezMostrado'),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
+  ultimaVezMostradoEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'ultimaVezMostrado', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
+  ultimaVezMostradoGreaterThan(DateTime? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'ultimaVezMostrado',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
+  ultimaVezMostradoLessThan(DateTime? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'ultimaVezMostrado',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterFilterCondition>
+  ultimaVezMostradoBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'ultimaVezMostrado',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
@@ -257,16 +321,16 @@ extension EstadoAvaliacaoAppQueryLinks
 extension EstadoAvaliacaoAppQuerySortBy
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QSortBy> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-  sortByJaMostrado() {
+  sortByUltimaVezMostrado() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'jaMostrado', Sort.asc);
+      return query.addSortBy(r'ultimaVezMostrado', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-  sortByJaMostradoDesc() {
+  sortByUltimaVezMostradoDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'jaMostrado', Sort.desc);
+      return query.addSortBy(r'ultimaVezMostrado', Sort.desc);
     });
   }
 }
@@ -288,16 +352,16 @@ extension EstadoAvaliacaoAppQuerySortThenBy
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-  thenByJaMostrado() {
+  thenByUltimaVezMostrado() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'jaMostrado', Sort.asc);
+      return query.addSortBy(r'ultimaVezMostrado', Sort.asc);
     });
   }
 
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QAfterSortBy>
-  thenByJaMostradoDesc() {
+  thenByUltimaVezMostradoDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'jaMostrado', Sort.desc);
+      return query.addSortBy(r'ultimaVezMostrado', Sort.desc);
     });
   }
 }
@@ -305,9 +369,9 @@ extension EstadoAvaliacaoAppQuerySortThenBy
 extension EstadoAvaliacaoAppQueryWhereDistinct
     on QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QDistinct> {
   QueryBuilder<EstadoAvaliacaoApp, EstadoAvaliacaoApp, QDistinct>
-  distinctByJaMostrado() {
+  distinctByUltimaVezMostrado() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'jaMostrado');
+      return query.addDistinctBy(r'ultimaVezMostrado');
     });
   }
 }
@@ -320,10 +384,10 @@ extension EstadoAvaliacaoAppQueryProperty
     });
   }
 
-  QueryBuilder<EstadoAvaliacaoApp, bool, QQueryOperations>
-  jaMostradoProperty() {
+  QueryBuilder<EstadoAvaliacaoApp, DateTime?, QQueryOperations>
+  ultimaVezMostradoProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'jaMostrado');
+      return query.addPropertyName(r'ultimaVezMostrado');
     });
   }
 }

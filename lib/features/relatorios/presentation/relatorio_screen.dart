@@ -228,7 +228,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
       );
 
       if (mounted) {
-        await mostrarConviteAvaliacaoSeNecessario(context, ref);
+        await mostrarConviteAvaliacaoSeNecessario(context, ref, forcar: true);
       }
     } finally {
       if (mounted) setState(() => _aGerar = false);

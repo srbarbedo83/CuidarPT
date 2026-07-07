@@ -9,15 +9,15 @@ class EstadoAvaliacaoAppRepository {
 
   static const _idUnico = 0;
 
-  Future<bool> jaMostrado() async {
+  Future<DateTime?> ultimaVezMostrado() async {
     final estado = await _isar.estadoAvaliacaoApps.get(_idUnico);
-    return estado?.jaMostrado ?? false;
+    return estado?.ultimaVezMostrado;
   }
 
-  Future<void> marcarComoMostrado() {
+  Future<void> marcarComoMostrado(DateTime quando) {
     return _isar.writeTxn(() async {
       final estado = await _isar.estadoAvaliacaoApps.get(_idUnico) ?? EstadoAvaliacaoApp();
-      estado.jaMostrado = true;
+      estado.ultimaVezMostrado = quando;
       await _isar.estadoAvaliacaoApps.put(estado);
     });
   }

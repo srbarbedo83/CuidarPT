@@ -2,15 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 
+import '../../subscricao/providers/subscricao_providers.dart';
 import '../providers/avaliacao_providers.dart';
+import '../services/convite_avaliacao_logica.dart';
 
-/// Mostra, uma única vez, um convite para avaliar a app — sempre com a
-/// mesma mensagem para todos os utilizadores (sem filtrar por satisfação),
-/// nunca como condição para usar qualquer funcionalidade.
-Future<void> mostrarConviteAvaliacaoSeNecessario(BuildContext context, WidgetRef ref) async {
+/// Mostra um convite para avaliar a app a partir do 2º dia de uso, depois no
+/// máximo semanalmente — ou sempre que [forcar] for `true` (ex.: ao gerar um
+/// relatório). Sempre com a mesma mensagem para todos os utilizadores (sem
+/// filtrar por satisfação), nunca como condição para usar qualquer
+/// funcionalidade.
+Future<void> mostrarConviteAvaliacaoSeNecessario(
+  BuildContext context,
+  WidgetRef ref, {
+  bool forcar = false,
+}) async {
+  final instalacaoEm = (await ref.read(subscricaoRepositoryProvider).obterAtual())?.trialInicio;
+  if (instalacaoEm == null) return;
+
   final repository = ref.read(estadoAvaliacaoAppRepositoryProvider);
-  if (await repository.jaMostrado()) return;
-  await repository.marcarComoMostrado();
+  final ultimaVez = await repository.ultimaVezMostrado();
+  final agora = DateTime.now();
+
+  if (!deveMostrarConviteAvaliacao(
+    agora: agora,
+    instalacaoEm: instalacaoEm,
+    ultimaVezMostrado: ultimaVez,
+    forcar: forcar,
+  )) {
+    return;
+  }
+
+  await repository.marcarComoMostrado(agora);
   if (!context.mounted) return;
 
   final avaliar = await showDialog<bool>(
