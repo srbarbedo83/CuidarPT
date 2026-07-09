@@ -3,6 +3,12 @@
          Nenhum dado de cuidado sai do dispositivo. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
+    <!-- Necessária para medir a frequência cardíaca pela câmara (PPG). A
+         imagem nunca é guardada nem sai do dispositivo — só se calcula o
+         BPM a partir da luminosidade captada. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
     <application
         android:label="CuidarPT"
         android:name="${applicationName}"
