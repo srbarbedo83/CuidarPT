@@ -6,6 +6,7 @@ import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_frequencia_cardiaca.dart';
 import '../providers/frequencia_cardiaca_providers.dart';
 import '../services/faixa_frequencia_cardiaca.dart';
+import 'frequencia_cardiaca_historico_screen.dart';
 import 'medir_frequencia_cardiaca_screen.dart';
 
 const _maxRegistosCondensados = 3;
@@ -40,6 +41,13 @@ class _FrequenciaCardiacaSectionState extends ConsumerState<FrequenciaCardiacaSe
                 child: Text(
                   'Frequência cardíaca',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.show_chart, color: Theme.of(context).colorScheme.primary),
+                tooltip: 'Histórico em gráfico',
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => FrequenciaCardiacaHistoricoScreen(idoso: widget.idoso)),
                 ),
               ),
               IconButton(
