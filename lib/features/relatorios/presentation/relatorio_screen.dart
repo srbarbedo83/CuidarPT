@@ -8,16 +8,19 @@ import 'package:intl/intl.dart';
 
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
+import '../../../data/models/registo_sinais_vitais.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../contactos_cuidadores/providers/contacto_cuidador_providers.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
+import '../../sinais_vitais/providers/sinais_vitais_providers.dart';
 import '../../subscricao/feature_limits.dart';
 import '../providers/perfil_relatorio_providers.dart';
 import '../services/periodo_relatorio.dart';
 import '../services/relatorio_pdf_builder.dart';
+import '../services/seccoes_relatorio.dart';
 import 'relatorio_preview_screen.dart';
 
 /// Se houver 2 ou mais destinatários possíveis (o próprio email do
@@ -98,6 +101,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
   String? _logoPath;
   bool _perfilCarregado = false;
   bool _aGerar = false;
+  final _seccoes = Set<SeccaoRelatorio>.from(SeccaoRelatorio.values);
 
   @override
   void initState() {
@@ -195,6 +199,13 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             inicio: intervalo.inicio,
             fim: intervalo.fim,
           );
+      final sinaisVitais = _seccoes.contains(SeccaoRelatorio.sinaisVitais)
+          ? await ref.read(registoSinaisVitaisRepositoryProvider).listarPorIdosoEPeriodo(
+                widget.idoso.id,
+                inicio: intervalo.inicio,
+                fim: intervalo.fim,
+              )
+          : const <RegistoSinaisVitais>[];
 
       final cuidadorNome = permitePersonalizacao ? _cuidadorNomeController.text.trim() : null;
       Uint8List? logoBytes;
@@ -224,6 +235,8 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
               medicacoesAtivas: medicacoes,
               consultas: consultas,
               cuidados: cuidados,
+              sinaisVitais: sinaisVitais,
+              seccoes: _seccoes,
               cuidadorNome: cuidadorNome,
               logoBytes: logoBytes,
             ),
@@ -283,6 +296,28 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             '${DateFormat('dd/MM/yyyy').format(intervalo.fim)}',
             style: Theme.of(context).textTheme.bodySmall,
           ),
+          const SizedBox(height: 24),
+          Text(
+            'Secções a incluir',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'Medicação e consultas fazem sempre parte do relatório.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          for (final seccao in SeccaoRelatorio.values)
+            CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              value: _seccoes.contains(seccao),
+              title: Text(labelSeccaoRelatorio(seccao)),
+              onChanged: (marcado) => setState(() {
+                if (marcado == true) {
+                  _seccoes.add(seccao);
+                } else {
+                  _seccoes.remove(seccao);
+                }
+              }),
+            ),
           const SizedBox(height: 24),
           Row(
             children: [

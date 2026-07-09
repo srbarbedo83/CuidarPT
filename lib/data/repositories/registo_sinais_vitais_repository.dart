@@ -15,6 +15,19 @@ class RegistoSinaisVitaisRepository {
         .watch(fireImmediately: true);
   }
 
+  Future<List<RegistoSinaisVitais>> listarPorIdosoEPeriodo(
+    int idosoId, {
+    required DateTime inicio,
+    required DateTime fim,
+  }) {
+    return _isar.registoSinaisVitais
+        .filter()
+        .idosoIdEqualTo(idosoId)
+        .timestampBetween(inicio, fim)
+        .sortByTimestamp()
+        .findAll();
+  }
+
   Future<int> save(RegistoSinaisVitais registo) {
     return _isar.writeTxn(() => _isar.registoSinaisVitais.put(registo));
   }

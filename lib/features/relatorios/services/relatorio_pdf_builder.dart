@@ -10,6 +10,8 @@ import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../data/models/registo_sinais_vitais.dart';
+import 'seccoes_relatorio.dart';
 
 final _formatoData = DateFormat('dd/MM/yyyy');
 final _formatoDataHora = DateFormat('dd/MM/yyyy HH:mm');
@@ -25,6 +27,12 @@ class RelatorioPdfBuilder {
     required List<RegistoMedicacao> medicacoesAtivas,
     required List<RegistoConsulta> consultas,
     required List<RegistoCuidadoDiario> cuidados,
+    List<RegistoSinaisVitais> sinaisVitais = const [],
+    Set<SeccaoRelatorio> seccoes = const {
+      SeccaoRelatorio.sinaisVitais,
+      SeccaoRelatorio.cuidados,
+      SeccaoRelatorio.notas,
+    },
     String? cuidadorNome,
     Uint8List? logoBytes,
   }) async {
@@ -39,8 +47,20 @@ class RelatorioPdfBuilder {
           _secaoMedicacao(medicacoesAtivas),
           pw.SizedBox(height: 16),
           _secaoConsultas(consultas),
-          pw.SizedBox(height: 16),
-          _secaoCuidados(cuidados),
+          if (seccoes.contains(SeccaoRelatorio.sinaisVitais)) ...[
+            pw.SizedBox(height: 16),
+            _secaoSinaisVitais(sinaisVitais),
+          ],
+          if (seccoes.contains(SeccaoRelatorio.cuidados)) ...[
+            pw.SizedBox(height: 16),
+            _secaoCuidados(cuidados),
+          ],
+          if (seccoes.contains(SeccaoRelatorio.notas) &&
+              idoso.notas != null &&
+              idoso.notas!.isNotEmpty) ...[
+            pw.SizedBox(height: 16),
+            _secaoNotas(idoso.notas!),
+          ],
         ],
       ),
     );
@@ -180,6 +200,53 @@ class RelatorioPdfBuilder {
           cellStyle: const pw.TextStyle(fontSize: 10),
           headerStyle: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold),
         ),
+      ],
+    );
+  }
+
+  static pw.Widget _secaoSinaisVitais(List<RegistoSinaisVitais> registos) {
+    if (registos.isEmpty) {
+      return pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          _tituloSeccao('Sinais vitais no período'),
+          pw.Text('Sem sinais vitais registados no período.'),
+        ],
+      );
+    }
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        _tituloSeccao('Sinais vitais no período'),
+        pw.SizedBox(height: 6),
+        pw.TableHelper.fromTextArray(
+          headers: ['Data', 'Pressão', 'Temp.', 'Glicemia', 'Freq. cardíaca', 'Peso'],
+          data: registos
+              .map((registo) => [
+                    _formatoDataHora.format(registo.timestamp),
+                    registo.pressaoSistolica != null && registo.pressaoDiastolica != null
+                        ? '${registo.pressaoSistolica}/${registo.pressaoDiastolica} mmHg'
+                        : '-',
+                    registo.temperatura != null ? '${registo.temperatura}°C' : '-',
+                    registo.glicemia != null ? '${registo.glicemia} mg/dL' : '-',
+                    registo.frequenciaCardiaca != null ? '${registo.frequenciaCardiaca} bpm' : '-',
+                    registo.peso != null ? '${registo.peso} kg' : '-',
+                  ])
+              .toList(),
+          cellStyle: const pw.TextStyle(fontSize: 10),
+          headerStyle: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  static pw.Widget _secaoNotas(String notas) {
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        _tituloSeccao('Notas'),
+        pw.SizedBox(height: 6),
+        pw.Text(notas),
       ],
     );
   }
