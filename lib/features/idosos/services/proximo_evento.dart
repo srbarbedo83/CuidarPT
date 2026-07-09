@@ -38,6 +38,38 @@ DateTime? _proximaOcorrenciaMedicacao(RegistoMedicacao medicacao, DateTime agora
   return null;
 }
 
+/// Calcula, ordenados por data, os próximos eventos futuros (tomas de
+/// medicação ou consultas) de entre os registos de um idoso.
+List<ProximoEvento> proximosEventos(
+  DateTime agora, {
+  required List<RegistoMedicacao> medicacoes,
+  required List<RegistoConsulta> consultas,
+}) {
+  final eventos = <ProximoEvento>[];
+
+  for (final medicacao in medicacoes) {
+    final ocorrencia = _proximaOcorrenciaMedicacao(medicacao, agora);
+    if (ocorrencia == null) continue;
+    eventos.add(ProximoEvento(
+      tipo: TipoProximoEvento.medicacao,
+      titulo: medicacao.nomeMedicamento,
+      dataHora: ocorrencia,
+    ));
+  }
+
+  for (final consulta in consultas) {
+    if (!consulta.lembreteAtivo || !consulta.dataHora.isAfter(agora)) continue;
+    eventos.add(ProximoEvento(
+      tipo: TipoProximoEvento.consulta,
+      titulo: consulta.especialidade,
+      dataHora: consulta.dataHora,
+    ));
+  }
+
+  eventos.sort((a, b) => a.dataHora.compareTo(b.dataHora));
+  return eventos;
+}
+
 /// Calcula o próximo evento futuro (toma de medicação ou consulta) de entre
 /// os registos de um idoso, para mostrar uma contagem decrescente no perfil.
 ProximoEvento? proximoEvento(
@@ -45,32 +77,8 @@ ProximoEvento? proximoEvento(
   required List<RegistoMedicacao> medicacoes,
   required List<RegistoConsulta> consultas,
 }) {
-  ProximoEvento? melhor;
-
-  for (final medicacao in medicacoes) {
-    final ocorrencia = _proximaOcorrenciaMedicacao(medicacao, agora);
-    if (ocorrencia == null) continue;
-    if (melhor == null || ocorrencia.isBefore(melhor.dataHora)) {
-      melhor = ProximoEvento(
-        tipo: TipoProximoEvento.medicacao,
-        titulo: medicacao.nomeMedicamento,
-        dataHora: ocorrencia,
-      );
-    }
-  }
-
-  for (final consulta in consultas) {
-    if (!consulta.lembreteAtivo || !consulta.dataHora.isAfter(agora)) continue;
-    if (melhor == null || consulta.dataHora.isBefore(melhor.dataHora)) {
-      melhor = ProximoEvento(
-        tipo: TipoProximoEvento.consulta,
-        titulo: consulta.especialidade,
-        dataHora: consulta.dataHora,
-      );
-    }
-  }
-
-  return melhor;
+  final eventos = proximosEventos(agora, medicacoes: medicacoes, consultas: consultas);
+  return eventos.isEmpty ? null : eventos.first;
 }
 
 /// Formata o tempo restante até [dataHora] a partir de [agora] de forma

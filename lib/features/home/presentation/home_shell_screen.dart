@@ -7,11 +7,14 @@ import 'package:intl/intl.dart';
 import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
+import '../../consultas/providers/consulta_providers.dart';
 import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
 import '../../idosos/services/avisos_perfil.dart';
+import '../../idosos/services/proximo_evento.dart';
+import '../../medicacao/providers/medicacao_providers.dart';
 import '../../relatorios/presentation/relatorio_screen.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
@@ -24,12 +27,21 @@ class HomeShellScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
+  final _pageController = PageController();
+  var _paginaAtual = 0;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) mostrarConviteAvaliacaoSeNecessario(context, ref);
     });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _adicionarIdoso(BuildContext context, WidgetRef ref, int totalAtual) async {
@@ -100,21 +112,48 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
           if (idosos.isEmpty) {
             return const _EmptyState();
           }
-          if (idosos.length == 1) {
-            final unico = idosos.single;
-            return ListView(
-              children: [
-                _IdosoCardDestacado(idoso: unico, onApagar: () => _apagarIdoso(context, ref, unico)),
+          return Column(
+            children: [
+              _SeccaoLembretes(idosos: idosos),
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: idosos.length,
+                  onPageChanged: (indice) => setState(() => _paginaAtual = indice),
+                  itemBuilder: (context, indice) {
+                    final idoso = idosos[indice];
+                    return SingleChildScrollView(
+                      child: _IdosoCardDestacado(
+                        idoso: idoso,
+                        onApagar: () => _apagarIdoso(context, ref, idoso),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              if (idosos.length > 1) ...[
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    idosos.length,
+                    (indice) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: indice == _paginaAtual ? 20 : 7,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        color: indice == _paginaAtual
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
               ],
-            );
-          }
-          return ListView(
-            children: idosos
-                .map((idoso) => _IdosoTile(
-                      idoso: idoso,
-                      onApagar: () => _apagarIdoso(context, ref, idoso),
-                    ))
-                .toList(),
+            ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -151,6 +190,76 @@ class _EmptyState extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LembreteHome {
+  const _LembreteHome({required this.idoso, required this.evento});
+
+  final Idoso idoso;
+  final ProximoEvento evento;
+}
+
+const _maxLembretesVisiveis = 5;
+
+/// Junta os próximos eventos (medicação/consultas) de todos os idosos numa
+/// só lista, ordenada por proximidade, para uma visão rápida no ecrã
+/// inicial — mesmo com vários perfis.
+class _SeccaoLembretes extends ConsumerWidget {
+  const _SeccaoLembretes({required this.idosos});
+
+  final List<Idoso> idosos;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final agora = DateTime.now();
+    final lembretes = <_LembreteHome>[];
+
+    for (final idoso in idosos) {
+      final medicacoes = ref.watch(medicacaoListProvider(idoso.id)).valueOrNull ?? const [];
+      final consultas = ref.watch(consultaListProvider(idoso.id)).valueOrNull ?? const [];
+      for (final evento in proximosEventos(agora, medicacoes: medicacoes, consultas: consultas)) {
+        lembretes.add(_LembreteHome(idoso: idoso, evento: evento));
+      }
+    }
+    lembretes.sort((a, b) => a.evento.dataHora.compareTo(b.evento.dataHora));
+    final visiveis = lembretes.take(_maxLembretesVisiveis).toList();
+
+    if (visiveis.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                child: Text(
+                  'Lembretes',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              for (final lembrete in visiveis)
+                ListTile(
+                  dense: true,
+                  leading: Icon(
+                    lembrete.evento.tipo == TipoProximoEvento.medicacao
+                        ? Icons.medication_outlined
+                        : Icons.event_note_outlined,
+                  ),
+                  title: Text(lembrete.evento.titulo),
+                  subtitle: Text(
+                    '${lembrete.idoso.nome} · ${formatarContagem(agora, lembrete.evento.dataHora)}',
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -254,63 +363,6 @@ class _IdosoCardDestacado extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _IdosoTile extends StatelessWidget {
-  const _IdosoTile({required this.idoso, required this.onApagar});
-
-  final Idoso idoso;
-  final VoidCallback onApagar;
-
-  @override
-  Widget build(BuildContext context) {
-    final fotoPath = idoso.fotoPath;
-    final avisos = avisosPerfilIncompleto(idoso);
-    return Dismissible(
-      key: ValueKey(idoso.id),
-      direction: DismissDirection.endToStart,
-      confirmDismiss: (_) async {
-        onApagar();
-        return false;
-      },
-      background: Container(
-        color: Theme.of(context).colorScheme.errorContainer,
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: const Icon(Icons.delete_outline),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
-          child: fotoPath == null ? const Icon(Icons.elderly) : null,
-        ),
-        title: Row(
-          children: [
-            Flexible(child: Text(idoso.nome, style: const TextStyle(fontWeight: FontWeight.bold))),
-            if (avisos.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(left: 6),
-                child: Tooltip(
-                  message: avisos.join('\n'),
-                  child: Icon(Icons.warning_amber_rounded, size: 16, color: Colors.amber.shade800),
-                ),
-              ),
-          ],
-        ),
-        subtitle: Text(_subtituloIdoso(idoso)),
-        trailing: IconButton(
-          icon: const Icon(Icons.picture_as_pdf_outlined),
-          tooltip: 'Gerar relatório',
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
-          ),
-        ),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => IdosoDetailScreen(idoso: idoso)),
         ),
       ),
     );
