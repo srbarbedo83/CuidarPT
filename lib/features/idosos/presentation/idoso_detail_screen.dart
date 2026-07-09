@@ -50,15 +50,24 @@ class IdosoDetailScreen extends ConsumerWidget {
 
     final telefoneEmergencia = idoso.contactosEmergencia
         .map((c) => c.telefone)
-        .firstWhere((telefone) => telefone != null && telefone.isNotEmpty, orElse: () => null);
+        .firstWhere(
+          (telefone) => telefone != null && telefone.isNotEmpty,
+          orElse: () => null,
+        );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(idoso.nome, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          idoso.nome,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: [
           if (telefoneEmergencia != null)
             IconButton(
-              icon: const Icon(Icons.phone_in_talk_outlined, color: Colors.redAccent),
+              icon: const Icon(
+                Icons.phone_in_talk_outlined,
+                color: Colors.redAccent,
+              ),
               tooltip: 'Ligar para contacto de emergência',
               onPressed: () =>
                   launchUrl(Uri(scheme: 'tel', path: telefoneEmergencia)),
@@ -77,12 +86,21 @@ class IdosoDetailScreen extends ConsumerWidget {
               MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
             ),
           ),
+          IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            tooltip: 'Editar perfil',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
+            ),
+          ),
           PopupMenuButton<VoidCallback>(
             onSelected: (acao) => acao(),
             itemBuilder: (context) => [
               PopupMenuItem(
                 value: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => ProfissionaisScreen(idoso: idoso)),
+                  MaterialPageRoute(
+                    builder: (_) => ProfissionaisScreen(idoso: idoso),
+                  ),
                 ),
                 child: const ListTile(
                   contentPadding: EdgeInsets.zero,
@@ -90,118 +108,140 @@ class IdosoDetailScreen extends ConsumerWidget {
                   title: Text('Profissionais'),
                 ),
               ),
-              PopupMenuItem(
-                value: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
-                ),
-                child: const ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.edit_outlined),
-                  title: Text('Editar perfil'),
-                ),
-              ),
             ],
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          _CabecalhoIdoso(idoso: idoso),
-          _ComoSenteHoje(idoso: idoso),
-          if (proximo != null) _ProximoEventoCard(proximo: proximo),
-          const Divider(height: 32),
-          _CabecalhoSeccao(
-            titulo: 'Medicação',
-            tooltip: 'Adicionar medicação',
-            onAdicionar: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso)),
-            ),
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _CabecalhoFixoDelegate(idoso: idoso),
           ),
-          medicacaoAsync.when(
-            data: (registos) {
-              if (registos.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('Ainda não há medicação registada.'),
-                );
-              }
-              return Column(
-                children: registos
-                    .map((registo) => _MedicacaoTile(idoso: idoso, registo: registo))
-                    .toList(),
-              );
-            },
-            loading: () => const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            error: (erro, _) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text('Erro ao carregar medicação: $erro'),
-            ),
-          ),
-          const Divider(height: 32),
-          _CabecalhoSeccao(
-            titulo: 'Consultas e tratamentos',
-            tooltip: 'Adicionar consulta ou tratamento',
-            onAdicionar: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso)),
-            ),
-          ),
-          consultasAsync.when(
-            data: (consultas) {
-              if (consultas.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('Ainda não há consultas ou tratamentos registados.'),
-                );
-              }
-              return Column(
-                children: consultas
-                    .map((consulta) => _ConsultaTile(idoso: idoso, consulta: consulta))
-                    .toList(),
-              );
-            },
-            loading: () => const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            error: (erro, _) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text('Erro ao carregar consultas: $erro'),
-            ),
-          ),
-          if (idoso.rotinasAtivas && ref.watch(featureLimitsProvider).permiteRotinas) ...[
-            const Divider(height: 32),
-            RotinaSection(idoso: idoso),
-          ],
-          const Divider(height: 32),
-          SinaisVitaisSection(idoso: idoso),
-          if ((cuidadosAsync.valueOrNull ?? const []).any((r) => r.tipo == TipoCuidadoDiario.humor)) ...[
-            const Divider(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: GraficoHumorCard(idosoId: idoso.id),
-            ),
-          ],
-          const Divider(height: 32),
-          NotasSection(idoso: idoso),
-          const Divider(height: 32),
-          DocumentosSection(idoso: idoso),
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: OutlinedButton.icon(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => RelatorioScreen(idoso: idoso, periodoInicial: PeriodoRelatorio.hoje),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              _InfoSecundariaIdoso(idoso: idoso),
+              _ComoSenteHoje(idoso: idoso),
+              if (proximo != null) _ProximoEventoCard(proximo: proximo),
+              const Divider(height: 32),
+              _CabecalhoSeccao(
+                titulo: 'Medicação',
+                tooltip: 'Adicionar medicação',
+                onAdicionar: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => MedicacaoFormScreen(idoso: idoso),
+                  ),
                 ),
               ),
-              icon: const Icon(Icons.summarize_outlined),
-              label: const Text('Gerar relatório diário'),
-            ),
+              medicacaoAsync.when(
+                data: (registos) {
+                  if (registos.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Text('Ainda não há medicação registada.'),
+                    );
+                  }
+                  return Column(
+                    children: registos
+                        .map(
+                          (registo) =>
+                              _MedicacaoTile(idoso: idoso, registo: registo),
+                        )
+                        .toList(),
+                  );
+                },
+                loading: () => const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                error: (erro, _) => Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('Erro ao carregar medicação: $erro'),
+                ),
+              ),
+              const Divider(height: 32),
+              _CabecalhoSeccao(
+                titulo: 'Consultas e tratamentos',
+                tooltip: 'Adicionar consulta ou tratamento',
+                onAdicionar: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ConsultaFormScreen(idoso: idoso),
+                  ),
+                ),
+              ),
+              consultasAsync.when(
+                data: (consultas) {
+                  if (consultas.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Text(
+                        'Ainda não há consultas ou tratamentos registados.',
+                      ),
+                    );
+                  }
+                  return Column(
+                    children: consultas
+                        .map(
+                          (consulta) =>
+                              _ConsultaTile(idoso: idoso, consulta: consulta),
+                        )
+                        .toList(),
+                  );
+                },
+                loading: () => const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                error: (erro, _) => Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('Erro ao carregar consultas: $erro'),
+                ),
+              ),
+              if (idoso.rotinasAtivas &&
+                  ref.watch(featureLimitsProvider).permiteRotinas) ...[
+                const Divider(height: 32),
+                RotinaSection(idoso: idoso),
+              ],
+              const Divider(height: 32),
+              SinaisVitaisSection(idoso: idoso),
+              if ((cuidadosAsync.valueOrNull ?? const []).any(
+                (r) => r.tipo == TipoCuidadoDiario.humor,
+              )) ...[
+                const Divider(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: GraficoHumorCard(idosoId: idoso.id),
+                ),
+              ],
+              const Divider(height: 32),
+              NotasSection(idoso: idoso),
+              const Divider(height: 32),
+              DocumentosSection(idoso: idoso),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: OutlinedButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => RelatorioScreen(
+                        idoso: idoso,
+                        periodoInicial: PeriodoRelatorio.hoje,
+                      ),
+                    ),
+                  ),
+                  icon: const Icon(Icons.summarize_outlined),
+                  label: const Text('Gerar relatório diário'),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ]),
           ),
-          const SizedBox(height: 24),
         ],
       ),
     );
@@ -217,13 +257,17 @@ class _ProximoEventoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ehMedicacao = proximo.tipo == TipoProximoEvento.medicacao;
     final rotulo = ehMedicacao ? 'Próxima toma' : 'Próxima consulta';
-    final formato = ehMedicacao ? DateFormat('HH:mm') : DateFormat('dd/MM/yyyy HH:mm');
+    final formato = ehMedicacao
+        ? DateFormat('HH:mm')
+        : DateFormat('dd/MM/yyyy HH:mm');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Card(
         margin: EdgeInsets.zero,
         child: ListTile(
-          leading: Icon(ehMedicacao ? Icons.medication_outlined : Icons.event_note_outlined),
+          leading: Icon(
+            ehMedicacao ? Icons.medication_outlined : Icons.event_note_outlined,
+          ),
           title: Text('$rotulo: ${proximo.titulo}'),
           subtitle: Text(
             '${formato.format(proximo.dataHora)} · ${formatarContagem(DateTime.now(), proximo.dataHora)}',
@@ -235,7 +279,11 @@ class _ProximoEventoCard extends StatelessWidget {
 }
 
 class _CabecalhoSeccao extends StatelessWidget {
-  const _CabecalhoSeccao({required this.titulo, required this.tooltip, required this.onAdicionar});
+  const _CabecalhoSeccao({
+    required this.titulo,
+    required this.tooltip,
+    required this.onAdicionar,
+  });
 
   final String titulo;
   final String tooltip;
@@ -250,100 +298,180 @@ class _CabecalhoSeccao extends StatelessWidget {
           Expanded(
             child: Text(
               titulo,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          IconButton(icon: const Icon(Icons.add), tooltip: tooltip, onPressed: onAdicionar),
+          IconButton(
+            icon: const Icon(Icons.add),
+            tooltip: tooltip,
+            onPressed: onAdicionar,
+          ),
         ],
       ),
     );
   }
 }
 
-class _CabecalhoIdoso extends StatelessWidget {
-  const _CabecalhoIdoso({required this.idoso});
+/// Cabeçalho fixo (foto + nome + nascimento) que fica sempre visível ao
+/// fazer scroll no perfil do idoso.
+class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
+  _CabecalhoFixoDelegate({required this.idoso});
+
+  final Idoso idoso;
+
+  static const _altura = 88.0;
+
+  @override
+  double get minExtent => _altura;
+
+  @override
+  double get maxExtent => _altura;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    final fotoPath = idoso.fotoPath;
+    return Material(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      elevation: overlapsContent ? 2 : 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                CircleAvatar(
+                  radius: 28,
+                  backgroundImage: fotoPath != null
+                      ? FileImage(File(fotoPath))
+                      : null,
+                  child: fotoPath == null ? const Icon(Icons.elderly) : null,
+                ),
+                if (idoso.mobilidadeReduzida)
+                  Positioned(
+                    right: -2,
+                    bottom: -2,
+                    child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: const Icon(
+                        Icons.accessible,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    ),
+                  ),
+                if (idoso.acamado)
+                  Positioned(
+                    left: -2,
+                    bottom: -2,
+                    child: CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: const Icon(
+                        Icons.bed,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    idoso.nome,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (idoso.dataNascimento != null)
+                    Text(
+                      'Nascimento: ${DateFormat('dd/MM/yyyy').format(idoso.dataNascimento!)}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _CabecalhoFixoDelegate oldDelegate) =>
+      oldDelegate.idoso != idoso;
+}
+
+/// Contactos de emergência, notas e preferências — informação secundária
+/// que já não precisa de ficar fixa, ao contrário da foto e do nome.
+class _InfoSecundariaIdoso extends StatelessWidget {
+  const _InfoSecundariaIdoso({required this.idoso});
 
   final Idoso idoso;
 
   @override
   Widget build(BuildContext context) {
-    final fotoPath = idoso.fotoPath;
+    if (idoso.contactosEmergencia.isEmpty &&
+        (idoso.notas == null || idoso.notas!.isEmpty) &&
+        idoso.preferencias == null) {
+      return const SizedBox.shrink();
+    }
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Row(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              CircleAvatar(
-                radius: 44,
-                backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
-                child: fotoPath == null ? const Icon(Icons.elderly, size: 36) : null,
-              ),
-              if (idoso.mobilidadeReduzida)
-                Positioned(
-                  right: -4,
-                  bottom: -4,
-                  child: CircleAvatar(
-                    radius: 14,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: const Icon(Icons.accessible, color: Colors.white, size: 16),
-                  ),
-                ),
-              if (idoso.acamado)
-                Positioned(
-                  left: -4,
-                  bottom: -4,
-                  child: CircleAvatar(
-                    radius: 14,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: const Icon(Icons.bed, color: Colors.white, size: 16),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (idoso.dataNascimento != null)
-                  Text('Nascimento: ${DateFormat('dd/MM/yyyy').format(idoso.dataNascimento!)}'),
-                for (final contacto in idoso.contactosEmergencia)
-                  Text('Emergência: ${contacto.nome ?? ''} ${contacto.telefone ?? ''}'.trim()),
-                if (idoso.notas != null && idoso.notas!.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(idoso.notas!, style: Theme.of(context).textTheme.bodySmall),
-                  ),
-                if (idoso.preferencias != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if ((idoso.preferencias!.comidaPreferida ?? '').isNotEmpty)
-                          _LinhaPreferencia(
-                            icone: Icons.restaurant_outlined,
-                            texto: idoso.preferencias!.comidaPreferida!,
-                          ),
-                        if ((idoso.preferencias!.musica ?? '').isNotEmpty)
-                          _LinhaPreferencia(
-                            icone: Icons.music_note_outlined,
-                            texto: idoso.preferencias!.musica!,
-                          ),
-                        if ((idoso.preferencias!.interesses ?? '').isNotEmpty)
-                          _LinhaPreferencia(
-                            icone: Icons.interests_outlined,
-                            texto: idoso.preferencias!.interesses!,
-                          ),
-                      ],
-                    ),
-                  ),
-              ],
+          for (final contacto in idoso.contactosEmergencia)
+            Text(
+              'Emergência: ${contacto.nome ?? ''} ${contacto.telefone ?? ''}'
+                  .trim(),
             ),
-          ),
+          if (idoso.notas != null && idoso.notas!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                idoso.notas!,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          if (idoso.preferencias != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if ((idoso.preferencias!.comidaPreferida ?? '').isNotEmpty)
+                    _LinhaPreferencia(
+                      icone: Icons.restaurant_outlined,
+                      texto: idoso.preferencias!.comidaPreferida!,
+                    ),
+                  if ((idoso.preferencias!.musica ?? '').isNotEmpty)
+                    _LinhaPreferencia(
+                      icone: Icons.music_note_outlined,
+                      texto: idoso.preferencias!.musica!,
+                    ),
+                  if ((idoso.preferencias!.interesses ?? '').isNotEmpty)
+                    _LinhaPreferencia(
+                      icone: Icons.interests_outlined,
+                      texto: idoso.preferencias!.interesses!,
+                    ),
+                ],
+              ),
+            ),
         ],
       ),
     );
@@ -364,7 +492,9 @@ class _LinhaPreferencia extends StatelessWidget {
         children: [
           Icon(icone, size: 14),
           const SizedBox(width: 4),
-          Expanded(child: Text(texto, style: Theme.of(context).textTheme.bodySmall)),
+          Expanded(
+            child: Text(texto, style: Theme.of(context).textTheme.bodySmall),
+          ),
         ],
       ),
     );
@@ -404,7 +534,10 @@ class _ComoSenteHoje extends ConsumerStatefulWidget {
 class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
   bool _aMudar = false;
 
-  Future<void> _registar(_OpcaoHumor opcao, RegistoCuidadoDiario? existente) async {
+  Future<void> _registar(
+    _OpcaoHumor opcao,
+    RegistoCuidadoDiario? existente,
+  ) async {
     final registo = existente ?? RegistoCuidadoDiario()
       ..idosoId = widget.idoso.id
       ..tipo = TipoCuidadoDiario.humor;
@@ -419,14 +552,19 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
   @override
   Widget build(BuildContext context) {
     final cuidados =
-        ref.watch(cuidadoDiarioListProvider(widget.idoso.id)).valueOrNull ?? const [];
+        ref.watch(cuidadoDiarioListProvider(widget.idoso.id)).valueOrNull ??
+        const [];
     final agora = DateTime.now();
     final registoHoje = cuidados.firstWhereOrNull(
-      (c) => c.tipo == TipoCuidadoDiario.humor && _mesmoDiaHumor(c.timestamp, agora),
+      (c) =>
+          c.tipo == TipoCuidadoDiario.humor &&
+          _mesmoDiaHumor(c.timestamp, agora),
     );
     final opcaoAtual = registoHoje == null
         ? null
-        : _opcoesHumorDoDia.firstWhereOrNull((o) => o.rotulo == registoHoje.notaRapida);
+        : _opcoesHumorDoDia.firstWhereOrNull(
+            (o) => o.rotulo == registoHoje.notaRapida,
+          );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -436,12 +574,18 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Como se sente hoje?', style: Theme.of(context).textTheme.titleSmall),
+              Text(
+                'Como se sente hoje?',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
               const SizedBox(height: 8),
               if (opcaoAtual != null && !_aMudar)
                 Row(
                   children: [
-                    Text(opcaoAtual.emoji, style: const TextStyle(fontSize: 24)),
+                    Text(
+                      opcaoAtual.emoji,
+                      style: const TextStyle(fontSize: 24),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(child: Text(opcaoAtual.rotulo)),
                     TextButton(
@@ -456,7 +600,10 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
                   children: [
                     for (final opcao in _opcoesHumorDoDia)
                       ActionChip(
-                        avatar: Text(opcao.emoji, style: const TextStyle(fontSize: 16)),
+                        avatar: Text(
+                          opcao.emoji,
+                          style: const TextStyle(fontSize: 16),
+                        ),
                         label: Text(opcao.rotulo),
                         onPressed: () => _registar(opcao, registoHoje),
                       ),
@@ -483,8 +630,14 @@ class _MedicacaoTile extends ConsumerWidget {
         title: const Text('Apagar medicação'),
         content: Text('Queres mesmo apagar "${registo.nomeMedicamento}"?'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Apagar'),
+          ),
         ],
       ),
     );
@@ -515,7 +668,9 @@ class _MedicacaoTile extends ConsumerWidget {
         onPressed: () => _confirmarApagar(context, ref),
       ),
       onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso, registo: registo)),
+        MaterialPageRoute(
+          builder: (_) => MedicacaoFormScreen(idoso: idoso, registo: registo),
+        ),
       ),
     );
   }
@@ -531,13 +686,21 @@ class _ConsultaTile extends ConsumerWidget {
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(consulta.tipo == TipoRegistoConsulta.tratamento
-            ? 'Apagar tratamento'
-            : 'Apagar consulta'),
+        title: Text(
+          consulta.tipo == TipoRegistoConsulta.tratamento
+              ? 'Apagar tratamento'
+              : 'Apagar consulta',
+        ),
         content: Text('Queres mesmo apagar "${consulta.especialidade}"?'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Apagar'),
+          ),
         ],
       ),
     );
@@ -552,7 +715,9 @@ class _ConsultaTile extends ConsumerWidget {
     final proxima = consulta.proximaConsultaData;
     final ehTratamento = consulta.tipo == TipoRegistoConsulta.tratamento;
     return ListTile(
-      leading: Icon(ehTratamento ? Icons.healing_outlined : Icons.event_note_outlined),
+      leading: Icon(
+        ehTratamento ? Icons.healing_outlined : Icons.event_note_outlined,
+      ),
       title: Text(consulta.especialidade),
       subtitle: Text(
         '${DateFormat('dd/MM/yyyy HH:mm').format(consulta.dataHora)}'
@@ -566,9 +731,10 @@ class _ConsultaTile extends ConsumerWidget {
         onPressed: () => _confirmarApagar(context, ref),
       ),
       onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: consulta)),
+        MaterialPageRoute(
+          builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: consulta),
+        ),
       ),
     );
   }
 }
-
