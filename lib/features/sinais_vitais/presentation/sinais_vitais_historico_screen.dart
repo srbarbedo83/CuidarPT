@@ -78,6 +78,14 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
             corBarra: Colors.pink.shade300,
             maximoEscala: 160,
           ),
+          const SizedBox(height: 12),
+          _GraficoSinalVitalCard(
+            titulo: 'Peso',
+            unidade: 'kg',
+            pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.peso),
+            corBarra: Colors.teal.shade300,
+            maximoEscala: 150,
+          ),
         ],
       ),
     );

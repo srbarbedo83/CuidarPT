@@ -153,6 +153,7 @@ class _SinaisVitaisTile extends ConsumerWidget {
       if (registo.temperatura != null) '${registo.temperatura}°C',
       if (registo.glicemia != null) '${registo.glicemia} mg/dL',
       if (registo.frequenciaCardiaca != null) '${registo.frequenciaCardiaca} bpm',
+      if (registo.peso != null) '${registo.peso} kg',
     ];
     return partes.isEmpty ? 'Sem valores registados' : partes.join(' · ');
   }

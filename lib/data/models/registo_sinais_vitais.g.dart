@@ -26,23 +26,24 @@ const RegistoSinaisVitaisSchema = CollectionSchema(
     r'glicemia': PropertySchema(id: 1, name: r'glicemia', type: IsarType.long),
     r'idosoId': PropertySchema(id: 2, name: r'idosoId', type: IsarType.long),
     r'notas': PropertySchema(id: 3, name: r'notas', type: IsarType.string),
+    r'peso': PropertySchema(id: 4, name: r'peso', type: IsarType.double),
     r'pressaoDiastolica': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'pressaoDiastolica',
       type: IsarType.long,
     ),
     r'pressaoSistolica': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'pressaoSistolica',
       type: IsarType.long,
     ),
     r'temperatura': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'temperatura',
       type: IsarType.double,
     ),
     r'timestamp': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'timestamp',
       type: IsarType.dateTime,
     ),
@@ -115,10 +116,11 @@ void _registoSinaisVitaisSerialize(
   writer.writeLong(offsets[1], object.glicemia);
   writer.writeLong(offsets[2], object.idosoId);
   writer.writeString(offsets[3], object.notas);
-  writer.writeLong(offsets[4], object.pressaoDiastolica);
-  writer.writeLong(offsets[5], object.pressaoSistolica);
-  writer.writeDouble(offsets[6], object.temperatura);
-  writer.writeDateTime(offsets[7], object.timestamp);
+  writer.writeDouble(offsets[4], object.peso);
+  writer.writeLong(offsets[5], object.pressaoDiastolica);
+  writer.writeLong(offsets[6], object.pressaoSistolica);
+  writer.writeDouble(offsets[7], object.temperatura);
+  writer.writeDateTime(offsets[8], object.timestamp);
 }
 
 RegistoSinaisVitais _registoSinaisVitaisDeserialize(
@@ -133,10 +135,11 @@ RegistoSinaisVitais _registoSinaisVitaisDeserialize(
   object.id = id;
   object.idosoId = reader.readLong(offsets[2]);
   object.notas = reader.readStringOrNull(offsets[3]);
-  object.pressaoDiastolica = reader.readLongOrNull(offsets[4]);
-  object.pressaoSistolica = reader.readLongOrNull(offsets[5]);
-  object.temperatura = reader.readDoubleOrNull(offsets[6]);
-  object.timestamp = reader.readDateTime(offsets[7]);
+  object.peso = reader.readDoubleOrNull(offsets[4]);
+  object.pressaoDiastolica = reader.readLongOrNull(offsets[5]);
+  object.pressaoSistolica = reader.readLongOrNull(offsets[6]);
+  object.temperatura = reader.readDoubleOrNull(offsets[7]);
+  object.timestamp = reader.readDateTime(offsets[8]);
   return object;
 }
 
@@ -156,12 +159,14 @@ P _registoSinaisVitaisDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 5:
       return (reader.readLongOrNull(offset)) as P;
     case 6:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 8:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -906,6 +911,99 @@ extension RegistoSinaisVitaisQueryFilter
   }
 
   QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
+  pesoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'peso'),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
+  pesoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'peso'),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
+  pesoEqualTo(double? value, {double epsilon = Query.epsilon}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'peso',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
+  pesoGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'peso',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
+  pesoLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'peso',
+          value: value,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
+  pesoBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'peso',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+
+          epsilon: epsilon,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterFilterCondition>
   pressaoDiastolicaIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1275,6 +1373,20 @@ extension RegistoSinaisVitaisQuerySortBy
   }
 
   QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterSortBy>
+  sortByPeso() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'peso', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterSortBy>
+  sortByPesoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'peso', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterSortBy>
   sortByPressaoDiastolica() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pressaoDiastolica', Sort.asc);
@@ -1404,6 +1516,20 @@ extension RegistoSinaisVitaisQuerySortThenBy
   }
 
   QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterSortBy>
+  thenByPeso() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'peso', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterSortBy>
+  thenByPesoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'peso', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QAfterSortBy>
   thenByPressaoDiastolica() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pressaoDiastolica', Sort.asc);
@@ -1491,6 +1617,13 @@ extension RegistoSinaisVitaisQueryWhereDistinct
   }
 
   QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QDistinct>
+  distinctByPeso() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'peso');
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, RegistoSinaisVitais, QDistinct>
   distinctByPressaoDiastolica() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pressaoDiastolica');
@@ -1549,6 +1682,12 @@ extension RegistoSinaisVitaisQueryProperty
   QueryBuilder<RegistoSinaisVitais, String?, QQueryOperations> notasProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notas');
+    });
+  }
+
+  QueryBuilder<RegistoSinaisVitais, double?, QQueryOperations> pesoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'peso');
     });
   }
 

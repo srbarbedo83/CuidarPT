@@ -26,6 +26,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
   late final TextEditingController _temperaturaController;
   late final TextEditingController _glicemiaController;
   late final TextEditingController _frequenciaCardiacaController;
+  late final TextEditingController _pesoController;
   late final TextEditingController _notasController;
 
   late DateTime _timestamp;
@@ -45,6 +46,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
     _glicemiaController = TextEditingController(text: registo?.glicemia?.toString() ?? '');
     _frequenciaCardiacaController =
         TextEditingController(text: registo?.frequenciaCardiaca?.toString() ?? '');
+    _pesoController = TextEditingController(text: registo?.peso?.toString() ?? '');
     _notasController = TextEditingController(text: registo?.notas ?? '');
     _timestamp = registo?.timestamp ?? DateTime.now();
   }
@@ -56,6 +58,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
     _temperaturaController.dispose();
     _glicemiaController.dispose();
     _frequenciaCardiacaController.dispose();
+    _pesoController.dispose();
     _notasController.dispose();
     super.dispose();
   }
@@ -92,6 +95,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
       ..temperatura = double.tryParse(_temperaturaController.text.trim().replaceAll(',', '.'))
       ..glicemia = int.tryParse(_glicemiaController.text.trim())
       ..frequenciaCardiaca = int.tryParse(_frequenciaCardiacaController.text.trim())
+      ..peso = double.tryParse(_pesoController.text.trim().replaceAll(',', '.'))
       ..notas = notas.isEmpty ? null : notas
       ..timestamp = _timestamp;
 
@@ -145,6 +149,12 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
             controller: _frequenciaCardiacaController,
             decoration: const InputDecoration(labelText: 'Frequência cardíaca (bpm)'),
             keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            controller: _pesoController,
+            decoration: const InputDecoration(labelText: 'Peso (kg)'),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
           const SizedBox(height: 16),
           ListTile(

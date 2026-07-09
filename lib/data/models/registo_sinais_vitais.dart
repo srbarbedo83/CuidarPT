@@ -25,6 +25,9 @@ class RegistoSinaisVitais {
   /// Batimentos por minuto.
   int? frequenciaCardiaca;
 
+  /// Quilogramas.
+  double? peso;
+
   String? notas;
 
   @Index()
