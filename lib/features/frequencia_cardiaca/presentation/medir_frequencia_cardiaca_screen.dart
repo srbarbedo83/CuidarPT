@@ -161,7 +161,14 @@ class _MedirFrequenciaCardiacaScreenState extends ConsumerState<MedirFrequenciaC
           ),
           backgroundColor: cor,
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 16),
+        Text(
+          'Este valor é apenas informativo e não é um diagnóstico. Em caso de dúvida '
+          'ou sintomas, consulta um profissional de saúde.',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        const SizedBox(height: 24),
         FilledButton.icon(
           onPressed: _aGuardar ? null : _guardar,
           icon: _aGuardar

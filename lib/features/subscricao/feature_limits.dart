@@ -13,6 +13,7 @@ class FeatureLimits {
     required this.permiteAvisosOficiais,
     required this.permiteRotinas,
     required this.permiteSinaisVitais,
+    required this.permiteFrequenciaCardiacaCamera,
   });
 
   /// `null` significa sem limite.
@@ -24,6 +25,10 @@ class FeatureLimits {
   final bool permiteRotinas;
   final bool permiteSinaisVitais;
 
+  /// Medir a frequência cardíaca com a câmara (PPG) é Premium; registar um
+  /// valor manualmente continua disponível no plano Grátis.
+  final bool permiteFrequenciaCardiacaCamera;
+
   factory FeatureLimits.paraPlano(bool isPremium) {
     if (isPremium) {
       return const FeatureLimits(
@@ -34,6 +39,7 @@ class FeatureLimits {
         permiteAvisosOficiais: true,
         permiteRotinas: true,
         permiteSinaisVitais: true,
+        permiteFrequenciaCardiacaCamera: true,
       );
     }
     return const FeatureLimits(
@@ -44,6 +50,7 @@ class FeatureLimits {
       permiteAvisosOficiais: false,
       permiteRotinas: false,
       permiteSinaisVitais: false,
+      permiteFrequenciaCardiacaCamera: false,
     );
   }
 }

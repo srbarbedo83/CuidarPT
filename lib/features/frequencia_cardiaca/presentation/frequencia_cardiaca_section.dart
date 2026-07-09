@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_frequencia_cardiaca.dart';
+import '../../../shared/widgets/premium_upsell.dart';
+import '../../subscricao/feature_limits.dart';
 import '../providers/frequencia_cardiaca_providers.dart';
 import '../services/faixa_frequencia_cardiaca.dart';
 import 'frequencia_cardiaca_historico_screen.dart';
@@ -26,9 +28,59 @@ class FrequenciaCardiacaSection extends ConsumerStatefulWidget {
 class _FrequenciaCardiacaSectionState extends ConsumerState<FrequenciaCardiacaSection> {
   bool _expandido = false;
 
+  Future<void> _adicionarManualmente() async {
+    final controller = TextEditingController();
+    final bpm = await showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Registar valor manualmente'),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          autofocus: true,
+          decoration: const InputDecoration(
+            labelText: 'BPM',
+            helperText: 'Introduz um valor que já tenhas medido (ex.: contando o pulso ou noutro aparelho).',
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(int.tryParse(controller.text.trim())),
+            child: const Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+    if (bpm == null || bpm <= 0 || !mounted) return;
+
+    final registo = RegistoFrequenciaCardiaca()
+      ..idosoId = widget.idoso.id
+      ..bpm = bpm
+      ..fonte = FonteFrequenciaCardiaca.manual
+      ..timestamp = DateTime.now();
+    await ref.read(registoFrequenciaCardiacaRepositoryProvider).save(registo);
+  }
+
+  Future<void> _medir(bool permiteCamera) async {
+    if (!permiteCamera) {
+      await mostrarLimiteAtingido(
+        context,
+        mensagem: 'Medir a frequência cardíaca com a câmara é uma funcionalidade Premium. '
+            'No plano Grátis podes continuar a registar um valor manualmente.',
+      );
+      return;
+    }
+    if (!mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => MedirFrequenciaCardiacaScreen(idoso: widget.idoso)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final registosAsync = ref.watch(frequenciaCardiacaListProvider(widget.idoso.id));
+    final permiteCamera = ref.watch(featureLimitsProvider).permiteFrequenciaCardiacaCamera;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,11 +103,28 @@ class _FrequenciaCardiacaSectionState extends ConsumerState<FrequenciaCardiacaSe
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.favorite_outline),
-                tooltip: 'Medir frequência cardíaca',
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => MedirFrequenciaCardiacaScreen(idoso: widget.idoso)),
-                ),
+                icon: const Icon(Icons.add),
+                tooltip: 'Registar valor manualmente',
+                onPressed: _adicionarManualmente,
+              ),
+              IconButton(
+                icon: permiteCamera
+                    ? const Icon(Icons.favorite_outline)
+                    : Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const Icon(Icons.favorite_outline),
+                          Positioned(
+                            right: -2,
+                            top: -2,
+                            child: Icon(Icons.star, size: 12, color: Theme.of(context).colorScheme.primary),
+                          ),
+                        ],
+                      ),
+                tooltip: permiteCamera
+                    ? 'Medir frequência cardíaca'
+                    : 'Medir frequência cardíaca (Premium)',
+                onPressed: () => _medir(permiteCamera),
               ),
             ],
           ),
