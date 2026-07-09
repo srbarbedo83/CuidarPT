@@ -19,6 +19,7 @@ bool _mesmoDia(DateTime a, DateTime b) {
 const _sugestoesHigiene = ['Banho', 'Escovar os dentes', 'Higiene íntima', 'Pentear/arranjar cabelo'];
 const _sugestoesAlimentacao = ['Pequeno-almoço', 'Almoço', 'Lanche', 'Jantar', 'Hidratação/Água'];
 const _sugestoesSono = ['Sesta', 'Deitar à noite', 'Acordar'];
+const _sugestoesAtividade = ['Passeio', 'Exercícios', 'Alongamentos'];
 
 String _labelCategoria(CategoriaRotina categoria) {
   switch (categoria) {
@@ -28,6 +29,8 @@ String _labelCategoria(CategoriaRotina categoria) {
       return 'Alimentação';
     case CategoriaRotina.sono:
       return 'Sono';
+    case CategoriaRotina.atividade:
+      return 'Atividade';
   }
 }
 
@@ -39,6 +42,8 @@ List<String> _sugestoesPorCategoria(CategoriaRotina categoria) {
       return _sugestoesAlimentacao;
     case CategoriaRotina.sono:
       return _sugestoesSono;
+    case CategoriaRotina.atividade:
+      return _sugestoesAtividade;
   }
 }
 
@@ -50,16 +55,29 @@ TipoCuidadoDiario _tipoCuidadoParaCategoria(CategoriaRotina categoria) {
       return TipoCuidadoDiario.alimentacao;
     case CategoriaRotina.sono:
       return TipoCuidadoDiario.sono;
+    case CategoriaRotina.atividade:
+      return TipoCuidadoDiario.atividade;
   }
 }
 
-/// Secção Premium de rotina de higiene/alimentação no perfil do idoso.
-/// Minimizada por padrão (ExpansionTile fechado); lista itens recorrentes
-/// e permite marcá-los como feitos no dia.
-class RotinaSection extends ConsumerWidget {
+/// Secção Premium de rotina de higiene/alimentação/sono/atividade no
+/// perfil do idoso. Minimizada por padrão (ExpansionTile fechado); lista
+/// itens recorrentes e permite marcá-los como feitos no dia, um a um ou
+/// vários de uma vez através do modo de seleção múltipla.
+class RotinaSection extends ConsumerStatefulWidget {
   const RotinaSection({super.key, required this.idoso});
 
   final Idoso idoso;
+
+  @override
+  ConsumerState<RotinaSection> createState() => _RotinaSectionState();
+}
+
+class _RotinaSectionState extends ConsumerState<RotinaSection> {
+  bool _modoSelecaoMultipla = false;
+  final _selecionados = <int>{};
+
+  Idoso get idoso => widget.idoso;
 
   Future<void> _adicionarItem(BuildContext context, WidgetRef ref) async {
     var categoria = CategoriaRotina.higiene;
@@ -77,6 +95,7 @@ class RotinaSection extends ConsumerWidget {
                   ButtonSegment(value: CategoriaRotina.higiene, label: Text('Higiene')),
                   ButtonSegment(value: CategoriaRotina.alimentacao, label: Text('Alimentação')),
                   ButtonSegment(value: CategoriaRotina.sono, label: Text('Sono')),
+                  ButtonSegment(value: CategoriaRotina.atividade, label: Text('Atividade')),
                 ],
                 selected: {categoria},
                 onSelectionChanged: (selecao) => setStateDialog(() => categoria = selecao.first),
@@ -191,7 +210,7 @@ class RotinaSection extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final itensAsync = ref.watch(itemRotinaListProvider(idoso.id));
     final cuidados = ref.watch(cuidadoDiarioListProvider(idoso.id)).valueOrNull ?? const [];
     final agora = DateTime.now();
@@ -200,19 +219,51 @@ class RotinaSection extends ConsumerWidget {
     return itensAsync.when(
       data: (itens) {
         final ativos = itens.where((i) => i.ativo).toList();
+        final pendentes = ativos.where((i) => _conclusaoHoje(i, cuidadosHoje) == null).toList();
         return ExpansionTile(
           title: Text(
-            'Rotina de higiene, alimentação e sono',
+            'Rotina de higiene, alimentação, sono e atividade',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(ativos.isEmpty ? 'Nenhum item' : '${ativos.length} itens'),
           children: [
+            if (pendentes.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton.icon(
+                    onPressed: () => setState(() {
+                      _modoSelecaoMultipla = !_modoSelecaoMultipla;
+                      _selecionados.clear();
+                    }),
+                    icon: Icon(_modoSelecaoMultipla ? Icons.close : Icons.checklist),
+                    label: Text(_modoSelecaoMultipla ? 'Cancelar' : 'Selecionar vários'),
+                  ),
+                ),
+              ),
             for (final item in ativos)
               CheckboxListTile(
                 title: Text(item.nome),
                 subtitle: Text(_labelCategoria(item.categoria)),
-                value: _conclusaoHoje(item, cuidadosHoje) != null,
-                onChanged: (valor) => _alternarConcluido(ref, item, valor ?? false, cuidadosHoje),
+                value: _modoSelecaoMultipla
+                    ? (_conclusaoHoje(item, cuidadosHoje) != null || _selecionados.contains(item.id))
+                    : _conclusaoHoje(item, cuidadosHoje) != null,
+                onChanged: _modoSelecaoMultipla && _conclusaoHoje(item, cuidadosHoje) != null
+                    ? null
+                    : (valor) {
+                        if (_modoSelecaoMultipla) {
+                          setState(() {
+                            if (valor == true) {
+                              _selecionados.add(item.id);
+                            } else {
+                              _selecionados.remove(item.id);
+                            }
+                          });
+                        } else {
+                          _alternarConcluido(ref, item, valor ?? false, cuidadosHoje);
+                        }
+                      },
                 secondary: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -230,6 +281,32 @@ class RotinaSection extends ConsumerWidget {
                       onPressed: () => _apagarItem(ref, item),
                     ),
                   ],
+                ),
+              ),
+            if (_modoSelecaoMultipla)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FilledButton.icon(
+                    onPressed: _selecionados.isEmpty
+                        ? null
+                        : () async {
+                            for (final item in ativos.where((i) => _selecionados.contains(i.id))) {
+                              await _alternarConcluido(ref, item, true, cuidadosHoje);
+                            }
+                            setState(() {
+                              _selecionados.clear();
+                              _modoSelecaoMultipla = false;
+                            });
+                          },
+                    icon: const Icon(Icons.check),
+                    label: Text(
+                      _selecionados.isEmpty
+                          ? 'Marcar como feito'
+                          : 'Marcar ${_selecionados.length} como feito',
+                    ),
+                  ),
                 ),
               ),
             Padding(

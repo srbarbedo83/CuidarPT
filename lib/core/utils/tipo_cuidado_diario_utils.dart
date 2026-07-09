@@ -12,6 +12,8 @@ String tipoCuidadoDiarioLabel(TipoCuidadoDiario tipo) {
       return 'Humor';
     case TipoCuidadoDiario.sono:
       return 'Sono';
+    case TipoCuidadoDiario.atividade:
+      return 'Atividade';
     case TipoCuidadoDiario.outro:
       return 'Outro';
   }
@@ -27,6 +29,8 @@ IconData tipoCuidadoDiarioIcone(TipoCuidadoDiario tipo) {
       return Icons.mood_outlined;
     case TipoCuidadoDiario.sono:
       return Icons.bedtime_outlined;
+    case TipoCuidadoDiario.atividade:
+      return Icons.directions_walk_outlined;
     case TipoCuidadoDiario.outro:
       return Icons.notes_outlined;
   }

@@ -188,6 +188,7 @@ const _RegistoCuidadoDiariotipoEnumValueMap = {
   r'alimentacao': r'alimentacao',
   r'humor': r'humor',
   r'sono': r'sono',
+  r'atividade': r'atividade',
   r'outro': r'outro',
 };
 const _RegistoCuidadoDiariotipoValueEnumMap = {
@@ -195,6 +196,7 @@ const _RegistoCuidadoDiariotipoValueEnumMap = {
   r'alimentacao': TipoCuidadoDiario.alimentacao,
   r'humor': TipoCuidadoDiario.humor,
   r'sono': TipoCuidadoDiario.sono,
+  r'atividade': TipoCuidadoDiario.atividade,
   r'outro': TipoCuidadoDiario.outro,
 };
 

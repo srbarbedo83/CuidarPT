@@ -2,7 +2,7 @@ import 'package:isar_community/isar.dart';
 
 part 'registo_cuidado_diario.g.dart';
 
-enum TipoCuidadoDiario { higiene, alimentacao, humor, sono, outro }
+enum TipoCuidadoDiario { higiene, alimentacao, humor, sono, atividade, outro }
 
 @collection
 class RegistoCuidadoDiario {
