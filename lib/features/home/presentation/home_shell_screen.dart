@@ -106,10 +106,12 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
           return ListView(
             children: [
               _SeccaoLembretes(idosos: idosos),
-              for (final idoso in idosos)
+              for (var indice = 0; indice < idosos.length; indice++)
                 _IdosoCardDestacado(
-                  idoso: idoso,
-                  onApagar: () => _apagarIdoso(context, ref, idoso),
+                  idoso: idosos[indice],
+                  idosos: idosos,
+                  indice: indice,
+                  onApagar: () => _apagarIdoso(context, ref, idosos[indice]),
                 ),
               const SizedBox(height: 8),
             ],
@@ -227,9 +229,16 @@ String _subtituloIdoso(Idoso idoso) {
 }
 
 class _IdosoCardDestacado extends StatelessWidget {
-  const _IdosoCardDestacado({required this.idoso, required this.onApagar});
+  const _IdosoCardDestacado({
+    required this.idoso,
+    required this.idosos,
+    required this.indice,
+    required this.onApagar,
+  });
 
   final Idoso idoso;
+  final List<Idoso> idosos;
+  final int indice;
   final VoidCallback onApagar;
 
   @override
@@ -242,7 +251,9 @@ class _IdosoCardDestacado extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => IdosoDetailScreen(idoso: idoso)),
+            MaterialPageRoute(
+              builder: (_) => IdosoDetailScreen(idosos: idosos, indiceInicial: indice),
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),

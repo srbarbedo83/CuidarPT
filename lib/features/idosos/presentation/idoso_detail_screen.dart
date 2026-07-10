@@ -32,10 +32,50 @@ import '../services/proximo_evento.dart';
 import 'idoso_form_screen.dart';
 import 'notas_section.dart';
 
-class IdosoDetailScreen extends ConsumerWidget {
-  const IdosoDetailScreen({super.key, required this.idoso});
+/// Perfil de um idoso. Se houver mais do que um perfil em [idosos], permite
+/// navegar entre eles com um gesto de arrastar lateral, mostrando um
+/// indicador de posição (como um carrossel).
+class IdosoDetailScreen extends StatefulWidget {
+  const IdosoDetailScreen({super.key, required this.idosos, required this.indiceInicial});
+
+  final List<Idoso> idosos;
+  final int indiceInicial;
+
+  @override
+  State<IdosoDetailScreen> createState() => _IdosoDetailScreenState();
+}
+
+class _IdosoDetailScreenState extends State<IdosoDetailScreen> {
+  late final _pageController = PageController(initialPage: widget.indiceInicial);
+  late var _paginaAtual = widget.indiceInicial;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: _pageController,
+      itemCount: widget.idosos.length,
+      onPageChanged: (indice) => setState(() => _paginaAtual = indice),
+      itemBuilder: (context, indice) => _IdosoDetailPage(
+        idoso: widget.idosos[indice],
+        posicaoAtual: _paginaAtual,
+        totalIdosos: widget.idosos.length,
+      ),
+    );
+  }
+}
+
+class _IdosoDetailPage extends ConsumerWidget {
+  const _IdosoDetailPage({required this.idoso, required this.posicaoAtual, required this.totalIdosos});
 
   final Idoso idoso;
+  final int posicaoAtual;
+  final int totalIdosos;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -112,6 +152,32 @@ class IdosoDetailScreen extends ConsumerWidget {
             ],
           ),
         ],
+        bottom: totalIdosos > 1
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(20),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      totalIdosos,
+                      (indice) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        width: indice == posicaoAtual ? 18 : 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: indice == posicaoAtual
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
       body: CustomScrollView(
         slivers: [
@@ -346,45 +412,57 @@ class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundImage: fotoPath != null
-                      ? FileImage(File(fotoPath))
-                      : null,
-                  child: fotoPath == null ? const Icon(Icons.elderly) : null,
-                ),
-                if (idoso.mobilidadeReduzida)
-                  Positioned(
-                    right: -2,
-                    bottom: -2,
-                    child: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      child: const Icon(
-                        Icons.accessible,
-                        color: Colors.white,
-                        size: 12,
+            GestureDetector(
+              onTap: fotoPath == null
+                  ? null
+                  : () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => _FotoIdosoViewer(idosoId: idoso.id, fotoPath: fotoPath),
                       ),
                     ),
-                  ),
-                if (idoso.acamado)
-                  Positioned(
-                    left: -2,
-                    bottom: -2,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Hero(
+                    tag: 'foto-idoso-${idoso.id}',
                     child: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      child: const Icon(
-                        Icons.bed,
-                        color: Colors.white,
-                        size: 12,
-                      ),
+                      radius: 28,
+                      backgroundImage: fotoPath != null
+                          ? FileImage(File(fotoPath))
+                          : null,
+                      child: fotoPath == null ? const Icon(Icons.elderly) : null,
                     ),
                   ),
-              ],
+                  if (idoso.mobilidadeReduzida)
+                    Positioned(
+                      right: -2,
+                      bottom: -2,
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: const Icon(
+                          Icons.accessible,
+                          color: Colors.white,
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                  if (idoso.acamado)
+                    Positioned(
+                      left: -2,
+                      bottom: -2,
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: const Icon(
+                          Icons.bed,
+                          color: Colors.white,
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -736,6 +814,34 @@ class _ConsultaTile extends ConsumerWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: consulta),
+        ),
+      ),
+    );
+  }
+}
+
+/// Mostra a foto do idoso em ecrã cheio, com zoom (pinch), ao tocar na
+/// miniatura do cabeçalho do perfil.
+class _FotoIdosoViewer extends StatelessWidget {
+  const _FotoIdosoViewer({required this.idosoId, required this.fotoPath});
+
+  final int idosoId;
+  final String fotoPath;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: Center(
+        child: Hero(
+          tag: 'foto-idoso-$idosoId',
+          child: InteractiveViewer(
+            child: Image.file(File(fotoPath)),
+          ),
         ),
       ),
     );
