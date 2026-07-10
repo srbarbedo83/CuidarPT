@@ -27,21 +27,12 @@ class HomeShellScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
-  final _pageController = PageController();
-  var _paginaAtual = 0;
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) mostrarConviteAvaliacaoSeNecessario(context, ref);
     });
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 
   Future<void> _adicionarIdoso(BuildContext context, WidgetRef ref, int totalAtual) async {
@@ -112,47 +103,15 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
           if (idosos.isEmpty) {
             return const _EmptyState();
           }
-          return Column(
+          return ListView(
             children: [
               _SeccaoLembretes(idosos: idosos),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: idosos.length,
-                  onPageChanged: (indice) => setState(() => _paginaAtual = indice),
-                  itemBuilder: (context, indice) {
-                    final idoso = idosos[indice];
-                    return SingleChildScrollView(
-                      child: _IdosoCardDestacado(
-                        idoso: idoso,
-                        onApagar: () => _apagarIdoso(context, ref, idoso),
-                      ),
-                    );
-                  },
+              for (final idoso in idosos)
+                _IdosoCardDestacado(
+                  idoso: idoso,
+                  onApagar: () => _apagarIdoso(context, ref, idoso),
                 ),
-              ),
-              if (idosos.length > 1) ...[
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    idosos.length,
-                    (indice) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: indice == _paginaAtual ? 20 : 7,
-                      height: 7,
-                      decoration: BoxDecoration(
-                        color: indice == _paginaAtual
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
+              const SizedBox(height: 8),
             ],
           );
         },
@@ -233,33 +192,28 @@ class _SeccaoLembretes extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                child: Text(
-                  'Lembretes',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        child: ExpansionTile(
+          initiallyExpanded: true,
+          title: Text(
+            'Lembretes',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text('${visiveis.length} ${visiveis.length == 1 ? 'próximo' : 'próximos'}'),
+          children: [
+            for (final lembrete in visiveis)
+              ListTile(
+                dense: true,
+                leading: Icon(
+                  lembrete.evento.tipo == TipoProximoEvento.medicacao
+                      ? Icons.medication_outlined
+                      : Icons.event_note_outlined,
+                ),
+                title: Text(lembrete.evento.titulo),
+                subtitle: Text(
+                  '${lembrete.idoso.nome} · ${formatarContagem(agora, lembrete.evento.dataHora)}',
                 ),
               ),
-              for (final lembrete in visiveis)
-                ListTile(
-                  dense: true,
-                  leading: Icon(
-                    lembrete.evento.tipo == TipoProximoEvento.medicacao
-                        ? Icons.medication_outlined
-                        : Icons.event_note_outlined,
-                  ),
-                  title: Text(lembrete.evento.titulo),
-                  subtitle: Text(
-                    '${lembrete.idoso.nome} · ${formatarContagem(agora, lembrete.evento.dataHora)}',
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );
@@ -283,7 +237,7 @@ class _IdosoCardDestacado extends StatelessWidget {
     final fotoPath = idoso.fotoPath;
     final avisos = avisosPerfilIncompleto(idoso);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       child: Card(
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
@@ -291,74 +245,76 @@ class _IdosoCardDestacado extends StatelessWidget {
             MaterialPageRoute(builder: (_) => IdosoDetailScreen(idoso: idoso)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            padding: const EdgeInsets.all(16),
+            child: Row(
               children: [
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
                     CircleAvatar(
-                      radius: 64,
+                      radius: 32,
                       backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
-                      child: fotoPath == null ? const Icon(Icons.elderly, size: 56) : null,
+                      child: fotoPath == null ? const Icon(Icons.elderly, size: 28) : null,
                     ),
                     if (idoso.mobilidadeReduzida)
                       Positioned(
-                        right: -4,
-                        bottom: -4,
+                        right: -2,
+                        bottom: -2,
                         child: CircleAvatar(
-                          radius: 18,
+                          radius: 12,
                           backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: const Icon(Icons.accessible, color: Colors.white, size: 20),
+                          child: const Icon(Icons.accessible, color: Colors.white, size: 14),
                         ),
                       ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        idoso.nome,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              idoso.nome,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (avisos.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6),
+                              child: Tooltip(
+                                message: avisos.join('\n'),
+                                child: Icon(
+                                  Icons.warning_amber_rounded,
+                                  size: 18,
+                                  color: Colors.amber.shade800,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                    ),
-                    if (avisos.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Tooltip(
-                          message: avisos.join('\n'),
-                          child: Icon(Icons.warning_amber_rounded, size: 20, color: Colors.amber.shade800),
-                        ),
-                      ),
-                  ],
+                      const SizedBox(height: 2),
+                      Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodySmall),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 4),
-                Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodyMedium),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FilledButton.icon(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
-                      ),
-                      icon: const Icon(Icons.picture_as_pdf_outlined),
-                      label: const Text('Gerar relatório'),
-                    ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      onPressed: onApagar,
-                      icon: const Icon(Icons.delete_outline),
-                      tooltip: 'Apagar perfil',
-                    ),
-                  ],
+                IconButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+                  ),
+                  icon: const Icon(Icons.picture_as_pdf_outlined),
+                  tooltip: 'Gerar relatório',
+                ),
+                IconButton(
+                  onPressed: onApagar,
+                  icon: const Icon(Icons.delete_outline),
+                  tooltip: 'Apagar perfil',
                 ),
               ],
             ),
