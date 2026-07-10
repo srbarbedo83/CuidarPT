@@ -18,6 +18,7 @@ import '../../consultas/providers/consulta_providers.dart';
 import '../../consultas/services/consulta_scheduler.dart';
 import '../../cuidados_diarios/presentation/grafico_humor_card.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
+import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../documentos/presentation/documentos_section.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
@@ -148,6 +149,16 @@ class _IdosoDetailPage extends ConsumerWidget {
                   title: Text('Profissionais'),
                 ),
               ),
+              PopupMenuItem(
+                value: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const DefinicoesScreen()),
+                ),
+                child: const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.settings_outlined),
+                  title: Text('Definições'),
+                ),
+              ),
             ],
           ),
         ],
@@ -200,25 +211,7 @@ class _IdosoDetailPage extends ConsumerWidget {
                 ),
               ),
               medicacaoAsync.when(
-                data: (registos) {
-                  if (registos.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: Text('Ainda não há medicação registada.'),
-                    );
-                  }
-                  return Column(
-                    children: registos
-                        .map(
-                          (registo) =>
-                              _MedicacaoTile(idoso: idoso, registo: registo),
-                        )
-                        .toList(),
-                  );
-                },
+                data: (registos) => _MedicacaoListaSection(idoso: idoso, registos: registos),
                 loading: () => const Padding(
                   padding: EdgeInsets.all(16),
                   child: Center(child: CircularProgressIndicator()),
@@ -239,27 +232,7 @@ class _IdosoDetailPage extends ConsumerWidget {
                 ),
               ),
               consultasAsync.when(
-                data: (consultas) {
-                  if (consultas.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: Text(
-                        'Ainda não há consultas ou tratamentos registados.',
-                      ),
-                    );
-                  }
-                  return Column(
-                    children: consultas
-                        .map(
-                          (consulta) =>
-                              _ConsultaTile(idoso: idoso, consulta: consulta),
-                        )
-                        .toList(),
-                  );
-                },
+                data: (consultas) => _ConsultaListaSection(idoso: idoso, consultas: consultas),
                 loading: () => const Padding(
                   padding: EdgeInsets.all(16),
                   child: Center(child: CircularProgressIndicator()),
@@ -305,7 +278,7 @@ class _IdosoDetailPage extends ConsumerWidget {
                   label: const Text('Gerar relatório diário'),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24 + MediaQuery.of(context).padding.bottom),
             ]),
           ),
         ],
@@ -691,6 +664,86 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
           ),
         ),
       ),
+    );
+  }
+}
+
+const _maxItensCondensados = 3;
+
+/// Lista de medicação com a mesma minimização/expansão usada noutras
+/// secções com potencialmente muitas entradas.
+class _MedicacaoListaSection extends StatefulWidget {
+  const _MedicacaoListaSection({required this.idoso, required this.registos});
+
+  final Idoso idoso;
+  final List<RegistoMedicacao> registos;
+
+  @override
+  State<_MedicacaoListaSection> createState() => _MedicacaoListaSectionState();
+}
+
+class _MedicacaoListaSectionState extends State<_MedicacaoListaSection> {
+  bool _expandido = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final registos = widget.registos;
+    if (registos.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Text('Ainda não há medicação registada.'),
+      );
+    }
+    final mostrarExpandir = registos.length > _maxItensCondensados;
+    final visiveis = _expandido ? registos : registos.take(_maxItensCondensados).toList();
+    return Column(
+      children: [
+        for (final registo in visiveis) _MedicacaoTile(idoso: widget.idoso, registo: registo),
+        if (mostrarExpandir)
+          TextButton(
+            onPressed: () => setState(() => _expandido = !_expandido),
+            child: Text(_expandido ? 'Ver menos' : 'Ver todas (${registos.length})'),
+          ),
+      ],
+    );
+  }
+}
+
+/// Lista de consultas/tratamentos com a mesma minimização/expansão usada
+/// noutras secções com potencialmente muitas entradas.
+class _ConsultaListaSection extends StatefulWidget {
+  const _ConsultaListaSection({required this.idoso, required this.consultas});
+
+  final Idoso idoso;
+  final List<RegistoConsulta> consultas;
+
+  @override
+  State<_ConsultaListaSection> createState() => _ConsultaListaSectionState();
+}
+
+class _ConsultaListaSectionState extends State<_ConsultaListaSection> {
+  bool _expandido = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final consultas = widget.consultas;
+    if (consultas.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Text('Ainda não há consultas ou tratamentos registados.'),
+      );
+    }
+    final mostrarExpandir = consultas.length > _maxItensCondensados;
+    final visiveis = _expandido ? consultas : consultas.take(_maxItensCondensados).toList();
+    return Column(
+      children: [
+        for (final consulta in visiveis) _ConsultaTile(idoso: widget.idoso, consulta: consulta),
+        if (mostrarExpandir)
+          TextButton(
+            onPressed: () => setState(() => _expandido = !_expandido),
+            child: Text(_expandido ? 'Ver menos' : 'Ver todas (${consultas.length})'),
+          ),
+      ],
     );
   }
 }
