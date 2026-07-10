@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
 import '../../../shared/widgets/premium_upsell.dart';
+import '../../../shared/widgets/seccao_colapsavel.dart';
 import '../../subscricao/feature_limits.dart';
 import '../providers/sinais_vitais_providers.dart';
 import '../services/alertas_sinais_vitais.dart';
@@ -49,75 +50,97 @@ class SinaisVitaisSection extends ConsumerWidget {
 
     final registosAsync = ref.watch(sinaisVitaisListProvider(idoso.id));
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Sinais vitais',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.show_chart, color: Theme.of(context).colorScheme.primary),
-                tooltip: 'Histórico em gráfico',
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SinaisVitaisHistoricoScreen(idoso: idoso)),
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.add),
-                tooltip: 'Novo registo de sinais vitais',
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SinaisVitaisFormScreen(idoso: idoso)),
-                ),
-              ),
-            ],
+    return SeccaoColapsavel(
+      titulo: 'Sinais vitais',
+      acoes: [
+        IconButton(
+          icon: Icon(Icons.show_chart, color: Theme.of(context).colorScheme.primary),
+          tooltip: 'Histórico em gráfico',
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => SinaisVitaisHistoricoScreen(idoso: idoso)),
           ),
         ),
-        registosAsync.when(
-          data: (registos) {
-            if (registos.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text('Ainda não há registos de sinais vitais.'),
-              );
-            }
-            final hoje = DateTime.now();
-            final temRegistoHoje = registos.any((r) => _mesmoDia(r.timestamp, hoje));
-            final temAlerta = registos.any((r) => alertasSinaisVitais(r).isNotEmpty);
-            return Column(
-              children: [
-                if (!temRegistoHoje)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text('Ainda não registou sinais vitais hoje.'),
-                  ),
-                for (final registo in registos) _SinaisVitaisTile(idoso: idoso, registo: registo),
-                if (temAlerta)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                    child: Text(
-                      alertaSinaisVitaisAviso,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-              ],
+        IconButton(
+          icon: const Icon(Icons.add),
+          tooltip: 'Novo registo de sinais vitais',
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => SinaisVitaisFormScreen(idoso: idoso)),
+          ),
+        ),
+      ],
+      child: registosAsync.when(
+        data: (registos) {
+          if (registos.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text('Ainda não há registos de sinais vitais.'),
             );
-          },
-          loading: () => const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-          error: (erro, _) => Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text('Erro ao carregar sinais vitais: $erro'),
-          ),
+          }
+          final hoje = DateTime.now();
+          final temRegistoHoje = registos.any((r) => _mesmoDia(r.timestamp, hoje));
+          final temAlerta = registos.any((r) => alertasSinaisVitais(r).isNotEmpty);
+          return Column(
+            children: [
+              if (!temRegistoHoje)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('Ainda não registou sinais vitais hoje.'),
+                ),
+              _SinaisVitaisLista(idoso: idoso, registos: registos),
+              if (temAlerta)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Text(
+                    alertaSinaisVitaisAviso,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+            ],
+          );
+        },
+        loading: () => const Padding(
+          padding: EdgeInsets.all(16),
+          child: Center(child: CircularProgressIndicator()),
         ),
+        error: (erro, _) => Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text('Erro ao carregar sinais vitais: $erro'),
+        ),
+      ),
+    );
+  }
+}
+
+const _maxRegistosCondensados = 3;
+
+/// Lista de registos de sinais vitais com a mesma minimização/expansão
+/// usada noutras secções com potencialmente muitas entradas.
+class _SinaisVitaisLista extends StatefulWidget {
+  const _SinaisVitaisLista({required this.idoso, required this.registos});
+
+  final Idoso idoso;
+  final List<RegistoSinaisVitais> registos;
+
+  @override
+  State<_SinaisVitaisLista> createState() => _SinaisVitaisListaState();
+}
+
+class _SinaisVitaisListaState extends State<_SinaisVitaisLista> {
+  bool _expandido = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final registos = widget.registos;
+    final mostrarExpandir = registos.length > _maxRegistosCondensados;
+    final visiveis = _expandido ? registos : registos.take(_maxRegistosCondensados).toList();
+    return Column(
+      children: [
+        for (final registo in visiveis) _SinaisVitaisTile(idoso: widget.idoso, registo: registo),
+        if (mostrarExpandir)
+          TextButton(
+            onPressed: () => setState(() => _expandido = !_expandido),
+            child: Text(_expandido ? 'Ver menos' : 'Ver todos (${registos.length})'),
+          ),
       ],
     );
   }

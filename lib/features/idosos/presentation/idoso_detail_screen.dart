@@ -28,6 +28,7 @@ import '../../relatorios/services/periodo_relatorio.dart';
 import '../../rotina/presentation/rotina_section.dart';
 import '../../sinais_vitais/presentation/sinais_vitais_section.dart';
 import '../../subscricao/feature_limits.dart';
+import '../../../shared/widgets/seccao_colapsavel.dart';
 import '../services/proximo_evento.dart';
 import 'idoso_form_screen.dart';
 import 'notas_section.dart';
@@ -201,45 +202,55 @@ class _IdosoDetailPage extends ConsumerWidget {
               _ComoSenteHoje(idoso: idoso),
               if (proximo != null) _ProximoEventoCard(proximo: proximo),
               const Divider(height: 32),
-              _CabecalhoSeccao(
+              SeccaoColapsavel(
                 titulo: 'Medicação',
-                tooltip: 'Adicionar medicação',
-                onAdicionar: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => MedicacaoFormScreen(idoso: idoso),
+                acoes: [
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    tooltip: 'Adicionar medicação',
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => MedicacaoFormScreen(idoso: idoso),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              medicacaoAsync.when(
-                data: (registos) => _MedicacaoListaSection(idoso: idoso, registos: registos),
-                loading: () => const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-                error: (erro, _) => Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text('Erro ao carregar medicação: $erro'),
+                ],
+                child: medicacaoAsync.when(
+                  data: (registos) => _MedicacaoListaSection(idoso: idoso, registos: registos),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (erro, _) => Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text('Erro ao carregar medicação: $erro'),
+                  ),
                 ),
               ),
               const Divider(height: 32),
-              _CabecalhoSeccao(
+              SeccaoColapsavel(
                 titulo: 'Consultas e tratamentos',
-                tooltip: 'Adicionar consulta ou tratamento',
-                onAdicionar: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => ConsultaFormScreen(idoso: idoso),
+                acoes: [
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    tooltip: 'Adicionar consulta ou tratamento',
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ConsultaFormScreen(idoso: idoso),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              consultasAsync.when(
-                data: (consultas) => _ConsultaListaSection(idoso: idoso, consultas: consultas),
-                loading: () => const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-                error: (erro, _) => Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text('Erro ao carregar consultas: $erro'),
+                ],
+                child: consultasAsync.when(
+                  data: (consultas) => _ConsultaListaSection(idoso: idoso, consultas: consultas),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (erro, _) => Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text('Erro ao carregar consultas: $erro'),
+                  ),
                 ),
               ),
               if (idoso.rotinasAtivas &&
@@ -312,42 +323,6 @@ class _ProximoEventoCard extends StatelessWidget {
             '${formato.format(proximo.dataHora)} · ${formatarContagem(DateTime.now(), proximo.dataHora)}',
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _CabecalhoSeccao extends StatelessWidget {
-  const _CabecalhoSeccao({
-    required this.titulo,
-    required this.tooltip,
-    required this.onAdicionar,
-  });
-
-  final String titulo;
-  final String tooltip;
-  final VoidCallback onAdicionar;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              titulo,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: tooltip,
-            onPressed: onAdicionar,
-          ),
-        ],
       ),
     );
   }
