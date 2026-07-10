@@ -74,23 +74,109 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
   }
 
   Widget _aguardandoDedo(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(Icons.touch_app_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
-        const SizedBox(height: 24),
-        Text(
-          'Coloca a ponta do dedo, bem esticado, a tapar completamente a lente da câmara traseira e o flash.',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyLarge,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.touch_app_outlined, size: 80, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 16),
+          Text(
+            'Como medir',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Na parte de trás do telemóvel, a lente da câmara e o pequeno LED do '
+              'flash ficam normalmente muito próximos um do outro, junto ao canto '
+              'superior. Precisas de tapar os dois ao mesmo tempo:',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _passo(context, '1', 'Liga o flash: acende-se sozinho quando a medição começa.'),
+          _passo(
+            context,
+            '2',
+            'Coloca a ponta de um dedo (não a unha) a tapar completamente a lente '
+                'da câmara e o flash ao mesmo tempo.',
+          ),
+          _passo(
+            context,
+            '3',
+            'Faz um pouco de pressão — o suficiente para não entrar luz pelas '
+                'bordas, mas sem apertar com força.',
+          ),
+          _passo(context, '4', 'Mantém o dedo completamente parado até à medição terminar (~12 segundos).'),
+          const SizedBox(height: 20),
+          _cartaoDicas(context),
+          const SizedBox(height: 16),
+          Text(
+            'A app não é um dispositivo médico — o valor é apenas informativo.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _passo(BuildContext context, String numero, String texto) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 12,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            child: Text(
+              numero,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(child: Text(texto, style: Theme.of(context).textTheme.bodyMedium)),
+        ],
+      ),
+    );
+  }
+
+  Widget _cartaoDicas(BuildContext context) {
+    return Card(
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.lightbulb_outline, size: 18, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Text(
+                  'Se falhar muitas vezes, tenta isto:',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '• Confirma que estás a tapar a câmara E o flash, não só um dos dois.\n'
+              '• Não apertes com força — cortar a circulação piora a leitura.\n'
+              '• Encosta o cotovelo a algo estável para o dedo não tremer.\n'
+              '• Limpa a lente se tiver dedadas ou sujidade.\n'
+              '• Tira uma capa muito grossa que tape mal o flash.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
-        Text(
-          'A app não é um dispositivo médico — o valor é apenas informativo.',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      ],
+      ),
     );
   }
 
@@ -111,7 +197,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
         ),
         const SizedBox(height: 24),
         Text(
-          'A medir... mantém o dedo parado sobre a câmara.',
+          'A medir... mantém o dedo parado, a tapar bem a câmara e o flash.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
@@ -170,19 +256,23 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
   }
 
   Widget _erroWidget(BuildContext context, String mensagem) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(Icons.error_outline, size: 64, color: Theme.of(context).colorScheme.error),
-        const SizedBox(height: 16),
-        Text(mensagem, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge),
-        const SizedBox(height: 24),
-        FilledButton.icon(
-          onPressed: _reiniciar,
-          icon: const Icon(Icons.refresh),
-          label: const Text('Tentar novamente'),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.error_outline, size: 64, color: Theme.of(context).colorScheme.error),
+          const SizedBox(height: 16),
+          Text(mensagem, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge),
+          const SizedBox(height: 20),
+          _cartaoDicas(context),
+          const SizedBox(height: 24),
+          FilledButton.icon(
+            onPressed: _reiniciar,
+            icon: const Icon(Icons.refresh),
+            label: const Text('Tentar novamente'),
+          ),
+        ],
+      ),
     );
   }
 }
