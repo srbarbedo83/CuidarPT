@@ -81,6 +81,14 @@ ProximoEvento? proximoEvento(
   return eventos.isEmpty ? null : eventos.first;
 }
 
+/// Indica se [dataHora] está suficientemente próxima de [agora] (por
+/// omissão, dentro de 3 horas) para merecer destaque visual — usado para
+/// realçar lembretes urgentes no ecrã inicial.
+bool eventoUrgente(DateTime agora, DateTime dataHora, {Duration limiar = const Duration(hours: 3)}) {
+  final diferenca = dataHora.difference(agora);
+  return !diferenca.isNegative && diferenca <= limiar;
+}
+
 /// Formata o tempo restante até [dataHora] a partir de [agora] de forma
 /// compacta: "faltam 2h", "faltam 3 dias", "faltam 15 min".
 String formatarContagem(DateTime agora, DateTime dataHora) {

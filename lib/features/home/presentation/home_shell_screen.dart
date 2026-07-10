@@ -157,18 +157,11 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-class _LembreteHome {
-  const _LembreteHome({required this.idoso, required this.evento});
+const _maxLembretesPorIdoso = 3;
 
-  final Idoso idoso;
-  final ProximoEvento evento;
-}
-
-const _maxLembretesVisiveis = 5;
-
-/// Junta os próximos eventos (medicação/consultas) de todos os idosos numa
-/// só lista, ordenada por proximidade, para uma visão rápida no ecrã
-/// inicial — mesmo com vários perfis.
+/// Mostra os próximos eventos (medicação/consultas) de cada idoso, agrupados
+/// por idoso (não misturados), para uma visão rápida no ecrã inicial —
+/// mesmo com vários perfis. Os mais próximos ficam destacados a vermelho.
 class _SeccaoLembretes extends ConsumerWidget {
   const _SeccaoLembretes({required this.idosos});
 
@@ -177,19 +170,20 @@ class _SeccaoLembretes extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final agora = DateTime.now();
-    final lembretes = <_LembreteHome>[];
+    final porIdoso = <(Idoso, List<ProximoEvento>)>[];
+    var total = 0;
 
     for (final idoso in idosos) {
       final medicacoes = ref.watch(medicacaoListProvider(idoso.id)).valueOrNull ?? const [];
       final consultas = ref.watch(consultaListProvider(idoso.id)).valueOrNull ?? const [];
-      for (final evento in proximosEventos(agora, medicacoes: medicacoes, consultas: consultas)) {
-        lembretes.add(_LembreteHome(idoso: idoso, evento: evento));
-      }
+      final eventos = proximosEventos(agora, medicacoes: medicacoes, consultas: consultas);
+      if (eventos.isEmpty) continue;
+      final visiveis = eventos.take(_maxLembretesPorIdoso).toList();
+      porIdoso.add((idoso, visiveis));
+      total += visiveis.length;
     }
-    lembretes.sort((a, b) => a.evento.dataHora.compareTo(b.evento.dataHora));
-    final visiveis = lembretes.take(_maxLembretesVisiveis).toList();
 
-    if (visiveis.isEmpty) return const SizedBox.shrink();
+    if (porIdoso.isEmpty) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -200,24 +194,44 @@ class _SeccaoLembretes extends ConsumerWidget {
             'Lembretes',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text('${visiveis.length} ${visiveis.length == 1 ? 'próximo' : 'próximos'}'),
+          subtitle: Text('$total ${total == 1 ? 'próximo' : 'próximos'}'),
           children: [
-            for (final lembrete in visiveis)
-              ListTile(
-                dense: true,
-                leading: Icon(
-                  lembrete.evento.tipo == TipoProximoEvento.medicacao
-                      ? Icons.medication_outlined
-                      : Icons.event_note_outlined,
-                ),
-                title: Text(lembrete.evento.titulo),
-                subtitle: Text(
-                  '${lembrete.idoso.nome} · ${formatarContagem(agora, lembrete.evento.dataHora)}',
+            for (final (idoso, eventos) in porIdoso) ...[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                child: Text(
+                  idoso.nome,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
+              for (final evento in eventos) _LembreteTile(agora: agora, evento: evento),
+            ],
           ],
         ),
       ),
+    );
+  }
+}
+
+class _LembreteTile extends StatelessWidget {
+  const _LembreteTile({required this.agora, required this.evento});
+
+  final DateTime agora;
+  final ProximoEvento evento;
+
+  @override
+  Widget build(BuildContext context) {
+    final urgente = eventoUrgente(agora, evento.dataHora);
+    final cor = urgente ? Colors.red.shade700 : null;
+    final peso = urgente ? FontWeight.bold : null;
+    return ListTile(
+      dense: true,
+      leading: Icon(
+        evento.tipo == TipoProximoEvento.medicacao ? Icons.medication_outlined : Icons.event_note_outlined,
+        color: cor,
+      ),
+      title: Text(evento.titulo, style: TextStyle(color: cor, fontWeight: peso)),
+      subtitle: Text(formatarContagem(agora, evento.dataHora), style: TextStyle(color: cor, fontWeight: peso)),
     );
   }
 }

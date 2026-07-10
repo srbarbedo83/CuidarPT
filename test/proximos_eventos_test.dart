@@ -59,4 +59,31 @@ void main() {
       expect(evento?.titulo, 'Cardiologia');
     });
   });
+
+  group('eventoUrgente', () {
+    final agora = DateTime(2026, 7, 9, 8, 0);
+
+    test('true dentro do limiar (por omissão 3 horas)', () {
+      expect(eventoUrgente(agora, agora.add(const Duration(hours: 2))), isTrue);
+    });
+
+    test('true exatamente no limiar', () {
+      expect(eventoUrgente(agora, agora.add(const Duration(hours: 3))), isTrue);
+    });
+
+    test('false fora do limiar', () {
+      expect(eventoUrgente(agora, agora.add(const Duration(hours: 4))), isFalse);
+    });
+
+    test('false para eventos já passados', () {
+      expect(eventoUrgente(agora, agora.subtract(const Duration(minutes: 5))), isFalse);
+    });
+
+    test('respeita um limiar personalizado', () {
+      expect(
+        eventoUrgente(agora, agora.add(const Duration(hours: 1)), limiar: const Duration(minutes: 30)),
+        isFalse,
+      );
+    });
+  });
 }
