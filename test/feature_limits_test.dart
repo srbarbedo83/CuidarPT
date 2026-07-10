@@ -13,7 +13,6 @@ void main() {
       expect(limites.permiteAvisosOficiais, isFalse);
       expect(limites.permiteRotinas, isFalse);
       expect(limites.permiteSinaisVitais, isFalse);
-      expect(limites.permiteFrequenciaCardiacaCamera, isFalse);
     });
 
     test('plano premium (ou trial ativo) remove limites', () {
@@ -26,7 +25,6 @@ void main() {
       expect(limites.permiteAvisosOficiais, isTrue);
       expect(limites.permiteRotinas, isTrue);
       expect(limites.permiteSinaisVitais, isTrue);
-      expect(limites.permiteFrequenciaCardiacaCamera, isTrue);
     });
   });
 }

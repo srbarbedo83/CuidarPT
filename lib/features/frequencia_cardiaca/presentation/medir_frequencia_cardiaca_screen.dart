@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/idoso.dart';
-import '../../../data/models/registo_frequencia_cardiaca.dart';
-import '../providers/frequencia_cardiaca_providers.dart';
 import '../services/faixa_frequencia_cardiaca.dart';
 import '../services/medicao_ppg_camera.dart';
 import '../services/processador_ppg.dart';
 
-class MedirFrequenciaCardiacaScreen extends ConsumerStatefulWidget {
+/// Mede a frequência cardíaca pela câmara e devolve o BPM obtido (via
+/// [Navigator.pop]) para quem chamou preencher — usado a partir do
+/// formulário de Sinais Vitais, não guarda nada sozinho.
+class MedirFrequenciaCardiacaScreen extends StatefulWidget {
   const MedirFrequenciaCardiacaScreen({super.key, required this.idoso});
 
   final Idoso idoso;
 
   @override
-  ConsumerState<MedirFrequenciaCardiacaScreen> createState() => _MedirFrequenciaCardiacaScreenState();
+  State<MedirFrequenciaCardiacaScreen> createState() => _MedirFrequenciaCardiacaScreenState();
 }
 
-class _MedirFrequenciaCardiacaScreenState extends ConsumerState<MedirFrequenciaCardiacaScreen> {
+class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaScreen> {
   MedicaoPpgCamera? _fonte;
   ResultadoPpg _resultado = const ResultadoPpg.semDedo();
-  bool _aGuardar = false;
 
   @override
   void initState() {
@@ -48,19 +47,6 @@ class _MedirFrequenciaCardiacaScreenState extends ConsumerState<MedirFrequenciaC
     if (!mounted) return;
     setState(() => _resultado = const ResultadoPpg.semDedo());
     _iniciarMedicao();
-  }
-
-  Future<void> _guardar() async {
-    final bpm = _resultado.bpm;
-    if (bpm == null) return;
-    setState(() => _aGuardar = true);
-    final registo = RegistoFrequenciaCardiaca()
-      ..idosoId = widget.idoso.id
-      ..bpm = bpm
-      ..fonte = FonteFrequenciaCardiaca.camera
-      ..timestamp = DateTime.now();
-    await ref.read(registoFrequenciaCardiacaRepositoryProvider).save(registo);
-    if (mounted) Navigator.of(context).pop();
   }
 
   @override
@@ -170,15 +156,13 @@ class _MedirFrequenciaCardiacaScreenState extends ConsumerState<MedirFrequenciaC
         ),
         const SizedBox(height: 24),
         FilledButton.icon(
-          onPressed: _aGuardar ? null : _guardar,
-          icon: _aGuardar
-              ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
-              : const Icon(Icons.save_outlined),
-          label: const Text('Guardar no histórico'),
+          onPressed: () => Navigator.of(context).pop(bpm),
+          icon: const Icon(Icons.check),
+          label: const Text('Usar este valor'),
         ),
         const SizedBox(height: 8),
         TextButton(
-          onPressed: _aGuardar ? null : _reiniciar,
+          onPressed: _reiniciar,
           child: const Text('Medir novamente'),
         ),
       ],

@@ -9,7 +9,6 @@ import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
-import '../../../data/models/registo_frequencia_cardiaca.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
 import 'seccoes_relatorio.dart';
@@ -29,7 +28,6 @@ class RelatorioPdfBuilder {
     required List<RegistoConsulta> consultas,
     required List<RegistoCuidadoDiario> cuidados,
     List<RegistoSinaisVitais> sinaisVitais = const [],
-    List<RegistoFrequenciaCardiaca> frequenciaCardiaca = const [],
     Set<SeccaoRelatorio> seccoes = const {
       SeccaoRelatorio.sinaisVitais,
       SeccaoRelatorio.cuidados,
@@ -52,8 +50,6 @@ class RelatorioPdfBuilder {
           if (seccoes.contains(SeccaoRelatorio.sinaisVitais)) ...[
             pw.SizedBox(height: 16),
             _secaoSinaisVitais(sinaisVitais),
-            pw.SizedBox(height: 16),
-            _secaoFrequenciaCardiaca(frequenciaCardiaca),
           ],
           if (seccoes.contains(SeccaoRelatorio.cuidados)) ...[
             pw.SizedBox(height: 16),
@@ -242,45 +238,6 @@ class RelatorioPdfBuilder {
         ),
       ],
     );
-  }
-
-  static pw.Widget _secaoFrequenciaCardiaca(List<RegistoFrequenciaCardiaca> registos) {
-    if (registos.isEmpty) {
-      return pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          _tituloSeccao('Frequência cardíaca no período'),
-          pw.Text('Sem medições de frequência cardíaca registadas no período.'),
-        ],
-      );
-    }
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        _tituloSeccao('Frequência cardíaca no período'),
-        pw.SizedBox(height: 6),
-        pw.TableHelper.fromTextArray(
-          headers: ['Data', 'BPM', 'Origem'],
-          data: registos
-              .map((registo) => [
-                    _formatoDataHora.format(registo.timestamp),
-                    '${registo.bpm}',
-                    _labelFonte(registo.fonte),
-                  ])
-              .toList(),
-          cellStyle: const pw.TextStyle(fontSize: 10),
-          headerStyle: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold),
-        ),
-      ],
-    );
-  }
-
-  static String _labelFonte(FonteFrequenciaCardiaca fonte) {
-    return switch (fonte) {
-      FonteFrequenciaCardiaca.camera => 'Câmara do telemóvel',
-      FonteFrequenciaCardiaca.manual => 'Manual',
-      FonteFrequenciaCardiaca.bluetooth => 'Bluetooth',
-    };
   }
 
   static pw.Widget _secaoNotas(String notas) {

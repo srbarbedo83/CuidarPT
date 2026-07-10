@@ -12,7 +12,6 @@ import '../models/preferencias_app.dart';
 import '../models/registo_documento.dart';
 import '../models/registo_consulta.dart';
 import '../models/registo_cuidado_diario.dart';
-import '../models/registo_frequencia_cardiaca.dart';
 import '../models/registo_medicacao.dart';
 import '../models/registo_sinais_vitais.dart';
 
@@ -38,7 +37,6 @@ class IsarService {
         ContactoCuidadorSchema,
         RegistoSinaisVitaisSchema,
         InfoProfissionalSchema,
-        RegistoFrequenciaCardiacaSchema,
       ],
       directory: documentosDir.path,
     );

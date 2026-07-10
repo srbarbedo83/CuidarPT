@@ -19,7 +19,6 @@ import '../../consultas/services/consulta_scheduler.dart';
 import '../../cuidados_diarios/presentation/grafico_humor_card.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../../documentos/presentation/documentos_section.dart';
-import '../../frequencia_cardiaca/presentation/frequencia_cardiaca_section.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../medicacao/services/medicacao_scheduler.dart';
@@ -277,8 +276,6 @@ class _IdosoDetailPage extends ConsumerWidget {
               ],
               const Divider(height: 32),
               SinaisVitaisSection(idoso: idoso),
-              const Divider(height: 32),
-              FrequenciaCardiacaSection(idoso: idoso),
               if ((cuidadosAsync.valueOrNull ?? const []).any(
                 (r) => r.tipo == TipoCuidadoDiario.humor,
               )) ...[

@@ -8,14 +8,12 @@ import 'package:intl/intl.dart';
 
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
-import '../../../data/models/registo_frequencia_cardiaca.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../contactos_cuidadores/providers/contacto_cuidador_providers.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
-import '../../frequencia_cardiaca/providers/frequencia_cardiaca_providers.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../sinais_vitais/providers/sinais_vitais_providers.dart';
 import '../../subscricao/feature_limits.dart';
@@ -208,13 +206,6 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
                 fim: intervalo.fim,
               )
           : const <RegistoSinaisVitais>[];
-      final frequenciaCardiaca = _seccoes.contains(SeccaoRelatorio.sinaisVitais)
-          ? await ref.read(registoFrequenciaCardiacaRepositoryProvider).listarPorIdosoEPeriodo(
-                widget.idoso.id,
-                inicio: intervalo.inicio,
-                fim: intervalo.fim,
-              )
-          : const <RegistoFrequenciaCardiaca>[];
 
       final cuidadorNome = permitePersonalizacao ? _cuidadorNomeController.text.trim() : null;
       Uint8List? logoBytes;
@@ -245,7 +236,6 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
               consultas: consultas,
               cuidados: cuidados,
               sinaisVitais: sinaisVitais,
-              frequenciaCardiaca: frequenciaCardiaca,
               seccoes: _seccoes,
               cuidadorNome: cuidadorNome,
               logoBytes: logoBytes,

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../frequencia_cardiaca/presentation/medir_frequencia_cardiaca_screen.dart';
 import '../providers/sinais_vitais_providers.dart';
 
 /// Ecrã de criação/edição de um registo de sinais vitais de [idoso].
@@ -83,6 +84,15 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
     setState(() => _timestamp = DateTime(data.year, data.month, data.day, hora.hour, hora.minute));
   }
 
+  Future<void> _medirComCamara() async {
+    final bpm = await Navigator.of(context).push<int>(
+      MaterialPageRoute(builder: (_) => MedirFrequenciaCardiacaScreen(idoso: widget.idoso)),
+    );
+    if (bpm != null && mounted) {
+      setState(() => _frequenciaCardiacaController.text = bpm.toString());
+    }
+  }
+
   Future<void> _guardar() async {
     setState(() => _aGuardar = true);
 
@@ -145,10 +155,23 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            controller: _frequenciaCardiacaController,
-            decoration: const InputDecoration(labelText: 'Frequência cardíaca (bpm)'),
-            keyboardType: TextInputType.number,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _frequenciaCardiacaController,
+                  decoration: const InputDecoration(labelText: 'Frequência cardíaca (bpm)'),
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton.filledTonal(
+                onPressed: _medirComCamara,
+                icon: const Icon(Icons.favorite_outline),
+                tooltip: 'Medir com a câmara',
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           TextFormField(
