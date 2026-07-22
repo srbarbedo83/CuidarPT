@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../data/models/idoso.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
+import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
@@ -14,8 +15,10 @@ import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
 import '../../idosos/services/avisos_perfil.dart';
 import '../../idosos/services/proximo_evento.dart';
+import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
 import '../../relatorios/presentation/relatorio_screen.dart';
+import '../../sinais_vitais/presentation/sinais_vitais_form_screen.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 
@@ -271,75 +274,183 @@ class _IdosoCardDestacado extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  clipBehavior: Clip.none,
+                Row(
                   children: [
-                    CircleAvatar(
-                      radius: 32,
-                      backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
-                      child: fotoPath == null ? const Icon(Icons.elderly, size: 28) : null,
-                    ),
-                    if (idoso.mobilidadeReduzida)
-                      Positioned(
-                        right: -2,
-                        bottom: -2,
-                        child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: const Icon(Icons.accessible, color: Colors.white, size: 14),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 32,
+                          backgroundImage: fotoPath != null ? FileImage(File(fotoPath)) : null,
+                          child: fotoPath == null ? const Icon(Icons.elderly, size: 28) : null,
                         ),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              idoso.nome,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                              overflow: TextOverflow.ellipsis,
+                        if (idoso.mobilidadeReduzida)
+                          Positioned(
+                            right: -2,
+                            bottom: -2,
+                            child: CircleAvatar(
+                              radius: 12,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              child: const Icon(Icons.accessible, color: Colors.white, size: 14),
                             ),
                           ),
-                          if (avisos.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6),
-                              child: Tooltip(
-                                message: avisos.join('\n'),
-                                child: Icon(
-                                  Icons.warning_amber_rounded,
-                                  size: 18,
-                                  color: Colors.amber.shade800,
+                      ],
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  idoso.nome,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                            ),
+                              if (avisos.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 6),
+                                  child: Tooltip(
+                                    message: avisos.join('\n'),
+                                    child: Icon(
+                                      Icons.warning_amber_rounded,
+                                      size: 18,
+                                      color: Colors.amber.shade800,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
-                      const SizedBox(height: 2),
-                      Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodySmall),
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      onPressed: onApagar,
+                      icon: const Icon(Icons.delete_outline),
+                      tooltip: 'Apagar perfil',
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
-                  ),
-                  icon: const Icon(Icons.picture_as_pdf_outlined),
-                  tooltip: 'Gerar relatório',
-                ),
-                IconButton(
-                  onPressed: onApagar,
-                  icon: const Icon(Icons.delete_outline),
-                  tooltip: 'Apagar perfil',
+                const SizedBox(height: 12),
+                _AcoesRapidasIdoso(idoso: idoso),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Fila de ações rápidas do idoso (registar/consultar sem abrir o perfil
+/// inteiro), no mesmo espírito simples e direto de outras apps de cuidados:
+/// um ícone com rótulo por baixo, que leva logo ao formulário certo.
+class _AcoesRapidasIdoso extends ConsumerWidget {
+  const _AcoesRapidasIdoso({required this.idoso});
+
+  final Idoso idoso;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final permiteSinaisVitais = ref.watch(featureLimitsProvider).permiteSinaisVitais;
+
+    return Row(
+      children: [
+        Expanded(
+          child: _AcaoRapida(
+            icon: Icons.medication_outlined,
+            rotulo: 'Medicação',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso)),
+            ),
+          ),
+        ),
+        Expanded(
+          child: _AcaoRapida(
+            icon: Icons.event_note_outlined,
+            rotulo: 'Consulta',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso)),
+            ),
+          ),
+        ),
+        Expanded(
+          child: _AcaoRapida(
+            icon: Icons.monitor_heart_outlined,
+            rotulo: 'Sinais vitais',
+            onPressed: () {
+              if (!permiteSinaisVitais) {
+                mostrarLimiteAtingido(
+                  context,
+                  mensagem: 'Registar sinais vitais é uma funcionalidade Premium. '
+                      'Subscreve o Premium para a usares.',
+                );
+                return;
+              }
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => SinaisVitaisFormScreen(idoso: idoso)),
+              );
+            },
+          ),
+        ),
+        Expanded(
+          child: _AcaoRapida(
+            icon: Icons.picture_as_pdf_outlined,
+            rotulo: 'Relatório',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AcaoRapida extends StatelessWidget {
+  const _AcaoRapida({required this.icon, required this.rotulo, required this.onPressed});
+
+  final IconData icon;
+  final String rotulo;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      child: Material(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer, size: 22),
+                const SizedBox(height: 4),
+                Text(
+                  rotulo,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ],
             ),
