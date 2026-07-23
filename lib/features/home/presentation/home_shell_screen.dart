@@ -13,7 +13,7 @@ import '../../definicoes/presentation/definicoes_screen.dart';
 import '../../idosos/presentation/idoso_detail_screen.dart';
 import '../../idosos/presentation/idoso_form_screen.dart';
 import '../../idosos/providers/idoso_providers.dart';
-import '../../idosos/services/avisos_perfil.dart';
+import '../../idosos/services/progresso_perfil.dart';
 import '../../idosos/services/proximo_evento.dart';
 import '../../medicacao/presentation/medicacao_form_screen.dart';
 import '../../medicacao/providers/medicacao_providers.dart';
@@ -261,7 +261,7 @@ class _IdosoCardDestacado extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fotoPath = idoso.fotoPath;
-    final avisos = avisosPerfilIncompleto(idoso);
+    final progresso = progressoPerfilIdoso(idoso);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       child: Card(
@@ -316,17 +316,10 @@ class _IdosoCardDestacado extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (avisos.isNotEmpty)
+                              if (!progresso.completo)
                                 Padding(
                                   padding: const EdgeInsets.only(left: 6),
-                                  child: Tooltip(
-                                    message: avisos.join('\n'),
-                                    child: Icon(
-                                      Icons.warning_amber_rounded,
-                                      size: 18,
-                                      color: Colors.amber.shade800,
-                                    ),
-                                  ),
+                                  child: _SeloProgressoPerfil(progresso: progresso),
                                 ),
                             ],
                           ),
@@ -456,6 +449,41 @@ class _AcaoRapida extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Selo com a percentagem de preenchimento do perfil, mostrado só quando
+/// ainda falta algo. Uma percentagem motiva mais a terminar do que uma
+/// lista do que falta (é sempre visível ao tocar/manter premido).
+class _SeloProgressoPerfil extends StatelessWidget {
+  const _SeloProgressoPerfil({required this.progresso});
+
+  final ProgressoPerfil progresso;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: 'Perfil ${progresso.percentagem}% completo\nFalta: ${progresso.emFalta.join(', ')}',
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(
+              value: progresso.fracao,
+              strokeWidth: 2.5,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            '${progresso.percentagem}%',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
+          ),
+        ],
       ),
     );
   }
