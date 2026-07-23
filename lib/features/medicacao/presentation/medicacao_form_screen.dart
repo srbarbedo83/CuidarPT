@@ -48,7 +48,10 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
     _doseController = TextEditingController(text: registo?.dose ?? '');
     _notasController = TextEditingController(text: registo?.notas ?? '');
     _viaAdministracao = registo?.viaAdministracao ?? '';
-    _horariosMinutos = List.of(registo?.horariosMinutos ?? []);
+    // Num registo novo, sugere logo um horário comum (09:00) em vez de
+    // deixar a lista vazia — mais fácil ajustar um valor do que partir do
+    // zero, e continua a poder ser removido/alterado livremente.
+    _horariosMinutos = List.of(registo?.horariosMinutos ?? const [9 * 60]);
     _diasSemana = List.of(registo?.diasSemana ?? []);
     _dataInicio = registo?.dataInicio ?? DateTime.now();
     _dataFim = registo?.dataFim;

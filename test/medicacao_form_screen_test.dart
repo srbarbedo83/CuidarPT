@@ -39,10 +39,20 @@ void main() {
     expect(find.text('Indica o nome do medicamento'), findsOneWidget);
   });
 
+  testWidgets('MedicacaoFormScreen sugere um horário por omissão num registo novo', (tester) async {
+    await _pumpComTamanhoGrande(tester, MedicacaoFormScreen(idoso: _idosoFalso()));
+
+    expect(find.text('09:00'), findsOneWidget);
+  });
+
   testWidgets('MedicacaoFormScreen exige pelo menos um horário', (tester) async {
     await _pumpComTamanhoGrande(tester, MedicacaoFormScreen(idoso: _idosoFalso()));
 
     await tester.enterText(find.byType(TextFormField).first, 'Paracetamol');
+    // Remove o horário sugerido por omissão para testar a validação.
+    tester.widget<InputChip>(find.byType(InputChip)).onDeleted!();
+    await tester.pump();
+
     await tester.tap(find.text('Guardar'));
     await tester.pump();
 
