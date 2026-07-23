@@ -4,8 +4,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/models/estado_subscricao.dart';
 import '../../../data/models/preferencias_app.dart';
+import '../../consultas/providers/consulta_providers.dart';
 import '../../contactos_cuidadores/presentation/contactos_cuidadores_section.dart';
 import '../../idosos/providers/idoso_providers.dart';
+import '../../medicacao/providers/medicacao_providers.dart';
+import '../../sinais_vitais/providers/sinais_vitais_providers.dart';
 import '../../subscricao/feature_limits.dart';
 import '../../subscricao/presentation/comprar_premium_sheet.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
@@ -54,6 +57,76 @@ Future<void> _abrirGestaoSubscricao() {
     Uri.parse('https://play.google.com/store/account/subscriptions'),
     mode: LaunchMode.externalApplication,
   );
+}
+
+/// Antes de mandar o utilizador para a Play Store para cancelar, mostra um
+/// resumo honesto do que já construiu na app e do que perde ao cancelar —
+/// tudo verdadeiro (nada de urgência ou dados falsos), só para a decisão
+/// ser informada. Os dados locais nunca são apagados por cancelar.
+Future<void> _confirmarCancelamento(BuildContext context, WidgetRef ref) async {
+  final idosos = ref.read(idosoListProvider).valueOrNull ?? const [];
+  var totalMedicacoes = 0;
+  var totalConsultas = 0;
+  var totalSinaisVitais = 0;
+  for (final idoso in idosos) {
+    totalMedicacoes += (ref.read(medicacaoListProvider(idoso.id)).valueOrNull ?? const []).length;
+    totalConsultas += (ref.read(consultaListProvider(idoso.id)).valueOrNull ?? const []).length;
+    totalSinaisVitais += (ref.read(sinaisVitaisListProvider(idoso.id)).valueOrNull ?? const []).length;
+  }
+
+  final continuar = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Antes de cancelares'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (idosos.isNotEmpty) ...[
+              const Text('Já construíste isto na app:'),
+              const SizedBox(height: 6),
+              Text('• ${idosos.length} ${idosos.length == 1 ? 'perfil de idoso' : 'perfis de idosos'}'),
+              if (totalMedicacoes > 0)
+                Text(
+                  '• $totalMedicacoes ${totalMedicacoes == 1 ? 'medicação registada' : 'medicações registadas'}',
+                ),
+              if (totalConsultas > 0)
+                Text('• $totalConsultas ${totalConsultas == 1 ? 'consulta/tratamento' : 'consultas/tratamentos'}'),
+              if (totalSinaisVitais > 0)
+                Text(
+                  '• $totalSinaisVitais ${totalSinaisVitais == 1 ? 'registo de sinais vitais' : 'registos de sinais vitais'}',
+                ),
+              const SizedBox(height: 16),
+            ],
+            const Text('Ao cancelar o Premium, deixas de poder:'),
+            const SizedBox(height: 6),
+            const Text('• Ver mais de 2 perfis de idosos'),
+            const Text('• Registar sinais vitais'),
+            const Text('• Personalizar relatórios PDF'),
+            const Text('• Ver histórico e período de relatório sem limite'),
+            const SizedBox(height: 16),
+            Text(
+              'Os teus dados continuam guardados no telemóvel — cancelar não apaga nada.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text('Voltar'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: const Text('Continuar para a Play Store'),
+        ),
+      ],
+    ),
+  );
+
+  if (continuar == true) await _abrirGestaoSubscricao();
 }
 
 class _SeccaoAparencia extends StatelessWidget {
@@ -109,14 +182,14 @@ class _SeccaoAparencia extends StatelessWidget {
   }
 }
 
-class _SeccaoSubscricao extends StatelessWidget {
+class _SeccaoSubscricao extends ConsumerWidget {
   const _SeccaoSubscricao({required this.estado, required this.onSubscrever});
 
   final EstadoSubscricao? estado;
   final VoidCallback onSubscrever;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final estadoAtual = estado;
     final String status;
     if (estadoAtual == null) {
@@ -158,7 +231,7 @@ class _SeccaoSubscricao extends StatelessWidget {
             ] else ...[
               const SizedBox(height: 12),
               OutlinedButton(
-                onPressed: _abrirGestaoSubscricao,
+                onPressed: () => _confirmarCancelamento(context, ref),
                 child: const Text('Gerir ou cancelar subscrição'),
               ),
             ],
