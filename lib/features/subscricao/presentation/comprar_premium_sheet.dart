@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import '../providers/subscricao_providers.dart';
 import '../services/produtos_premium.dart';
+import '../services/poupanca_premium.dart';
 
 Future<void> mostrarCompraPremium(BuildContext context) {
   return showModalBottomSheet<void>(
@@ -45,13 +47,20 @@ class _ComprarPremiumSheet extends ConsumerWidget {
                     'Verifica a tua ligação e tenta novamente mais tarde.',
                   );
                 }
+                final produtosOrdenados = [...produtos]
+                  ..sort((a, b) => ordemProdutoPremium(a.id).compareTo(ordemProdutoPremium(b.id)));
+                final mensal = produtos.firstWhereOrNull((p) => p.id == ProdutosPremium.mensal);
+
                 return Column(
                   children: [
-                    for (final produto in produtos)
+                    for (final produto in produtosOrdenados)
                       Card(
+                        color: produto.id == ProdutosPremium.anual
+                            ? Theme.of(context).colorScheme.primaryContainer
+                            : null,
                         child: ListTile(
                           title: Text(labelProdutoPremium(produto.id)),
-                          subtitle: Text(produto.description),
+                          subtitle: Text(poupancaLabelPremium(produto, mensal) ?? produto.description),
                           trailing: Text(
                             produto.price,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
