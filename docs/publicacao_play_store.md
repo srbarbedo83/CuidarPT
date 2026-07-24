@@ -87,15 +87,53 @@ cobrado a sério enquanto testas.
 
 ## 8. Ficheiro assinado (.aab)
 
-A Play Store exige um Android App Bundle assinado. No PC (`C:\CuidarPT`):
+A Play Store exige um Android App Bundle assinado com uma keystore
+própria (nunca a chave de debug). O código já está preparado para isto
+(`android/app/build.gradle.kts` lê a assinatura de `android/key.properties`,
+que é local e nunca vai ao Git) — falta só criares a tua keystore.
 
+### 8.1. Gerar a keystore (só uma vez, guarda-a para sempre)
+
+No PC (`C:\cuidarpt`), com o Java do Android Studio já instalado, em PowerShell:
+
+```powershell
+& "$env:ProgramFiles\Android\Android Studio\jbr\bin\keytool.exe" -genkey -v `
+  -keystore $env:USERPROFILE\cuidarpt-release.jks `
+  -keyalg RSA -keysize 2048 -validity 10000 `
+  -alias cuidarpt
 ```
+
+Vai pedir uma password para a keystore e para a chave (podem ser iguais)
+e alguns dados (nome, organização, etc. — podem ficar genéricos, não
+aparecem na app). **Guarda o ficheiro `.jks` e as passwords num local
+seguro e com backup** (ex.: gestor de passwords) — se os perderes, não
+consegues mais publicar atualizações desta app, só uma app nova.
+
+### 8.2. Ligar a keystore ao projeto
+
+Cria o ficheiro `C:\cuidarpt\android\key.properties` (este ficheiro **não**
+é comitado — já está no `.gitignore`) com este conteúdo, substituindo
+pelas tuas passwords e pelo caminho real do `.jks`:
+
+```properties
+storePassword=<password da keystore>
+keyPassword=<password da chave>
+keyAlias=cuidarpt
+storeFile=C:\\Users\\<o teu utilizador>\\cuidarpt-release.jks
+```
+
+### 8.3. Gerar o .aab
+
+```powershell
 flutter build appbundle --release
 ```
 
-O ficheiro fica em `build/app/outputs/bundle/release/app-release.aab`.
-Na primeira submissão, deixa a Play Console gerar e gerir a assinatura
-por ti (Play App Signing) — é a opção recomendada e mais simples.
+O ficheiro fica em `build/app/outputs/bundle/release/app-release.aab`,
+já assinado com a tua keystore. Depois desta primeira submissão, ativa
+o **Play App Signing** na Play Console (é sugerido automaticamente no
+upload) para a Google guardar uma cópia segura da assinatura final —
+continuas a precisar da tua keystore local para gerar cada novo `.aab`
+antes de o carregares.
 
 ## 9. Ordem sugerida
 
