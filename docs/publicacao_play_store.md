@@ -30,8 +30,50 @@ Já preparados no repositório, pasta `store_assets/`:
 Ainda precisas de:
 
 - **Capturas de ecrã** (mínimo 2, recomendado 4–8) — tira-as a correr a app num telemóvel Android real ou emulador, nos ecrãs mais representativos (perfil do idoso, medicação, sinais vitais, relatório).
-- **Descrição curta** (até 80 caracteres) — sugestão: *"Organiza medicação, consultas e cuidados de quem mais importa."*
-- **Descrição completa** (até 4000 caracteres) — usa o texto do `README.md`/`PLANEAMENTO.md` como ponto de partida, e inclui uma frase clara do género: *"O CuidarPT é uma ferramenta de organização de cuidados e não substitui aconselhamento, diagnóstico ou tratamento médico profissional."*
+
+### Descrição curta (até 80 caracteres)
+
+```
+Organiza medicação, consultas e cuidados de quem mais importa.
+```
+
+### Descrição completa (até 4000 caracteres)
+
+Copia e cola diretamente no campo "Descrição completa":
+
+```
+O CuidarPT ajuda-te a organizar, num só lugar, os cuidados diários de um familiar idoso — sem complicações.
+
+📋 MEDICAÇÃO E CONSULTAS
+• Regista a medicação com horários e lembretes automáticos, incluindo tomas diárias, de 12 em 12h ou de 8 em 8h
+• Agenda consultas e tratamentos, com lembrete no dia
+• Vê tudo organizado num calendário simples
+
+❤️ SINAIS VITAIS E FREQUÊNCIA CARDÍACA (Premium)
+• Regista pressão arterial, temperatura, glicemia, peso e frequência cardíaca
+• Mede a frequência cardíaca só com a câmara do telemóvel
+• Gráficos de evolução ao longo do tempo, com alertas quando um valor sai do normal
+
+🧴 ROTINA DIÁRIA (Premium)
+• Regista higiene, alimentação, sono e atividade física com um toque
+• Marca vários itens de uma vez, sem perder o histórico
+
+📄 RELATÓRIOS PARA PARTILHAR
+• Gera relatórios em PDF com o histórico de cuidados
+• Escolhe as secções a incluir e partilha por email diretamente com outros cuidadores ou com o médico
+
+👨‍👩‍👧 VÁRIOS PERFIS
+• Gere o cuidado de mais do que um familiar, cada um com o seu perfil, fotografia, contactos de emergência e notas
+• Desliza entre perfis com um gesto
+
+🔒 PRIVACIDADE EM PRIMEIRO LUGAR
+• Todos os dados ficam guardados só no teu telemóvel — sem contas, sem servidores, sem nuvem
+• Sem anúncios, sem rastreamento, sem venda de dados
+
+O plano Grátis permite até 2 perfis de idosos com as funcionalidades essenciais. O Premium desbloqueia perfis ilimitados, sinais vitais, rotina diária, relatórios personalizados e histórico sem limite.
+
+⚠️ O CuidarPT é uma ferramenta de organização de cuidados e não substitui a avaliação, o diagnóstico ou o tratamento de um profissional de saúde. Em caso de emergência, contacta sempre os serviços de saúde.
+```
 
 ## 4. Política de privacidade
 
