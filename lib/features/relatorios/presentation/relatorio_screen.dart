@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../shared/widgets/gradiente_premium.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../consultas/providers/consulta_providers.dart';
@@ -359,8 +360,8 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             onPressed: _aGerar ? null : () => _gerarRelatorio(limites.permitePdfPersonalizado),
             icon: _aGerar
                 ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
-                : const Icon(Icons.picture_as_pdf_outlined),
-            label: const Text('Gerar relatório'),
+                : const GradientIcon(Icons.picture_as_pdf_outlined),
+            label: const GradientText('Gerar relatório', style: TextStyle(fontWeight: FontWeight.w600)),
           ),
         ],
       ),

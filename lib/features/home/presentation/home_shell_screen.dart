@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
+import '../../../shared/widgets/gradiente_premium.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
@@ -401,6 +402,7 @@ class _AcoesRapidasIdoso extends ConsumerWidget {
           child: _AcaoRapida(
             icon: Icons.picture_as_pdf_outlined,
             rotulo: 'Relatório',
+            destacarGradiente: true,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
             ),
@@ -412,11 +414,17 @@ class _AcoesRapidasIdoso extends ConsumerWidget {
 }
 
 class _AcaoRapida extends StatelessWidget {
-  const _AcaoRapida({required this.icon, required this.rotulo, required this.onPressed});
+  const _AcaoRapida({
+    required this.icon,
+    required this.rotulo,
+    required this.onPressed,
+    this.destacarGradiente = false,
+  });
 
   final IconData icon;
   final String rotulo;
   final VoidCallback onPressed;
+  final bool destacarGradiente;
 
   @override
   Widget build(BuildContext context) {
@@ -433,18 +441,26 @@ class _AcaoRapida extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer, size: 22),
+                destacarGradiente
+                    ? GradientIcon(icon, size: 22)
+                    : Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer, size: 22),
                 const SizedBox(height: 4),
-                Text(
-                  rotulo,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.w600,
+                destacarGradiente
+                    ? GradientText(
+                        rotulo,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
+                      )
+                    : Text(
+                        rotulo,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimaryContainer,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
-                ),
               ],
             ),
           ),

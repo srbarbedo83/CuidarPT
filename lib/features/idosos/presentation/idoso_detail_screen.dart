@@ -11,6 +11,7 @@ import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../shared/widgets/gradiente_premium.dart';
 import '../../calendario/presentation/calendario_screen.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/presentation/profissionais_screen.dart';
@@ -122,7 +123,7 @@ class _IdosoDetailPage extends ConsumerWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.picture_as_pdf_outlined),
+            icon: const GradientIcon(Icons.picture_as_pdf_outlined),
             tooltip: 'Gerar relatório',
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
@@ -285,8 +286,8 @@ class _IdosoDetailPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  icon: const Icon(Icons.summarize_outlined),
-                  label: const Text('Gerar relatório diário'),
+                  icon: const GradientIcon(Icons.summarize_outlined),
+                  label: const GradientText('Gerar relatório diário', style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
               ),
               SizedBox(height: 24 + MediaQuery.of(context).padding.bottom),

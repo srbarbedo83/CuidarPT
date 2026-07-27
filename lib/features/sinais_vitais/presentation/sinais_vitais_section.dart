@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../shared/widgets/gradiente_premium.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../../shared/widgets/seccao_colapsavel.dart';
 import '../../subscricao/feature_limits.dart';
@@ -34,10 +35,11 @@ class SinaisVitaisSection extends ConsumerWidget {
           child: ListTile(
             leading: const Icon(Icons.monitor_heart_outlined),
             title: const Text('Sinais vitais'),
-            subtitle: const Text(
+            subtitle: const GradientText(
               'Funcionalidade Premium: pressão, temperatura, glicemia, frequência cardíaca.',
+              style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            trailing: const Icon(Icons.star_outline),
+            trailing: const GradientIcon(Icons.star_outline),
             onTap: () => mostrarLimiteAtingido(
               context,
               mensagem: 'Registar sinais vitais é uma funcionalidade Premium. '
