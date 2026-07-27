@@ -100,42 +100,44 @@ class _IdosoDetailPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          idoso.nome,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        centerTitle: true,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (telefoneEmergencia != null)
+              IconButton(
+                icon: const Icon(
+                  Icons.phone_in_talk_outlined,
+                  color: Colors.redAccent,
+                ),
+                tooltip: 'Ligar para contacto de emergência',
+                onPressed: () =>
+                    launchUrl(Uri(scheme: 'tel', path: telefoneEmergencia)),
+              ),
+            IconButton(
+              icon: const Icon(Icons.calendar_month_outlined),
+              tooltip: 'Calendário',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => CalendarioScreen(idoso: idoso)),
+              ),
+            ),
+            IconButton(
+              icon: const GradientIcon(Icons.picture_as_pdf_outlined),
+              tooltip: 'Gerar relatório',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.edit_outlined),
+              tooltip: 'Editar perfil',
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
+              ),
+            ),
+          ],
         ),
         actions: [
-          if (telefoneEmergencia != null)
-            IconButton(
-              icon: const Icon(
-                Icons.phone_in_talk_outlined,
-                color: Colors.redAccent,
-              ),
-              tooltip: 'Ligar para contacto de emergência',
-              onPressed: () =>
-                  launchUrl(Uri(scheme: 'tel', path: telefoneEmergencia)),
-            ),
-          IconButton(
-            icon: const Icon(Icons.calendar_month_outlined),
-            tooltip: 'Calendário',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => CalendarioScreen(idoso: idoso)),
-            ),
-          ),
-          IconButton(
-            icon: const GradientIcon(Icons.picture_as_pdf_outlined),
-            tooltip: 'Gerar relatório',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit_outlined),
-            tooltip: 'Editar perfil',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
-            ),
-          ),
           PopupMenuButton<VoidCallback>(
             onSelected: (acao) => acao(),
             itemBuilder: (context) => [
