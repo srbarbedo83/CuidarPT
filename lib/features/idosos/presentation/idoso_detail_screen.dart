@@ -626,20 +626,66 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
               else
                 Wrap(
                   spacing: 8,
+                  runSpacing: 8,
                   children: [
                     for (final opcao in _opcoesHumorDoDia)
-                      ActionChip(
-                        avatar: Text(
-                          opcao.emoji,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        label: Text(opcao.rotulo),
-                        onPressed: () => _registar(opcao, registoHoje),
+                      _OpcaoHumorBox(
+                        opcao: opcao,
+                        selecionado: opcao == opcaoAtual,
+                        onTap: () => _registar(opcao, registoHoje),
                       ),
                   ],
                 ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Caixa de tamanho fixo para cada opção de humor, para que fiquem todas
+/// alinhadas e simétricas independentemente do comprimento do rótulo.
+class _OpcaoHumorBox extends StatelessWidget {
+  const _OpcaoHumorBox({
+    required this.opcao,
+    required this.selecionado,
+    required this.onTap,
+  });
+
+  final _OpcaoHumor opcao;
+  final bool selecionado;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 76,
+        height: 76,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          color: selecionado ? colorScheme.primaryContainer : colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+          border: selecionado ? Border.all(color: colorScheme.primary, width: 2) : null,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(opcao.emoji, style: const TextStyle(fontSize: 22)),
+            const SizedBox(height: 4),
+            Text(
+              opcao.rotulo,
+              style: Theme.of(context).textTheme.labelSmall,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
