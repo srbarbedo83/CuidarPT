@@ -81,15 +81,7 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.asset(
-            'store_assets/icone_play_store_512x512.png',
-            height: 36,
-            width: 36,
-            semanticLabel: 'CuidarPT',
-          ),
-        ),
+        title: Semantics(label: 'CuidarPT', child: const _LogoApp()),
         actions: [
           if (estadoSubscricao != null && estadoSubscricao.trialAtivo)
             Padding(
@@ -139,6 +131,31 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
           child: const Icon(Icons.add),
         ),
         orElse: () => null,
+      ),
+    );
+  }
+}
+
+/// Aproximação do logótipo (escudo + coração) enquanto o ficheiro de
+/// imagem definitivo não é fornecido. Substituir por Image.asset assim
+/// que o PNG final estiver disponível.
+class _LogoApp extends StatelessWidget {
+  const _LogoApp();
+
+  static const _azulEscudo = Color(0xFF2C4A6E);
+  static const _laranjaCoracao = Color(0xFFF5A623);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 36,
+      width: 36,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(Icons.shield_outlined, size: 36, color: _azulEscudo),
+          Icon(Icons.favorite, size: 18, color: _laranjaCoracao),
+        ],
       ),
     );
   }
