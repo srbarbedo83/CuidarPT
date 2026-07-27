@@ -81,7 +81,15 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CuidarPT', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            'store_assets/icone_play_store_512x512.png',
+            height: 36,
+            width: 36,
+            semanticLabel: 'CuidarPT',
+          ),
+        ),
         actions: [
           if (estadoSubscricao != null && estadoSubscricao.trialAtivo)
             Padding(
