@@ -205,6 +205,7 @@ class _IdosoDetailPage extends ConsumerWidget {
               const Divider(height: 32),
               SeccaoColapsavel(
                 titulo: 'Medicação',
+                expandidoPorOmissao: false,
                 acoes: [
                   IconButton(
                     icon: const Icon(Icons.add),
@@ -231,6 +232,7 @@ class _IdosoDetailPage extends ConsumerWidget {
               const Divider(height: 32),
               SeccaoColapsavel(
                 titulo: 'Consultas e tratamentos',
+                expandidoPorOmissao: false,
                 acoes: [
                   IconButton(
                     icon: const Icon(Icons.add),
