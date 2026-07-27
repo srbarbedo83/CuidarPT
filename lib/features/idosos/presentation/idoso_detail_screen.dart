@@ -338,7 +338,7 @@ class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
 
   final Idoso idoso;
 
-  static const _altura = 88.0;
+  static const _altura = 108.0;
 
   @override
   double get minExtent => _altura;
@@ -374,7 +374,7 @@ class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
                   Hero(
                     tag: 'foto-idoso-${idoso.id}',
                     child: CircleAvatar(
-                      radius: 28,
+                      radius: 42,
                       backgroundImage: fotoPath != null
                           ? FileImage(File(fotoPath))
                           : null,
