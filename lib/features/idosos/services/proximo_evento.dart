@@ -4,11 +4,22 @@ import '../../../data/models/registo_medicacao.dart';
 enum TipoProximoEvento { medicacao, consulta }
 
 class ProximoEvento {
-  const ProximoEvento({required this.tipo, required this.titulo, required this.dataHora});
+  const ProximoEvento({
+    required this.tipo,
+    required this.titulo,
+    required this.dataHora,
+    this.medicacao,
+    this.consulta,
+  });
 
   final TipoProximoEvento tipo;
   final String titulo;
   final DateTime dataHora;
+
+  /// Registo de origem, para permitir abrir o formulário correspondente ao
+  /// tocar no lembrete. Só um dos dois está preenchido, consoante [tipo].
+  final RegistoMedicacao? medicacao;
+  final RegistoConsulta? consulta;
 }
 
 const _diasPesquisados = 14;
@@ -54,6 +65,7 @@ List<ProximoEvento> proximosEventos(
       tipo: TipoProximoEvento.medicacao,
       titulo: medicacao.nomeMedicamento,
       dataHora: ocorrencia,
+      medicacao: medicacao,
     ));
   }
 
@@ -63,6 +75,7 @@ List<ProximoEvento> proximosEventos(
       tipo: TipoProximoEvento.consulta,
       titulo: consulta.especialidade,
       dataHora: consulta.dataHora,
+      consulta: consulta,
     ));
   }
 

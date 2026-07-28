@@ -211,7 +211,7 @@ class _SeccaoLembretes extends ConsumerWidget {
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              for (final evento in eventos) _LembreteTile(agora: agora, evento: evento),
+              for (final evento in eventos) _LembreteTile(idoso: idoso, agora: agora, evento: evento),
             ],
           ],
         ),
@@ -221,10 +221,25 @@ class _SeccaoLembretes extends ConsumerWidget {
 }
 
 class _LembreteTile extends StatelessWidget {
-  const _LembreteTile({required this.agora, required this.evento});
+  const _LembreteTile({required this.idoso, required this.agora, required this.evento});
 
+  final Idoso idoso;
   final DateTime agora;
   final ProximoEvento evento;
+
+  void _abrirRegisto(BuildContext context) {
+    final medicacao = evento.medicacao;
+    final consulta = evento.consulta;
+    if (medicacao != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso, registo: medicacao)),
+      );
+    } else if (consulta != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso, consulta: consulta)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -239,6 +254,7 @@ class _LembreteTile extends StatelessWidget {
       ),
       title: Text(evento.titulo, style: TextStyle(color: cor, fontWeight: peso)),
       subtitle: Text(formatarContagem(agora, evento.dataHora), style: TextStyle(color: cor, fontWeight: peso)),
+      onTap: () => _abrirRegisto(context),
     );
   }
 }
