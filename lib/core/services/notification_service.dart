@@ -131,4 +131,18 @@ class NotificationService {
     await init();
     await _plugin.cancel(id: id);
   }
+
+  /// Mostra uma notificação imediata, sem agendamento. Usado pelo botão
+  /// "Testar notificação agora" em Definições, para o utilizador conseguir
+  /// distinguir um problema de permissões/sistema (nem esta aparece) de um
+  /// problema de agendamento (esta aparece, mas os lembretes não).
+  Future<void> mostrarTeste() async {
+    await init();
+    await _plugin.show(
+      id: 999999999,
+      title: 'CuidarPT',
+      body: 'Notificação de teste — se vês isto, as notificações estão a funcionar neste telemóvel.',
+      notificationDetails: _detalhes,
+    );
+  }
 }

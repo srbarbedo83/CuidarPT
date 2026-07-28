@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/services/notification_service.dart';
 import '../../../data/models/estado_subscricao.dart';
 import '../../../data/models/preferencias_app.dart';
 import '../../consultas/providers/consulta_providers.dart';
@@ -42,6 +43,8 @@ class DefinicoesScreen extends ConsumerWidget {
           _SeccaoSubscricao(estado: estado, onSubscrever: () => mostrarCompraPremium(context)),
           const SizedBox(height: 16),
           _SeccaoPerfis(totalIdosos: idosos.length, maxPerfisIdoso: limites.maxPerfisIdoso),
+          const SizedBox(height: 16),
+          const _SeccaoNotificacoes(),
           const SizedBox(height: 16),
           const ContactosCuidadoresSection(),
           const SizedBox(height: 16),
@@ -285,6 +288,59 @@ class _SeccaoPerfis extends StatelessWidget {
             OutlinedButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Ver perfis'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Ajuda a diagnosticar lembretes que não chegam: o botão de teste isola
+/// se o problema é de permissões/sistema (nem este aparece) ou de
+/// agendamento (este aparece, mas os lembretes futuros não).
+class _SeccaoNotificacoes extends StatelessWidget {
+  const _SeccaoNotificacoes();
+
+  Future<void> _testar(BuildContext context) async {
+    await NotificationService.instance.mostrarTeste();
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Notificação de teste enviada — verifica a barra de notificações.')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Notificações', style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 8),
+            Text(
+              'Os lembretes de medicação e consultas são notificações locais, agendadas '
+              'diretamente neste telemóvel.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: () => _testar(context),
+              child: const Text('Testar notificação agora'),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Se a notificação de teste não aparecer, ou se os lembretes agendados '
+              'não chegarem: verifica em Definições do Android → Apps → CuidarPT → '
+              'Notificações, se estão permitidas; e em Bateria, se a otimização de '
+              'bateria está desativada para o CuidarPT (em alguns telemóveis chama-se '
+              '"sem restrições" ou "permitir em segundo plano"). Muitas marcas '
+              '(Xiaomi, Samsung, Huawei, etc.) bloqueiam lembretes de apps em segundo '
+              'plano por omissão.',
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),
