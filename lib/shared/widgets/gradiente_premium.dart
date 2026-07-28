@@ -6,6 +6,11 @@ const gradientePremium = LinearGradient(
   colors: [Color(0xFF2962FF), Color(0xFF9C27B0)],
 );
 
+/// Brilho (glow) na cor indicada, para usar no parâmetro `shadows` de
+/// [Icon] fora do contexto do gradiente Premium (ex.: ícones de ação no
+/// topo do perfil do idoso).
+List<Shadow> glowShadow(Color color) => [Shadow(color: color.withValues(alpha: 0.6), blurRadius: 12)];
+
 /// Texto pintado com [gradientePremium] (ou outro gradiente), com brilho
 /// (glow) opcional atrás das letras.
 class GradientText extends StatelessWidget {

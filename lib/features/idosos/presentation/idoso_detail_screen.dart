@@ -106,16 +106,21 @@ class _IdosoDetailPage extends ConsumerWidget {
           children: [
             if (telefoneEmergencia != null)
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.phone_in_talk_outlined,
                   color: Colors.redAccent,
+                  shadows: glowShadow(Colors.redAccent),
                 ),
                 tooltip: 'Ligar para contacto de emergência',
                 onPressed: () =>
                     launchUrl(Uri(scheme: 'tel', path: telefoneEmergencia)),
               ),
             IconButton(
-              icon: const Icon(Icons.calendar_month_outlined),
+              icon: Icon(
+                Icons.calendar_month_outlined,
+                color: Theme.of(context).colorScheme.primary,
+                shadows: glowShadow(Theme.of(context).colorScheme.primary),
+              ),
               tooltip: 'Calendário',
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => CalendarioScreen(idoso: idoso)),
@@ -129,7 +134,11 @@ class _IdosoDetailPage extends ConsumerWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.edit_outlined),
+              icon: Icon(
+                Icons.edit_outlined,
+                color: Theme.of(context).colorScheme.primary,
+                shadows: glowShadow(Theme.of(context).colorScheme.primary),
+              ),
               tooltip: 'Editar perfil',
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
