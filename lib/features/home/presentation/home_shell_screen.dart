@@ -195,10 +195,11 @@ class _SeccaoLembretes extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: Card(
         child: ExpansionTile(
-          initiallyExpanded: true,
-          title: Text(
+          initiallyExpanded: false,
+          title: GradientText(
             'Lembretes',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            glow: true,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Text('$total ${total == 1 ? 'próximo' : 'próximos'}'),
           children: [
