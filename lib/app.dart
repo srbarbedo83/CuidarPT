@@ -8,6 +8,7 @@ import 'features/definicoes/providers/preferencias_providers.dart';
 import 'features/home/presentation/home_shell_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/subscricao/providers/subscricao_providers.dart';
+import 'shared/widgets/logo_app.dart';
 
 class CuidarPTApp extends ConsumerWidget {
   const CuidarPTApp({super.key});
@@ -60,7 +61,18 @@ class _AppStartupGate extends ConsumerWidget {
 
     return estadoAsync.when(
       data: (estado) => estado == null ? const OnboardingScreen() : const HomeShellScreen(),
-      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () => const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              LogoApp(size: 96),
+              SizedBox(height: 24),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
+      ),
       error: (erro, _) => Scaffold(
         body: Center(child: Text('Ocorreu um erro ao carregar a app: $erro')),
       ),

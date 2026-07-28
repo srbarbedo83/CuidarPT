@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/widgets/logo_app.dart';
 import '../../definicoes/providers/preferencias_providers.dart';
 import '../../relatorios/providers/perfil_relatorio_providers.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
@@ -236,7 +237,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(slide.icone, size: 96, color: Theme.of(context).colorScheme.primary),
+                        indice == 0
+                            ? const LogoApp(size: 96)
+                            : Icon(slide.icone, size: 96, color: Theme.of(context).colorScheme.primary),
                         const SizedBox(height: 32),
                         Text(
                           slide.titulo,
