@@ -9,6 +9,6 @@ class LogoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('store_assets/logo1.png', height: size);
+    return Image.asset('store_assets/logo1_fundo_transparente.png', height: size);
   }
 }
