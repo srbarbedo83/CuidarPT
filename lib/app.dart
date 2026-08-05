@@ -38,11 +38,14 @@ class CuidarPTApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(escalaTexto),
+        return DecoratedBox(
+          decoration: BoxDecoration(gradient: AppTheme.fundoGradiente(Theme.of(context).brightness)),
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(escalaTexto),
+            ),
+            child: child!,
           ),
-          child: child!,
         );
       },
       home: const _AppStartupGate(),
@@ -51,7 +54,8 @@ class CuidarPTApp extends ConsumerWidget {
 }
 
 /// Decide se mostra o onboarding (primeiro arranque, trial ainda não
-/// iniciado) ou o ecrã inicial da app.
+/// iniciado) ou o ecrã inicial da app, com uma transição animada (em vez de
+/// uma troca abrupta) entre o ecrã de arranque e o resto da app.
 class _AppStartupGate extends ConsumerWidget {
   const _AppStartupGate();
 
@@ -59,23 +63,61 @@ class _AppStartupGate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final estadoAsync = ref.watch(estadoSubscricaoProvider);
 
-    return estadoAsync.when(
-      data: (estado) => estado == null ? const OnboardingScreen() : const HomeShellScreen(),
-      loading: () => const Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              LogoApp(size: 96),
-              SizedBox(height: 24),
-              CircularProgressIndicator(),
-            ],
+    final conteudo = estadoAsync.when(
+      data: (estado) => estado == null
+          ? const OnboardingScreen(key: ValueKey('onboarding'))
+          : const HomeShellScreen(key: ValueKey('home')),
+      loading: () => const _EcraArranque(key: ValueKey('arranque')),
+      error: (erro, _) => _EcraErroArranque(erro: erro, key: const ValueKey('erro')),
+    );
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 550),
+      switchInCurve: Curves.easeOutCubic,
+      switchOutCurve: Curves.easeInCubic,
+      transitionBuilder: (child, animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.96, end: 1).animate(animation),
+            child: child,
           ),
+        );
+      },
+      child: conteudo,
+    );
+  }
+}
+
+class _EcraArranque extends StatelessWidget {
+  const _EcraArranque({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LogoApp(size: 96),
+            SizedBox(height: 24),
+            CircularProgressIndicator(),
+          ],
         ),
       ),
-      error: (erro, _) => Scaffold(
-        body: Center(child: Text('Ocorreu um erro ao carregar a app: $erro')),
-      ),
+    );
+  }
+}
+
+class _EcraErroArranque extends StatelessWidget {
+  const _EcraErroArranque({super.key, required this.erro});
+
+  final Object erro;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: Text('Ocorreu um erro ao carregar a app: $erro')),
     );
   }
 }

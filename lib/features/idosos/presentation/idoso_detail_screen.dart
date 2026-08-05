@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/horarios.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
@@ -365,7 +366,7 @@ class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final fotoPath = idoso.fotoPath;
     return Material(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: AppTheme.fundoSolido(Theme.of(context).brightness),
       elevation: overlapsContent ? 2 : 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -636,6 +637,7 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
                 )
               else
                 Wrap(
+                  alignment: WrapAlignment.center,
                   spacing: 8,
                   runSpacing: 8,
                   children: [
