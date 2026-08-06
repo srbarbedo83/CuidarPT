@@ -610,46 +610,39 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Como se sente hoje?',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              const SizedBox(height: 8),
-              if (opcaoAtual != null && !_aMudar)
-                Row(
-                  children: [
-                    Text(
-                      opcaoAtual.emoji,
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(child: Text(opcaoAtual.rotulo)),
-                    TextButton(
-                      onPressed: () => setState(() => _aMudar = true),
-                      child: const Text('Mudar'),
-                    ),
-                  ],
-                )
-              else
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (final opcao in _opcoesHumorDoDia)
-                      _OpcaoHumorBox(
-                        opcao: opcao,
-                        selecionado: opcao == opcaoAtual,
-                        onTap: () => _registar(opcao, registoHoje),
+        child: SeccaoColapsavel(
+          titulo: 'Como se sente hoje?',
+          expandidoPorOmissao: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child: (opcaoAtual != null && !_aMudar)
+                ? Row(
+                    children: [
+                      Text(
+                        opcaoAtual.emoji,
+                        style: const TextStyle(fontSize: 24),
                       ),
-                  ],
-                ),
-            ],
+                      const SizedBox(width: 8),
+                      Expanded(child: Text(opcaoAtual.rotulo)),
+                      TextButton(
+                        onPressed: () => setState(() => _aMudar = true),
+                        child: const Text('Mudar'),
+                      ),
+                    ],
+                  )
+                : Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (final opcao in _opcoesHumorDoDia)
+                        _OpcaoHumorBox(
+                          opcao: opcao,
+                          selecionado: opcao == opcaoAtual,
+                          onTap: () => _registar(opcao, registoHoje),
+                        ),
+                    ],
+                  ),
           ),
         ),
       ),

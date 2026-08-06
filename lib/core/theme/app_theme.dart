@@ -4,12 +4,13 @@ class AppTheme {
   AppTheme._();
 
   // Fundo em degradê, aplicado atrás de toda a app (ver app.dart). Escuro:
-  // azul-escuro em baixo -> quase preto em cima. Claro: branco em baixo ->
-  // um tom muito claro em cima.
+  // tom azulado claro em baixo -> ligeiramente mais escuro (mas ainda
+  // azulado, nunca preto) em cima — degradê subtil. Claro: branco em
+  // baixo -> um tom muito claro em cima.
   static const fundoClaroBaixo = Color(0xFFFFFFFF);
   static const fundoClaroTopo = Color(0xFFE7ECF7);
-  static const fundoEscuroBaixo = Color(0xFF16283F);
-  static const fundoEscuroTopo = Color(0xFF0A0C10);
+  static const fundoEscuroBaixo = Color(0xFF2A425C);
+  static const fundoEscuroTopo = Color(0xFF1B2C40);
 
   static Gradient fundoGradiente(Brightness brightness) {
     final claro = brightness == Brightness.light;
