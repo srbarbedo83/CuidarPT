@@ -11,10 +11,14 @@ import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../l10n/app_localizations_pt.dart';
 import 'seccoes_relatorio.dart';
 
 final _formatoData = DateFormat('dd/MM/yyyy');
 final _formatoDataHora = DateFormat('dd/MM/yyyy HH:mm');
+// TODO(i18n): o PDF de relatório continua fixo em português; tradução
+// completa (incluindo esta função) fica para um lote dedicado a relatórios.
+final _l10nPdf = AppLocalizationsPt();
 
 /// Monta o relatório PDF de cuidados de um idoso para um período.
 class RelatorioPdfBuilder {
@@ -128,7 +132,7 @@ class RelatorioPdfBuilder {
                     registo.dose ?? '-',
                     registo.viaAdministracao ?? '-',
                     registo.horariosMinutos.map(formatarHorario).join(', '),
-                    formatarDiasSemana(registo.diasSemana),
+                    formatarDiasSemana(_l10nPdf, registo.diasSemana),
                   ])
               .toList(),
           cellStyle: const pw.TextStyle(fontSize: 10),

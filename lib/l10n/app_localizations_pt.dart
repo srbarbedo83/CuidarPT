@@ -659,4 +659,103 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get humorGraficoSemRegistos =>
       'Ainda não há registos de humor neste período.';
+
+  @override
+  String get diaSegAbrev => 'Seg';
+
+  @override
+  String get diaTerAbrev => 'Ter';
+
+  @override
+  String get diaQuaAbrev => 'Qua';
+
+  @override
+  String get diaQuiAbrev => 'Qui';
+
+  @override
+  String get diaSexAbrev => 'Sex';
+
+  @override
+  String get diaSabAbrev => 'Sáb';
+
+  @override
+  String get diaDomAbrev => 'Dom';
+
+  @override
+  String get horariosTodosDias => 'Todos os dias';
+
+  @override
+  String get medicacaoFormEditarTitulo => 'Editar medicação';
+
+  @override
+  String get medicacaoFormNovoTitulo => 'Nova medicação';
+
+  @override
+  String get medicacaoFormNome => 'Nome do medicamento *';
+
+  @override
+  String get medicacaoFormNomeErro => 'Indica o nome do medicamento';
+
+  @override
+  String get medicacaoFormDose => 'Dose';
+
+  @override
+  String get medicacaoFormDoseHint => 'Ex.: 1 comprimido, 500 mg, 10 gotas';
+
+  @override
+  String get medicacaoFormVia => 'Via de administração';
+
+  @override
+  String get medicacaoFormViaHint => 'Ex.: Oral, Intravenosa';
+
+  @override
+  String get medicacaoFormHorariosTitulo => 'Horários *';
+
+  @override
+  String get medicacaoFormPreenchimentoRapido =>
+      'Preenchimento rápido por frequência (substitui os horários atuais):';
+
+  @override
+  String get medicacaoForm1xDia => '1x por dia';
+
+  @override
+  String get medicacaoForm12h => 'De 12 em 12h';
+
+  @override
+  String get medicacaoForm8h => 'De 8 em 8h';
+
+  @override
+  String get medicacaoFormPrimeiraToma => 'Primeira toma';
+
+  @override
+  String get medicacaoFormAdicionarHorario => 'Adicionar horário';
+
+  @override
+  String get medicacaoFormErroHorarios => 'Adiciona pelo menos um horário';
+
+  @override
+  String get medicacaoFormDiasSemanaTitulo => 'Dias da semana';
+
+  @override
+  String get medicacaoFormDiasSemanaDescricao =>
+      'Não escolhas nenhum para tomar todos os dias.';
+
+  @override
+  String get medicacaoFormDataInicio => 'Data de início';
+
+  @override
+  String get medicacaoFormDataFim => 'Data de fim (opcional)';
+
+  @override
+  String get medicacaoFormNaoDefinida => 'Não definida';
+
+  @override
+  String get medicacaoFormSemDataDefinida => 'Sem data definida';
+
+  @override
+  String get medicacaoFormLembretesAtivos => 'Lembretes ativos';
+
+  @override
+  String get medicacaoFormLembretesDescricao =>
+      'Desliga para pausar sem apagar o registo';
 }

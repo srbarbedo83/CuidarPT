@@ -661,4 +661,103 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get humorGraficoSemRegistos =>
       'Todavía no hay registros de ánimo en este período.';
+
+  @override
+  String get diaSegAbrev => 'Lun';
+
+  @override
+  String get diaTerAbrev => 'Mar';
+
+  @override
+  String get diaQuaAbrev => 'Mié';
+
+  @override
+  String get diaQuiAbrev => 'Jue';
+
+  @override
+  String get diaSexAbrev => 'Vie';
+
+  @override
+  String get diaSabAbrev => 'Sáb';
+
+  @override
+  String get diaDomAbrev => 'Dom';
+
+  @override
+  String get horariosTodosDias => 'Todos los días';
+
+  @override
+  String get medicacaoFormEditarTitulo => 'Editar medicación';
+
+  @override
+  String get medicacaoFormNovoTitulo => 'Nueva medicación';
+
+  @override
+  String get medicacaoFormNome => 'Nombre del medicamento *';
+
+  @override
+  String get medicacaoFormNomeErro => 'Indica el nombre del medicamento';
+
+  @override
+  String get medicacaoFormDose => 'Dosis';
+
+  @override
+  String get medicacaoFormDoseHint => 'Ej.: 1 comprimido, 500 mg, 10 gotas';
+
+  @override
+  String get medicacaoFormVia => 'Vía de administración';
+
+  @override
+  String get medicacaoFormViaHint => 'Ej.: Oral, Intravenosa';
+
+  @override
+  String get medicacaoFormHorariosTitulo => 'Horarios *';
+
+  @override
+  String get medicacaoFormPreenchimentoRapido =>
+      'Relleno rápido por frecuencia (sustituye los horarios actuales):';
+
+  @override
+  String get medicacaoForm1xDia => '1 vez al día';
+
+  @override
+  String get medicacaoForm12h => 'Cada 12h';
+
+  @override
+  String get medicacaoForm8h => 'Cada 8h';
+
+  @override
+  String get medicacaoFormPrimeiraToma => 'Primera toma';
+
+  @override
+  String get medicacaoFormAdicionarHorario => 'Añadir horario';
+
+  @override
+  String get medicacaoFormErroHorarios => 'Añade al menos un horario';
+
+  @override
+  String get medicacaoFormDiasSemanaTitulo => 'Días de la semana';
+
+  @override
+  String get medicacaoFormDiasSemanaDescricao =>
+      'No elijas ninguno para tomarlo todos los días.';
+
+  @override
+  String get medicacaoFormDataInicio => 'Fecha de inicio';
+
+  @override
+  String get medicacaoFormDataFim => 'Fecha de fin (opcional)';
+
+  @override
+  String get medicacaoFormNaoDefinida => 'No definida';
+
+  @override
+  String get medicacaoFormSemDataDefinida => 'Sin fecha definida';
+
+  @override
+  String get medicacaoFormLembretesAtivos => 'Recordatorios activos';
+
+  @override
+  String get medicacaoFormLembretesDescricao =>
+      'Desactiva para pausar sin eliminar el registro';
 }

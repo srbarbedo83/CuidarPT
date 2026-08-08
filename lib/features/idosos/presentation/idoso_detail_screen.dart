@@ -837,7 +837,7 @@ class _MedicacaoTile extends ConsumerWidget {
       subtitle: Text(
         '${registo.dose != null ? '${registo.dose} · ' : ''}'
         '${registo.viaAdministracao != null ? '${registo.viaAdministracao} · ' : ''}$horarios · '
-        '${formatarDiasSemana(registo.diasSemana)}'
+        '${formatarDiasSemana(l10n, registo.diasSemana)}'
         '${registo.ativo ? '' : ' · ${l10n.idosoDetailStatusPausada}'}',
       ),
       trailing: IconButton(

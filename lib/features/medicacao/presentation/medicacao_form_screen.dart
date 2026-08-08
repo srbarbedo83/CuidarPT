@@ -6,6 +6,7 @@ import '../../../core/utils/horarios.dart';
 import '../../../core/utils/medicacao_opcoes.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/medicacao_providers.dart';
 import '../services/medicacao_scheduler.dart';
 
@@ -83,10 +84,11 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
   }
 
   Future<void> _gerarHorariosPorFrequencia(int intervaloHoras) async {
+    final l10n = AppLocalizations.of(context);
     final primeira = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
-      helpText: 'Primeira toma',
+      helpText: l10n.medicacaoFormPrimeiraToma,
     );
     if (primeira == null) return;
     final primeiraMinutos = primeira.hour * 60 + primeira.minute;
@@ -109,13 +111,14 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
   }
 
   Future<void> _escolherData({required bool inicio}) async {
+    final l10n = AppLocalizations.of(context);
     final agora = DateTime.now();
     final escolhida = await showDatePicker(
       context: context,
       initialDate: (inicio ? _dataInicio : _dataFim) ?? agora,
       firstDate: DateTime(2000),
       lastDate: DateTime(agora.year + 5),
-      helpText: inicio ? 'Data de início' : 'Data de fim',
+      helpText: inicio ? l10n.medicacaoFormDataInicio : l10n.medicacaoFormDataFim,
     );
     if (escolhida != null) {
       setState(() {
@@ -129,9 +132,10 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
   }
 
   Future<void> _guardar() async {
+    final l10n = AppLocalizations.of(context);
     final formValido = _formKey.currentState!.validate();
     if (_horariosMinutos.isEmpty) {
-      setState(() => _erroHorarios = 'Adiciona pelo menos um horário');
+      setState(() => _erroHorarios = l10n.medicacaoFormErroHorarios);
     }
     if (!formValido || _horariosMinutos.isEmpty) return;
 
@@ -168,8 +172,11 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(_aEditar ? 'Editar medicação' : 'Nova medicação')),
+      appBar: AppBar(
+        title: Text(_aEditar ? l10n.medicacaoFormEditarTitulo : l10n.medicacaoFormNovoTitulo),
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -177,17 +184,17 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
           children: [
             TextFormField(
               controller: _nomeController,
-              decoration: const InputDecoration(labelText: 'Nome do medicamento *'),
+              decoration: InputDecoration(labelText: l10n.medicacaoFormNome),
               textCapitalization: TextCapitalization.sentences,
               validator: (valor) =>
-                  (valor == null || valor.trim().isEmpty) ? 'Indica o nome do medicamento' : null,
+                  (valor == null || valor.trim().isEmpty) ? l10n.medicacaoFormNomeErro : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _doseController,
-              decoration: const InputDecoration(
-                labelText: 'Dose',
-                hintText: 'Ex.: 1 comprimido, 500 mg, 10 gotas',
+              decoration: InputDecoration(
+                labelText: l10n.medicacaoFormDose,
+                hintText: l10n.medicacaoFormDoseHint,
               ),
             ),
             const SizedBox(height: 16),
@@ -204,19 +211,19 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
                 return TextFormField(
                   controller: controller,
                   focusNode: focusNode,
-                  decoration: const InputDecoration(
-                    labelText: 'Via de administração',
-                    hintText: 'Ex.: Oral, Intravenosa',
+                  decoration: InputDecoration(
+                    labelText: l10n.medicacaoFormVia,
+                    hintText: l10n.medicacaoFormViaHint,
                   ),
                   onChanged: (valor) => _viaAdministracao = valor,
                 );
               },
             ),
             const SizedBox(height: 24),
-            Text('Horários *', style: Theme.of(context).textTheme.titleSmall),
+            Text(l10n.medicacaoFormHorariosTitulo, style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 4),
             Text(
-              'Preenchimento rápido por frequência (substitui os horários atuais):',
+              l10n.medicacaoFormPreenchimentoRapido,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
@@ -225,15 +232,15 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
               runSpacing: 8,
               children: [
                 ActionChip(
-                  label: const Text('1x por dia'),
+                  label: Text(l10n.medicacaoForm1xDia),
                   onPressed: () => _gerarHorariosPorFrequencia(24),
                 ),
                 ActionChip(
-                  label: const Text('De 12 em 12h'),
+                  label: Text(l10n.medicacaoForm12h),
                   onPressed: () => _gerarHorariosPorFrequencia(12),
                 ),
                 ActionChip(
-                  label: const Text('De 8 em 8h'),
+                  label: Text(l10n.medicacaoForm8h),
                   onPressed: () => _gerarHorariosPorFrequencia(8),
                 ),
               ],
@@ -250,7 +257,7 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
                   ),
                 ActionChip(
                   avatar: const Icon(Icons.add, size: 18),
-                  label: const Text('Adicionar horário'),
+                  label: Text(l10n.medicacaoFormAdicionarHorario),
                   onPressed: _adicionarHorario,
                 ),
               ],
@@ -261,10 +268,10 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
                 child: Text(_erroHorarios!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
               ),
             const SizedBox(height: 24),
-            Text('Dias da semana', style: Theme.of(context).textTheme.titleSmall),
+            Text(l10n.medicacaoFormDiasSemanaTitulo, style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 4),
             Text(
-              'Não escolhas nenhum para tomar todos os dias.',
+              l10n.medicacaoFormDiasSemanaDescricao,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
@@ -272,13 +279,13 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
               spacing: 8,
               children: [
                 FilterChip(
-                  label: const Text('Todos os dias'),
+                  label: Text(l10n.horariosTodosDias),
                   selected: _diasSemana.isEmpty,
                   onSelected: (_) => setState(() => _diasSemana = []),
                 ),
-                for (final dia in diasSemanaAbreviados.keys)
+                for (final dia in diasSemanaAbreviados(l10n).keys)
                   FilterChip(
-                    label: Text(diasSemanaAbreviados[dia]!),
+                    label: Text(diasSemanaAbreviados(l10n)[dia]!),
                     selected: _diasSemana.contains(dia),
                     onSelected: (_) => _alternarDiaSemana(dia),
                   ),
@@ -287,18 +294,20 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
             const SizedBox(height: 16),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Data de início'),
+              title: Text(l10n.medicacaoFormDataInicio),
               subtitle: Text(
-                _dataInicio != null ? DateFormat('dd/MM/yyyy').format(_dataInicio!) : 'Não definida',
+                _dataInicio != null ? DateFormat('dd/MM/yyyy').format(_dataInicio!) : l10n.medicacaoFormNaoDefinida,
               ),
               trailing: const Icon(Icons.calendar_today),
               onTap: () => _escolherData(inicio: true),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Data de fim (opcional)'),
+              title: Text(l10n.medicacaoFormDataFim),
               subtitle: Text(
-                _dataFim != null ? DateFormat('dd/MM/yyyy').format(_dataFim!) : 'Sem data definida',
+                _dataFim != null
+                    ? DateFormat('dd/MM/yyyy').format(_dataFim!)
+                    : l10n.medicacaoFormSemDataDefinida,
               ),
               trailing: _dataFim != null
                   ? IconButton(
@@ -310,15 +319,15 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Lembretes ativos'),
-              subtitle: const Text('Desliga para pausar sem apagar o registo'),
+              title: Text(l10n.medicacaoFormLembretesAtivos),
+              subtitle: Text(l10n.medicacaoFormLembretesDescricao),
               value: _ativo,
               onChanged: (valor) => setState(() => _ativo = valor),
             ),
             const SizedBox(height: 8),
             TextFormField(
               controller: _notasController,
-              decoration: const InputDecoration(labelText: 'Notas'),
+              decoration: InputDecoration(labelText: l10n.sinaisVitaisFormNotas),
               maxLines: 3,
             ),
             const SizedBox(height: 24),
@@ -330,7 +339,7 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Guardar'),
+                  : Text(l10n.comumGuardar),
             ),
           ],
         ),

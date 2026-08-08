@@ -6,6 +6,7 @@ import '../../../core/utils/consulta_opcoes.dart';
 import '../../../core/utils/horarios.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/consulta_providers.dart';
 import '../services/consulta_scheduler.dart';
 import '../services/profissionais.dart';
@@ -142,6 +143,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final tituloEcra = _aEditar
         ? (_ehTratamento ? 'Editar tratamento' : 'Editar consulta')
         : (_ehTratamento ? 'Novo tratamento' : 'Nova consulta');
@@ -271,9 +273,9 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                     selected: _diasSemanaRecorrencia.isEmpty,
                     onSelected: (_) => setState(() => _diasSemanaRecorrencia = []),
                   ),
-                  for (final dia in diasSemanaAbreviados.keys)
+                  for (final dia in diasSemanaAbreviados(l10n).keys)
                     FilterChip(
-                      label: Text(diasSemanaAbreviados[dia]!),
+                      label: Text(diasSemanaAbreviados(l10n)[dia]!),
                       selected: _diasSemanaRecorrencia.contains(dia),
                       onSelected: (_) => _alternarDiaSemanaRecorrencia(dia),
                     ),

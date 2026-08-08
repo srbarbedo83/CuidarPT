@@ -1197,6 +1197,198 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ainda não há registos de humor neste período.'**
   String get humorGraficoSemRegistos;
+
+  /// No description provided for @diaSegAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seg'**
+  String get diaSegAbrev;
+
+  /// No description provided for @diaTerAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ter'**
+  String get diaTerAbrev;
+
+  /// No description provided for @diaQuaAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Qua'**
+  String get diaQuaAbrev;
+
+  /// No description provided for @diaQuiAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Qui'**
+  String get diaQuiAbrev;
+
+  /// No description provided for @diaSexAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sex'**
+  String get diaSexAbrev;
+
+  /// No description provided for @diaSabAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sáb'**
+  String get diaSabAbrev;
+
+  /// No description provided for @diaDomAbrev.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dom'**
+  String get diaDomAbrev;
+
+  /// No description provided for @horariosTodosDias.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os dias'**
+  String get horariosTodosDias;
+
+  /// No description provided for @medicacaoFormEditarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar medicação'**
+  String get medicacaoFormEditarTitulo;
+
+  /// No description provided for @medicacaoFormNovoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova medicação'**
+  String get medicacaoFormNovoTitulo;
+
+  /// No description provided for @medicacaoFormNome.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do medicamento *'**
+  String get medicacaoFormNome;
+
+  /// No description provided for @medicacaoFormNomeErro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Indica o nome do medicamento'**
+  String get medicacaoFormNomeErro;
+
+  /// No description provided for @medicacaoFormDose.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dose'**
+  String get medicacaoFormDose;
+
+  /// No description provided for @medicacaoFormDoseHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: 1 comprimido, 500 mg, 10 gotas'**
+  String get medicacaoFormDoseHint;
+
+  /// No description provided for @medicacaoFormVia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Via de administração'**
+  String get medicacaoFormVia;
+
+  /// No description provided for @medicacaoFormViaHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Oral, Intravenosa'**
+  String get medicacaoFormViaHint;
+
+  /// No description provided for @medicacaoFormHorariosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Horários *'**
+  String get medicacaoFormHorariosTitulo;
+
+  /// No description provided for @medicacaoFormPreenchimentoRapido.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preenchimento rápido por frequência (substitui os horários atuais):'**
+  String get medicacaoFormPreenchimentoRapido;
+
+  /// No description provided for @medicacaoForm1xDia.
+  ///
+  /// In pt, this message translates to:
+  /// **'1x por dia'**
+  String get medicacaoForm1xDia;
+
+  /// No description provided for @medicacaoForm12h.
+  ///
+  /// In pt, this message translates to:
+  /// **'De 12 em 12h'**
+  String get medicacaoForm12h;
+
+  /// No description provided for @medicacaoForm8h.
+  ///
+  /// In pt, this message translates to:
+  /// **'De 8 em 8h'**
+  String get medicacaoForm8h;
+
+  /// No description provided for @medicacaoFormPrimeiraToma.
+  ///
+  /// In pt, this message translates to:
+  /// **'Primeira toma'**
+  String get medicacaoFormPrimeiraToma;
+
+  /// No description provided for @medicacaoFormAdicionarHorario.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar horário'**
+  String get medicacaoFormAdicionarHorario;
+
+  /// No description provided for @medicacaoFormErroHorarios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adiciona pelo menos um horário'**
+  String get medicacaoFormErroHorarios;
+
+  /// No description provided for @medicacaoFormDiasSemanaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dias da semana'**
+  String get medicacaoFormDiasSemanaTitulo;
+
+  /// No description provided for @medicacaoFormDiasSemanaDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não escolhas nenhum para tomar todos os dias.'**
+  String get medicacaoFormDiasSemanaDescricao;
+
+  /// No description provided for @medicacaoFormDataInicio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de início'**
+  String get medicacaoFormDataInicio;
+
+  /// No description provided for @medicacaoFormDataFim.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de fim (opcional)'**
+  String get medicacaoFormDataFim;
+
+  /// No description provided for @medicacaoFormNaoDefinida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não definida'**
+  String get medicacaoFormNaoDefinida;
+
+  /// No description provided for @medicacaoFormSemDataDefinida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem data definida'**
+  String get medicacaoFormSemDataDefinida;
+
+  /// No description provided for @medicacaoFormLembretesAtivos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lembretes ativos'**
+  String get medicacaoFormLembretesAtivos;
+
+  /// No description provided for @medicacaoFormLembretesDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Desliga para pausar sem apagar o registo'**
+  String get medicacaoFormLembretesDescricao;
 }
 
 class _AppLocalizationsDelegate

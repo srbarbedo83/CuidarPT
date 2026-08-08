@@ -656,4 +656,103 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get humorGraficoSemRegistos => 'No mood records yet in this period.';
+
+  @override
+  String get diaSegAbrev => 'Mon';
+
+  @override
+  String get diaTerAbrev => 'Tue';
+
+  @override
+  String get diaQuaAbrev => 'Wed';
+
+  @override
+  String get diaQuiAbrev => 'Thu';
+
+  @override
+  String get diaSexAbrev => 'Fri';
+
+  @override
+  String get diaSabAbrev => 'Sat';
+
+  @override
+  String get diaDomAbrev => 'Sun';
+
+  @override
+  String get horariosTodosDias => 'Every day';
+
+  @override
+  String get medicacaoFormEditarTitulo => 'Edit medication';
+
+  @override
+  String get medicacaoFormNovoTitulo => 'New medication';
+
+  @override
+  String get medicacaoFormNome => 'Medication name *';
+
+  @override
+  String get medicacaoFormNomeErro => 'Enter the medication name';
+
+  @override
+  String get medicacaoFormDose => 'Dose';
+
+  @override
+  String get medicacaoFormDoseHint => 'E.g.: 1 tablet, 500 mg, 10 drops';
+
+  @override
+  String get medicacaoFormVia => 'Route of administration';
+
+  @override
+  String get medicacaoFormViaHint => 'E.g.: Oral, Intravenous';
+
+  @override
+  String get medicacaoFormHorariosTitulo => 'Times *';
+
+  @override
+  String get medicacaoFormPreenchimentoRapido =>
+      'Quick fill by frequency (replaces current times):';
+
+  @override
+  String get medicacaoForm1xDia => 'Once a day';
+
+  @override
+  String get medicacaoForm12h => 'Every 12h';
+
+  @override
+  String get medicacaoForm8h => 'Every 8h';
+
+  @override
+  String get medicacaoFormPrimeiraToma => 'First dose';
+
+  @override
+  String get medicacaoFormAdicionarHorario => 'Add time';
+
+  @override
+  String get medicacaoFormErroHorarios => 'Add at least one time';
+
+  @override
+  String get medicacaoFormDiasSemanaTitulo => 'Days of the week';
+
+  @override
+  String get medicacaoFormDiasSemanaDescricao =>
+      'Leave none selected to take it every day.';
+
+  @override
+  String get medicacaoFormDataInicio => 'Start date';
+
+  @override
+  String get medicacaoFormDataFim => 'End date (optional)';
+
+  @override
+  String get medicacaoFormNaoDefinida => 'Not set';
+
+  @override
+  String get medicacaoFormSemDataDefinida => 'No date set';
+
+  @override
+  String get medicacaoFormLembretesAtivos => 'Reminders active';
+
+  @override
+  String get medicacaoFormLembretesDescricao =>
+      'Turn off to pause without deleting the record';
 }
