@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/gradiente_premium.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../../shared/widgets/seccao_colapsavel.dart';
@@ -26,6 +27,7 @@ class SinaisVitaisSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final permite = ref.watch(featureLimitsProvider).permiteSinaisVitais;
 
     if (!permite) {
@@ -34,16 +36,15 @@ class SinaisVitaisSection extends ConsumerWidget {
         child: Card(
           child: ListTile(
             leading: const Icon(Icons.monitor_heart_outlined),
-            title: const Text('Sinais vitais'),
-            subtitle: const GradientText(
-              'Funcionalidade Premium: pressão, temperatura, glicemia, frequência cardíaca.',
-              style: TextStyle(fontWeight: FontWeight.w600),
+            title: Text(l10n.homeAcaoSinaisVitais),
+            subtitle: GradientText(
+              l10n.sinaisVitaisUpsellDescricao,
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             trailing: const GradientIcon(Icons.star_outline),
             onTap: () => mostrarLimiteAtingido(
               context,
-              mensagem: 'Registar sinais vitais é uma funcionalidade Premium. '
-                  'Subscreve o Premium para a usares.',
+              mensagem: l10n.comumSinaisVitaisPremiumMensagem,
             ),
           ),
         ),
@@ -53,19 +54,19 @@ class SinaisVitaisSection extends ConsumerWidget {
     final registosAsync = ref.watch(sinaisVitaisListProvider(idoso.id));
 
     return SeccaoColapsavel(
-      titulo: 'Sinais vitais',
+      titulo: l10n.homeAcaoSinaisVitais,
       icone: Icons.monitor_heart_outlined,
       acoes: [
         IconButton(
           icon: Icon(Icons.show_chart, color: Theme.of(context).colorScheme.primary),
-          tooltip: 'Histórico em gráfico',
+          tooltip: l10n.sinaisVitaisTooltipHistorico,
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => SinaisVitaisHistoricoScreen(idoso: idoso)),
           ),
         ),
         IconButton(
           icon: const Icon(Icons.add),
-          tooltip: 'Novo registo de sinais vitais',
+          tooltip: l10n.sinaisVitaisTooltipNovoRegisto,
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => SinaisVitaisFormScreen(idoso: idoso)),
           ),
@@ -74,27 +75,27 @@ class SinaisVitaisSection extends ConsumerWidget {
       child: registosAsync.when(
         data: (registos) {
           if (registos.isEmpty) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text('Ainda não há registos de sinais vitais.'),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(l10n.sinaisVitaisSemRegistos),
             );
           }
           final hoje = DateTime.now();
           final temRegistoHoje = registos.any((r) => _mesmoDia(r.timestamp, hoje));
-          final temAlerta = registos.any((r) => alertasSinaisVitais(r).isNotEmpty);
+          final temAlerta = registos.any((r) => alertasSinaisVitais(l10n, r).isNotEmpty);
           return Column(
             children: [
               if (!temRegistoHoje)
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('Ainda não registou sinais vitais hoje.'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(l10n.sinaisVitaisSemRegistoHoje),
                 ),
               _SinaisVitaisLista(idoso: idoso, registos: registos),
               if (temAlerta)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: Text(
-                    alertaSinaisVitaisAviso,
+                    alertaSinaisVitaisAviso(l10n),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
@@ -107,7 +108,7 @@ class SinaisVitaisSection extends ConsumerWidget {
         ),
         error: (erro, _) => Padding(
           padding: const EdgeInsets.all(16),
-          child: Text('Erro ao carregar sinais vitais: $erro'),
+          child: Text(l10n.sinaisVitaisErroCarregar('$erro')),
         ),
       ),
     );
@@ -133,6 +134,7 @@ class _SinaisVitaisListaState extends State<_SinaisVitaisLista> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final registos = widget.registos;
     final mostrarExpandir = registos.length > _maxRegistosCondensados;
     final visiveis = _expandido ? registos : registos.take(_maxRegistosCondensados).toList();
@@ -142,7 +144,7 @@ class _SinaisVitaisListaState extends State<_SinaisVitaisLista> {
         if (mostrarExpandir)
           TextButton(
             onPressed: () => setState(() => _expandido = !_expandido),
-            child: Text(_expandido ? 'Ver menos' : 'Ver todos (${registos.length})'),
+            child: Text(_expandido ? l10n.idosoDetailVerMenos : l10n.sinaisVitaisVerTodos(registos.length)),
           ),
       ],
     );
@@ -156,14 +158,15 @@ class _SinaisVitaisTile extends ConsumerWidget {
   final RegistoSinaisVitais registo;
 
   Future<void> _confirmarApagar(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar registo'),
-        content: const Text('Queres mesmo apagar este registo de sinais vitais?'),
+        title: Text(l10n.sinaisVitaisApagarTitulo),
+        content: Text(l10n.sinaisVitaisApagarConfirmacao),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.comumCancelar)),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.comumApagar)),
         ],
       ),
     );
@@ -172,7 +175,7 @@ class _SinaisVitaisTile extends ConsumerWidget {
     }
   }
 
-  String _resumo() {
+  String _resumo(AppLocalizations l10n) {
     final partes = <String>[
       if (registo.pressaoSistolica != null && registo.pressaoDiastolica != null)
         '${registo.pressaoSistolica}/${registo.pressaoDiastolica} mmHg',
@@ -181,12 +184,13 @@ class _SinaisVitaisTile extends ConsumerWidget {
       if (registo.frequenciaCardiaca != null) '${registo.frequenciaCardiaca} bpm',
       if (registo.peso != null) '${registo.peso} kg',
     ];
-    return partes.isEmpty ? 'Sem valores registados' : partes.join(' · ');
+    return partes.isEmpty ? l10n.sinaisVitaisSemValores : partes.join(' · ');
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alertas = alertasSinaisVitais(registo);
+    final l10n = AppLocalizations.of(context);
+    final alertas = alertasSinaisVitais(l10n, registo);
     final gravidade = piorGravidade(alertas);
     final cor = switch (gravidade) {
       GravidadeAlerta.grave => Colors.red.shade700,
@@ -199,7 +203,7 @@ class _SinaisVitaisTile extends ConsumerWidget {
         gravidade == null ? Icons.check_circle_outline : Icons.warning_amber_rounded,
         color: cor,
       ),
-      title: Text(_resumo()),
+      title: Text(_resumo(l10n)),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -217,7 +221,7 @@ class _SinaisVitaisTile extends ConsumerWidget {
       isThreeLine: alertas.isNotEmpty,
       trailing: IconButton(
         icon: const Icon(Icons.delete_outline),
-        tooltip: 'Apagar registo',
+        tooltip: l10n.sinaisVitaisApagarTitulo,
         onPressed: () => _confirmarApagar(context, ref),
       ),
       onTap: () => Navigator.of(context).push(

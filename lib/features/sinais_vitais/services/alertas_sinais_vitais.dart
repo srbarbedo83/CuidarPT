@@ -1,8 +1,8 @@
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Aviso a mostrar sempre que se apresentam alertas de sinais vitais.
-const alertaSinaisVitaisAviso =
-    'Valores de referência gerais da OMS para adultos em repouso. Não substitui avaliação médica.';
+String alertaSinaisVitaisAviso(AppLocalizations l10n) => l10n.alertaSinaisVitaisAviso;
 
 /// Gravidade de um alerta, usada para escolher a cor (amarelo/vermelho).
 enum GravidadeAlerta { atencao, grave }
@@ -18,25 +18,25 @@ class AlertaSinalVital {
 /// de referência da OMS para adultos em repouso (pressão arterial,
 /// temperatura, glicemia e frequência cardíaca). Não é um diagnóstico —
 /// serve apenas para chamar a atenção do cuidador.
-List<AlertaSinalVital> alertasSinaisVitais(RegistoSinaisVitais registo) {
+List<AlertaSinalVital> alertasSinaisVitais(AppLocalizations l10n, RegistoSinaisVitais registo) {
   final alertas = <AlertaSinalVital>[];
 
   final sistolica = registo.pressaoSistolica;
   final diastolica = registo.pressaoDiastolica;
   if (sistolica != null && diastolica != null) {
     if (sistolica >= 180 || diastolica >= 120) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Pressão arterial muito elevada (possível crise hipertensiva)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaPressaoMuitoElevada,
         gravidade: GravidadeAlerta.grave,
       ));
     } else if (sistolica >= 140 || diastolica >= 90) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Pressão arterial elevada (hipertensão)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaPressaoElevada,
         gravidade: GravidadeAlerta.atencao,
       ));
     } else if (sistolica < 90 || diastolica < 60) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Pressão arterial baixa (hipotensão)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaPressaoBaixa,
         gravidade: GravidadeAlerta.atencao,
       ));
     }
@@ -45,12 +45,12 @@ List<AlertaSinalVital> alertasSinaisVitais(RegistoSinaisVitais registo) {
   final temperatura = registo.temperatura;
   if (temperatura != null) {
     if (temperatura >= 39) {
-      alertas.add(const AlertaSinalVital(mensagem: 'Febre alta', gravidade: GravidadeAlerta.grave));
+      alertas.add(AlertaSinalVital(mensagem: l10n.alertaFebreAlta, gravidade: GravidadeAlerta.grave));
     } else if (temperatura >= 38) {
-      alertas.add(const AlertaSinalVital(mensagem: 'Febre', gravidade: GravidadeAlerta.atencao));
+      alertas.add(AlertaSinalVital(mensagem: l10n.alertaFebre, gravidade: GravidadeAlerta.atencao));
     } else if (temperatura < 35) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Temperatura corporal muito baixa (hipotermia)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaHipotermia,
         gravidade: GravidadeAlerta.grave,
       ));
     }
@@ -59,30 +59,30 @@ List<AlertaSinalVital> alertasSinaisVitais(RegistoSinaisVitais registo) {
   final glicemia = registo.glicemia;
   if (glicemia != null) {
     if (glicemia < 70) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Glicemia baixa (hipoglicemia)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaGlicemiaBaixa,
         gravidade: GravidadeAlerta.grave,
       ));
     } else if (glicemia >= 180) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Glicemia muito elevada',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaGlicemiaMuitoElevada,
         gravidade: GravidadeAlerta.grave,
       ));
     } else if (glicemia >= 140) {
-      alertas.add(const AlertaSinalVital(mensagem: 'Glicemia elevada', gravidade: GravidadeAlerta.atencao));
+      alertas.add(AlertaSinalVital(mensagem: l10n.alertaGlicemiaElevada, gravidade: GravidadeAlerta.atencao));
     }
   }
 
   final frequencia = registo.frequenciaCardiaca;
   if (frequencia != null) {
     if (frequencia < 60) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Frequência cardíaca baixa (bradicardia)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaFrequenciaBaixa,
         gravidade: GravidadeAlerta.atencao,
       ));
     } else if (frequencia > 100) {
-      alertas.add(const AlertaSinalVital(
-        mensagem: 'Frequência cardíaca elevada (taquicardia)',
+      alertas.add(AlertaSinalVital(
+        mensagem: l10n.alertaFrequenciaElevada,
         gravidade: GravidadeAlerta.atencao,
       ));
     }

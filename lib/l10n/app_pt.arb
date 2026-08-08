@@ -138,5 +138,68 @@
   "@idosoDetailProximaData": {
     "placeholders": { "data": { "type": "String" } }
   },
-  "idosoDetailComoSenteHojeTitulo": "Como se sente hoje?"
+  "idosoDetailComoSenteHojeTitulo": "Como se sente hoje?",
+
+  "premiumUpsellTitulo": "Funcionalidade Premium",
+  "premiumUpsellBotao": "Entendido",
+
+  "alertaPressaoMuitoElevada": "Pressão arterial muito elevada (possível crise hipertensiva)",
+  "alertaPressaoElevada": "Pressão arterial elevada (hipertensão)",
+  "alertaPressaoBaixa": "Pressão arterial baixa (hipotensão)",
+  "alertaFebreAlta": "Febre alta",
+  "alertaFebre": "Febre",
+  "alertaHipotermia": "Temperatura corporal muito baixa (hipotermia)",
+  "alertaGlicemiaBaixa": "Glicemia baixa (hipoglicemia)",
+  "alertaGlicemiaMuitoElevada": "Glicemia muito elevada",
+  "alertaGlicemiaElevada": "Glicemia elevada",
+  "alertaFrequenciaBaixa": "Frequência cardíaca baixa (bradicardia)",
+  "alertaFrequenciaElevada": "Frequência cardíaca elevada (taquicardia)",
+  "alertaSinaisVitaisAviso": "Valores de referência gerais da OMS para adultos em repouso. Não substitui avaliação médica.",
+
+  "sinaisVitaisUpsellDescricao": "Funcionalidade Premium: pressão, temperatura, glicemia, frequência cardíaca.",
+  "sinaisVitaisTooltipHistorico": "Histórico em gráfico",
+  "sinaisVitaisTooltipNovoRegisto": "Novo registo de sinais vitais",
+  "sinaisVitaisSemRegistos": "Ainda não há registos de sinais vitais.",
+  "sinaisVitaisSemRegistoHoje": "Ainda não registou sinais vitais hoje.",
+  "sinaisVitaisVerTodos": "Ver todos ({total})",
+  "@sinaisVitaisVerTodos": {
+    "placeholders": { "total": { "type": "int" } }
+  },
+  "sinaisVitaisApagarTitulo": "Apagar registo",
+  "sinaisVitaisApagarConfirmacao": "Queres mesmo apagar este registo de sinais vitais?",
+  "sinaisVitaisSemValores": "Sem valores registados",
+  "sinaisVitaisErroCarregar": "Erro ao carregar sinais vitais: {erro}",
+  "@sinaisVitaisErroCarregar": {
+    "placeholders": { "erro": { "type": "String" } }
+  },
+
+  "sinaisVitaisFormEditarTitulo": "Editar sinais vitais",
+  "sinaisVitaisFormNovoTitulo": "Novos sinais vitais",
+  "sinaisVitaisFormDataRegisto": "Data do registo",
+  "sinaisVitaisFormHoraRegisto": "Hora do registo",
+  "sinaisVitaisFormPressaoTitulo": "Pressão arterial (mmHg)",
+  "sinaisVitaisFormSistolica": "Sistólica (máxima)",
+  "sinaisVitaisFormDiastolica": "Diastólica (mínima)",
+  "sinaisVitaisFormTemperatura": "Temperatura (°C)",
+  "sinaisVitaisFormGlicemia": "Glicemia (mg/dL)",
+  "sinaisVitaisFormFrequencia": "Frequência cardíaca (bpm)",
+  "sinaisVitaisFormMedirCamara": "Medir com a câmara",
+  "sinaisVitaisFormPeso": "Peso (kg)",
+  "sinaisVitaisFormDataHora": "Data e hora",
+  "sinaisVitaisFormNotas": "Notas",
+
+  "sinaisVitaisHistoricoTitulo": "Histórico de sinais vitais",
+  "sinaisVitaisHistorico7Dias": "7 dias",
+  "sinaisVitaisHistorico30Dias": "30 dias",
+  "sinaisVitaisHistoricoPressaoSistolica": "Pressão sistólica",
+  "sinaisVitaisHistoricoPressaoDiastolica": "Pressão diastólica",
+  "sinaisVitaisHistoricoTemperaturaTitulo": "Temperatura",
+  "sinaisVitaisHistoricoGlicemia": "Glicemia",
+  "sinaisVitaisHistoricoFrequenciaCardiaca": "Frequência cardíaca",
+  "sinaisVitaisHistoricoPeso": "Peso",
+  "sinaisVitaisHistoricoMedia": "Média: {valor} {unidade}",
+  "@sinaisVitaisHistoricoMedia": {
+    "placeholders": { "valor": { "type": "String" }, "unidade": { "type": "String" } }
+  },
+  "sinaisVitaisHistoricoSemRegistos": "Ainda não há registos neste período."
 }

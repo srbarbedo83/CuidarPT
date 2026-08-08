@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/sinais_vitais_providers.dart';
 import '../services/sinais_vitais_historico.dart';
 
@@ -20,19 +21,20 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final registos = ref.watch(sinaisVitaisListProvider(widget.idoso.id)).valueOrNull ?? const [];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Histórico de sinais vitais')),
+      appBar: AppBar(title: Text(l10n.sinaisVitaisHistoricoTitulo)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Align(
             alignment: Alignment.centerRight,
             child: SegmentedButton<int>(
-              segments: const [
-                ButtonSegment(value: 7, label: Text('7 dias')),
-                ButtonSegment(value: 30, label: Text('30 dias')),
+              segments: [
+                ButtonSegment(value: 7, label: Text(l10n.sinaisVitaisHistorico7Dias)),
+                ButtonSegment(value: 30, label: Text(l10n.sinaisVitaisHistorico30Dias)),
               ],
               selected: {_dias},
               onSelectionChanged: (selecao) => setState(() => _dias = selecao.first),
@@ -40,7 +42,7 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
           ),
           const SizedBox(height: 12),
           _GraficoSinalVitalCard(
-            titulo: 'Pressão sistólica',
+            titulo: l10n.sinaisVitaisHistoricoPressaoSistolica,
             unidade: 'mmHg',
             pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.pressaoSistolica),
             corBarra: Colors.red.shade300,
@@ -48,7 +50,7 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
           ),
           const SizedBox(height: 12),
           _GraficoSinalVitalCard(
-            titulo: 'Pressão diastólica',
+            titulo: l10n.sinaisVitaisHistoricoPressaoDiastolica,
             unidade: 'mmHg',
             pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.pressaoDiastolica),
             corBarra: Colors.red.shade200,
@@ -56,7 +58,7 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
           ),
           const SizedBox(height: 12),
           _GraficoSinalVitalCard(
-            titulo: 'Temperatura',
+            titulo: l10n.sinaisVitaisHistoricoTemperaturaTitulo,
             unidade: '°C',
             pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.temperatura),
             corBarra: Colors.orange.shade300,
@@ -64,7 +66,7 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
           ),
           const SizedBox(height: 12),
           _GraficoSinalVitalCard(
-            titulo: 'Glicemia',
+            titulo: l10n.sinaisVitaisHistoricoGlicemia,
             unidade: 'mg/dL',
             pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.glicemia),
             corBarra: Colors.purple.shade300,
@@ -72,7 +74,7 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
           ),
           const SizedBox(height: 12),
           _GraficoSinalVitalCard(
-            titulo: 'Frequência cardíaca',
+            titulo: l10n.sinaisVitaisHistoricoFrequenciaCardiaca,
             unidade: 'bpm',
             pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.frequenciaCardiaca),
             corBarra: Colors.pink.shade300,
@@ -80,7 +82,7 @@ class _SinaisVitaisHistoricoScreenState extends ConsumerState<SinaisVitaisHistor
           ),
           const SizedBox(height: 12),
           _GraficoSinalVitalCard(
-            titulo: 'Peso',
+            titulo: l10n.sinaisVitaisHistoricoPeso,
             unidade: 'kg',
             pontos: sinalVitalPorDia(registos, dias: _dias, valor: (r) => r.peso),
             corBarra: Colors.teal.shade300,
@@ -109,6 +111,7 @@ class _GraficoSinalVitalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final media = mediaSinalVital(pontos);
 
     return Card(
@@ -122,7 +125,7 @@ class _GraficoSinalVitalCard extends StatelessWidget {
                 Expanded(child: Text(titulo, style: Theme.of(context).textTheme.titleMedium)),
                 if (media != null)
                   Text(
-                    'Média: ${media.toStringAsFixed(1)} $unidade',
+                    l10n.sinaisVitaisHistoricoMedia(media.toStringAsFixed(1), unidade),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
               ],
@@ -130,7 +133,7 @@ class _GraficoSinalVitalCard extends StatelessWidget {
             const SizedBox(height: 12),
             if (media == null)
               Text(
-                'Ainda não há registos neste período.',
+                l10n.sinaisVitaisHistoricoSemRegistos,
                 style: Theme.of(context).textTheme.bodySmall,
               )
             else

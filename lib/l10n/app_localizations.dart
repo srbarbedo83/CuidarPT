@@ -579,6 +579,300 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Como se sente hoje?'**
   String get idosoDetailComoSenteHojeTitulo;
+
+  /// No description provided for @premiumUpsellTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Funcionalidade Premium'**
+  String get premiumUpsellTitulo;
+
+  /// No description provided for @premiumUpsellBotao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entendido'**
+  String get premiumUpsellBotao;
+
+  /// No description provided for @alertaPressaoMuitoElevada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão arterial muito elevada (possível crise hipertensiva)'**
+  String get alertaPressaoMuitoElevada;
+
+  /// No description provided for @alertaPressaoElevada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão arterial elevada (hipertensão)'**
+  String get alertaPressaoElevada;
+
+  /// No description provided for @alertaPressaoBaixa.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão arterial baixa (hipotensão)'**
+  String get alertaPressaoBaixa;
+
+  /// No description provided for @alertaFebreAlta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Febre alta'**
+  String get alertaFebreAlta;
+
+  /// No description provided for @alertaFebre.
+  ///
+  /// In pt, this message translates to:
+  /// **'Febre'**
+  String get alertaFebre;
+
+  /// No description provided for @alertaHipotermia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Temperatura corporal muito baixa (hipotermia)'**
+  String get alertaHipotermia;
+
+  /// No description provided for @alertaGlicemiaBaixa.
+  ///
+  /// In pt, this message translates to:
+  /// **'Glicemia baixa (hipoglicemia)'**
+  String get alertaGlicemiaBaixa;
+
+  /// No description provided for @alertaGlicemiaMuitoElevada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Glicemia muito elevada'**
+  String get alertaGlicemiaMuitoElevada;
+
+  /// No description provided for @alertaGlicemiaElevada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Glicemia elevada'**
+  String get alertaGlicemiaElevada;
+
+  /// No description provided for @alertaFrequenciaBaixa.
+  ///
+  /// In pt, this message translates to:
+  /// **'Frequência cardíaca baixa (bradicardia)'**
+  String get alertaFrequenciaBaixa;
+
+  /// No description provided for @alertaFrequenciaElevada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Frequência cardíaca elevada (taquicardia)'**
+  String get alertaFrequenciaElevada;
+
+  /// No description provided for @alertaSinaisVitaisAviso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valores de referência gerais da OMS para adultos em repouso. Não substitui avaliação médica.'**
+  String get alertaSinaisVitaisAviso;
+
+  /// No description provided for @sinaisVitaisUpsellDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Funcionalidade Premium: pressão, temperatura, glicemia, frequência cardíaca.'**
+  String get sinaisVitaisUpsellDescricao;
+
+  /// No description provided for @sinaisVitaisTooltipHistorico.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico em gráfico'**
+  String get sinaisVitaisTooltipHistorico;
+
+  /// No description provided for @sinaisVitaisTooltipNovoRegisto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo registo de sinais vitais'**
+  String get sinaisVitaisTooltipNovoRegisto;
+
+  /// No description provided for @sinaisVitaisSemRegistos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há registos de sinais vitais.'**
+  String get sinaisVitaisSemRegistos;
+
+  /// No description provided for @sinaisVitaisSemRegistoHoje.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não registou sinais vitais hoje.'**
+  String get sinaisVitaisSemRegistoHoje;
+
+  /// No description provided for @sinaisVitaisVerTodos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver todos ({total})'**
+  String sinaisVitaisVerTodos(int total);
+
+  /// No description provided for @sinaisVitaisApagarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar registo'**
+  String get sinaisVitaisApagarTitulo;
+
+  /// No description provided for @sinaisVitaisApagarConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Queres mesmo apagar este registo de sinais vitais?'**
+  String get sinaisVitaisApagarConfirmacao;
+
+  /// No description provided for @sinaisVitaisSemValores.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem valores registados'**
+  String get sinaisVitaisSemValores;
+
+  /// No description provided for @sinaisVitaisErroCarregar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao carregar sinais vitais: {erro}'**
+  String sinaisVitaisErroCarregar(String erro);
+
+  /// No description provided for @sinaisVitaisFormEditarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar sinais vitais'**
+  String get sinaisVitaisFormEditarTitulo;
+
+  /// No description provided for @sinaisVitaisFormNovoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novos sinais vitais'**
+  String get sinaisVitaisFormNovoTitulo;
+
+  /// No description provided for @sinaisVitaisFormDataRegisto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data do registo'**
+  String get sinaisVitaisFormDataRegisto;
+
+  /// No description provided for @sinaisVitaisFormHoraRegisto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hora do registo'**
+  String get sinaisVitaisFormHoraRegisto;
+
+  /// No description provided for @sinaisVitaisFormPressaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão arterial (mmHg)'**
+  String get sinaisVitaisFormPressaoTitulo;
+
+  /// No description provided for @sinaisVitaisFormSistolica.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sistólica (máxima)'**
+  String get sinaisVitaisFormSistolica;
+
+  /// No description provided for @sinaisVitaisFormDiastolica.
+  ///
+  /// In pt, this message translates to:
+  /// **'Diastólica (mínima)'**
+  String get sinaisVitaisFormDiastolica;
+
+  /// No description provided for @sinaisVitaisFormTemperatura.
+  ///
+  /// In pt, this message translates to:
+  /// **'Temperatura (°C)'**
+  String get sinaisVitaisFormTemperatura;
+
+  /// No description provided for @sinaisVitaisFormGlicemia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Glicemia (mg/dL)'**
+  String get sinaisVitaisFormGlicemia;
+
+  /// No description provided for @sinaisVitaisFormFrequencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Frequência cardíaca (bpm)'**
+  String get sinaisVitaisFormFrequencia;
+
+  /// No description provided for @sinaisVitaisFormMedirCamara.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medir com a câmara'**
+  String get sinaisVitaisFormMedirCamara;
+
+  /// No description provided for @sinaisVitaisFormPeso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Peso (kg)'**
+  String get sinaisVitaisFormPeso;
+
+  /// No description provided for @sinaisVitaisFormDataHora.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data e hora'**
+  String get sinaisVitaisFormDataHora;
+
+  /// No description provided for @sinaisVitaisFormNotas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notas'**
+  String get sinaisVitaisFormNotas;
+
+  /// No description provided for @sinaisVitaisHistoricoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico de sinais vitais'**
+  String get sinaisVitaisHistoricoTitulo;
+
+  /// No description provided for @sinaisVitaisHistorico7Dias.
+  ///
+  /// In pt, this message translates to:
+  /// **'7 dias'**
+  String get sinaisVitaisHistorico7Dias;
+
+  /// No description provided for @sinaisVitaisHistorico30Dias.
+  ///
+  /// In pt, this message translates to:
+  /// **'30 dias'**
+  String get sinaisVitaisHistorico30Dias;
+
+  /// No description provided for @sinaisVitaisHistoricoPressaoSistolica.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão sistólica'**
+  String get sinaisVitaisHistoricoPressaoSistolica;
+
+  /// No description provided for @sinaisVitaisHistoricoPressaoDiastolica.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão diastólica'**
+  String get sinaisVitaisHistoricoPressaoDiastolica;
+
+  /// No description provided for @sinaisVitaisHistoricoTemperaturaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Temperatura'**
+  String get sinaisVitaisHistoricoTemperaturaTitulo;
+
+  /// No description provided for @sinaisVitaisHistoricoGlicemia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Glicemia'**
+  String get sinaisVitaisHistoricoGlicemia;
+
+  /// No description provided for @sinaisVitaisHistoricoFrequenciaCardiaca.
+  ///
+  /// In pt, this message translates to:
+  /// **'Frequência cardíaca'**
+  String get sinaisVitaisHistoricoFrequenciaCardiaca;
+
+  /// No description provided for @sinaisVitaisHistoricoPeso.
+  ///
+  /// In pt, this message translates to:
+  /// **'Peso'**
+  String get sinaisVitaisHistoricoPeso;
+
+  /// No description provided for @sinaisVitaisHistoricoMedia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Média: {valor} {unidade}'**
+  String sinaisVitaisHistoricoMedia(String valor, String unidade);
+
+  /// No description provided for @sinaisVitaisHistoricoSemRegistos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há registos neste período.'**
+  String get sinaisVitaisHistoricoSemRegistos;
 }
 
 class _AppLocalizationsDelegate

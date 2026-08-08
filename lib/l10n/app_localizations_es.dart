@@ -308,4 +308,166 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get idosoDetailComoSenteHojeTitulo => '¿Cómo te sientes hoy?';
+
+  @override
+  String get premiumUpsellTitulo => 'Función Premium';
+
+  @override
+  String get premiumUpsellBotao => 'Entendido';
+
+  @override
+  String get alertaPressaoMuitoElevada =>
+      'Presión arterial muy alta (posible crisis hipertensiva)';
+
+  @override
+  String get alertaPressaoElevada => 'Presión arterial alta (hipertensión)';
+
+  @override
+  String get alertaPressaoBaixa => 'Presión arterial baja (hipotensión)';
+
+  @override
+  String get alertaFebreAlta => 'Fiebre alta';
+
+  @override
+  String get alertaFebre => 'Fiebre';
+
+  @override
+  String get alertaHipotermia => 'Temperatura corporal muy baja (hipotermia)';
+
+  @override
+  String get alertaGlicemiaBaixa => 'Glucemia baja (hipoglucemia)';
+
+  @override
+  String get alertaGlicemiaMuitoElevada => 'Glucemia muy alta';
+
+  @override
+  String get alertaGlicemiaElevada => 'Glucemia alta';
+
+  @override
+  String get alertaFrequenciaBaixa => 'Frecuencia cardíaca baja (bradicardia)';
+
+  @override
+  String get alertaFrequenciaElevada =>
+      'Frecuencia cardíaca alta (taquicardia)';
+
+  @override
+  String get alertaSinaisVitaisAviso =>
+      'Valores de referencia generales de la OMS para adultos en reposo. No sustituye la evaluación médica.';
+
+  @override
+  String get sinaisVitaisUpsellDescricao =>
+      'Función Premium: presión, temperatura, glucemia, frecuencia cardíaca.';
+
+  @override
+  String get sinaisVitaisTooltipHistorico => 'Historial en gráfico';
+
+  @override
+  String get sinaisVitaisTooltipNovoRegisto =>
+      'Nuevo registro de signos vitales';
+
+  @override
+  String get sinaisVitaisSemRegistos =>
+      'Todavía no hay registros de signos vitales.';
+
+  @override
+  String get sinaisVitaisSemRegistoHoje =>
+      'Todavía no has registrado signos vitales hoy.';
+
+  @override
+  String sinaisVitaisVerTodos(int total) {
+    return 'Ver todos ($total)';
+  }
+
+  @override
+  String get sinaisVitaisApagarTitulo => 'Eliminar registro';
+
+  @override
+  String get sinaisVitaisApagarConfirmacao =>
+      '¿Seguro que quieres eliminar este registro de signos vitales?';
+
+  @override
+  String get sinaisVitaisSemValores => 'Sin valores registrados';
+
+  @override
+  String sinaisVitaisErroCarregar(String erro) {
+    return 'Error al cargar los signos vitales: $erro';
+  }
+
+  @override
+  String get sinaisVitaisFormEditarTitulo => 'Editar signos vitales';
+
+  @override
+  String get sinaisVitaisFormNovoTitulo => 'Nuevos signos vitales';
+
+  @override
+  String get sinaisVitaisFormDataRegisto => 'Fecha del registro';
+
+  @override
+  String get sinaisVitaisFormHoraRegisto => 'Hora del registro';
+
+  @override
+  String get sinaisVitaisFormPressaoTitulo => 'Presión arterial (mmHg)';
+
+  @override
+  String get sinaisVitaisFormSistolica => 'Sistólica (máxima)';
+
+  @override
+  String get sinaisVitaisFormDiastolica => 'Diastólica (mínima)';
+
+  @override
+  String get sinaisVitaisFormTemperatura => 'Temperatura (°C)';
+
+  @override
+  String get sinaisVitaisFormGlicemia => 'Glucemia (mg/dL)';
+
+  @override
+  String get sinaisVitaisFormFrequencia => 'Frecuencia cardíaca (bpm)';
+
+  @override
+  String get sinaisVitaisFormMedirCamara => 'Medir con la cámara';
+
+  @override
+  String get sinaisVitaisFormPeso => 'Peso (kg)';
+
+  @override
+  String get sinaisVitaisFormDataHora => 'Fecha y hora';
+
+  @override
+  String get sinaisVitaisFormNotas => 'Notas';
+
+  @override
+  String get sinaisVitaisHistoricoTitulo => 'Historial de signos vitales';
+
+  @override
+  String get sinaisVitaisHistorico7Dias => '7 días';
+
+  @override
+  String get sinaisVitaisHistorico30Dias => '30 días';
+
+  @override
+  String get sinaisVitaisHistoricoPressaoSistolica => 'Presión sistólica';
+
+  @override
+  String get sinaisVitaisHistoricoPressaoDiastolica => 'Presión diastólica';
+
+  @override
+  String get sinaisVitaisHistoricoTemperaturaTitulo => 'Temperatura';
+
+  @override
+  String get sinaisVitaisHistoricoGlicemia => 'Glucemia';
+
+  @override
+  String get sinaisVitaisHistoricoFrequenciaCardiaca => 'Frecuencia cardíaca';
+
+  @override
+  String get sinaisVitaisHistoricoPeso => 'Peso';
+
+  @override
+  String sinaisVitaisHistoricoMedia(String valor, String unidade) {
+    return 'Media: $valor $unidade';
+  }
+
+  @override
+  String get sinaisVitaisHistoricoSemRegistos =>
+      'Todavía no hay registros en este período.';
 }

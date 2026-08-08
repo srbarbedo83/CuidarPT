@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../frequencia_cardiaca/presentation/medir_frequencia_cardiaca_screen.dart';
 import '../providers/sinais_vitais_providers.dart';
 
@@ -65,19 +66,20 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
   }
 
   Future<void> _escolherDataHora() async {
+    final l10n = AppLocalizations.of(context);
     final data = await showDatePicker(
       context: context,
       initialDate: _timestamp,
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
-      helpText: 'Data do registo',
+      helpText: l10n.sinaisVitaisFormDataRegisto,
     );
     if (data == null || !mounted) return;
 
     final hora = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_timestamp),
-      helpText: 'Hora do registo',
+      helpText: l10n.sinaisVitaisFormHoraRegisto,
     );
     if (hora == null) return;
 
@@ -116,19 +118,22 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(_aEditar ? 'Editar sinais vitais' : 'Novos sinais vitais')),
+      appBar: AppBar(
+        title: Text(_aEditar ? l10n.sinaisVitaisFormEditarTitulo : l10n.sinaisVitaisFormNovoTitulo),
+      ),
       body: ListView(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
         children: [
-          Text('Pressão arterial (mmHg)', style: Theme.of(context).textTheme.titleSmall),
+          Text(l10n.sinaisVitaisFormPressaoTitulo, style: Theme.of(context).textTheme.titleSmall),
           const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
                 child: TextFormField(
                   controller: _sistolicaController,
-                  decoration: const InputDecoration(labelText: 'Sistólica (máxima)'),
+                  decoration: InputDecoration(labelText: l10n.sinaisVitaisFormSistolica),
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -136,7 +141,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
               Expanded(
                 child: TextFormField(
                   controller: _diastolicaController,
-                  decoration: const InputDecoration(labelText: 'Diastólica (mínima)'),
+                  decoration: InputDecoration(labelText: l10n.sinaisVitaisFormDiastolica),
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -145,13 +150,13 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
           const SizedBox(height: 16),
           TextFormField(
             controller: _temperaturaController,
-            decoration: const InputDecoration(labelText: 'Temperatura (°C)'),
+            decoration: InputDecoration(labelText: l10n.sinaisVitaisFormTemperatura),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
           const SizedBox(height: 16),
           TextFormField(
             controller: _glicemiaController,
-            decoration: const InputDecoration(labelText: 'Glicemia (mg/dL)'),
+            decoration: InputDecoration(labelText: l10n.sinaisVitaisFormGlicemia),
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 16),
@@ -161,7 +166,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
               Expanded(
                 child: TextFormField(
                   controller: _frequenciaCardiacaController,
-                  decoration: const InputDecoration(labelText: 'Frequência cardíaca (bpm)'),
+                  decoration: InputDecoration(labelText: l10n.sinaisVitaisFormFrequencia),
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -169,20 +174,20 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
               IconButton.filledTonal(
                 onPressed: _medirComCamara,
                 icon: const Icon(Icons.favorite_outline),
-                tooltip: 'Medir com a câmara',
+                tooltip: l10n.sinaisVitaisFormMedirCamara,
               ),
             ],
           ),
           const SizedBox(height: 16),
           TextFormField(
             controller: _pesoController,
-            decoration: const InputDecoration(labelText: 'Peso (kg)'),
+            decoration: InputDecoration(labelText: l10n.sinaisVitaisFormPeso),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
           const SizedBox(height: 16),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('Data e hora'),
+            title: Text(l10n.sinaisVitaisFormDataHora),
             subtitle: Text(DateFormat('dd/MM/yyyy HH:mm').format(_timestamp)),
             trailing: const Icon(Icons.calendar_today),
             onTap: _escolherDataHora,
@@ -190,7 +195,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
           const SizedBox(height: 8),
           TextFormField(
             controller: _notasController,
-            decoration: const InputDecoration(labelText: 'Notas'),
+            decoration: InputDecoration(labelText: l10n.sinaisVitaisFormNotas),
             maxLines: 3,
           ),
           const SizedBox(height: 24),
@@ -202,7 +207,7 @@ class _SinaisVitaisFormScreenState extends ConsumerState<SinaisVitaisFormScreen>
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Guardar'),
+                : Text(l10n.comumGuardar),
           ),
         ],
       ),
