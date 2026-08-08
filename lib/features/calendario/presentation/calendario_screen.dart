@@ -7,6 +7,7 @@ import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
@@ -53,13 +54,14 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final medicacoes = ref.watch(medicacaoListProvider(widget.idoso.id)).valueOrNull ?? const [];
     final consultas = ref.watch(consultaListProvider(widget.idoso.id)).valueOrNull ?? const [];
     final cuidados = ref.watch(cuidadoDiarioListProvider(widget.idoso.id)).valueOrNull ?? const [];
 
     List<EventoCalendario> eventosDoDiaSelecionado() {
       return _filtrar(
-        eventosDoDia(_selectedDay, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
+        eventosDoDia(l10n, _selectedDay, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
       );
     }
 
@@ -91,7 +93,7 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
             startingDayOfWeek: StartingDayOfWeek.monday,
             selectedDayPredicate: (dia) => _mesmoDia(dia, _selectedDay),
             eventLoader: (dia) => _filtrar(
-              eventosDoDia(dia, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
+              eventosDoDia(l10n, dia, medicacoes: medicacoes, consultas: consultas, cuidados: cuidados),
             ),
             onDaySelected: (selecionado, focado) {
               setState(() {

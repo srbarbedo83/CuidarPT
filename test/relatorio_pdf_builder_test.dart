@@ -7,6 +7,9 @@ import 'package:cuidarpt/data/models/registo_medicacao.dart';
 import 'package:cuidarpt/data/models/registo_sinais_vitais.dart';
 import 'package:cuidarpt/features/relatorios/services/relatorio_pdf_builder.dart';
 import 'package:cuidarpt/features/relatorios/services/seccoes_relatorio.dart';
+import 'package:cuidarpt/l10n/app_localizations_pt.dart';
+
+final _l10n = AppLocalizationsPt();
 
 void main() {
   test('construir gera bytes de um PDF válido, mesmo sem registos', () async {
@@ -18,6 +21,7 @@ void main() {
       ..atualizadoEm = agora;
 
     final bytes = await RelatorioPdfBuilder.construir(
+      l10n: _l10n,
       idoso: idoso,
       inicio: agora.subtract(const Duration(days: 7)),
       fim: agora,
@@ -62,6 +66,7 @@ void main() {
       ..timestamp = agora;
 
     final bytes = await RelatorioPdfBuilder.construir(
+      l10n: _l10n,
       idoso: idoso,
       inicio: agora.subtract(const Duration(days: 7)),
       fim: agora,
@@ -93,6 +98,7 @@ void main() {
       ..timestamp = agora;
 
     final comTudo = await RelatorioPdfBuilder.construir(
+      l10n: _l10n,
       idoso: idoso,
       inicio: agora.subtract(const Duration(days: 7)),
       fim: agora,
@@ -105,6 +111,7 @@ void main() {
     expect(String.fromCharCodes(comTudo.take(5)), '%PDF-');
 
     final semNenhuma = await RelatorioPdfBuilder.construir(
+      l10n: _l10n,
       idoso: idoso,
       inicio: agora.subtract(const Duration(days: 7)),
       fim: agora,

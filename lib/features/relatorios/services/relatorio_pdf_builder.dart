@@ -11,20 +11,19 @@ import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
-import '../../../l10n/app_localizations_pt.dart';
+import '../../../l10n/app_localizations.dart';
 import 'seccoes_relatorio.dart';
 
 final _formatoData = DateFormat('dd/MM/yyyy');
 final _formatoDataHora = DateFormat('dd/MM/yyyy HH:mm');
-// TODO(i18n): o PDF de relatório continua fixo em português; tradução
-// completa (incluindo esta função) fica para um lote dedicado a relatórios.
-final _l10nPdf = AppLocalizationsPt();
 
-/// Monta o relatório PDF de cuidados de um idoso para um período.
+/// Monta o relatório PDF de cuidados de um idoso para um período, no idioma
+/// atual da app (l10n).
 class RelatorioPdfBuilder {
   RelatorioPdfBuilder._();
 
   static Future<Uint8List> construir({
+    required AppLocalizations l10n,
     required Idoso idoso,
     required DateTime inicio,
     required DateTime fim,
@@ -46,24 +45,31 @@ class RelatorioPdfBuilder {
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         build: (context) => [
-          _cabecalho(idoso: idoso, inicio: inicio, fim: fim, cuidadorNome: cuidadorNome, logoBytes: logoBytes),
+          _cabecalho(
+            l10n: l10n,
+            idoso: idoso,
+            inicio: inicio,
+            fim: fim,
+            cuidadorNome: cuidadorNome,
+            logoBytes: logoBytes,
+          ),
           pw.SizedBox(height: 20),
-          _secaoMedicacao(medicacoesAtivas),
+          _secaoMedicacao(l10n, medicacoesAtivas),
           pw.SizedBox(height: 16),
-          _secaoConsultas(consultas),
+          _secaoConsultas(l10n, consultas),
           if (seccoes.contains(SeccaoRelatorio.sinaisVitais)) ...[
             pw.SizedBox(height: 16),
-            _secaoSinaisVitais(sinaisVitais),
+            _secaoSinaisVitais(l10n, sinaisVitais),
           ],
           if (seccoes.contains(SeccaoRelatorio.cuidados)) ...[
             pw.SizedBox(height: 16),
-            _secaoCuidados(cuidados),
+            _secaoCuidados(l10n, cuidados),
           ],
           if (seccoes.contains(SeccaoRelatorio.notas) &&
               idoso.notas != null &&
               idoso.notas!.isNotEmpty) ...[
             pw.SizedBox(height: 16),
-            _secaoNotas(idoso.notas!),
+            _secaoNotas(l10n, idoso.notas!),
           ],
         ],
       ),
@@ -73,6 +79,7 @@ class RelatorioPdfBuilder {
   }
 
   static pw.Widget _cabecalho({
+    required AppLocalizations l10n,
     required Idoso idoso,
     required DateTime inicio,
     required DateTime fim,
@@ -94,13 +101,14 @@ class RelatorioPdfBuilder {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
-                'Relatório de cuidados - ${idoso.nome}',
+                l10n.relatorioPdfTitulo(idoso.nome),
                 style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
               ),
               pw.SizedBox(height: 4),
-              pw.Text('Período: ${_formatoData.format(inicio)} a ${_formatoData.format(fim)}'),
-              pw.Text('Gerado em: ${_formatoDataHora.format(DateTime.now())}'),
-              if (cuidadorNome != null && cuidadorNome.isNotEmpty) pw.Text('Cuidador: $cuidadorNome'),
+              pw.Text(l10n.relatorioPdfPeriodo(_formatoData.format(inicio), _formatoData.format(fim))),
+              pw.Text(l10n.relatorioPdfGeradoEm(_formatoDataHora.format(DateTime.now()))),
+              if (cuidadorNome != null && cuidadorNome.isNotEmpty)
+                pw.Text(l10n.relatorioPdfCuidador(cuidadorNome)),
             ],
           ),
         ),
@@ -112,27 +120,33 @@ class RelatorioPdfBuilder {
     return pw.Text(titulo, style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold));
   }
 
-  static pw.Widget _secaoMedicacao(List<RegistoMedicacao> registos) {
+  static pw.Widget _secaoMedicacao(AppLocalizations l10n, List<RegistoMedicacao> registos) {
     if (registos.isEmpty) {
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [_tituloSeccao('Medicação atual'), pw.Text('Sem medicação ativa registada.')],
+        children: [_tituloSeccao(l10n.relatorioPdfMedicacaoTitulo), pw.Text(l10n.relatorioPdfSemMedicacao)],
       );
     }
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _tituloSeccao('Medicação atual'),
+        _tituloSeccao(l10n.relatorioPdfMedicacaoTitulo),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Medicamento', 'Dose', 'Via', 'Horários', 'Dias'],
+          headers: [
+            l10n.relatorioPdfColunaMedicamento,
+            l10n.relatorioPdfColunaDose,
+            l10n.relatorioPdfColunaVia,
+            l10n.relatorioPdfColunaHorarios,
+            l10n.relatorioPdfColunaDias,
+          ],
           data: registos
               .map((registo) => [
                     registo.nomeMedicamento,
                     registo.dose ?? '-',
                     registo.viaAdministracao ?? '-',
                     registo.horariosMinutos.map(formatarHorario).join(', '),
-                    formatarDiasSemana(_l10nPdf, registo.diasSemana),
+                    formatarDiasSemana(l10n, registo.diasSemana),
                   ])
               .toList(),
           cellStyle: const pw.TextStyle(fontSize: 10),
@@ -142,26 +156,35 @@ class RelatorioPdfBuilder {
     );
   }
 
-  static pw.Widget _secaoConsultas(List<RegistoConsulta> consultas) {
+  static pw.Widget _secaoConsultas(AppLocalizations l10n, List<RegistoConsulta> consultas) {
     if (consultas.isEmpty) {
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          _tituloSeccao('Consultas e tratamentos no período'),
-          pw.Text('Sem consultas ou tratamentos registados no período.'),
+          _tituloSeccao(l10n.relatorioPdfConsultasTitulo),
+          pw.Text(l10n.relatorioPdfSemConsultas),
         ],
       );
     }
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _tituloSeccao('Consultas e tratamentos no período'),
+        _tituloSeccao(l10n.relatorioPdfConsultasTitulo),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Tipo', 'Data', 'Especialidade/Tratamento', 'Local', 'Profissional', 'Notas'],
+          headers: [
+            l10n.relatorioPdfColunaTipo,
+            l10n.relatorioPdfColunaData,
+            l10n.relatorioPdfColunaEspecialidade,
+            l10n.relatorioPdfColunaLocal,
+            l10n.relatorioPdfColunaProfissional,
+            l10n.relatorioPdfColunaNotas,
+          ],
           data: consultas
               .map((consulta) => [
-                    consulta.tipo == TipoRegistoConsulta.tratamento ? 'Tratamento' : 'Consulta',
+                    consulta.tipo == TipoRegistoConsulta.tratamento
+                        ? l10n.consultaFormTipoTratamento
+                        : l10n.relatorioPdfTipoConsulta,
                     _formatoDataHora.format(consulta.dataHora),
                     consulta.especialidade,
                     consulta.local ?? '-',
@@ -176,27 +199,32 @@ class RelatorioPdfBuilder {
     );
   }
 
-  static pw.Widget _secaoCuidados(List<RegistoCuidadoDiario> cuidados) {
+  static pw.Widget _secaoCuidados(AppLocalizations l10n, List<RegistoCuidadoDiario> cuidados) {
     if (cuidados.isEmpty) {
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          _tituloSeccao('Cuidados diários no período'),
-          pw.Text('Sem cuidados diários registados no período.'),
+          _tituloSeccao(l10n.relatorioPdfCuidadosTitulo),
+          pw.Text(l10n.relatorioPdfSemCuidados),
         ],
       );
     }
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _tituloSeccao('Cuidados diários no período'),
+        _tituloSeccao(l10n.relatorioPdfCuidadosTitulo),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Data', 'Tipo', 'Humor', 'Nota'],
+          headers: [
+            l10n.relatorioPdfColunaData,
+            l10n.relatorioPdfColunaTipo,
+            l10n.tipoCuidadoHumor,
+            l10n.relatorioPdfColunaNota,
+          ],
           data: cuidados
               .map((registo) => [
                     _formatoDataHora.format(registo.timestamp),
-                    tipoCuidadoDiarioLabel(registo.tipo),
+                    tipoCuidadoDiarioLabel(l10n, registo.tipo),
                     registo.humorNivel != null ? '${registo.humorNivel}/5' : '-',
                     registo.notaRapida ?? '-',
                   ])
@@ -208,23 +236,30 @@ class RelatorioPdfBuilder {
     );
   }
 
-  static pw.Widget _secaoSinaisVitais(List<RegistoSinaisVitais> registos) {
+  static pw.Widget _secaoSinaisVitais(AppLocalizations l10n, List<RegistoSinaisVitais> registos) {
     if (registos.isEmpty) {
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          _tituloSeccao('Sinais vitais no período'),
-          pw.Text('Sem sinais vitais registados no período.'),
+          _tituloSeccao(l10n.relatorioPdfSinaisVitaisTitulo),
+          pw.Text(l10n.relatorioPdfSemSinaisVitais),
         ],
       );
     }
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _tituloSeccao('Sinais vitais no período'),
+        _tituloSeccao(l10n.relatorioPdfSinaisVitaisTitulo),
         pw.SizedBox(height: 6),
         pw.TableHelper.fromTextArray(
-          headers: ['Data', 'Pressão', 'Temp.', 'Glicemia', 'Freq. cardíaca', 'Peso'],
+          headers: [
+            l10n.relatorioPdfColunaData,
+            l10n.relatorioPdfColunaPressao,
+            l10n.relatorioPdfColunaTemp,
+            l10n.sinaisVitaisHistoricoGlicemia,
+            l10n.relatorioPdfColunaFreqCardiaca,
+            l10n.sinaisVitaisHistoricoPeso,
+          ],
           data: registos
               .map((registo) => [
                     _formatoDataHora.format(registo.timestamp),
@@ -244,11 +279,11 @@ class RelatorioPdfBuilder {
     );
   }
 
-  static pw.Widget _secaoNotas(String notas) {
+  static pw.Widget _secaoNotas(AppLocalizations l10n, String notas) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _tituloSeccao('Notas'),
+        _tituloSeccao(l10n.sinaisVitaisFormNotas),
         pw.SizedBox(height: 6),
         pw.Text(notas),
       ],

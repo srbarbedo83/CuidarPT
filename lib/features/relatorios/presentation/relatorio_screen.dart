@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_sinais_vitais.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/gradiente_premium.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../avaliacao/presentation/convite_avaliacao.dart';
@@ -33,8 +34,9 @@ Future<List<String>> _escolherDestinatarios(
   required String? emailProprio,
   required List<String> emailsContactos,
 }) async {
+  final l10n = AppLocalizations.of(context);
   final opcoes = <String, String>{
-    if (emailProprio != null && emailProprio.isNotEmpty) emailProprio: 'Eu mesmo ($emailProprio)',
+    if (emailProprio != null && emailProprio.isNotEmpty) emailProprio: l10n.relatorioEuMesmo(emailProprio),
     for (final email in emailsContactos) email: email,
   };
   if (opcoes.length < 2) return opcoes.keys.toList();
@@ -44,7 +46,7 @@ Future<List<String>> _escolherDestinatarios(
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setStateDialog) => AlertDialog(
-        title: const Text('Partilhar com quem?'),
+        title: Text(l10n.relatorioPartilharTitulo),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView(
@@ -68,11 +70,11 @@ Future<List<String>> _escolherDestinatarios(
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(<String>{}),
-            child: const Text('Nenhum'),
+            child: Text(l10n.relatorioNenhum),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(selecionados),
-            child: const Text('Continuar'),
+            child: Text(l10n.relatorioContinuar),
           ),
         ],
       ),
@@ -131,11 +133,11 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
   }
 
   Future<void> _selecionarPersonalizado(bool permitido) async {
+    final l10n = AppLocalizations.of(context);
     if (!permitido) {
       await mostrarLimiteAtingido(
         context,
-        mensagem: 'Escolher um período personalizado é uma funcionalidade Premium. '
-            'No plano Grátis, tens os últimos 7 ou 30 dias.',
+        mensagem: l10n.relatorioPeriodoPersonalizadoUpsell,
       );
       return;
     }
@@ -145,7 +147,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
       firstDate: DateTime(2000),
       lastDate: agora,
       initialDateRange: _intervaloPersonalizado,
-      helpText: 'Período do relatório',
+      helpText: l10n.relatorioPeriodoHelpText,
     );
     if (intervalo != null) {
       setState(() {
@@ -159,7 +161,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
     if (!permitido) {
       await mostrarLimiteAtingido(
         context,
-        mensagem: 'Personalizar o relatório com logótipo é uma funcionalidade Premium.',
+        mensagem: AppLocalizations.of(context).relatorioLogoUpsell,
       );
       return;
     }
@@ -181,6 +183,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
   }
 
   Future<void> _gerarRelatorio(bool permitePersonalizacao) async {
+    final l10n = AppLocalizations.of(context);
     setState(() => _aGerar = true);
     try {
       if (permitePersonalizacao) {
@@ -230,6 +233,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             nomeFicheiro: 'relatorio_${widget.idoso.nome.replaceAll(' ', '_')}.pdf',
             emailsPartilha: emailsPartilha,
             gerarPdf: (_) => RelatorioPdfBuilder.construir(
+              l10n: l10n,
               idoso: widget.idoso,
               inicio: intervalo.inicio,
               fim: intervalo.fim,
@@ -255,37 +259,38 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final limites = ref.watch(featureLimitsProvider);
     final intervalo = _calcularIntervalo();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Gerar relatório')),
+      appBar: AppBar(title: Text(l10n.relatorioTitulo)),
       body: ListView(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
         children: [
-          Text('Período', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.relatorioPeriodoTitulo, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             children: [
               ChoiceChip(
-                label: const Text('Hoje'),
+                label: Text(l10n.relatorioPeriodoHoje),
                 selected: _periodo == PeriodoRelatorio.hoje,
                 onSelected: (_) => setState(() => _periodo = PeriodoRelatorio.hoje),
               ),
               ChoiceChip(
-                label: const Text('Últimos 7 dias'),
+                label: Text(l10n.relatorioPeriodoUltimos7Dias),
                 selected: _periodo == PeriodoRelatorio.ultimos7Dias,
                 onSelected: (_) => setState(() => _periodo = PeriodoRelatorio.ultimos7Dias),
               ),
               ChoiceChip(
-                label: const Text('Últimos 30 dias'),
+                label: Text(l10n.relatorioPeriodoUltimos30Dias),
                 selected: _periodo == PeriodoRelatorio.ultimos30Dias,
                 onSelected: (_) => setState(() => _periodo = PeriodoRelatorio.ultimos30Dias),
               ),
               ChoiceChip(
                 avatar: limites.permiteHistoricoIlimitado ? null : const Icon(Icons.star_outline, size: 16),
-                label: const Text('Período personalizado'),
+                label: Text(l10n.relatorioPeriodoPersonalizado),
                 selected: _periodo == PeriodoRelatorio.personalizado,
                 onSelected: (_) => _selecionarPersonalizado(limites.permiteHistoricoIlimitado),
               ),
@@ -293,24 +298,26 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${DateFormat('dd/MM/yyyy').format(intervalo.inicio)} a '
-            '${DateFormat('dd/MM/yyyy').format(intervalo.fim)}',
+            l10n.relatorioIntervalo(
+              DateFormat('dd/MM/yyyy').format(intervalo.inicio),
+              DateFormat('dd/MM/yyyy').format(intervalo.fim),
+            ),
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 24),
           Text(
-            'Secções a incluir',
+            l10n.relatorioSeccoesTitulo,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           Text(
-            'Medicação e consultas fazem sempre parte do relatório.',
+            l10n.relatorioSeccoesDescricao,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           for (final seccao in SeccaoRelatorio.values)
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,
               value: _seccoes.contains(seccao),
-              title: Text(labelSeccaoRelatorio(seccao)),
+              title: Text(labelSeccaoRelatorio(l10n, seccao)),
               onChanged: (marcado) => setState(() {
                 if (marcado == true) {
                   _seccoes.add(seccao);
@@ -322,7 +329,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
           const SizedBox(height: 24),
           Row(
             children: [
-              Expanded(child: Text('Personalização', style: Theme.of(context).textTheme.titleMedium)),
+              Expanded(child: Text(l10n.relatorioPersonalizacaoTitulo, style: Theme.of(context).textTheme.titleMedium)),
               if (!limites.permitePdfPersonalizado) const Icon(Icons.star_outline, size: 18),
             ],
           ),
@@ -331,13 +338,13 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             const Center(child: CircularProgressIndicator())
           else if (!limites.permitePdfPersonalizado)
             Text(
-              'Adicionar o teu nome e logótipo ao relatório é uma funcionalidade Premium.',
+              l10n.relatorioPersonalizacaoUpsell,
               style: Theme.of(context).textTheme.bodySmall,
             )
           else ...[
             TextFormField(
               controller: _cuidadorNomeController,
-              decoration: const InputDecoration(labelText: 'Nome do cuidador profissional (opcional)'),
+              decoration: InputDecoration(labelText: l10n.relatorioNomeCuidador),
             ),
             const SizedBox(height: 12),
             Row(
@@ -350,7 +357,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
                 const SizedBox(width: 12),
                 TextButton(
                   onPressed: () => _escolherLogo(limites.permitePdfPersonalizado),
-                  child: Text(_logoPath == null ? 'Adicionar logótipo' : 'Alterar logótipo'),
+                  child: Text(_logoPath == null ? l10n.relatorioAdicionarLogo : l10n.relatorioAlterarLogo),
                 ),
               ],
             ),
@@ -361,7 +368,7 @@ class _RelatorioScreenState extends ConsumerState<RelatorioScreen> {
             icon: _aGerar
                 ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
                 : const GradientIcon(Icons.picture_as_pdf_outlined),
-            label: const GradientText('Gerar relatório', style: TextStyle(fontWeight: FontWeight.w600)),
+            label: GradientText(l10n.relatorioGerarBotao, style: const TextStyle(fontWeight: FontWeight.w600)),
           ),
         ],
       ),

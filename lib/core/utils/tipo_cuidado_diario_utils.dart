@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/registo_cuidado_diario.dart';
+import '../../l10n/app_localizations.dart';
 
-String tipoCuidadoDiarioLabel(TipoCuidadoDiario tipo) {
+String tipoCuidadoDiarioLabel(AppLocalizations l10n, TipoCuidadoDiario tipo) {
   switch (tipo) {
     case TipoCuidadoDiario.higiene:
-      return 'Higiene';
+      return l10n.rotinaCategoriaHigiene;
     case TipoCuidadoDiario.alimentacao:
-      return 'Alimentação';
+      return l10n.rotinaCategoriaAlimentacao;
     case TipoCuidadoDiario.humor:
-      return 'Humor';
+      return l10n.tipoCuidadoHumor;
     case TipoCuidadoDiario.sono:
-      return 'Sono';
+      return l10n.rotinaCategoriaSono;
     case TipoCuidadoDiario.atividade:
-      return 'Atividade';
+      return l10n.rotinaCategoriaAtividade;
     case TipoCuidadoDiario.outro:
-      return 'Outro';
+      return l10n.tipoCuidadoOutro;
   }
 }
 

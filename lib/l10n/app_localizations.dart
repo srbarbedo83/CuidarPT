@@ -1617,6 +1617,336 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ligar'**
   String get profissionaisLigarTooltip;
+
+  /// No description provided for @tipoCuidadoHumor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Humor'**
+  String get tipoCuidadoHumor;
+
+  /// No description provided for @tipoCuidadoOutro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Outro'**
+  String get tipoCuidadoOutro;
+
+  /// No description provided for @relatorioSeccaoCuidados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rotina / cuidados diários'**
+  String get relatorioSeccaoCuidados;
+
+  /// No description provided for @relatorioSeccaoNotas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notas persistentes'**
+  String get relatorioSeccaoNotas;
+
+  /// No description provided for @relatorioPartilharTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Partilhar com quem?'**
+  String get relatorioPartilharTitulo;
+
+  /// No description provided for @relatorioEuMesmo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eu mesmo ({email})'**
+  String relatorioEuMesmo(String email);
+
+  /// No description provided for @relatorioNenhum.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum'**
+  String get relatorioNenhum;
+
+  /// No description provided for @relatorioContinuar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Continuar'**
+  String get relatorioContinuar;
+
+  /// No description provided for @relatorioTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar relatório'**
+  String get relatorioTitulo;
+
+  /// No description provided for @relatorioPeriodoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Período'**
+  String get relatorioPeriodoTitulo;
+
+  /// No description provided for @relatorioPeriodoHoje.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hoje'**
+  String get relatorioPeriodoHoje;
+
+  /// No description provided for @relatorioPeriodoUltimos7Dias.
+  ///
+  /// In pt, this message translates to:
+  /// **'Últimos 7 dias'**
+  String get relatorioPeriodoUltimos7Dias;
+
+  /// No description provided for @relatorioPeriodoUltimos30Dias.
+  ///
+  /// In pt, this message translates to:
+  /// **'Últimos 30 dias'**
+  String get relatorioPeriodoUltimos30Dias;
+
+  /// No description provided for @relatorioPeriodoPersonalizado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Período personalizado'**
+  String get relatorioPeriodoPersonalizado;
+
+  /// No description provided for @relatorioPeriodoPersonalizadoUpsell.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher um período personalizado é uma funcionalidade Premium. No plano Grátis, tens os últimos 7 ou 30 dias.'**
+  String get relatorioPeriodoPersonalizadoUpsell;
+
+  /// No description provided for @relatorioPeriodoHelpText.
+  ///
+  /// In pt, this message translates to:
+  /// **'Período do relatório'**
+  String get relatorioPeriodoHelpText;
+
+  /// No description provided for @relatorioIntervalo.
+  ///
+  /// In pt, this message translates to:
+  /// **'{inicio} a {fim}'**
+  String relatorioIntervalo(String inicio, String fim);
+
+  /// No description provided for @relatorioSeccoesTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Secções a incluir'**
+  String get relatorioSeccoesTitulo;
+
+  /// No description provided for @relatorioSeccoesDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicação e consultas fazem sempre parte do relatório.'**
+  String get relatorioSeccoesDescricao;
+
+  /// No description provided for @relatorioPersonalizacaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Personalização'**
+  String get relatorioPersonalizacaoTitulo;
+
+  /// No description provided for @relatorioPersonalizacaoUpsell.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar o teu nome e logótipo ao relatório é uma funcionalidade Premium.'**
+  String get relatorioPersonalizacaoUpsell;
+
+  /// No description provided for @relatorioNomeCuidador.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do cuidador profissional (opcional)'**
+  String get relatorioNomeCuidador;
+
+  /// No description provided for @relatorioAdicionarLogo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar logótipo'**
+  String get relatorioAdicionarLogo;
+
+  /// No description provided for @relatorioAlterarLogo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar logótipo'**
+  String get relatorioAlterarLogo;
+
+  /// No description provided for @relatorioLogoUpsell.
+  ///
+  /// In pt, this message translates to:
+  /// **'Personalizar o relatório com logótipo é uma funcionalidade Premium.'**
+  String get relatorioLogoUpsell;
+
+  /// No description provided for @relatorioGerarBotao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar relatório'**
+  String get relatorioGerarBotao;
+
+  /// No description provided for @relatorioPreviewTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Relatório'**
+  String get relatorioPreviewTitulo;
+
+  /// No description provided for @relatorioPdfTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Relatório de cuidados - {nome}'**
+  String relatorioPdfTitulo(String nome);
+
+  /// No description provided for @relatorioPdfPeriodo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Período: {inicio} a {fim}'**
+  String relatorioPdfPeriodo(String inicio, String fim);
+
+  /// No description provided for @relatorioPdfGeradoEm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerado em: {dataHora}'**
+  String relatorioPdfGeradoEm(String dataHora);
+
+  /// No description provided for @relatorioPdfCuidador.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cuidador: {nome}'**
+  String relatorioPdfCuidador(String nome);
+
+  /// No description provided for @relatorioPdfMedicacaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicação atual'**
+  String get relatorioPdfMedicacaoTitulo;
+
+  /// No description provided for @relatorioPdfSemMedicacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem medicação ativa registada.'**
+  String get relatorioPdfSemMedicacao;
+
+  /// No description provided for @relatorioPdfColunaMedicamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicamento'**
+  String get relatorioPdfColunaMedicamento;
+
+  /// No description provided for @relatorioPdfColunaDose.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dose'**
+  String get relatorioPdfColunaDose;
+
+  /// No description provided for @relatorioPdfColunaVia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Via'**
+  String get relatorioPdfColunaVia;
+
+  /// No description provided for @relatorioPdfColunaHorarios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Horários'**
+  String get relatorioPdfColunaHorarios;
+
+  /// No description provided for @relatorioPdfColunaDias.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dias'**
+  String get relatorioPdfColunaDias;
+
+  /// No description provided for @relatorioPdfConsultasTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultas e tratamentos no período'**
+  String get relatorioPdfConsultasTitulo;
+
+  /// No description provided for @relatorioPdfSemConsultas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem consultas ou tratamentos registados no período.'**
+  String get relatorioPdfSemConsultas;
+
+  /// No description provided for @relatorioPdfColunaTipo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo'**
+  String get relatorioPdfColunaTipo;
+
+  /// No description provided for @relatorioPdfColunaData.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data'**
+  String get relatorioPdfColunaData;
+
+  /// No description provided for @relatorioPdfColunaEspecialidade.
+  ///
+  /// In pt, this message translates to:
+  /// **'Especialidade/Tratamento'**
+  String get relatorioPdfColunaEspecialidade;
+
+  /// No description provided for @relatorioPdfColunaLocal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local'**
+  String get relatorioPdfColunaLocal;
+
+  /// No description provided for @relatorioPdfColunaProfissional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Profissional'**
+  String get relatorioPdfColunaProfissional;
+
+  /// No description provided for @relatorioPdfColunaNotas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notas'**
+  String get relatorioPdfColunaNotas;
+
+  /// No description provided for @relatorioPdfTipoConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consulta'**
+  String get relatorioPdfTipoConsulta;
+
+  /// No description provided for @relatorioPdfCuidadosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cuidados diários no período'**
+  String get relatorioPdfCuidadosTitulo;
+
+  /// No description provided for @relatorioPdfSemCuidados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem cuidados diários registados no período.'**
+  String get relatorioPdfSemCuidados;
+
+  /// No description provided for @relatorioPdfColunaNota.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nota'**
+  String get relatorioPdfColunaNota;
+
+  /// No description provided for @relatorioPdfSinaisVitaisTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sinais vitais no período'**
+  String get relatorioPdfSinaisVitaisTitulo;
+
+  /// No description provided for @relatorioPdfSemSinaisVitais.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem sinais vitais registados no período.'**
+  String get relatorioPdfSemSinaisVitais;
+
+  /// No description provided for @relatorioPdfColunaPressao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pressão'**
+  String get relatorioPdfColunaPressao;
+
+  /// No description provided for @relatorioPdfColunaTemp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Temp.'**
+  String get relatorioPdfColunaTemp;
+
+  /// No description provided for @relatorioPdfColunaFreqCardiaca.
+  ///
+  /// In pt, this message translates to:
+  /// **'Freq. cardíaca'**
+  String get relatorioPdfColunaFreqCardiaca;
 }
 
 class _AppLocalizationsDelegate

@@ -4,6 +4,9 @@ import 'package:cuidarpt/data/models/registo_consulta.dart';
 import 'package:cuidarpt/data/models/registo_cuidado_diario.dart';
 import 'package:cuidarpt/data/models/registo_medicacao.dart';
 import 'package:cuidarpt/features/calendario/services/eventos_calendario.dart';
+import 'package:cuidarpt/l10n/app_localizations_pt.dart';
+
+final _l10n = AppLocalizationsPt();
 
 void main() {
   final agora = DateTime.now();
@@ -31,7 +34,7 @@ void main() {
   group('eventosDoDia — medicação', () {
     test('medicação diária (sem dias específicos) aparece em qualquer dia', () {
       final segunda = DateTime(2026, 7, 6); // segunda-feira
-      final eventos = eventosDoDia(
+      final eventos = eventosDoDia(_l10n, 
         segunda,
         medicacoes: [medicacao()],
         consultas: const [],
@@ -47,16 +50,16 @@ void main() {
       final terca = DateTime(2026, 7, 7);
       final registo = medicacao(diasSemana: [DateTime.monday]);
 
-      expect(eventosDoDia(segunda, medicacoes: [registo], consultas: const [], cuidados: const []),
+      expect(eventosDoDia(_l10n, segunda, medicacoes: [registo], consultas: const [], cuidados: const []),
           hasLength(1));
-      expect(eventosDoDia(terca, medicacoes: [registo], consultas: const [], cuidados: const []), isEmpty);
+      expect(eventosDoDia(_l10n, terca, medicacoes: [registo], consultas: const [], cuidados: const []), isEmpty);
     });
 
     test('medicação pausada (ativo=false) não aparece', () {
       final segunda = DateTime(2026, 7, 6);
       final registo = medicacao(ativo: false);
 
-      expect(eventosDoDia(segunda, medicacoes: [registo], consultas: const [], cuidados: const []), isEmpty);
+      expect(eventosDoDia(_l10n, segunda, medicacoes: [registo], consultas: const [], cuidados: const []), isEmpty);
     });
 
     test('medicação fora do período dataInicio/dataFim não aparece', () {
@@ -66,14 +69,14 @@ void main() {
         dataFim: DateTime(2026, 8, 31),
       );
 
-      expect(eventosDoDia(dia, medicacoes: [registo], consultas: const [], cuidados: const []), isEmpty);
+      expect(eventosDoDia(_l10n, dia, medicacoes: [registo], consultas: const [], cuidados: const []), isEmpty);
     });
 
     test('um evento por cada horário do dia', () {
       final segunda = DateTime(2026, 7, 6);
       final registo = medicacao(horariosMinutos: [480, 1200]);
 
-      final eventos = eventosDoDia(segunda, medicacoes: [registo], consultas: const [], cuidados: const []);
+      final eventos = eventosDoDia(_l10n, segunda, medicacoes: [registo], consultas: const [], cuidados: const []);
 
       expect(eventos, hasLength(2));
       expect(eventos.map((e) => e.subtitulo), containsAll(['08:00', '20:00']));
@@ -92,11 +95,11 @@ void main() {
         ..atualizadoEm = agora;
 
       expect(
-        eventosDoDia(dia, medicacoes: const [], consultas: [consulta], cuidados: const []),
+        eventosDoDia(_l10n, dia, medicacoes: const [], consultas: [consulta], cuidados: const []),
         hasLength(1),
       );
       expect(
-        eventosDoDia(DateTime(2026, 7, 7), medicacoes: const [], consultas: [consulta], cuidados: const []),
+        eventosDoDia(_l10n, DateTime(2026, 7, 7), medicacoes: const [], consultas: [consulta], cuidados: const []),
         isEmpty,
       );
     });
@@ -113,11 +116,11 @@ void main() {
         ..atualizadoEm = agora;
 
       expect(
-        eventosDoDia(DateTime(2026, 7, 10), medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        eventosDoDia(_l10n, DateTime(2026, 7, 10), medicacoes: const [], consultas: [tratamento], cuidados: const []),
         hasLength(1),
       );
       expect(
-        eventosDoDia(DateTime(2026, 7, 5), medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        eventosDoDia(_l10n, DateTime(2026, 7, 5), medicacoes: const [], consultas: [tratamento], cuidados: const []),
         isEmpty,
       );
     });
@@ -137,11 +140,11 @@ void main() {
         ..atualizadoEm = agora;
 
       expect(
-        eventosDoDia(segunda, medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        eventosDoDia(_l10n, segunda, medicacoes: const [], consultas: [tratamento], cuidados: const []),
         hasLength(1),
       );
       expect(
-        eventosDoDia(terca, medicacoes: const [], consultas: [tratamento], cuidados: const []),
+        eventosDoDia(_l10n, terca, medicacoes: const [], consultas: [tratamento], cuidados: const []),
         isEmpty,
       );
     });
@@ -154,7 +157,7 @@ void main() {
         ..tipo = TipoCuidadoDiario.higiene
         ..timestamp = DateTime(2026, 7, 6, 9);
 
-      final eventos = eventosDoDia(dia, medicacoes: const [], consultas: const [], cuidados: [cuidado]);
+      final eventos = eventosDoDia(_l10n, dia, medicacoes: const [], consultas: const [], cuidados: [cuidado]);
 
       expect(eventos, hasLength(1));
       expect(eventos.first.tipo, TipoEventoCalendario.cuidado);

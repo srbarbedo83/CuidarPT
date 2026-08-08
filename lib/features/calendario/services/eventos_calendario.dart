@@ -5,6 +5,7 @@ import '../../../core/utils/tipo_cuidado_diario_utils.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../l10n/app_localizations.dart';
 
 enum TipoEventoCalendario { medicacao, consulta, tratamento, cuidado }
 
@@ -71,6 +72,7 @@ bool _medicacaoAtivaNoDia(RegistoMedicacao medicacao, DateTime dia) {
 /// Calcula os eventos (medicação, consultas, cuidados diários) que caem em
 /// [dia], para alimentar o calendário mensal.
 List<EventoCalendario> eventosDoDia(
+  AppLocalizations l10n,
   DateTime dia, {
   required List<RegistoMedicacao> medicacoes,
   required List<RegistoConsulta> consultas,
@@ -113,7 +115,7 @@ List<EventoCalendario> eventosDoDia(
     eventos.add(
       EventoCalendario(
         tipo: TipoEventoCalendario.cuidado,
-        titulo: tipoCuidadoDiarioLabel(cuidado.tipo),
+        titulo: tipoCuidadoDiarioLabel(l10n, cuidado.tipo),
         subtitulo: cuidado.notaRapida ?? '',
         registoId: cuidado.id,
       ),

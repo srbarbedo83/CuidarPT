@@ -882,4 +882,190 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get profissionaisLigarTooltip => 'Llamar';
+
+  @override
+  String get tipoCuidadoHumor => 'Ánimo';
+
+  @override
+  String get tipoCuidadoOutro => 'Otro';
+
+  @override
+  String get relatorioSeccaoCuidados => 'Rutina / cuidados diarios';
+
+  @override
+  String get relatorioSeccaoNotas => 'Notas persistentes';
+
+  @override
+  String get relatorioPartilharTitulo => '¿Compartir con quién?';
+
+  @override
+  String relatorioEuMesmo(String email) {
+    return 'Yo mismo ($email)';
+  }
+
+  @override
+  String get relatorioNenhum => 'Ninguno';
+
+  @override
+  String get relatorioContinuar => 'Continuar';
+
+  @override
+  String get relatorioTitulo => 'Generar informe';
+
+  @override
+  String get relatorioPeriodoTitulo => 'Período';
+
+  @override
+  String get relatorioPeriodoHoje => 'Hoy';
+
+  @override
+  String get relatorioPeriodoUltimos7Dias => 'Últimos 7 días';
+
+  @override
+  String get relatorioPeriodoUltimos30Dias => 'Últimos 30 días';
+
+  @override
+  String get relatorioPeriodoPersonalizado => 'Período personalizado';
+
+  @override
+  String get relatorioPeriodoPersonalizadoUpsell =>
+      'Elegir un período personalizado es una función Premium. En el plan Gratis, tienes los últimos 7 o 30 días.';
+
+  @override
+  String get relatorioPeriodoHelpText => 'Período del informe';
+
+  @override
+  String relatorioIntervalo(String inicio, String fim) {
+    return '$inicio a $fim';
+  }
+
+  @override
+  String get relatorioSeccoesTitulo => 'Secciones a incluir';
+
+  @override
+  String get relatorioSeccoesDescricao =>
+      'La medicación y las citas siempre forman parte del informe.';
+
+  @override
+  String get relatorioPersonalizacaoTitulo => 'Personalización';
+
+  @override
+  String get relatorioPersonalizacaoUpsell =>
+      'Añadir tu nombre y logotipo al informe es una función Premium.';
+
+  @override
+  String get relatorioNomeCuidador =>
+      'Nombre del cuidador profesional (opcional)';
+
+  @override
+  String get relatorioAdicionarLogo => 'Añadir logotipo';
+
+  @override
+  String get relatorioAlterarLogo => 'Cambiar logotipo';
+
+  @override
+  String get relatorioLogoUpsell =>
+      'Personalizar el informe con un logotipo es una función Premium.';
+
+  @override
+  String get relatorioGerarBotao => 'Generar informe';
+
+  @override
+  String get relatorioPreviewTitulo => 'Informe';
+
+  @override
+  String relatorioPdfTitulo(String nome) {
+    return 'Informe de cuidados - $nome';
+  }
+
+  @override
+  String relatorioPdfPeriodo(String inicio, String fim) {
+    return 'Período: $inicio a $fim';
+  }
+
+  @override
+  String relatorioPdfGeradoEm(String dataHora) {
+    return 'Generado el: $dataHora';
+  }
+
+  @override
+  String relatorioPdfCuidador(String nome) {
+    return 'Cuidador: $nome';
+  }
+
+  @override
+  String get relatorioPdfMedicacaoTitulo => 'Medicación actual';
+
+  @override
+  String get relatorioPdfSemMedicacao => 'Sin medicación activa registrada.';
+
+  @override
+  String get relatorioPdfColunaMedicamento => 'Medicamento';
+
+  @override
+  String get relatorioPdfColunaDose => 'Dosis';
+
+  @override
+  String get relatorioPdfColunaVia => 'Vía';
+
+  @override
+  String get relatorioPdfColunaHorarios => 'Horarios';
+
+  @override
+  String get relatorioPdfColunaDias => 'Días';
+
+  @override
+  String get relatorioPdfConsultasTitulo =>
+      'Citas y tratamientos en el período';
+
+  @override
+  String get relatorioPdfSemConsultas =>
+      'Sin citas ni tratamientos registrados en el período.';
+
+  @override
+  String get relatorioPdfColunaTipo => 'Tipo';
+
+  @override
+  String get relatorioPdfColunaData => 'Fecha';
+
+  @override
+  String get relatorioPdfColunaEspecialidade => 'Especialidad/Tratamiento';
+
+  @override
+  String get relatorioPdfColunaLocal => 'Lugar';
+
+  @override
+  String get relatorioPdfColunaProfissional => 'Profesional';
+
+  @override
+  String get relatorioPdfColunaNotas => 'Notas';
+
+  @override
+  String get relatorioPdfTipoConsulta => 'Cita';
+
+  @override
+  String get relatorioPdfCuidadosTitulo => 'Cuidados diarios en el período';
+
+  @override
+  String get relatorioPdfSemCuidados =>
+      'Sin cuidados diarios registrados en el período.';
+
+  @override
+  String get relatorioPdfColunaNota => 'Nota';
+
+  @override
+  String get relatorioPdfSinaisVitaisTitulo => 'Signos vitales en el período';
+
+  @override
+  String get relatorioPdfSemSinaisVitais =>
+      'Sin signos vitales registrados en el período.';
+
+  @override
+  String get relatorioPdfColunaPressao => 'Presión';
+
+  @override
+  String get relatorioPdfColunaTemp => 'Temp.';
+
+  @override
+  String get relatorioPdfColunaFreqCardiaca => 'Frec. cardíaca';
 }

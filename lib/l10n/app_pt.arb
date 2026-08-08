@@ -352,5 +352,82 @@
   "profissionaisInstituicaoHint": "Ex.: Hospital, clínica, farmácia",
   "profissionaisContacto": "Contacto",
   "profissionaisVazio": "Ainda não há profissionais registados. Ficam aqui automaticamente à medida que preenches o nome do médico/profissional numa consulta ou tratamento.",
-  "profissionaisLigarTooltip": "Ligar"
+  "profissionaisLigarTooltip": "Ligar",
+
+  "tipoCuidadoHumor": "Humor",
+  "tipoCuidadoOutro": "Outro",
+
+  "relatorioSeccaoCuidados": "Rotina / cuidados diários",
+  "relatorioSeccaoNotas": "Notas persistentes",
+
+  "relatorioPartilharTitulo": "Partilhar com quem?",
+  "relatorioEuMesmo": "Eu mesmo ({email})",
+  "@relatorioEuMesmo": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "relatorioNenhum": "Nenhum",
+  "relatorioContinuar": "Continuar",
+  "relatorioTitulo": "Gerar relatório",
+  "relatorioPeriodoTitulo": "Período",
+  "relatorioPeriodoHoje": "Hoje",
+  "relatorioPeriodoUltimos7Dias": "Últimos 7 dias",
+  "relatorioPeriodoUltimos30Dias": "Últimos 30 dias",
+  "relatorioPeriodoPersonalizado": "Período personalizado",
+  "relatorioPeriodoPersonalizadoUpsell": "Escolher um período personalizado é uma funcionalidade Premium. No plano Grátis, tens os últimos 7 ou 30 dias.",
+  "relatorioPeriodoHelpText": "Período do relatório",
+  "relatorioIntervalo": "{inicio} a {fim}",
+  "@relatorioIntervalo": {
+    "placeholders": { "inicio": { "type": "String" }, "fim": { "type": "String" } }
+  },
+  "relatorioSeccoesTitulo": "Secções a incluir",
+  "relatorioSeccoesDescricao": "Medicação e consultas fazem sempre parte do relatório.",
+  "relatorioPersonalizacaoTitulo": "Personalização",
+  "relatorioPersonalizacaoUpsell": "Adicionar o teu nome e logótipo ao relatório é uma funcionalidade Premium.",
+  "relatorioNomeCuidador": "Nome do cuidador profissional (opcional)",
+  "relatorioAdicionarLogo": "Adicionar logótipo",
+  "relatorioAlterarLogo": "Alterar logótipo",
+  "relatorioLogoUpsell": "Personalizar o relatório com logótipo é uma funcionalidade Premium.",
+  "relatorioGerarBotao": "Gerar relatório",
+  "relatorioPreviewTitulo": "Relatório",
+
+  "relatorioPdfTitulo": "Relatório de cuidados - {nome}",
+  "@relatorioPdfTitulo": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "relatorioPdfPeriodo": "Período: {inicio} a {fim}",
+  "@relatorioPdfPeriodo": {
+    "placeholders": { "inicio": { "type": "String" }, "fim": { "type": "String" } }
+  },
+  "relatorioPdfGeradoEm": "Gerado em: {dataHora}",
+  "@relatorioPdfGeradoEm": {
+    "placeholders": { "dataHora": { "type": "String" } }
+  },
+  "relatorioPdfCuidador": "Cuidador: {nome}",
+  "@relatorioPdfCuidador": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "relatorioPdfMedicacaoTitulo": "Medicação atual",
+  "relatorioPdfSemMedicacao": "Sem medicação ativa registada.",
+  "relatorioPdfColunaMedicamento": "Medicamento",
+  "relatorioPdfColunaDose": "Dose",
+  "relatorioPdfColunaVia": "Via",
+  "relatorioPdfColunaHorarios": "Horários",
+  "relatorioPdfColunaDias": "Dias",
+  "relatorioPdfConsultasTitulo": "Consultas e tratamentos no período",
+  "relatorioPdfSemConsultas": "Sem consultas ou tratamentos registados no período.",
+  "relatorioPdfColunaTipo": "Tipo",
+  "relatorioPdfColunaData": "Data",
+  "relatorioPdfColunaEspecialidade": "Especialidade/Tratamento",
+  "relatorioPdfColunaLocal": "Local",
+  "relatorioPdfColunaProfissional": "Profissional",
+  "relatorioPdfColunaNotas": "Notas",
+  "relatorioPdfTipoConsulta": "Consulta",
+  "relatorioPdfCuidadosTitulo": "Cuidados diários no período",
+  "relatorioPdfSemCuidados": "Sem cuidados diários registados no período.",
+  "relatorioPdfColunaNota": "Nota",
+  "relatorioPdfSinaisVitaisTitulo": "Sinais vitais no período",
+  "relatorioPdfSemSinaisVitais": "Sem sinais vitais registados no período.",
+  "relatorioPdfColunaPressao": "Pressão",
+  "relatorioPdfColunaTemp": "Temp.",
+  "relatorioPdfColunaFreqCardiaca": "Freq. cardíaca"
 }
