@@ -111,6 +111,7 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
           }
           return ListView(
             children: [
+              _AcessoRapidoGlobal(idosos: idosos),
               _SeccaoLembretes(idosos: idosos),
               for (var indice = 0; indice < idosos.length; indice++)
                 _IdosoCardDestacado(
@@ -343,8 +344,6 @@ class _IdosoCardDestacado extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                _AcoesRapidasIdoso(idoso: idoso),
               ],
             ),
           ),
@@ -354,74 +353,125 @@ class _IdosoCardDestacado extends StatelessWidget {
   }
 }
 
-/// Fila de ações rápidas do idoso (registar/consultar sem abrir o perfil
-/// inteiro), no mesmo espírito simples e direto de outras apps de cuidados:
-/// um ícone com rótulo por baixo, que leva logo ao formulário certo.
-class _AcoesRapidasIdoso extends ConsumerWidget {
-  const _AcoesRapidasIdoso({required this.idoso});
+/// Pergunta a qual idoso uma ação rápida global se refere. Com um único
+/// idoso, avança logo sem perguntar.
+Future<Idoso?> _escolherIdosoParaAcao(BuildContext context, List<Idoso> idosos) {
+  if (idosos.length == 1) return Future.value(idosos.first);
+  return showModalBottomSheet<Idoso>(
+    context: context,
+    builder: (context) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Text('Para qual idoso?', style: Theme.of(context).textTheme.titleMedium),
+          ),
+          for (final idoso in idosos)
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: idoso.fotoPath != null ? FileImage(File(idoso.fotoPath!)) : null,
+                child: idoso.fotoPath == null ? const Icon(Icons.elderly) : null,
+              ),
+              title: Text(idoso.nome),
+              onTap: () => Navigator.of(context).pop(idoso),
+            ),
+        ],
+      ),
+    ),
+  );
+}
 
-  final Idoso idoso;
+/// Caixas de acesso rápido globais no topo do ecrã inicial (em vez de uma
+/// fila pequena dentro de cada cartão de idoso): tocar pergunta a qual
+/// idoso a ação se refere (ou avança logo, se só houver um).
+class _AcessoRapidoGlobal extends ConsumerWidget {
+  const _AcessoRapidoGlobal({required this.idosos});
+
+  final List<Idoso> idosos;
+
+  Future<void> _abrirMedicacao(BuildContext context) async {
+    final idoso = await _escolherIdosoParaAcao(context, idosos);
+    if (idoso == null || !context.mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso)),
+    );
+  }
+
+  Future<void> _abrirConsulta(BuildContext context) async {
+    final idoso = await _escolherIdosoParaAcao(context, idosos);
+    if (idoso == null || !context.mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso)),
+    );
+  }
+
+  Future<void> _abrirSinaisVitais(BuildContext context, WidgetRef ref) async {
+    final idoso = await _escolherIdosoParaAcao(context, idosos);
+    if (idoso == null || !context.mounted) return;
+    if (!ref.read(featureLimitsProvider).permiteSinaisVitais) {
+      await mostrarLimiteAtingido(
+        context,
+        mensagem: 'Registar sinais vitais é uma funcionalidade Premium. '
+            'Subscreve o Premium para a usares.',
+      );
+      return;
+    }
+    if (!context.mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => SinaisVitaisFormScreen(idoso: idoso)),
+    );
+  }
+
+  Future<void> _abrirRelatorio(BuildContext context) async {
+    final idoso = await _escolherIdosoParaAcao(context, idosos);
+    if (idoso == null || !context.mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final permiteSinaisVitais = ref.watch(featureLimitsProvider).permiteSinaisVitais;
-
-    return Row(
-      children: [
-        Expanded(
-          child: _AcaoRapida(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: GridView.count(
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.7,
+        children: [
+          _AcaoRapidaGrande(
             icon: Icons.medication_outlined,
             rotulo: 'Medicação',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => MedicacaoFormScreen(idoso: idoso)),
-            ),
+            onPressed: () => _abrirMedicacao(context),
           ),
-        ),
-        Expanded(
-          child: _AcaoRapida(
+          _AcaoRapidaGrande(
             icon: Icons.event_note_outlined,
             rotulo: 'Consulta',
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => ConsultaFormScreen(idoso: idoso)),
-            ),
+            onPressed: () => _abrirConsulta(context),
           ),
-        ),
-        Expanded(
-          child: _AcaoRapida(
+          _AcaoRapidaGrande(
             icon: Icons.monitor_heart_outlined,
             rotulo: 'Sinais vitais',
-            onPressed: () {
-              if (!permiteSinaisVitais) {
-                mostrarLimiteAtingido(
-                  context,
-                  mensagem: 'Registar sinais vitais é uma funcionalidade Premium. '
-                      'Subscreve o Premium para a usares.',
-                );
-                return;
-              }
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => SinaisVitaisFormScreen(idoso: idoso)),
-              );
-            },
+            onPressed: () => _abrirSinaisVitais(context, ref),
           ),
-        ),
-        Expanded(
-          child: _AcaoRapida(
+          _AcaoRapidaGrande(
             icon: Icons.picture_as_pdf_outlined,
             rotulo: 'Relatório',
             destacarGradiente: true,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
-            ),
+            onPressed: () => _abrirRelatorio(context),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class _AcaoRapida extends StatelessWidget {
-  const _AcaoRapida({
+class _AcaoRapidaGrande extends StatelessWidget {
+  const _AcaoRapidaGrande({
     required this.icon,
     required this.rotulo,
     required this.onPressed,
@@ -435,41 +485,36 @@ class _AcaoRapida extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: Material(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: onPressed,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                destacarGradiente
-                    ? GradientIcon(icon, size: 22)
-                    : Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer, size: 22),
-                const SizedBox(height: 4),
-                destacarGradiente
-                    ? GradientText(
-                        rotulo,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
-                      )
-                    : Text(
-                        rotulo,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimaryContainer,
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-              ],
-            ),
+    return Material(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              destacarGradiente
+                  ? GradientIcon(icon, size: 34)
+                  : Icon(icon, color: Theme.of(context).colorScheme.onPrimaryContainer, size: 34),
+              const SizedBox(height: 8),
+              destacarGradiente
+                  ? GradientText(
+                      rotulo,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                    )
+                  : Text(
+                      rotulo,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+            ],
           ),
         ),
       ),
