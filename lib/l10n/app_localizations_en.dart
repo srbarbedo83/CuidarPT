@@ -1493,4 +1493,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String premiumPoupancaLabel(int percentagem, String valor) {
     return 'Save $percentagem% · equals $valor/month';
   }
+
+  @override
+  String erroArranqueTexto(String erro) {
+    return 'An error occurred while loading the app: $erro';
+  }
 }

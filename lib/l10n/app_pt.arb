@@ -604,5 +604,10 @@
   "premiumPoupancaLabel": "Poupas {percentagem}% · equivale a {valor}/mês",
   "@premiumPoupancaLabel": {
     "placeholders": { "percentagem": { "type": "int" }, "valor": { "type": "String" } }
+  },
+
+  "erroArranqueTexto": "Ocorreu um erro ao carregar a app: {erro}",
+  "@erroArranqueTexto": {
+    "placeholders": { "erro": { "type": "String" } }
   }
 }

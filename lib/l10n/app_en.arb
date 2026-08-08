@@ -463,5 +463,7 @@
   "premiumPlanoMensal": "Monthly",
   "premiumPlano6Meses": "6 months",
   "premiumPlanoAnual": "Yearly",
-  "premiumPoupancaLabel": "Save {percentagem}% · equals {valor}/month"
+  "premiumPoupancaLabel": "Save {percentagem}% · equals {valor}/month",
+
+  "erroArranqueTexto": "An error occurred while loading the app: {erro}"
 }

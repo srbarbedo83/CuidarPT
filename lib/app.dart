@@ -129,7 +129,7 @@ class _EcraErroArranque extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Ocorreu um erro ao carregar a app: $erro')),
+      body: Center(child: Text(AppLocalizations.of(context).erroArranqueTexto('$erro'))),
     );
   }
 }

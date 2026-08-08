@@ -2655,6 +2655,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Poupas {percentagem}% · equivale a {valor}/mês'**
   String premiumPoupancaLabel(int percentagem, String valor);
+
+  /// No description provided for @erroArranqueTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ocorreu um erro ao carregar a app: {erro}'**
+  String erroArranqueTexto(String erro);
 }
 
 class _AppLocalizationsDelegate
