@@ -1,6 +1,7 @@
 import '../../../core/services/notification_ids.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Agenda e cancela os lembretes locais de um [RegistoMedicacao].
 ///
@@ -16,7 +17,11 @@ class MedicacaoScheduler {
   /// Cancela os lembretes atuais e agenda-os de novo a partir dos dados do
   /// registo. Atualiza `registo.notificacaoIds` — quem chamar deve depois
   /// guardar o registo para persistir os IDs.
-  static Future<void> reagendar(RegistoMedicacao registo, {required String nomeIdoso}) async {
+  static Future<void> reagendar(
+    RegistoMedicacao registo, {
+    required String nomeIdoso,
+    required AppLocalizations l10n,
+  }) async {
     await cancelar(registo);
 
     if (!registo.ativo || registo.horariosMinutos.isEmpty) {
@@ -24,7 +29,7 @@ class MedicacaoScheduler {
       return;
     }
 
-    final titulo = 'Medicação · $nomeIdoso';
+    final titulo = l10n.notificacaoMedicacaoTitulo(nomeIdoso);
     final corpo =
         registo.dose == null ? registo.nomeMedicamento : '${registo.nomeMedicamento} — ${registo.dose}';
 

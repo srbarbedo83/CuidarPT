@@ -1170,4 +1170,334 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get faixaElevada => 'Alta';
+
+  @override
+  String get comumTelefone => 'Teléfono';
+
+  @override
+  String notificacaoMedicacaoTitulo(String nome) {
+    return 'Medicación · $nome';
+  }
+
+  @override
+  String notificacaoConsultaTitulo(String nome) {
+    return 'Cita · $nome';
+  }
+
+  @override
+  String notificacaoProximaConsultaTitulo(String nome) {
+    return 'Próxima cita · $nome';
+  }
+
+  @override
+  String notificacaoTratamentoTitulo(String nome) {
+    return 'Tratamiento · $nome';
+  }
+
+  @override
+  String get notificacaoTesteCorpo =>
+      'Notificación de prueba: si ves esto, las notificaciones funcionan en este móvil.';
+
+  @override
+  String get idosoFormEditarTitulo => 'Editar perfil';
+
+  @override
+  String get idosoFormNovoTitulo => 'Nuevo perfil';
+
+  @override
+  String get idosoFormRotinaUpsell =>
+      'La rutina de higiene y alimentación es una función Premium. Suscríbete a Premium para activarla.';
+
+  @override
+  String get idosoFormDataNascimentoHelp => 'Fecha de nacimiento';
+
+  @override
+  String get idosoFormIdentificacao => 'Identificación';
+
+  @override
+  String get idosoFormMobilidadeReduzida => 'Movilidad reducida';
+
+  @override
+  String get idosoFormAcamado => 'Encamado';
+
+  @override
+  String get idosoFormSexo => 'Sexo';
+
+  @override
+  String get idosoFormMasculino => 'Masculino';
+
+  @override
+  String get idosoFormFeminino => 'Femenino';
+
+  @override
+  String get idosoFormNome => 'Nombre *';
+
+  @override
+  String get idosoFormNomeErro => 'Indica el nombre de la persona';
+
+  @override
+  String get idosoFormContactosEmergenciaTitulo => 'Contactos de emergencia';
+
+  @override
+  String get idosoFormRemoverContacto => 'Eliminar contacto';
+
+  @override
+  String get idosoFormAdicionarContacto => 'Añadir contacto';
+
+  @override
+  String get idosoFormSaude => 'Salud';
+
+  @override
+  String get idosoFormNotasSaude => 'Notas (alergias, condiciones de salud)';
+
+  @override
+  String get idosoFormPreferenciasHabitos => 'Preferencias y hábitos';
+
+  @override
+  String get idosoFormComidaPreferida => 'Comida preferida';
+
+  @override
+  String get idosoFormMusica => 'Música';
+
+  @override
+  String get idosoFormInteressesPessoais => 'Intereses personales';
+
+  @override
+  String get idosoFormRotinaTitulo => 'Rutina de higiene, alimentación y sueño';
+
+  @override
+  String get idosoFormRotinaDescricao =>
+      'Función Premium. Registra elementos recurrentes (ej.: baño, comidas, siesta) y márcalos como hechos en el día.';
+
+  @override
+  String get notasEditarTooltip => 'Editar notas';
+
+  @override
+  String get notasHint => 'Alergias, preferencias, indicaciones generales...';
+
+  @override
+  String get notasSemNotas => 'Sin notas.';
+
+  @override
+  String get premiumSubscreverTitulo => 'Suscribirse a Premium';
+
+  @override
+  String get premiumErroCarregarPlanos =>
+      'No se pudieron cargar los planes en este momento. Comprueba tu conexión e inténtalo de nuevo más tarde.';
+
+  @override
+  String premiumErroCarregar(String erro) {
+    return 'Error al cargar los planes: $erro';
+  }
+
+  @override
+  String get premiumRestaurarCompra => 'Ya estoy suscrito: restaurar compra';
+
+  @override
+  String get definicoesCancelarAntesTitulo => 'Antes de cancelar';
+
+  @override
+  String get definicoesJaConstruiste => 'Ya has construido esto en la app:';
+
+  @override
+  String definicoesPerfilIdoso(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count perfiles',
+      one: '1 perfil',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String definicoesMedicacaoRegistada(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count medicaciones registradas',
+      one: '1 medicación registrada',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String definicoesConsultaTratamento(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count citas/tratamientos',
+      one: '1 cita/tratamiento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String definicoesRegistoSinaisVitais(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count registros de signos vitales',
+      one: '1 registro de signos vitales',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get definicoesAoCancelarPremium =>
+      'Al cancelar Premium, dejarás de poder:';
+
+  @override
+  String get definicoesPerdeVerPerfis => 'Ver más de 2 perfiles';
+
+  @override
+  String get definicoesPerdeSinaisVitais => 'Registrar signos vitales';
+
+  @override
+  String get definicoesPerdeRelatoriosPersonalizados =>
+      'Personalizar informes PDF';
+
+  @override
+  String get definicoesPerdeHistoricoIlimitado =>
+      'Ver historial y período de informe sin límite';
+
+  @override
+  String get definicoesDadosContinuamGuardados =>
+      'Tus datos siguen guardados en el móvil: cancelar no elimina nada.';
+
+  @override
+  String get definicoesVoltar => 'Volver';
+
+  @override
+  String get definicoesContinuarPlayStore => 'Continuar a Play Store';
+
+  @override
+  String get definicoesAparencia => 'Apariencia';
+
+  @override
+  String get definicoesTema => 'Tema';
+
+  @override
+  String get definicoesTemaClaro => 'Claro';
+
+  @override
+  String get definicoesTemaEscuro => 'Oscuro';
+
+  @override
+  String get definicoesTamanhoLetra => 'Tamaño de letra';
+
+  @override
+  String get definicoesTamanhoPequeno => 'Pequeño';
+
+  @override
+  String get definicoesTamanhoMedio => 'Mediano';
+
+  @override
+  String get definicoesTamanhoGrande => 'Grande';
+
+  @override
+  String get definicoesSubscricaoTitulo => 'Suscripción';
+
+  @override
+  String get definicoesACarregar => 'Cargando...';
+
+  @override
+  String definicoesTrialAtivo(int dias) {
+    return 'Período de prueba Premium: quedan $dias día(s).';
+  }
+
+  @override
+  String get definicoesPlanoPremiumAtivo => 'Plan Premium activo.';
+
+  @override
+  String get definicoesPlanoGratis => 'Plan Gratis.';
+
+  @override
+  String get definicoesOQueInclui => 'Qué incluye Premium:';
+
+  @override
+  String get definicoesBeneficioPerfis => 'Perfiles ilimitados';
+
+  @override
+  String get definicoesBeneficioRelatorios =>
+      'Informes PDF personalizables (nombre/logotipo)';
+
+  @override
+  String get definicoesBeneficioHistorico =>
+      'Historial y período de informe ilimitados';
+
+  @override
+  String get definicoesBeneficioMeteorologia =>
+      'Avisos meteorológicos oficiales';
+
+  @override
+  String get definicoesPrecos => '€1,99/mes · €9,99/6 meses · €19,99/año';
+
+  @override
+  String get definicoesGerirCancelar => 'Gestionar o cancelar suscripción';
+
+  @override
+  String get definicoesPerfisIdosos => 'Perfiles';
+
+  @override
+  String get definicoesIlimitados => 'ilimitados';
+
+  @override
+  String definicoesPerfisEmUso(int total, String limite) {
+    return '$total de $limite perfiles en uso.';
+  }
+
+  @override
+  String get definicoesVerPerfis => 'Ver perfiles';
+
+  @override
+  String get definicoesNotificacoes => 'Notificaciones';
+
+  @override
+  String get definicoesNotificacoesDescricao =>
+      'Los recordatorios de medicación y citas son notificaciones locales, programadas directamente en este móvil.';
+
+  @override
+  String get definicoesTestarNotificacao => 'Probar notificación ahora';
+
+  @override
+  String get definicoesNotificacaoTesteEnviada =>
+      'Notificación de prueba enviada: comprueba la barra de notificaciones.';
+
+  @override
+  String get definicoesTroubleshootingNotificacoes =>
+      'Si la notificación de prueba no aparece, o si los recordatorios programados no llegan: comprueba en Ajustes de Android → Aplicaciones → CuidarPT → Notificaciones, si están permitidas; y en Batería, si la optimización de batería está desactivada para CuidarPT (en algunos móviles se llama \"sin restricciones\" o \"permitir actividad en segundo plano\"). Muchas marcas (Xiaomi, Samsung, Huawei, etc.) bloquean los recordatorios de apps en segundo plano por defecto.';
+
+  @override
+  String get definicoesSobre => 'Acerca de';
+
+  @override
+  String definicoesVersaoSufixo(String versao) {
+    return ' — versión $versao';
+  }
+
+  @override
+  String get definicoesDadosSoTelemovel =>
+      'Todos los datos se guardan solo en este móvil.';
+
+  @override
+  String get definicoesAvisoNaoDispositivoMedico =>
+      'CuidarPT no es un dispositivo médico y no sustituye la evaluación, el diagnóstico ni el tratamiento de un profesional de la salud.';
+
+  @override
+  String get definicoesPoliticaPrivacidade => 'Política de privacidad';
+
+  @override
+  String get premiumPlanoMensal => 'Mensual';
+
+  @override
+  String get premiumPlano6Meses => '6 meses';
+
+  @override
+  String get premiumPlanoAnual => 'Anual';
+
+  @override
+  String premiumPoupancaLabel(int percentagem, String valor) {
+    return 'Ahorras $percentagem% · equivale a $valor/mes';
+  }
 }

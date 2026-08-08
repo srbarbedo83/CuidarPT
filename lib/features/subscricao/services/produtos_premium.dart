@@ -1,3 +1,5 @@
+import '../../../l10n/app_localizations.dart';
+
 /// IDs dos produtos de subscrição Premium — têm de corresponder
 /// exatamente aos produtos criados na Play Console (Monetização >
 /// Produtos > Subscrições).
@@ -13,11 +15,11 @@ class ProdutosPremium {
 
 /// Rótulo curto do plano a partir do ID do produto, para apresentação na
 /// interface (ex.: quando o preço da loja ainda não carregou).
-String labelProdutoPremium(String produtoId) {
+String labelProdutoPremium(AppLocalizations l10n, String produtoId) {
   return switch (produtoId) {
-    ProdutosPremium.mensal => 'Mensal',
-    ProdutosPremium.semestral => '6 meses',
-    ProdutosPremium.anual => 'Anual',
+    ProdutosPremium.mensal => l10n.premiumPlanoMensal,
+    ProdutosPremium.semestral => l10n.premiumPlano6Meses,
+    ProdutosPremium.anual => l10n.premiumPlanoAnual,
     _ => produtoId,
   };
 }

@@ -465,5 +465,144 @@
   "freqCardiacaTentarNovamente": "Tentar novamente",
   "faixaBaixa": "Baixa",
   "faixaNormal": "Normal",
-  "faixaElevada": "Elevada"
+  "faixaElevada": "Elevada",
+
+  "comumTelefone": "Telefone",
+
+  "notificacaoMedicacaoTitulo": "Medicação · {nome}",
+  "@notificacaoMedicacaoTitulo": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "notificacaoConsultaTitulo": "Consulta · {nome}",
+  "@notificacaoConsultaTitulo": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "notificacaoProximaConsultaTitulo": "Próxima consulta · {nome}",
+  "@notificacaoProximaConsultaTitulo": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "notificacaoTratamentoTitulo": "Tratamento · {nome}",
+  "@notificacaoTratamentoTitulo": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "notificacaoTesteCorpo": "Notificação de teste — se vês isto, as notificações estão a funcionar neste telemóvel.",
+
+  "idosoFormEditarTitulo": "Editar perfil",
+  "idosoFormNovoTitulo": "Novo perfil de idoso",
+  "idosoFormRotinaUpsell": "A rotina de higiene e alimentação é uma funcionalidade Premium. Subscreve o Premium para a ativares.",
+  "idosoFormDataNascimentoHelp": "Data de nascimento",
+  "idosoFormIdentificacao": "Identificação",
+  "idosoFormMobilidadeReduzida": "Mobilidade reduzida",
+  "idosoFormAcamado": "Acamado",
+  "idosoFormSexo": "Sexo",
+  "idosoFormMasculino": "Masculino",
+  "idosoFormFeminino": "Feminino",
+  "idosoFormNome": "Nome *",
+  "idosoFormNomeErro": "Indica o nome do idoso",
+  "idosoFormContactosEmergenciaTitulo": "Contactos de emergência",
+  "idosoFormRemoverContacto": "Remover contacto",
+  "idosoFormAdicionarContacto": "Adicionar contacto",
+  "idosoFormSaude": "Saúde",
+  "idosoFormNotasSaude": "Notas (alergias, condições de saúde)",
+  "idosoFormPreferenciasHabitos": "Preferências e hábitos",
+  "idosoFormComidaPreferida": "Comida preferida",
+  "idosoFormMusica": "Música",
+  "idosoFormInteressesPessoais": "Interesses pessoais",
+  "idosoFormRotinaTitulo": "Rotina de higiene, alimentação e sono",
+  "idosoFormRotinaDescricao": "Funcionalidade Premium. Regista itens recorrentes (ex.: banho, refeições, sesta) e marca-os como feitos no dia.",
+
+  "notasEditarTooltip": "Editar notas",
+  "notasHint": "Alergias, preferências, indicações gerais...",
+  "notasSemNotas": "Sem notas.",
+
+  "premiumSubscreverTitulo": "Subscrever Premium",
+  "premiumErroCarregarPlanos": "Não foi possível carregar os planos neste momento. Verifica a tua ligação e tenta novamente mais tarde.",
+  "premiumErroCarregar": "Erro ao carregar os planos: {erro}",
+  "@premiumErroCarregar": {
+    "placeholders": { "erro": { "type": "String" } }
+  },
+  "premiumRestaurarCompra": "Já subscrevi — restaurar compra",
+
+  "definicoesCancelarAntesTitulo": "Antes de cancelares",
+  "definicoesJaConstruiste": "Já construíste isto na app:",
+  "definicoesPerfilIdoso": "{count, plural, =1{1 perfil de idoso} other{{count} perfis de idosos}}",
+  "@definicoesPerfilIdoso": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "definicoesMedicacaoRegistada": "{count, plural, =1{1 medicação registada} other{{count} medicações registadas}}",
+  "@definicoesMedicacaoRegistada": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "definicoesConsultaTratamento": "{count, plural, =1{1 consulta/tratamento} other{{count} consultas/tratamentos}}",
+  "@definicoesConsultaTratamento": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "definicoesRegistoSinaisVitais": "{count, plural, =1{1 registo de sinais vitais} other{{count} registos de sinais vitais}}",
+  "@definicoesRegistoSinaisVitais": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "definicoesAoCancelarPremium": "Ao cancelar o Premium, deixas de poder:",
+  "definicoesPerdeVerPerfis": "Ver mais de 2 perfis de idosos",
+  "definicoesPerdeSinaisVitais": "Registar sinais vitais",
+  "definicoesPerdeRelatoriosPersonalizados": "Personalizar relatórios PDF",
+  "definicoesPerdeHistoricoIlimitado": "Ver histórico e período de relatório sem limite",
+  "definicoesDadosContinuamGuardados": "Os teus dados continuam guardados no telemóvel — cancelar não apaga nada.",
+  "definicoesVoltar": "Voltar",
+  "definicoesContinuarPlayStore": "Continuar para a Play Store",
+
+  "definicoesAparencia": "Aparência",
+  "definicoesTema": "Tema",
+  "definicoesTemaClaro": "Claro",
+  "definicoesTemaEscuro": "Escuro",
+  "definicoesTamanhoLetra": "Tamanho da letra",
+  "definicoesTamanhoPequeno": "Pequeno",
+  "definicoesTamanhoMedio": "Médio",
+  "definicoesTamanhoGrande": "Grande",
+
+  "definicoesSubscricaoTitulo": "Subscrição",
+  "definicoesACarregar": "A carregar...",
+  "definicoesTrialAtivo": "Período experimental Premium — faltam {dias} dia(s).",
+  "@definicoesTrialAtivo": {
+    "placeholders": { "dias": { "type": "int" } }
+  },
+  "definicoesPlanoPremiumAtivo": "Plano Premium ativo.",
+  "definicoesPlanoGratis": "Plano Grátis.",
+  "definicoesOQueInclui": "O que inclui o Premium:",
+  "definicoesBeneficioPerfis": "Perfis de idosos ilimitados",
+  "definicoesBeneficioRelatorios": "Relatórios PDF personalizáveis (nome/logótipo)",
+  "definicoesBeneficioHistorico": "Histórico e período de relatório ilimitados",
+  "definicoesBeneficioMeteorologia": "Avisos meteorológicos oficiais",
+  "definicoesPrecos": "€1,99/mês · €9,99/6 meses · €19,99/ano",
+  "definicoesGerirCancelar": "Gerir ou cancelar subscrição",
+
+  "definicoesPerfisIdosos": "Perfis de idosos",
+  "definicoesIlimitados": "ilimitados",
+  "definicoesPerfisEmUso": "{total} de {limite} perfis em uso.",
+  "@definicoesPerfisEmUso": {
+    "placeholders": { "total": { "type": "int" }, "limite": { "type": "String" } }
+  },
+  "definicoesVerPerfis": "Ver perfis",
+
+  "definicoesNotificacoes": "Notificações",
+  "definicoesNotificacoesDescricao": "Os lembretes de medicação e consultas são notificações locais, agendadas diretamente neste telemóvel.",
+  "definicoesTestarNotificacao": "Testar notificação agora",
+  "definicoesNotificacaoTesteEnviada": "Notificação de teste enviada — verifica a barra de notificações.",
+  "definicoesTroubleshootingNotificacoes": "Se a notificação de teste não aparecer, ou se os lembretes agendados não chegarem: verifica em Definições do Android → Apps → CuidarPT → Notificações, se estão permitidas; e em Bateria, se a otimização de bateria está desativada para o CuidarPT (em alguns telemóveis chama-se \"sem restrições\" ou \"permitir em segundo plano\"). Muitas marcas (Xiaomi, Samsung, Huawei, etc.) bloqueiam lembretes de apps em segundo plano por omissão.",
+
+  "definicoesSobre": "Sobre",
+  "definicoesVersaoSufixo": " — versão {versao}",
+  "@definicoesVersaoSufixo": {
+    "placeholders": { "versao": { "type": "String" } }
+  },
+  "definicoesDadosSoTelemovel": "Todos os dados ficam guardados apenas neste telemóvel.",
+  "definicoesAvisoNaoDispositivoMedico": "O CuidarPT não é um dispositivo médico e não substitui a avaliação, o diagnóstico ou o tratamento de um profissional de saúde.",
+  "definicoesPoliticaPrivacidade": "Política de privacidade",
+
+  "premiumPlanoMensal": "Mensal",
+  "premiumPlano6Meses": "6 meses",
+  "premiumPlanoAnual": "Anual",
+  "premiumPoupancaLabel": "Poupas {percentagem}% · equivale a {valor}/mês",
+  "@premiumPoupancaLabel": {
+    "placeholders": { "percentagem": { "type": "int" }, "valor": { "type": "String" } }
+  }
 }

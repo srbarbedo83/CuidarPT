@@ -110,6 +110,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   }
 
   Future<void> _guardar() async {
+    final l10n = AppLocalizations.of(context);
     if (!_formKey.currentState!.validate()) return;
     setState(() => _aGuardar = true);
 
@@ -137,7 +138,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
 
     final repository = ref.read(registoConsultaRepositoryProvider);
     await repository.save(consulta);
-    await ConsultaScheduler.reagendar(consulta, nomeIdoso: widget.idoso.nome);
+    await ConsultaScheduler.reagendar(consulta, nomeIdoso: widget.idoso.nome, l10n: l10n);
     await repository.save(consulta);
 
     if (mounted) Navigator.of(context).pop();

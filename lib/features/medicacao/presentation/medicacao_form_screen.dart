@@ -164,7 +164,7 @@ class _MedicacaoFormScreenState extends ConsumerState<MedicacaoFormScreen> {
 
     final repository = ref.read(registoMedicacaoRepositoryProvider);
     await repository.save(registo);
-    await MedicacaoScheduler.reagendar(registo, nomeIdoso: widget.idoso.nome);
+    await MedicacaoScheduler.reagendar(registo, nomeIdoso: widget.idoso.nome, l10n: l10n);
     await repository.save(registo);
 
     if (mounted) Navigator.of(context).pop();

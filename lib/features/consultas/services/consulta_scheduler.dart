@@ -1,6 +1,7 @@
 import '../../../core/services/notification_ids.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../data/models/registo_consulta.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Agenda e cancela os lembretes pontuais (não recorrentes) de uma
 /// [RegistoConsulta]: um para a data da consulta e, se existir, outro para
@@ -9,7 +10,11 @@ import '../../../data/models/registo_consulta.dart';
 class ConsultaScheduler {
   ConsultaScheduler._();
 
-  static Future<void> reagendar(RegistoConsulta consulta, {required String nomeIdoso}) async {
+  static Future<void> reagendar(
+    RegistoConsulta consulta, {
+    required String nomeIdoso,
+    required AppLocalizations l10n,
+  }) async {
     await cancelar(consulta);
 
     if (!consulta.lembreteAtivo) {
@@ -18,7 +23,7 @@ class ConsultaScheduler {
     }
 
     if (consulta.recorrente) {
-      consulta.notificacaoIds = await _reagendarRecorrente(consulta, nomeIdoso: nomeIdoso);
+      consulta.notificacaoIds = await _reagendarRecorrente(consulta, nomeIdoso: nomeIdoso, l10n: l10n);
       return;
     }
 
@@ -30,7 +35,7 @@ class ConsultaScheduler {
       final id = NotificationIds.consulta(consulta.id, indice++);
       await NotificationService.instance.agendarUnico(
         id: id,
-        titulo: 'Consulta · $nomeIdoso',
+        titulo: l10n.notificacaoConsultaTitulo(nomeIdoso),
         corpo: consulta.local == null ? consulta.especialidade : '${consulta.especialidade} — ${consulta.local}',
         data: consulta.dataHora,
       );
@@ -42,7 +47,7 @@ class ConsultaScheduler {
       final id = NotificationIds.consulta(consulta.id, indice++);
       await NotificationService.instance.agendarUnico(
         id: id,
-        titulo: 'Próxima consulta · $nomeIdoso',
+        titulo: l10n.notificacaoProximaConsultaTitulo(nomeIdoso),
         corpo: consulta.especialidade,
         data: DateTime(proxima.year, proxima.month, proxima.day, 9),
       );
@@ -55,8 +60,9 @@ class ConsultaScheduler {
   static Future<List<int>> _reagendarRecorrente(
     RegistoConsulta consulta, {
     required String nomeIdoso,
+    required AppLocalizations l10n,
   }) async {
-    final titulo = 'Tratamento · $nomeIdoso';
+    final titulo = l10n.notificacaoTratamentoTitulo(nomeIdoso);
     final corpo =
         consulta.local == null ? consulta.especialidade : '${consulta.especialidade} — ${consulta.local}';
     final hora = consulta.dataHora.hour;

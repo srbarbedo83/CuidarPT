@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/idoso.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/idoso_providers.dart';
 
 /// Secção de notas persistentes do idoso — informação que se mantém ao
@@ -41,6 +42,7 @@ class _NotasSectionState extends ConsumerState<NotasSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -50,13 +52,13 @@ class _NotasSectionState extends ConsumerState<NotasSection> {
             children: [
               Expanded(
                 child: Text(
-                  'Notas',
+                  l10n.sinaisVitaisFormNotas,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               IconButton(
                 icon: Icon(_aEditar ? Icons.close : Icons.edit_outlined),
-                tooltip: _aEditar ? 'Cancelar' : 'Editar notas',
+                tooltip: _aEditar ? l10n.comumCancelar : l10n.notasEditarTooltip,
                 onPressed: () {
                   if (_aEditar) {
                     _controller.text = widget.idoso.notas ?? '';
@@ -69,9 +71,9 @@ class _NotasSectionState extends ConsumerState<NotasSection> {
           if (_aEditar) ...[
             TextField(
               controller: _controller,
-              decoration: const InputDecoration(
-                hintText: 'Alergias, preferências, indicações gerais...',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText: l10n.notasHint,
+                border: const OutlineInputBorder(),
               ),
               maxLines: 4,
               autofocus: true,
@@ -79,11 +81,11 @@ class _NotasSectionState extends ConsumerState<NotasSection> {
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerRight,
-              child: FilledButton(onPressed: _guardar, child: const Text('Guardar')),
+              child: FilledButton(onPressed: _guardar, child: Text(l10n.comumGuardar)),
             ),
           ] else
             Text(
-              (widget.idoso.notas ?? '').isEmpty ? 'Sem notas.' : widget.idoso.notas!,
+              (widget.idoso.notas ?? '').isEmpty ? l10n.notasSemNotas : widget.idoso.notas!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
         ],

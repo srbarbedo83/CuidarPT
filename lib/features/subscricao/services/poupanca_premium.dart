@@ -1,6 +1,7 @@
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intl/intl.dart';
 
+import '../../../l10n/app_localizations.dart';
 import 'produtos_premium.dart';
 
 /// Ordem de apresentação dos planos Premium: mensal primeiro (a âncora de
@@ -23,7 +24,7 @@ int? mesesDoProdutoPremium(String id) => switch (id) {
 /// em vez de todos os planos aparecerem com o mesmo peso visual. Só
 /// devolve algo quando há mesmo poupança nos preços devolvidos pela loja —
 /// nunca inventada.
-String? poupancaLabelPremium(ProductDetails produto, ProductDetails? mensal) {
+String? poupancaLabelPremium(AppLocalizations l10n, ProductDetails produto, ProductDetails? mensal) {
   final meses = mesesDoProdutoPremium(produto.id);
   if (meses == null || mensal == null || mensal.rawPrice <= 0) return null;
 
@@ -31,6 +32,11 @@ String? poupancaLabelPremium(ProductDetails produto, ProductDetails? mensal) {
   final poupanca = 1 - (custoMensalEquivalente / mensal.rawPrice);
   if (poupanca <= 0) return null;
 
-  final formato = NumberFormat.simpleCurrency(locale: 'pt_PT', name: produto.currencyCode);
-  return 'Poupas ${(poupanca * 100).round()}% · equivale a ${formato.format(custoMensalEquivalente)}/mês';
+  final localeFormato = switch (l10n.localeName) {
+    'en' => 'en_US',
+    'es' => 'es_ES',
+    _ => 'pt_PT',
+  };
+  final formato = NumberFormat.simpleCurrency(locale: localeFormato, name: produto.currencyCode);
+  return l10n.premiumPoupancaLabel((poupanca * 100).round(), formato.format(custoMensalEquivalente));
 }

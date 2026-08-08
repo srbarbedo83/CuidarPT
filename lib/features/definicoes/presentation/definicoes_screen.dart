@@ -22,6 +22,7 @@ class DefinicoesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final estado = ref.watch(estadoSubscricaoProvider).valueOrNull;
     final limites = ref.watch(featureLimitsProvider);
     final idosos = ref.watch(idosoListProvider).valueOrNull ?? const [];
@@ -31,7 +32,7 @@ class DefinicoesScreen extends ConsumerWidget {
     final idioma = ref.watch(idiomaPreferidoProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Definições')),
+      appBar: AppBar(title: Text(l10n.comumDefinicoes)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -71,6 +72,7 @@ Future<void> _abrirGestaoSubscricao() {
 /// tudo verdadeiro (nada de urgência ou dados falsos), só para a decisão
 /// ser informada. Os dados locais nunca são apagados por cancelar.
 Future<void> _confirmarCancelamento(BuildContext context, WidgetRef ref) async {
+  final l10n = AppLocalizations.of(context);
   final idosos = ref.read(idosoListProvider).valueOrNull ?? const [];
   var totalMedicacoes = 0;
   var totalConsultas = 0;
@@ -84,37 +86,30 @@ Future<void> _confirmarCancelamento(BuildContext context, WidgetRef ref) async {
   final continuar = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Antes de cancelares'),
+      title: Text(l10n.definicoesCancelarAntesTitulo),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (idosos.isNotEmpty) ...[
-              const Text('Já construíste isto na app:'),
+              Text(l10n.definicoesJaConstruiste),
               const SizedBox(height: 6),
-              Text('• ${idosos.length} ${idosos.length == 1 ? 'perfil de idoso' : 'perfis de idosos'}'),
-              if (totalMedicacoes > 0)
-                Text(
-                  '• $totalMedicacoes ${totalMedicacoes == 1 ? 'medicação registada' : 'medicações registadas'}',
-                ),
-              if (totalConsultas > 0)
-                Text('• $totalConsultas ${totalConsultas == 1 ? 'consulta/tratamento' : 'consultas/tratamentos'}'),
-              if (totalSinaisVitais > 0)
-                Text(
-                  '• $totalSinaisVitais ${totalSinaisVitais == 1 ? 'registo de sinais vitais' : 'registos de sinais vitais'}',
-                ),
+              Text('• ${l10n.definicoesPerfilIdoso(idosos.length)}'),
+              if (totalMedicacoes > 0) Text('• ${l10n.definicoesMedicacaoRegistada(totalMedicacoes)}'),
+              if (totalConsultas > 0) Text('• ${l10n.definicoesConsultaTratamento(totalConsultas)}'),
+              if (totalSinaisVitais > 0) Text('• ${l10n.definicoesRegistoSinaisVitais(totalSinaisVitais)}'),
               const SizedBox(height: 16),
             ],
-            const Text('Ao cancelar o Premium, deixas de poder:'),
+            Text(l10n.definicoesAoCancelarPremium),
             const SizedBox(height: 6),
-            const Text('• Ver mais de 2 perfis de idosos'),
-            const Text('• Registar sinais vitais'),
-            const Text('• Personalizar relatórios PDF'),
-            const Text('• Ver histórico e período de relatório sem limite'),
+            Text('• ${l10n.definicoesPerdeVerPerfis}'),
+            Text('• ${l10n.definicoesPerdeSinaisVitais}'),
+            Text('• ${l10n.definicoesPerdeRelatoriosPersonalizados}'),
+            Text('• ${l10n.definicoesPerdeHistoricoIlimitado}'),
             const SizedBox(height: 16),
             Text(
-              'Os teus dados continuam guardados no telemóvel — cancelar não apaga nada.',
+              l10n.definicoesDadosContinuamGuardados,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -123,11 +118,11 @@ Future<void> _confirmarCancelamento(BuildContext context, WidgetRef ref) async {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Voltar'),
+          child: Text(l10n.definicoesVoltar),
         ),
         FilledButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('Continuar para a Play Store'),
+          child: Text(l10n.definicoesContinuarPlayStore),
         ),
       ],
     ),
@@ -153,35 +148,38 @@ class _SeccaoAparencia extends StatelessWidget {
   final ValueChanged<double> onEscalaAlterada;
   final ValueChanged<IdiomaPreferido> onIdiomaAlterado;
 
-  static final _opcoesEscala = <double, String>{0.85: 'Pequeno', 1.0: 'Médio', 1.3: 'Grande'};
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final opcoesEscala = <double, String>{
+      0.85: l10n.definicoesTamanhoPequeno,
+      1.0: l10n.definicoesTamanhoMedio,
+      1.3: l10n.definicoesTamanhoGrande,
+    };
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Aparência', style: Theme.of(context).textTheme.titleMedium),
+            Text(l10n.definicoesAparencia, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
-            Text('Tema', style: Theme.of(context).textTheme.bodyMedium),
+            Text(l10n.definicoesTema, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 8),
             SegmentedButton<TemaPreferido>(
-              segments: const [
-                ButtonSegment(value: TemaPreferido.sistema, label: Text('Sistema')),
-                ButtonSegment(value: TemaPreferido.claro, label: Text('Claro')),
-                ButtonSegment(value: TemaPreferido.escuro, label: Text('Escuro')),
+              segments: [
+                ButtonSegment(value: TemaPreferido.sistema, label: Text(l10n.definicoesIdiomaSistema)),
+                ButtonSegment(value: TemaPreferido.claro, label: Text(l10n.definicoesTemaClaro)),
+                ButtonSegment(value: TemaPreferido.escuro, label: Text(l10n.definicoesTemaEscuro)),
               ],
               selected: {tema},
               onSelectionChanged: (selecao) => onTemaAlterado(selecao.first),
             ),
             const SizedBox(height: 16),
-            Text('Tamanho da letra', style: Theme.of(context).textTheme.bodyMedium),
+            Text(l10n.definicoesTamanhoLetra, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 8),
             SegmentedButton<double>(
-              segments: _opcoesEscala.entries
+              segments: opcoesEscala.entries
                   .map((entry) => ButtonSegment(value: entry.key, label: Text(entry.value)))
                   .toList(),
               selected: {escalaTexto},
@@ -215,16 +213,17 @@ class _SeccaoSubscricao extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final estadoAtual = estado;
     final String status;
     if (estadoAtual == null) {
-      status = 'A carregar...';
+      status = l10n.definicoesACarregar;
     } else if (estadoAtual.trialAtivo) {
-      status = 'Período experimental Premium — faltam ${estadoAtual.diasRestantesTrial} dia(s).';
+      status = l10n.definicoesTrialAtivo(estadoAtual.diasRestantesTrial);
     } else if (estadoAtual.premiumAtivo) {
-      status = 'Plano Premium ativo.';
+      status = l10n.definicoesPlanoPremiumAtivo;
     } else {
-      status = 'Plano Grátis.';
+      status = l10n.definicoesPlanoGratis;
     }
 
     final semSubscricaoPaga = estadoAtual == null || !estadoAtual.premiumAtivo;
@@ -235,29 +234,29 @@ class _SeccaoSubscricao extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Subscrição', style: Theme.of(context).textTheme.titleMedium),
+            Text(l10n.definicoesSubscricaoTitulo, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
             Text(status),
             const SizedBox(height: 12),
-            Text('O que inclui o Premium:', style: Theme.of(context).textTheme.bodyMedium),
+            Text(l10n.definicoesOQueInclui, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 4),
-            const _ItemBeneficio('Perfis de idosos ilimitados'),
-            const _ItemBeneficio('Relatórios PDF personalizáveis (nome/logótipo)'),
-            const _ItemBeneficio('Histórico e período de relatório ilimitados'),
-            const _ItemBeneficio('Avisos meteorológicos oficiais'),
+            _ItemBeneficio(l10n.definicoesBeneficioPerfis),
+            _ItemBeneficio(l10n.definicoesBeneficioRelatorios),
+            _ItemBeneficio(l10n.definicoesBeneficioHistorico),
+            _ItemBeneficio(l10n.definicoesBeneficioMeteorologia),
             const SizedBox(height: 8),
             Text(
-              '€1,99/mês · €9,99/6 meses · €19,99/ano',
+              l10n.definicoesPrecos,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             if (semSubscricaoPaga) ...[
               const SizedBox(height: 12),
-              FilledButton(onPressed: onSubscrever, child: const Text('Subscrever Premium')),
+              FilledButton(onPressed: onSubscrever, child: Text(l10n.premiumSubscreverTitulo)),
             ] else ...[
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () => _confirmarCancelamento(context, ref),
-                child: const Text('Gerir ou cancelar subscrição'),
+                child: Text(l10n.definicoesGerirCancelar),
               ),
             ],
           ],
@@ -296,20 +295,21 @@ class _SeccaoPerfis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final limiteTexto = maxPerfisIdoso == null ? 'ilimitados' : '$maxPerfisIdoso';
+    final l10n = AppLocalizations.of(context);
+    final limiteTexto = maxPerfisIdoso == null ? l10n.definicoesIlimitados : '$maxPerfisIdoso';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Perfis de idosos', style: Theme.of(context).textTheme.titleMedium),
+            Text(l10n.definicoesPerfisIdosos, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
-            Text('$totalIdosos de $limiteTexto perfis em uso.'),
+            Text(l10n.definicoesPerfisEmUso(totalIdosos, limiteTexto)),
             const SizedBox(height: 12),
             OutlinedButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Ver perfis'),
+              child: Text(l10n.definicoesVerPerfis),
             ),
           ],
         ),
@@ -325,43 +325,38 @@ class _SeccaoNotificacoes extends StatelessWidget {
   const _SeccaoNotificacoes();
 
   Future<void> _testar(BuildContext context) async {
-    await NotificationService.instance.mostrarTeste();
+    final l10n = AppLocalizations.of(context);
+    await NotificationService.instance.mostrarTeste(l10n);
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Notificação de teste enviada — verifica a barra de notificações.')),
+        SnackBar(content: Text(l10n.definicoesNotificacaoTesteEnviada)),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Notificações', style: Theme.of(context).textTheme.titleMedium),
+            Text(l10n.definicoesNotificacoes, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
             Text(
-              'Os lembretes de medicação e consultas são notificações locais, agendadas '
-              'diretamente neste telemóvel.',
+              l10n.definicoesNotificacoesDescricao,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 12),
             OutlinedButton(
               onPressed: () => _testar(context),
-              child: const Text('Testar notificação agora'),
+              child: Text(l10n.definicoesTestarNotificacao),
             ),
             const SizedBox(height: 12),
             Text(
-              'Se a notificação de teste não aparecer, ou se os lembretes agendados '
-              'não chegarem: verifica em Definições do Android → Apps → CuidarPT → '
-              'Notificações, se estão permitidas; e em Bateria, se a otimização de '
-              'bateria está desativada para o CuidarPT (em alguns telemóveis chama-se '
-              '"sem restrições" ou "permitir em segundo plano"). Muitas marcas '
-              '(Xiaomi, Samsung, Huawei, etc.) bloqueiam lembretes de apps em segundo '
-              'plano por omissão.',
+              l10n.definicoesTroubleshootingNotificacoes,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -378,6 +373,7 @@ class _SeccaoSobre extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -385,20 +381,19 @@ class _SeccaoSobre extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Sobre',
+              l10n.definicoesSobre,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('CuidarPT${versao != null ? ' — versão $versao' : ''}'),
+            Text('${l10n.appTitle}${versao != null ? l10n.definicoesVersaoSufixo(versao!) : ''}'),
             const SizedBox(height: 4),
             Text(
-              'Todos os dados ficam guardados apenas neste telemóvel.',
+              l10n.definicoesDadosSoTelemovel,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
             Text(
-              'O CuidarPT não é um dispositivo médico e não substitui a avaliação, '
-              'o diagnóstico ou o tratamento de um profissional de saúde.',
+              l10n.definicoesAvisoNaoDispositivoMedico,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
@@ -407,7 +402,7 @@ class _SeccaoSobre extends StatelessWidget {
                 Uri.parse('https://srbarbedo83.github.io/CuidarPT/privacidade.html'),
               ),
               child: Text(
-                'Política de privacidade',
+                l10n.definicoesPoliticaPrivacidade,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall

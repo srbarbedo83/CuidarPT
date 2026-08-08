@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:cuidarpt/features/idosos/presentation/idoso_form_screen.dart';
+import 'package:cuidarpt/l10n/app_localizations.dart';
 
 Future<void> _pumpComTamanhoGrande(WidgetTester tester, Widget home) async {
   tester.view.physicalSize = const Size(800, 2000);
@@ -12,7 +13,12 @@ Future<void> _pumpComTamanhoGrande(WidgetTester tester, Widget home) async {
 
   await tester.pumpWidget(
     ProviderScope(
-      child: MaterialApp(home: home),
+      child: MaterialApp(
+        locale: const Locale('pt', 'PT'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: home,
+      ),
     ),
   );
 }

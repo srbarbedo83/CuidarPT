@@ -2,6 +2,7 @@ import 'package:isar_community/isar.dart';
 
 import '../../../data/repositories/idoso_repository.dart';
 import '../../../data/repositories/registo_medicacao_repository.dart';
+import '../../../l10n/app_localizations.dart';
 import 'medicacao_scheduler.dart';
 
 /// Reagenda os lembretes de medicação ativos.
@@ -10,7 +11,7 @@ import 'medicacao_scheduler.dart';
 /// por isso chamamos isto sempre que a app arranca — assim, os lembretes
 /// voltam a ficar ativos assim que o utilizador abre a app, mesmo que o
 /// telemóvel tenha sido reiniciado entretanto.
-Future<void> reagendarLembretesMedicacaoPendentes(Isar isar) async {
+Future<void> reagendarLembretesMedicacaoPendentes(Isar isar, AppLocalizations l10n) async {
   final medicacaoRepository = RegistoMedicacaoRepository(isar);
   final ativos = await medicacaoRepository.listarAtivos();
   if (ativos.isEmpty) return;
@@ -19,7 +20,7 @@ Future<void> reagendarLembretesMedicacaoPendentes(Isar isar) async {
   for (final registo in ativos) {
     final idoso = await idosoRepository.getById(registo.idosoId);
     if (idoso == null) continue;
-    await MedicacaoScheduler.reagendar(registo, nomeIdoso: idoso.nome);
+    await MedicacaoScheduler.reagendar(registo, nomeIdoso: idoso.nome, l10n: l10n);
     await medicacaoRepository.save(registo);
   }
 }

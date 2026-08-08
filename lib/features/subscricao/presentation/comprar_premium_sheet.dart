@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../providers/subscricao_providers.dart';
 import '../services/produtos_premium.dart';
 import '../services/poupanca_premium.dart';
@@ -25,6 +26,7 @@ class _ComprarPremiumSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final produtosAsync = ref.watch(produtosPremiumProvider);
 
     return SafeArea(
@@ -35,17 +37,14 @@ class _ComprarPremiumSheet extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Subscrever Premium',
+              l10n.premiumSubscreverTitulo,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             produtosAsync.when(
               data: (produtos) {
                 if (produtos.isEmpty) {
-                  return const Text(
-                    'Não foi possível carregar os planos neste momento. '
-                    'Verifica a tua ligação e tenta novamente mais tarde.',
-                  );
+                  return Text(l10n.premiumErroCarregarPlanos);
                 }
                 final produtosOrdenados = [...produtos]
                   ..sort((a, b) => ordemProdutoPremium(a.id).compareTo(ordemProdutoPremium(b.id)));
@@ -59,8 +58,8 @@ class _ComprarPremiumSheet extends ConsumerWidget {
                             ? Theme.of(context).colorScheme.primaryContainer
                             : null,
                         child: ListTile(
-                          title: Text(labelProdutoPremium(produto.id)),
-                          subtitle: Text(poupancaLabelPremium(produto, mensal) ?? produto.description),
+                          title: Text(labelProdutoPremium(l10n, produto.id)),
+                          subtitle: Text(poupancaLabelPremium(l10n, produto, mensal) ?? produto.description),
                           trailing: Text(
                             produto.price,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -75,7 +74,7 @@ class _ComprarPremiumSheet extends ConsumerWidget {
                 padding: EdgeInsets.all(24),
                 child: CircularProgressIndicator(),
               )),
-              error: (erro, _) => Text('Erro ao carregar os planos: $erro'),
+              error: (erro, _) => Text(l10n.premiumErroCarregar('$erro')),
             ),
             const SizedBox(height: 8),
             Center(
@@ -84,7 +83,7 @@ class _ComprarPremiumSheet extends ConsumerWidget {
                   await ref.read(compraPremiumServiceProvider).restaurarCompras();
                   if (context.mounted) Navigator.of(context).pop();
                 },
-                child: const Text('Já subscrevi — restaurar compra'),
+                child: Text(l10n.premiumRestaurarCompra),
               ),
             ),
           ],

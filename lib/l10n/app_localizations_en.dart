@@ -1164,4 +1164,333 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faixaElevada => 'High';
+
+  @override
+  String get comumTelefone => 'Phone';
+
+  @override
+  String notificacaoMedicacaoTitulo(String nome) {
+    return 'Medication · $nome';
+  }
+
+  @override
+  String notificacaoConsultaTitulo(String nome) {
+    return 'Appointment · $nome';
+  }
+
+  @override
+  String notificacaoProximaConsultaTitulo(String nome) {
+    return 'Next appointment · $nome';
+  }
+
+  @override
+  String notificacaoTratamentoTitulo(String nome) {
+    return 'Treatment · $nome';
+  }
+
+  @override
+  String get notificacaoTesteCorpo =>
+      'Test notification — if you see this, notifications are working on this phone.';
+
+  @override
+  String get idosoFormEditarTitulo => 'Edit profile';
+
+  @override
+  String get idosoFormNovoTitulo => 'New profile';
+
+  @override
+  String get idosoFormRotinaUpsell =>
+      'The hygiene and meals routine is a Premium feature. Subscribe to Premium to enable it.';
+
+  @override
+  String get idosoFormDataNascimentoHelp => 'Date of birth';
+
+  @override
+  String get idosoFormIdentificacao => 'Identification';
+
+  @override
+  String get idosoFormMobilidadeReduzida => 'Reduced mobility';
+
+  @override
+  String get idosoFormAcamado => 'Bedridden';
+
+  @override
+  String get idosoFormSexo => 'Sex';
+
+  @override
+  String get idosoFormMasculino => 'Male';
+
+  @override
+  String get idosoFormFeminino => 'Female';
+
+  @override
+  String get idosoFormNome => 'Name *';
+
+  @override
+  String get idosoFormNomeErro => 'Enter the person\'s name';
+
+  @override
+  String get idosoFormContactosEmergenciaTitulo => 'Emergency contacts';
+
+  @override
+  String get idosoFormRemoverContacto => 'Remove contact';
+
+  @override
+  String get idosoFormAdicionarContacto => 'Add contact';
+
+  @override
+  String get idosoFormSaude => 'Health';
+
+  @override
+  String get idosoFormNotasSaude => 'Notes (allergies, health conditions)';
+
+  @override
+  String get idosoFormPreferenciasHabitos => 'Preferences and habits';
+
+  @override
+  String get idosoFormComidaPreferida => 'Favorite food';
+
+  @override
+  String get idosoFormMusica => 'Music';
+
+  @override
+  String get idosoFormInteressesPessoais => 'Personal interests';
+
+  @override
+  String get idosoFormRotinaTitulo => 'Hygiene, meals and sleep routine';
+
+  @override
+  String get idosoFormRotinaDescricao =>
+      'Premium feature. Record recurring items (e.g., bath, meals, nap) and mark them as done for the day.';
+
+  @override
+  String get notasEditarTooltip => 'Edit notes';
+
+  @override
+  String get notasHint => 'Allergies, preferences, general instructions...';
+
+  @override
+  String get notasSemNotas => 'No notes.';
+
+  @override
+  String get premiumSubscreverTitulo => 'Subscribe to Premium';
+
+  @override
+  String get premiumErroCarregarPlanos =>
+      'Couldn\'t load the plans right now. Check your connection and try again later.';
+
+  @override
+  String premiumErroCarregar(String erro) {
+    return 'Error loading plans: $erro';
+  }
+
+  @override
+  String get premiumRestaurarCompra => 'Already subscribed — restore purchase';
+
+  @override
+  String get definicoesCancelarAntesTitulo => 'Before you cancel';
+
+  @override
+  String get definicoesJaConstruiste =>
+      'You\'ve already built this in the app:';
+
+  @override
+  String definicoesPerfilIdoso(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count profiles',
+      one: '1 profile',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String definicoesMedicacaoRegistada(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count medications recorded',
+      one: '1 medication recorded',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String definicoesConsultaTratamento(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count appointments/treatments',
+      one: '1 appointment/treatment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String definicoesRegistoSinaisVitais(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vital signs records',
+      one: '1 vital signs record',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get definicoesAoCancelarPremium =>
+      'By canceling Premium, you\'ll no longer be able to:';
+
+  @override
+  String get definicoesPerdeVerPerfis => 'View more than 2 profiles';
+
+  @override
+  String get definicoesPerdeSinaisVitais => 'Record vital signs';
+
+  @override
+  String get definicoesPerdeRelatoriosPersonalizados => 'Customize PDF reports';
+
+  @override
+  String get definicoesPerdeHistoricoIlimitado =>
+      'View unlimited report history and period';
+
+  @override
+  String get definicoesDadosContinuamGuardados =>
+      'Your data stays saved on your phone — canceling doesn\'t delete anything.';
+
+  @override
+  String get definicoesVoltar => 'Back';
+
+  @override
+  String get definicoesContinuarPlayStore => 'Continue to Play Store';
+
+  @override
+  String get definicoesAparencia => 'Appearance';
+
+  @override
+  String get definicoesTema => 'Theme';
+
+  @override
+  String get definicoesTemaClaro => 'Light';
+
+  @override
+  String get definicoesTemaEscuro => 'Dark';
+
+  @override
+  String get definicoesTamanhoLetra => 'Font size';
+
+  @override
+  String get definicoesTamanhoPequeno => 'Small';
+
+  @override
+  String get definicoesTamanhoMedio => 'Medium';
+
+  @override
+  String get definicoesTamanhoGrande => 'Large';
+
+  @override
+  String get definicoesSubscricaoTitulo => 'Subscription';
+
+  @override
+  String get definicoesACarregar => 'Loading...';
+
+  @override
+  String definicoesTrialAtivo(int dias) {
+    return 'Premium trial period — $dias day(s) left.';
+  }
+
+  @override
+  String get definicoesPlanoPremiumAtivo => 'Premium plan active.';
+
+  @override
+  String get definicoesPlanoGratis => 'Free plan.';
+
+  @override
+  String get definicoesOQueInclui => 'What\'s included in Premium:';
+
+  @override
+  String get definicoesBeneficioPerfis => 'Unlimited profiles';
+
+  @override
+  String get definicoesBeneficioRelatorios =>
+      'Customizable PDF reports (name/logo)';
+
+  @override
+  String get definicoesBeneficioHistorico =>
+      'Unlimited report history and period';
+
+  @override
+  String get definicoesBeneficioMeteorologia => 'Official weather alerts';
+
+  @override
+  String get definicoesPrecos => '€1.99/month · €9.99/6 months · €19.99/year';
+
+  @override
+  String get definicoesGerirCancelar => 'Manage or cancel subscription';
+
+  @override
+  String get definicoesPerfisIdosos => 'Profiles';
+
+  @override
+  String get definicoesIlimitados => 'unlimited';
+
+  @override
+  String definicoesPerfisEmUso(int total, String limite) {
+    return '$total of $limite profiles in use.';
+  }
+
+  @override
+  String get definicoesVerPerfis => 'View profiles';
+
+  @override
+  String get definicoesNotificacoes => 'Notifications';
+
+  @override
+  String get definicoesNotificacoesDescricao =>
+      'Medication and appointment reminders are local notifications, scheduled directly on this phone.';
+
+  @override
+  String get definicoesTestarNotificacao => 'Test notification now';
+
+  @override
+  String get definicoesNotificacaoTesteEnviada =>
+      'Test notification sent — check your notification bar.';
+
+  @override
+  String get definicoesTroubleshootingNotificacoes =>
+      'If the test notification doesn\'t show up, or scheduled reminders don\'t arrive: check in Android Settings → Apps → CuidarPT → Notifications, whether they\'re allowed; and in Battery, whether battery optimization is disabled for CuidarPT (on some phones called \"unrestricted\" or \"allow background activity\"). Many brands (Xiaomi, Samsung, Huawei, etc.) block app reminders in the background by default.';
+
+  @override
+  String get definicoesSobre => 'About';
+
+  @override
+  String definicoesVersaoSufixo(String versao) {
+    return ' — version $versao';
+  }
+
+  @override
+  String get definicoesDadosSoTelemovel =>
+      'All data is stored only on this phone.';
+
+  @override
+  String get definicoesAvisoNaoDispositivoMedico =>
+      'CuidarPT is not a medical device and does not replace assessment, diagnosis or treatment by a health professional.';
+
+  @override
+  String get definicoesPoliticaPrivacidade => 'Privacy policy';
+
+  @override
+  String get premiumPlanoMensal => 'Monthly';
+
+  @override
+  String get premiumPlano6Meses => '6 months';
+
+  @override
+  String get premiumPlanoAnual => 'Yearly';
+
+  @override
+  String premiumPoupancaLabel(int percentagem, String valor) {
+    return 'Save $percentagem% · equals $valor/month';
+  }
 }

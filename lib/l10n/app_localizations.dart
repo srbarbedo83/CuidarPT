@@ -2127,6 +2127,534 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Elevada'**
   String get faixaElevada;
+
+  /// No description provided for @comumTelefone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Telefone'**
+  String get comumTelefone;
+
+  /// No description provided for @notificacaoMedicacaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicação · {nome}'**
+  String notificacaoMedicacaoTitulo(String nome);
+
+  /// No description provided for @notificacaoConsultaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consulta · {nome}'**
+  String notificacaoConsultaTitulo(String nome);
+
+  /// No description provided for @notificacaoProximaConsultaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próxima consulta · {nome}'**
+  String notificacaoProximaConsultaTitulo(String nome);
+
+  /// No description provided for @notificacaoTratamentoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tratamento · {nome}'**
+  String notificacaoTratamentoTitulo(String nome);
+
+  /// No description provided for @notificacaoTesteCorpo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificação de teste — se vês isto, as notificações estão a funcionar neste telemóvel.'**
+  String get notificacaoTesteCorpo;
+
+  /// No description provided for @idosoFormEditarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar perfil'**
+  String get idosoFormEditarTitulo;
+
+  /// No description provided for @idosoFormNovoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo perfil de idoso'**
+  String get idosoFormNovoTitulo;
+
+  /// No description provided for @idosoFormRotinaUpsell.
+  ///
+  /// In pt, this message translates to:
+  /// **'A rotina de higiene e alimentação é uma funcionalidade Premium. Subscreve o Premium para a ativares.'**
+  String get idosoFormRotinaUpsell;
+
+  /// No description provided for @idosoFormDataNascimentoHelp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de nascimento'**
+  String get idosoFormDataNascimentoHelp;
+
+  /// No description provided for @idosoFormIdentificacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Identificação'**
+  String get idosoFormIdentificacao;
+
+  /// No description provided for @idosoFormMobilidadeReduzida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mobilidade reduzida'**
+  String get idosoFormMobilidadeReduzida;
+
+  /// No description provided for @idosoFormAcamado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acamado'**
+  String get idosoFormAcamado;
+
+  /// No description provided for @idosoFormSexo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sexo'**
+  String get idosoFormSexo;
+
+  /// No description provided for @idosoFormMasculino.
+  ///
+  /// In pt, this message translates to:
+  /// **'Masculino'**
+  String get idosoFormMasculino;
+
+  /// No description provided for @idosoFormFeminino.
+  ///
+  /// In pt, this message translates to:
+  /// **'Feminino'**
+  String get idosoFormFeminino;
+
+  /// No description provided for @idosoFormNome.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome *'**
+  String get idosoFormNome;
+
+  /// No description provided for @idosoFormNomeErro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Indica o nome do idoso'**
+  String get idosoFormNomeErro;
+
+  /// No description provided for @idosoFormContactosEmergenciaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contactos de emergência'**
+  String get idosoFormContactosEmergenciaTitulo;
+
+  /// No description provided for @idosoFormRemoverContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover contacto'**
+  String get idosoFormRemoverContacto;
+
+  /// No description provided for @idosoFormAdicionarContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar contacto'**
+  String get idosoFormAdicionarContacto;
+
+  /// No description provided for @idosoFormSaude.
+  ///
+  /// In pt, this message translates to:
+  /// **'Saúde'**
+  String get idosoFormSaude;
+
+  /// No description provided for @idosoFormNotasSaude.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notas (alergias, condições de saúde)'**
+  String get idosoFormNotasSaude;
+
+  /// No description provided for @idosoFormPreferenciasHabitos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preferências e hábitos'**
+  String get idosoFormPreferenciasHabitos;
+
+  /// No description provided for @idosoFormComidaPreferida.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comida preferida'**
+  String get idosoFormComidaPreferida;
+
+  /// No description provided for @idosoFormMusica.
+  ///
+  /// In pt, this message translates to:
+  /// **'Música'**
+  String get idosoFormMusica;
+
+  /// No description provided for @idosoFormInteressesPessoais.
+  ///
+  /// In pt, this message translates to:
+  /// **'Interesses pessoais'**
+  String get idosoFormInteressesPessoais;
+
+  /// No description provided for @idosoFormRotinaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rotina de higiene, alimentação e sono'**
+  String get idosoFormRotinaTitulo;
+
+  /// No description provided for @idosoFormRotinaDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Funcionalidade Premium. Regista itens recorrentes (ex.: banho, refeições, sesta) e marca-os como feitos no dia.'**
+  String get idosoFormRotinaDescricao;
+
+  /// No description provided for @notasEditarTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar notas'**
+  String get notasEditarTooltip;
+
+  /// No description provided for @notasHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alergias, preferências, indicações gerais...'**
+  String get notasHint;
+
+  /// No description provided for @notasSemNotas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem notas.'**
+  String get notasSemNotas;
+
+  /// No description provided for @premiumSubscreverTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subscrever Premium'**
+  String get premiumSubscreverTitulo;
+
+  /// No description provided for @premiumErroCarregarPlanos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar os planos neste momento. Verifica a tua ligação e tenta novamente mais tarde.'**
+  String get premiumErroCarregarPlanos;
+
+  /// No description provided for @premiumErroCarregar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao carregar os planos: {erro}'**
+  String premiumErroCarregar(String erro);
+
+  /// No description provided for @premiumRestaurarCompra.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já subscrevi — restaurar compra'**
+  String get premiumRestaurarCompra;
+
+  /// No description provided for @definicoesCancelarAntesTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Antes de cancelares'**
+  String get definicoesCancelarAntesTitulo;
+
+  /// No description provided for @definicoesJaConstruiste.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já construíste isto na app:'**
+  String get definicoesJaConstruiste;
+
+  /// No description provided for @definicoesPerfilIdoso.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 perfil de idoso} other{{count} perfis de idosos}}'**
+  String definicoesPerfilIdoso(int count);
+
+  /// No description provided for @definicoesMedicacaoRegistada.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 medicação registada} other{{count} medicações registadas}}'**
+  String definicoesMedicacaoRegistada(int count);
+
+  /// No description provided for @definicoesConsultaTratamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 consulta/tratamento} other{{count} consultas/tratamentos}}'**
+  String definicoesConsultaTratamento(int count);
+
+  /// No description provided for @definicoesRegistoSinaisVitais.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 registo de sinais vitais} other{{count} registos de sinais vitais}}'**
+  String definicoesRegistoSinaisVitais(int count);
+
+  /// No description provided for @definicoesAoCancelarPremium.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao cancelar o Premium, deixas de poder:'**
+  String get definicoesAoCancelarPremium;
+
+  /// No description provided for @definicoesPerdeVerPerfis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver mais de 2 perfis de idosos'**
+  String get definicoesPerdeVerPerfis;
+
+  /// No description provided for @definicoesPerdeSinaisVitais.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registar sinais vitais'**
+  String get definicoesPerdeSinaisVitais;
+
+  /// No description provided for @definicoesPerdeRelatoriosPersonalizados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Personalizar relatórios PDF'**
+  String get definicoesPerdeRelatoriosPersonalizados;
+
+  /// No description provided for @definicoesPerdeHistoricoIlimitado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver histórico e período de relatório sem limite'**
+  String get definicoesPerdeHistoricoIlimitado;
+
+  /// No description provided for @definicoesDadosContinuamGuardados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os teus dados continuam guardados no telemóvel — cancelar não apaga nada.'**
+  String get definicoesDadosContinuamGuardados;
+
+  /// No description provided for @definicoesVoltar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar'**
+  String get definicoesVoltar;
+
+  /// No description provided for @definicoesContinuarPlayStore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Continuar para a Play Store'**
+  String get definicoesContinuarPlayStore;
+
+  /// No description provided for @definicoesAparencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aparência'**
+  String get definicoesAparencia;
+
+  /// No description provided for @definicoesTema.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tema'**
+  String get definicoesTema;
+
+  /// No description provided for @definicoesTemaClaro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Claro'**
+  String get definicoesTemaClaro;
+
+  /// No description provided for @definicoesTemaEscuro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escuro'**
+  String get definicoesTemaEscuro;
+
+  /// No description provided for @definicoesTamanhoLetra.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tamanho da letra'**
+  String get definicoesTamanhoLetra;
+
+  /// No description provided for @definicoesTamanhoPequeno.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pequeno'**
+  String get definicoesTamanhoPequeno;
+
+  /// No description provided for @definicoesTamanhoMedio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Médio'**
+  String get definicoesTamanhoMedio;
+
+  /// No description provided for @definicoesTamanhoGrande.
+  ///
+  /// In pt, this message translates to:
+  /// **'Grande'**
+  String get definicoesTamanhoGrande;
+
+  /// No description provided for @definicoesSubscricaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Subscrição'**
+  String get definicoesSubscricaoTitulo;
+
+  /// No description provided for @definicoesACarregar.
+  ///
+  /// In pt, this message translates to:
+  /// **'A carregar...'**
+  String get definicoesACarregar;
+
+  /// No description provided for @definicoesTrialAtivo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Período experimental Premium — faltam {dias} dia(s).'**
+  String definicoesTrialAtivo(int dias);
+
+  /// No description provided for @definicoesPlanoPremiumAtivo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plano Premium ativo.'**
+  String get definicoesPlanoPremiumAtivo;
+
+  /// No description provided for @definicoesPlanoGratis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Plano Grátis.'**
+  String get definicoesPlanoGratis;
+
+  /// No description provided for @definicoesOQueInclui.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que inclui o Premium:'**
+  String get definicoesOQueInclui;
+
+  /// No description provided for @definicoesBeneficioPerfis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfis de idosos ilimitados'**
+  String get definicoesBeneficioPerfis;
+
+  /// No description provided for @definicoesBeneficioRelatorios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Relatórios PDF personalizáveis (nome/logótipo)'**
+  String get definicoesBeneficioRelatorios;
+
+  /// No description provided for @definicoesBeneficioHistorico.
+  ///
+  /// In pt, this message translates to:
+  /// **'Histórico e período de relatório ilimitados'**
+  String get definicoesBeneficioHistorico;
+
+  /// No description provided for @definicoesBeneficioMeteorologia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisos meteorológicos oficiais'**
+  String get definicoesBeneficioMeteorologia;
+
+  /// No description provided for @definicoesPrecos.
+  ///
+  /// In pt, this message translates to:
+  /// **'€1,99/mês · €9,99/6 meses · €19,99/ano'**
+  String get definicoesPrecos;
+
+  /// No description provided for @definicoesGerirCancelar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerir ou cancelar subscrição'**
+  String get definicoesGerirCancelar;
+
+  /// No description provided for @definicoesPerfisIdosos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Perfis de idosos'**
+  String get definicoesPerfisIdosos;
+
+  /// No description provided for @definicoesIlimitados.
+  ///
+  /// In pt, this message translates to:
+  /// **'ilimitados'**
+  String get definicoesIlimitados;
+
+  /// No description provided for @definicoesPerfisEmUso.
+  ///
+  /// In pt, this message translates to:
+  /// **'{total} de {limite} perfis em uso.'**
+  String definicoesPerfisEmUso(int total, String limite);
+
+  /// No description provided for @definicoesVerPerfis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver perfis'**
+  String get definicoesVerPerfis;
+
+  /// No description provided for @definicoesNotificacoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificações'**
+  String get definicoesNotificacoes;
+
+  /// No description provided for @definicoesNotificacoesDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os lembretes de medicação e consultas são notificações locais, agendadas diretamente neste telemóvel.'**
+  String get definicoesNotificacoesDescricao;
+
+  /// No description provided for @definicoesTestarNotificacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Testar notificação agora'**
+  String get definicoesTestarNotificacao;
+
+  /// No description provided for @definicoesNotificacaoTesteEnviada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificação de teste enviada — verifica a barra de notificações.'**
+  String get definicoesNotificacaoTesteEnviada;
+
+  /// No description provided for @definicoesTroubleshootingNotificacoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se a notificação de teste não aparecer, ou se os lembretes agendados não chegarem: verifica em Definições do Android → Apps → CuidarPT → Notificações, se estão permitidas; e em Bateria, se a otimização de bateria está desativada para o CuidarPT (em alguns telemóveis chama-se \"sem restrições\" ou \"permitir em segundo plano\"). Muitas marcas (Xiaomi, Samsung, Huawei, etc.) bloqueiam lembretes de apps em segundo plano por omissão.'**
+  String get definicoesTroubleshootingNotificacoes;
+
+  /// No description provided for @definicoesSobre.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sobre'**
+  String get definicoesSobre;
+
+  /// No description provided for @definicoesVersaoSufixo.
+  ///
+  /// In pt, this message translates to:
+  /// **' — versão {versao}'**
+  String definicoesVersaoSufixo(String versao);
+
+  /// No description provided for @definicoesDadosSoTelemovel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os dados ficam guardados apenas neste telemóvel.'**
+  String get definicoesDadosSoTelemovel;
+
+  /// No description provided for @definicoesAvisoNaoDispositivoMedico.
+  ///
+  /// In pt, this message translates to:
+  /// **'O CuidarPT não é um dispositivo médico e não substitui a avaliação, o diagnóstico ou o tratamento de um profissional de saúde.'**
+  String get definicoesAvisoNaoDispositivoMedico;
+
+  /// No description provided for @definicoesPoliticaPrivacidade.
+  ///
+  /// In pt, this message translates to:
+  /// **'Política de privacidade'**
+  String get definicoesPoliticaPrivacidade;
+
+  /// No description provided for @premiumPlanoMensal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mensal'**
+  String get premiumPlanoMensal;
+
+  /// No description provided for @premiumPlano6Meses.
+  ///
+  /// In pt, this message translates to:
+  /// **'6 meses'**
+  String get premiumPlano6Meses;
+
+  /// No description provided for @premiumPlanoAnual.
+  ///
+  /// In pt, this message translates to:
+  /// **'Anual'**
+  String get premiumPlanoAnual;
+
+  /// No description provided for @premiumPoupancaLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Poupas {percentagem}% · equivale a {valor}/mês'**
+  String premiumPoupancaLabel(int percentagem, String valor);
 }
 
 class _AppLocalizationsDelegate

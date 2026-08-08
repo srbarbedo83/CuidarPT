@@ -3,6 +3,8 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../l10n/app_localizations.dart';
+
 /// Lembretes locais, agendados diretamente no dispositivo — sem qualquer
 /// servidor de push.
 ///
@@ -136,12 +138,12 @@ class NotificationService {
   /// "Testar notificação agora" em Definições, para o utilizador conseguir
   /// distinguir um problema de permissões/sistema (nem esta aparece) de um
   /// problema de agendamento (esta aparece, mas os lembretes não).
-  Future<void> mostrarTeste() async {
+  Future<void> mostrarTeste(AppLocalizations l10n) async {
     await init();
     await _plugin.show(
       id: 999999999,
-      title: 'CuidarPT',
-      body: 'Notificação de teste — se vês isto, as notificações estão a funcionar neste telemóvel.',
+      title: l10n.appTitle,
+      body: l10n.notificacaoTesteCorpo,
       notificationDetails: _detalhes,
     );
   }

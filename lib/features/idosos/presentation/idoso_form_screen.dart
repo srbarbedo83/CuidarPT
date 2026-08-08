@@ -9,6 +9,7 @@ import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/contacto_emergencia.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/preferencias_idoso.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/premium_upsell.dart';
 import '../../subscricao/feature_limits.dart';
 import '../providers/idoso_providers.dart';
@@ -85,8 +86,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
     if (valor && !ref.read(featureLimitsProvider).permiteRotinas) {
       await mostrarLimiteAtingido(
         context,
-        mensagem: 'A rotina de higiene e alimentação é uma funcionalidade Premium. '
-            'Subscreve o Premium para a ativares.',
+        mensagem: AppLocalizations.of(context).idosoFormRotinaUpsell,
       );
       return;
     }
@@ -135,7 +135,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
       initialDate: _dataNascimento ?? DateTime(agora.year - 75, agora.month, agora.day),
       firstDate: DateTime(1900),
       lastDate: agora,
-      helpText: 'Data de nascimento',
+      helpText: AppLocalizations.of(context).idosoFormDataNascimentoHelp,
     );
     if (escolhida != null) {
       setState(() => _dataNascimento = escolhida);
@@ -191,15 +191,16 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(_aEditar ? 'Editar perfil' : 'Novo perfil de idoso')),
+      appBar: AppBar(title: Text(_aEditar ? l10n.idosoFormEditarTitulo : l10n.idosoFormNovoTitulo)),
       body: Form(
         key: _formKey,
         child: ListView(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
             _CartaoSeccao(
-              titulo: 'Identificação',
+              titulo: l10n.idosoFormIdentificacao,
               icone: Icons.badge_outlined,
               children: [
                 Center(
@@ -241,24 +242,24 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   secondary: const Icon(Icons.accessible),
-                  title: const Text('Mobilidade reduzida'),
+                  title: Text(l10n.idosoFormMobilidadeReduzida),
                   value: _mobilidadeReduzida,
                   onChanged: (valor) => setState(() => _mobilidadeReduzida = valor),
                 ),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   secondary: const Icon(Icons.bed_outlined),
-                  title: const Text('Acamado'),
+                  title: Text(l10n.idosoFormAcamado),
                   value: _acamado,
                   onChanged: (valor) => setState(() => _acamado = valor),
                 ),
                 const SizedBox(height: 16),
-                Text('Sexo', style: Theme.of(context).textTheme.titleSmall),
+                Text(l10n.idosoFormSexo, style: Theme.of(context).textTheme.titleSmall),
                 const SizedBox(height: 8),
                 SegmentedButton<Sexo>(
-                  segments: const [
-                    ButtonSegment(value: Sexo.masculino, label: Text('Masculino')),
-                    ButtonSegment(value: Sexo.feminino, label: Text('Feminino')),
+                  segments: [
+                    ButtonSegment(value: Sexo.masculino, label: Text(l10n.idosoFormMasculino)),
+                    ButtonSegment(value: Sexo.feminino, label: Text(l10n.idosoFormFeminino)),
                   ],
                   selected: _sexo == null ? {} : {_sexo!},
                   emptySelectionAllowed: true,
@@ -268,19 +269,19 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _nomeController,
-                  decoration: const InputDecoration(labelText: 'Nome *'),
+                  decoration: InputDecoration(labelText: l10n.idosoFormNome),
                   textCapitalization: TextCapitalization.words,
                   validator: (valor) =>
-                      (valor == null || valor.trim().isEmpty) ? 'Indica o nome do idoso' : null,
+                      (valor == null || valor.trim().isEmpty) ? l10n.idosoFormNomeErro : null,
                 ),
                 const SizedBox(height: 16),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Data de nascimento'),
+                  title: Text(l10n.idosoFormDataNascimentoHelp),
                   subtitle: Text(
                     _dataNascimento != null
                         ? DateFormat('dd/MM/yyyy').format(_dataNascimento!)
-                        : 'Não definida',
+                        : l10n.medicacaoFormNaoDefinida,
                   ),
                   trailing: const Icon(Icons.calendar_today),
                   onTap: _escolherDataNascimento,
@@ -289,7 +290,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
             ),
             const SizedBox(height: 16),
             _CartaoSeccao(
-              titulo: 'Contactos de emergência',
+              titulo: l10n.idosoFormContactosEmergenciaTitulo,
               icone: Icons.emergency_outlined,
               corTitulo: Colors.red.shade700,
               children: [
@@ -304,13 +305,13 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                             children: [
                               TextFormField(
                                 controller: _contactos[indice].nomeController,
-                                decoration: const InputDecoration(labelText: 'Nome'),
+                                decoration: InputDecoration(labelText: l10n.comumNome),
                                 textCapitalization: TextCapitalization.words,
                               ),
                               const SizedBox(height: 8),
                               TextFormField(
                                 controller: _contactos[indice].telefoneController,
-                                decoration: const InputDecoration(labelText: 'Telefone'),
+                                decoration: InputDecoration(labelText: l10n.comumTelefone),
                                 keyboardType: TextInputType.phone,
                               ),
                             ],
@@ -319,7 +320,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                         if (_contactos.length > 1)
                           IconButton(
                             icon: const Icon(Icons.remove_circle_outline),
-                            tooltip: 'Remover contacto',
+                            tooltip: l10n.idosoFormRemoverContacto,
                             onPressed: () => _removerContacto(indice),
                           ),
                       ],
@@ -330,20 +331,20 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                   child: TextButton.icon(
                     onPressed: _adicionarContacto,
                     icon: const Icon(Icons.add),
-                    label: const Text('Adicionar contacto'),
+                    label: Text(l10n.idosoFormAdicionarContacto),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             _CartaoSeccao(
-              titulo: 'Saúde',
+              titulo: l10n.idosoFormSaude,
               icone: Icons.health_and_safety_outlined,
               children: [
                 TextFormField(
                   controller: _notasController,
-                  decoration: const InputDecoration(
-                    labelText: 'Notas (alergias, condições de saúde)',
+                  decoration: InputDecoration(
+                    labelText: l10n.idosoFormNotasSaude,
                   ),
                   maxLines: 3,
                 ),
@@ -351,43 +352,40 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
             ),
             const SizedBox(height: 16),
             _CartaoSeccao(
-              titulo: 'Preferências e hábitos',
+              titulo: l10n.idosoFormPreferenciasHabitos,
               icone: Icons.favorite_outline,
               children: [
                 TextFormField(
                   controller: _comidaPreferidaController,
-                  decoration: const InputDecoration(
-                    labelText: 'Comida preferida',
-                    prefixIcon: Icon(Icons.restaurant_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.idosoFormComidaPreferida,
+                    prefixIcon: const Icon(Icons.restaurant_outlined),
                   ),
                   textCapitalization: TextCapitalization.sentences,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _musicaController,
-                  decoration: const InputDecoration(
-                    labelText: 'Música',
-                    prefixIcon: Icon(Icons.music_note_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.idosoFormMusica,
+                    prefixIcon: const Icon(Icons.music_note_outlined),
                   ),
                   textCapitalization: TextCapitalization.sentences,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _interessesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Interesses pessoais',
-                    prefixIcon: Icon(Icons.interests_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.idosoFormInteressesPessoais,
+                    prefixIcon: const Icon(Icons.interests_outlined),
                   ),
                   textCapitalization: TextCapitalization.sentences,
                 ),
                 const SizedBox(height: 8),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Rotina de higiene, alimentação e sono'),
-                  subtitle: const Text(
-                    'Funcionalidade Premium. Regista itens recorrentes (ex.: banho, '
-                    'refeições, sesta) e marca-os como feitos no dia.',
-                  ),
+                  title: Text(l10n.idosoFormRotinaTitulo),
+                  subtitle: Text(l10n.idosoFormRotinaDescricao),
                   value: _rotinasAtivas,
                   onChanged: _alternarRotinas,
                 ),
@@ -402,7 +400,7 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Guardar'),
+                  : Text(l10n.comumGuardar),
             ),
           ],
         ),
