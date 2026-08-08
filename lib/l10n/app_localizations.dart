@@ -243,6 +243,150 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Seguinte'**
   String get onboardingBotaoSeguinte;
+
+  /// No description provided for @comumCancelar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get comumCancelar;
+
+  /// No description provided for @comumApagar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar'**
+  String get comumApagar;
+
+  /// No description provided for @comumGuardar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Guardar'**
+  String get comumGuardar;
+
+  /// No description provided for @comumDefinicoes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Definições'**
+  String get comumDefinicoes;
+
+  /// No description provided for @comumSinaisVitaisPremiumMensagem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registar sinais vitais é uma funcionalidade Premium. Subscreve o Premium para a usares.'**
+  String get comumSinaisVitaisPremiumMensagem;
+
+  /// No description provided for @proximoEventoFaltamDias.
+  ///
+  /// In pt, this message translates to:
+  /// **'{dias, plural, =1{falta 1 dia} other{faltam {dias} dias}}'**
+  String proximoEventoFaltamDias(int dias);
+
+  /// No description provided for @proximoEventoFaltamHoras.
+  ///
+  /// In pt, this message translates to:
+  /// **'faltam {horas}h'**
+  String proximoEventoFaltamHoras(int horas);
+
+  /// No description provided for @proximoEventoFaltamMinutos.
+  ///
+  /// In pt, this message translates to:
+  /// **'faltam {minutos} min'**
+  String proximoEventoFaltamMinutos(int minutos);
+
+  /// No description provided for @homeTrialDias.
+  ///
+  /// In pt, this message translates to:
+  /// **'Trial: {dias}d'**
+  String homeTrialDias(int dias);
+
+  /// No description provided for @homeErroCarregarPerfis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao carregar perfis: {erro}'**
+  String homeErroCarregarPerfis(String erro);
+
+  /// No description provided for @homeCriarNovoPerfil.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar novo perfil'**
+  String get homeCriarNovoPerfil;
+
+  /// No description provided for @homeEmptyStateTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não tens nenhum perfil de idoso.\nToca em \"Criar novo perfil\" para criares o primeiro.'**
+  String get homeEmptyStateTexto;
+
+  /// No description provided for @homeLimiteIdososMensagem.
+  ///
+  /// In pt, this message translates to:
+  /// **'{limite, plural, =1{O plano Grátis permite 1 perfil de idoso. Subscreve o Premium para adicionares mais perfis.} other{O plano Grátis permite {limite} perfis de idoso. Subscreve o Premium para adicionares mais perfis.}}'**
+  String homeLimiteIdososMensagem(int limite);
+
+  /// No description provided for @homeApagarPerfilTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar perfil'**
+  String get homeApagarPerfilTitulo;
+
+  /// No description provided for @homeApagarPerfilConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Queres mesmo apagar o perfil de {nome}?'**
+  String homeApagarPerfilConfirmacao(String nome);
+
+  /// No description provided for @homeLembretesTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lembretes'**
+  String get homeLembretesTitulo;
+
+  /// No description provided for @homeLembretesContagem.
+  ///
+  /// In pt, this message translates to:
+  /// **'{total, plural, =1{1 próximo} other{{total} próximos}}'**
+  String homeLembretesContagem(int total);
+
+  /// No description provided for @homeEscolherIdosoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para qual idoso?'**
+  String get homeEscolherIdosoTitulo;
+
+  /// No description provided for @homeAcaoMedicacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicação'**
+  String get homeAcaoMedicacao;
+
+  /// No description provided for @homeAcaoConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consulta'**
+  String get homeAcaoConsulta;
+
+  /// No description provided for @homeAcaoSinaisVitais.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sinais vitais'**
+  String get homeAcaoSinaisVitais;
+
+  /// No description provided for @homeAcaoRelatorio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Relatório'**
+  String get homeAcaoRelatorio;
+
+  /// No description provided for @homeIdosoSemDataNascimento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de nascimento não definida'**
+  String get homeIdosoSemDataNascimento;
+
+  /// No description provided for @homeIdosoDataNascimento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nascimento: {data}'**
+  String homeIdosoDataNascimento(String data);
 }
 
 class _AppLocalizationsDelegate

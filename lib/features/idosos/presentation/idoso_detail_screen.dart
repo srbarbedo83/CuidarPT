@@ -12,6 +12,7 @@ import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/gradiente_premium.dart';
 import '../../calendario/presentation/calendario_screen.dart';
 import '../../consultas/presentation/consulta_form_screen.dart';
@@ -337,7 +338,8 @@ class _ProximoEventoCard extends StatelessWidget {
           ),
           title: Text('$rotulo: ${proximo.titulo}'),
           subtitle: Text(
-            '${formato.format(proximo.dataHora)} · ${formatarContagem(DateTime.now(), proximo.dataHora)}',
+            '${formato.format(proximo.dataHora)} · '
+            '${formatarContagem(AppLocalizations.of(context), DateTime.now(), proximo.dataHora)}',
           ),
         ),
       ),

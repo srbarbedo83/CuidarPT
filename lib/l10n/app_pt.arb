@@ -33,5 +33,59 @@
   "onboardingDisclaimerTexto": "O CuidarPT é uma ferramenta de organização de cuidados. Não é um dispositivo médico e não substitui a avaliação, o diagnóstico ou o tratamento de um profissional de saúde. Em caso de emergência, contacte sempre os serviços de saúde.",
   "onboardingDisclaimerCheckbox": "Li e percebi",
   "onboardingBotaoComecar": "Começar",
-  "onboardingBotaoSeguinte": "Seguinte"
+  "onboardingBotaoSeguinte": "Seguinte",
+
+  "comumCancelar": "Cancelar",
+  "comumApagar": "Apagar",
+  "comumGuardar": "Guardar",
+  "comumDefinicoes": "Definições",
+  "comumSinaisVitaisPremiumMensagem": "Registar sinais vitais é uma funcionalidade Premium. Subscreve o Premium para a usares.",
+
+  "proximoEventoFaltamDias": "{dias, plural, =1{falta 1 dia} other{faltam {dias} dias}}",
+  "@proximoEventoFaltamDias": {
+    "placeholders": { "dias": { "type": "int" } }
+  },
+  "proximoEventoFaltamHoras": "faltam {horas}h",
+  "@proximoEventoFaltamHoras": {
+    "placeholders": { "horas": { "type": "int" } }
+  },
+  "proximoEventoFaltamMinutos": "faltam {minutos} min",
+  "@proximoEventoFaltamMinutos": {
+    "placeholders": { "minutos": { "type": "int" } }
+  },
+
+  "homeTrialDias": "Trial: {dias}d",
+  "@homeTrialDias": {
+    "placeholders": { "dias": { "type": "int" } }
+  },
+  "homeErroCarregarPerfis": "Erro ao carregar perfis: {erro}",
+  "@homeErroCarregarPerfis": {
+    "placeholders": { "erro": { "type": "String" } }
+  },
+  "homeCriarNovoPerfil": "Criar novo perfil",
+  "homeEmptyStateTexto": "Ainda não tens nenhum perfil de idoso.\nToca em \"Criar novo perfil\" para criares o primeiro.",
+  "homeLimiteIdososMensagem": "{limite, plural, =1{O plano Grátis permite 1 perfil de idoso. Subscreve o Premium para adicionares mais perfis.} other{O plano Grátis permite {limite} perfis de idoso. Subscreve o Premium para adicionares mais perfis.}}",
+  "@homeLimiteIdososMensagem": {
+    "placeholders": { "limite": { "type": "int" } }
+  },
+  "homeApagarPerfilTitulo": "Apagar perfil",
+  "homeApagarPerfilConfirmacao": "Queres mesmo apagar o perfil de {nome}?",
+  "@homeApagarPerfilConfirmacao": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "homeLembretesTitulo": "Lembretes",
+  "homeLembretesContagem": "{total, plural, =1{1 próximo} other{{total} próximos}}",
+  "@homeLembretesContagem": {
+    "placeholders": { "total": { "type": "int" } }
+  },
+  "homeEscolherIdosoTitulo": "Para qual idoso?",
+  "homeAcaoMedicacao": "Medicação",
+  "homeAcaoConsulta": "Consulta",
+  "homeAcaoSinaisVitais": "Sinais vitais",
+  "homeAcaoRelatorio": "Relatório",
+  "homeIdosoSemDataNascimento": "Data de nascimento não definida",
+  "homeIdosoDataNascimento": "Nascimento: {data}",
+  "@homeIdosoDataNascimento": {
+    "placeholders": { "data": { "type": "String" } }
+  }
 }

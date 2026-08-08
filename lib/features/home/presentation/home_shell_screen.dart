@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data/models/idoso.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/gradiente_premium.dart';
 import '../../../shared/widgets/logo_app.dart';
 import '../../../shared/widgets/premium_upsell.dart';
@@ -40,13 +41,13 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
   }
 
   Future<void> _adicionarIdoso(BuildContext context, WidgetRef ref, int totalAtual) async {
+    final l10n = AppLocalizations.of(context);
     final limites = ref.read(featureLimitsProvider);
     final limite = limites.maxPerfisIdoso;
     if (limite != null && totalAtual >= limite) {
       await mostrarLimiteAtingido(
         context,
-        mensagem: 'O plano Grátis permite $limite ${limite == 1 ? 'perfil' : 'perfis'} de idoso. '
-            'Subscreve o Premium para adicionares mais perfis.',
+        mensagem: l10n.homeLimiteIdososMensagem(limite),
       );
       return;
     }
@@ -58,14 +59,15 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
   }
 
   Future<void> _apagarIdoso(BuildContext context, WidgetRef ref, Idoso idoso) async {
+    final l10n = AppLocalizations.of(context);
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar perfil'),
-        content: Text('Queres mesmo apagar o perfil de ${idoso.nome}?'),
+        title: Text(l10n.homeApagarPerfilTitulo),
+        content: Text(l10n.homeApagarPerfilConfirmacao(idoso.nome)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.comumCancelar)),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.comumApagar)),
         ],
       ),
     );
@@ -76,6 +78,7 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final idososAsync = ref.watch(idosoListProvider);
     final estadoSubscricao = ref.watch(estadoSubscricaoProvider).valueOrNull;
 
@@ -90,14 +93,14 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Center(
                 child: Text(
-                  'Trial: ${estadoSubscricao.diasRestantesTrial}d',
+                  l10n.homeTrialDias(estadoSubscricao.diasRestantesTrial),
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
             ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            tooltip: 'Definições',
+            tooltip: l10n.comumDefinicoes,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const DefinicoesScreen()),
             ),
@@ -125,7 +128,7 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (erro, stackTrace) => Center(child: Text('Erro ao carregar perfis: $erro')),
+        error: (erro, stackTrace) => Center(child: Text(l10n.homeErroCarregarPerfis('$erro'))),
       ),
       bottomNavigationBar: idososAsync.maybeWhen(
         data: (idosos) => SafeArea(
@@ -135,7 +138,7 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
               width: double.infinity,
               child: FilledButton.icon(
                 icon: const Icon(Icons.add),
-                label: const Text('Criar novo perfil'),
+                label: Text(l10n.homeCriarNovoPerfil),
                 onPressed: () => _adicionarIdoso(context, ref, idosos.length),
               ),
             ),
@@ -152,6 +155,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -161,7 +165,7 @@ class _EmptyState extends StatelessWidget {
             Icon(Icons.elderly, size: 64, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 16),
             Text(
-              'Ainda não tens nenhum perfil de idoso.\nToca em "Criar novo perfil" para criares o primeiro.',
+              l10n.homeEmptyStateTexto,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
@@ -184,6 +188,7 @@ class _SeccaoLembretes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final agora = DateTime.now();
     final porIdoso = <(Idoso, List<ProximoEvento>)>[];
     var total = 0;
@@ -206,11 +211,11 @@ class _SeccaoLembretes extends ConsumerWidget {
         child: ExpansionTile(
           initiallyExpanded: false,
           title: GradientText(
-            'Lembretes',
+            l10n.homeLembretesTitulo,
             glow: true,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text('$total ${total == 1 ? 'próximo' : 'próximos'}'),
+          subtitle: Text(l10n.homeLembretesContagem(total)),
           children: [
             for (final (idoso, eventos) in porIdoso) ...[
               Padding(
@@ -252,6 +257,7 @@ class _LembreteTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final urgente = eventoUrgente(agora, evento.dataHora);
     final cor = urgente ? Colors.red.shade700 : null;
     final peso = urgente ? FontWeight.bold : null;
@@ -262,16 +268,17 @@ class _LembreteTile extends StatelessWidget {
         color: cor,
       ),
       title: Text(evento.titulo, style: TextStyle(color: cor, fontWeight: peso)),
-      subtitle: Text(formatarContagem(agora, evento.dataHora), style: TextStyle(color: cor, fontWeight: peso)),
+      subtitle:
+          Text(formatarContagem(l10n, agora, evento.dataHora), style: TextStyle(color: cor, fontWeight: peso)),
       onTap: () => _abrirRegisto(context),
     );
   }
 }
 
-String _subtituloIdoso(Idoso idoso) {
+String _subtituloIdoso(AppLocalizations l10n, Idoso idoso) {
   final dataNascimento = idoso.dataNascimento;
-  if (dataNascimento == null) return 'Data de nascimento não definida';
-  return 'Nascimento: ${DateFormat('dd/MM/yyyy').format(dataNascimento)}';
+  if (dataNascimento == null) return l10n.homeIdosoSemDataNascimento;
+  return l10n.homeIdosoDataNascimento(DateFormat('dd/MM/yyyy').format(dataNascimento));
 }
 
 class _IdosoCardDestacado extends StatelessWidget {
@@ -289,6 +296,7 @@ class _IdosoCardDestacado extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final fotoPath = idoso.fotoPath;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
@@ -341,14 +349,14 @@ class _IdosoCardDestacado extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 2),
-                          Text(_subtituloIdoso(idoso), style: Theme.of(context).textTheme.bodySmall),
+                          Text(_subtituloIdoso(l10n, idoso), style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
                     ),
                     IconButton(
                       onPressed: onApagar,
                       icon: const Icon(Icons.delete_outline),
-                      tooltip: 'Apagar perfil',
+                      tooltip: l10n.homeApagarPerfilTitulo,
                     ),
                   ],
                 ),
@@ -365,6 +373,7 @@ class _IdosoCardDestacado extends StatelessWidget {
 /// idoso, avança logo sem perguntar.
 Future<Idoso?> _escolherIdosoParaAcao(BuildContext context, List<Idoso> idosos) {
   if (idosos.length == 1) return Future.value(idosos.first);
+  final l10n = AppLocalizations.of(context);
   return showModalBottomSheet<Idoso>(
     context: context,
     builder: (context) => SafeArea(
@@ -373,7 +382,7 @@ Future<Idoso?> _escolherIdosoParaAcao(BuildContext context, List<Idoso> idosos) 
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Text('Para qual idoso?', style: Theme.of(context).textTheme.titleMedium),
+            child: Text(l10n.homeEscolherIdosoTitulo, style: Theme.of(context).textTheme.titleMedium),
           ),
           for (final idoso in idosos)
             ListTile(
@@ -420,8 +429,7 @@ class _AcessoRapidoGlobal extends ConsumerWidget {
     if (!ref.read(featureLimitsProvider).permiteSinaisVitais) {
       await mostrarLimiteAtingido(
         context,
-        mensagem: 'Registar sinais vitais é uma funcionalidade Premium. '
-            'Subscreve o Premium para a usares.',
+        mensagem: AppLocalizations.of(context).comumSinaisVitaisPremiumMensagem,
       );
       return;
     }
@@ -441,6 +449,7 @@ class _AcessoRapidoGlobal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: GridView.count(
@@ -453,22 +462,22 @@ class _AcessoRapidoGlobal extends ConsumerWidget {
         children: [
           _AcaoRapidaGrande(
             icon: Icons.medication_outlined,
-            rotulo: 'Medicação',
+            rotulo: l10n.homeAcaoMedicacao,
             onPressed: () => _abrirMedicacao(context),
           ),
           _AcaoRapidaGrande(
             icon: Icons.event_note_outlined,
-            rotulo: 'Consulta',
+            rotulo: l10n.homeAcaoConsulta,
             onPressed: () => _abrirConsulta(context),
           ),
           _AcaoRapidaGrande(
             icon: Icons.monitor_heart_outlined,
-            rotulo: 'Sinais vitais',
+            rotulo: l10n.homeAcaoSinaisVitais,
             onPressed: () => _abrirSinaisVitais(context, ref),
           ),
           _AcaoRapidaGrande(
             icon: Icons.picture_as_pdf_outlined,
-            rotulo: 'Relatório',
+            rotulo: l10n.homeAcaoRelatorio,
             destacarGradiente: true,
             onPressed: () => _abrirRelatorio(context),
           ),

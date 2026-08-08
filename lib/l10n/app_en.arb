@@ -24,5 +24,32 @@
   "onboardingDisclaimerTexto": "CuidarPT is a care organization tool. It is not a medical device and does not replace assessment, diagnosis or treatment by a health professional. In an emergency, always contact health services.",
   "onboardingDisclaimerCheckbox": "I've read and understood",
   "onboardingBotaoComecar": "Start",
-  "onboardingBotaoSeguinte": "Next"
+  "onboardingBotaoSeguinte": "Next",
+
+  "comumCancelar": "Cancel",
+  "comumApagar": "Delete",
+  "comumGuardar": "Save",
+  "comumDefinicoes": "Settings",
+  "comumSinaisVitaisPremiumMensagem": "Recording vital signs is a Premium feature. Subscribe to Premium to use it.",
+
+  "proximoEventoFaltamDias": "{dias, plural, =1{1 day left} other{{dias} days left}}",
+  "proximoEventoFaltamHoras": "{horas}h left",
+  "proximoEventoFaltamMinutos": "{minutos} min left",
+
+  "homeTrialDias": "Trial: {dias}d",
+  "homeErroCarregarPerfis": "Error loading profiles: {erro}",
+  "homeCriarNovoPerfil": "Create new profile",
+  "homeEmptyStateTexto": "You don't have any profiles yet.\nTap \"Create new profile\" to create the first one.",
+  "homeLimiteIdososMensagem": "{limite, plural, =1{The Free plan allows 1 profile. Subscribe to Premium to add more profiles.} other{The Free plan allows {limite} profiles. Subscribe to Premium to add more profiles.}}",
+  "homeApagarPerfilTitulo": "Delete profile",
+  "homeApagarPerfilConfirmacao": "Are you sure you want to delete {nome}'s profile?",
+  "homeLembretesTitulo": "Reminders",
+  "homeLembretesContagem": "{total, plural, =1{1 upcoming} other{{total} upcoming}}",
+  "homeEscolherIdosoTitulo": "For which person?",
+  "homeAcaoMedicacao": "Medication",
+  "homeAcaoConsulta": "Appointment",
+  "homeAcaoSinaisVitais": "Vital signs",
+  "homeAcaoRelatorio": "Report",
+  "homeIdosoSemDataNascimento": "Date of birth not set",
+  "homeIdosoDataNascimento": "Born: {data}"
 }

@@ -1,5 +1,6 @@
 import '../../../data/models/registo_consulta.dart';
 import '../../../data/models/registo_medicacao.dart';
+import '../../../l10n/app_localizations.dart';
 
 enum TipoProximoEvento { medicacao, consulta }
 
@@ -104,14 +105,14 @@ bool eventoUrgente(DateTime agora, DateTime dataHora, {Duration limiar = const D
 
 /// Formata o tempo restante até [dataHora] a partir de [agora] de forma
 /// compacta: "faltam 2h", "faltam 3 dias", "faltam 15 min".
-String formatarContagem(DateTime agora, DateTime dataHora) {
+String formatarContagem(AppLocalizations l10n, DateTime agora, DateTime dataHora) {
   final diferenca = dataHora.difference(agora);
   if (diferenca.inDays >= 1) {
-    return 'faltam ${diferenca.inDays} ${diferenca.inDays == 1 ? 'dia' : 'dias'}';
+    return l10n.proximoEventoFaltamDias(diferenca.inDays);
   }
   if (diferenca.inHours >= 1) {
-    return 'faltam ${diferenca.inHours}h';
+    return l10n.proximoEventoFaltamHoras(diferenca.inHours);
   }
   final minutos = diferenca.inMinutes.clamp(0, 59);
-  return 'faltam $minutos min';
+  return l10n.proximoEventoFaltamMinutos(minutos);
 }

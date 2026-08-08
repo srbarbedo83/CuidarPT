@@ -24,5 +24,32 @@
   "onboardingDisclaimerTexto": "CuidarPT es una herramienta de organización de cuidados. No es un dispositivo médico y no sustituye la evaluación, el diagnóstico ni el tratamiento de un profesional de la salud. En caso de emergencia, contacta siempre con los servicios de salud.",
   "onboardingDisclaimerCheckbox": "Lo he leído y entendido",
   "onboardingBotaoComecar": "Empezar",
-  "onboardingBotaoSeguinte": "Siguiente"
+  "onboardingBotaoSeguinte": "Siguiente",
+
+  "comumCancelar": "Cancelar",
+  "comumApagar": "Eliminar",
+  "comumGuardar": "Guardar",
+  "comumDefinicoes": "Ajustes",
+  "comumSinaisVitaisPremiumMensagem": "Registrar signos vitales es una función Premium. Suscríbete a Premium para usarla.",
+
+  "proximoEventoFaltamDias": "{dias, plural, =1{falta 1 día} other{faltan {dias} días}}",
+  "proximoEventoFaltamHoras": "faltan {horas}h",
+  "proximoEventoFaltamMinutos": "faltan {minutos} min",
+
+  "homeTrialDias": "Prueba: {dias}d",
+  "homeErroCarregarPerfis": "Error al cargar perfiles: {erro}",
+  "homeCriarNovoPerfil": "Crear nuevo perfil",
+  "homeEmptyStateTexto": "Todavía no tienes ningún perfil.\nToca en \"Crear nuevo perfil\" para crear el primero.",
+  "homeLimiteIdososMensagem": "{limite, plural, =1{El plan Gratis permite 1 perfil. Suscríbete a Premium para añadir más perfiles.} other{El plan Gratis permite {limite} perfiles. Suscríbete a Premium para añadir más perfiles.}}",
+  "homeApagarPerfilTitulo": "Eliminar perfil",
+  "homeApagarPerfilConfirmacao": "¿Seguro que quieres eliminar el perfil de {nome}?",
+  "homeLembretesTitulo": "Recordatorios",
+  "homeLembretesContagem": "{total, plural, =1{1 próximo} other{{total} próximos}}",
+  "homeEscolherIdosoTitulo": "¿Para quién?",
+  "homeAcaoMedicacao": "Medicación",
+  "homeAcaoConsulta": "Cita",
+  "homeAcaoSinaisVitais": "Signos vitales",
+  "homeAcaoRelatorio": "Informe",
+  "homeIdosoSemDataNascimento": "Fecha de nacimiento no definida",
+  "homeIdosoDataNascimento": "Nacimiento: {data}"
 }

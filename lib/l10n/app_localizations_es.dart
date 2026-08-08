@@ -87,4 +87,116 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get onboardingBotaoSeguinte => 'Siguiente';
+
+  @override
+  String get comumCancelar => 'Cancelar';
+
+  @override
+  String get comumApagar => 'Eliminar';
+
+  @override
+  String get comumGuardar => 'Guardar';
+
+  @override
+  String get comumDefinicoes => 'Ajustes';
+
+  @override
+  String get comumSinaisVitaisPremiumMensagem =>
+      'Registrar signos vitales es una función Premium. Suscríbete a Premium para usarla.';
+
+  @override
+  String proximoEventoFaltamDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'faltan $dias días',
+      one: 'falta 1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String proximoEventoFaltamHoras(int horas) {
+    return 'faltan ${horas}h';
+  }
+
+  @override
+  String proximoEventoFaltamMinutos(int minutos) {
+    return 'faltan $minutos min';
+  }
+
+  @override
+  String homeTrialDias(int dias) {
+    return 'Prueba: ${dias}d';
+  }
+
+  @override
+  String homeErroCarregarPerfis(String erro) {
+    return 'Error al cargar perfiles: $erro';
+  }
+
+  @override
+  String get homeCriarNovoPerfil => 'Crear nuevo perfil';
+
+  @override
+  String get homeEmptyStateTexto =>
+      'Todavía no tienes ningún perfil.\nToca en \"Crear nuevo perfil\" para crear el primero.';
+
+  @override
+  String homeLimiteIdososMensagem(int limite) {
+    String _temp0 = intl.Intl.pluralLogic(
+      limite,
+      locale: localeName,
+      other:
+          'El plan Gratis permite $limite perfiles. Suscríbete a Premium para añadir más perfiles.',
+      one:
+          'El plan Gratis permite 1 perfil. Suscríbete a Premium para añadir más perfiles.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeApagarPerfilTitulo => 'Eliminar perfil';
+
+  @override
+  String homeApagarPerfilConfirmacao(String nome) {
+    return '¿Seguro que quieres eliminar el perfil de $nome?';
+  }
+
+  @override
+  String get homeLembretesTitulo => 'Recordatorios';
+
+  @override
+  String homeLembretesContagem(int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total próximos',
+      one: '1 próximo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeEscolherIdosoTitulo => '¿Para quién?';
+
+  @override
+  String get homeAcaoMedicacao => 'Medicación';
+
+  @override
+  String get homeAcaoConsulta => 'Cita';
+
+  @override
+  String get homeAcaoSinaisVitais => 'Signos vitales';
+
+  @override
+  String get homeAcaoRelatorio => 'Informe';
+
+  @override
+  String get homeIdosoSemDataNascimento => 'Fecha de nacimiento no definida';
+
+  @override
+  String homeIdosoDataNascimento(String data) {
+    return 'Nacimiento: $data';
+  }
 }
