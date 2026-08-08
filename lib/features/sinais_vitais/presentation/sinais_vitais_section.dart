@@ -54,6 +54,7 @@ class SinaisVitaisSection extends ConsumerWidget {
 
     return SeccaoColapsavel(
       titulo: 'Sinais vitais',
+      icone: Icons.monitor_heart_outlined,
       acoes: [
         IconButton(
           icon: Icon(Icons.show_chart, color: Theme.of(context).colorScheme.primary),

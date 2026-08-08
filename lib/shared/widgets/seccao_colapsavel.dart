@@ -10,12 +10,14 @@ class SeccaoColapsavel extends StatefulWidget {
     required this.child,
     this.acoes = const [],
     this.expandidoPorOmissao = true,
+    this.icone,
   });
 
   final String titulo;
   final Widget child;
   final List<Widget> acoes;
   final bool expandidoPorOmissao;
+  final IconData? icone;
 
   @override
   State<SeccaoColapsavel> createState() => _SeccaoColapsavelState();
@@ -33,6 +35,10 @@ class _SeccaoColapsavelState extends State<SeccaoColapsavel> {
           padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
           child: Row(
             children: [
+              if (widget.icone != null) ...[
+                Icon(widget.icone, color: Theme.of(context).textTheme.titleMedium?.color, size: 22),
+                const SizedBox(width: 8),
+              ],
               Expanded(
                 child: Text(
                   widget.titulo,

@@ -217,6 +217,7 @@ class _IdosoDetailPage extends ConsumerWidget {
               const Divider(height: 32),
               SeccaoColapsavel(
                 titulo: 'Medicação',
+                icone: Icons.medication_outlined,
                 expandidoPorOmissao: false,
                 acoes: [
                   IconButton(
@@ -244,6 +245,7 @@ class _IdosoDetailPage extends ConsumerWidget {
               const Divider(height: 32),
               SeccaoColapsavel(
                 titulo: 'Consultas e tratamentos',
+                icone: Icons.event_note_outlined,
                 expandidoPorOmissao: false,
                 acoes: [
                   IconButton(
@@ -612,6 +614,7 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
       child: Card(
         child: SeccaoColapsavel(
           titulo: 'Como se sente hoje?',
+          icone: Icons.emoji_emotions_outlined,
           expandidoPorOmissao: false,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),

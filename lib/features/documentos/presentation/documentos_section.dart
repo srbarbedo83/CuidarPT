@@ -116,6 +116,7 @@ class DocumentosSection extends ConsumerWidget {
     final documentos = ref.watch(documentoListProvider(idoso.id)).valueOrNull ?? const [];
 
     return ExpansionTile(
+      leading: const Icon(Icons.folder_outlined),
       title: Text(
         'Documentos',
         style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
