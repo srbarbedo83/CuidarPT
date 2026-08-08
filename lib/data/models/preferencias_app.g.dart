@@ -27,8 +27,14 @@ const PreferenciasAppSchema = CollectionSchema(
       name: r'escalaTexto',
       type: IsarType.double,
     ),
-    r'tema': PropertySchema(
+    r'idioma': PropertySchema(
       id: 2,
+      name: r'idioma',
+      type: IsarType.string,
+      enumMap: _PreferenciasAppidiomaEnumValueMap,
+    ),
+    r'tema': PropertySchema(
+      id: 3,
       name: r'tema',
       type: IsarType.string,
       enumMap: _PreferenciasApptemaEnumValueMap,
@@ -56,6 +62,7 @@ int _preferenciasAppEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.idioma.name.length * 3;
   bytesCount += 3 + object.tema.name.length * 3;
   return bytesCount;
 }
@@ -68,7 +75,8 @@ void _preferenciasAppSerialize(
 ) {
   writer.writeBool(offsets[0], object.disclaimerSaudeAceite);
   writer.writeDouble(offsets[1], object.escalaTexto);
-  writer.writeString(offsets[2], object.tema.name);
+  writer.writeString(offsets[2], object.idioma.name);
+  writer.writeString(offsets[3], object.tema.name);
 }
 
 PreferenciasApp _preferenciasAppDeserialize(
@@ -81,8 +89,11 @@ PreferenciasApp _preferenciasAppDeserialize(
   object.disclaimerSaudeAceite = reader.readBool(offsets[0]);
   object.escalaTexto = reader.readDouble(offsets[1]);
   object.id = id;
+  object.idioma =
+      _PreferenciasAppidiomaValueEnumMap[reader.readStringOrNull(offsets[2])] ??
+      IdiomaPreferido.sistema;
   object.tema =
-      _PreferenciasApptemaValueEnumMap[reader.readStringOrNull(offsets[2])] ??
+      _PreferenciasApptemaValueEnumMap[reader.readStringOrNull(offsets[3])] ??
       TemaPreferido.sistema;
   return object;
 }
@@ -99,6 +110,12 @@ P _preferenciasAppDeserializeProp<P>(
     case 1:
       return (reader.readDouble(offset)) as P;
     case 2:
+      return (_PreferenciasAppidiomaValueEnumMap[reader.readStringOrNull(
+                offset,
+              )] ??
+              IdiomaPreferido.sistema)
+          as P;
+    case 3:
       return (_PreferenciasApptemaValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
@@ -109,6 +126,18 @@ P _preferenciasAppDeserializeProp<P>(
   }
 }
 
+const _PreferenciasAppidiomaEnumValueMap = {
+  r'sistema': r'sistema',
+  r'pt': r'pt',
+  r'en': r'en',
+  r'es': r'es',
+};
+const _PreferenciasAppidiomaValueEnumMap = {
+  r'sistema': IdiomaPreferido.sistema,
+  r'pt': IdiomaPreferido.pt,
+  r'en': IdiomaPreferido.en,
+  r'es': IdiomaPreferido.es,
+};
 const _PreferenciasApptemaEnumValueMap = {
   r'sistema': r'sistema',
   r'claro': r'claro',
@@ -362,6 +391,147 @@ extension PreferenciasAppQueryFilter
   }
 
   QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaEqualTo(IdiomaPreferido value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'idioma',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaGreaterThan(
+    IdiomaPreferido value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'idioma',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaLessThan(
+    IdiomaPreferido value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'idioma',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaBetween(
+    IdiomaPreferido lower,
+    IdiomaPreferido upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'idioma',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'idioma',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'idioma',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'idioma',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'idioma',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'idioma', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
+  idiomaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'idioma', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterFilterCondition>
   temaEqualTo(TemaPreferido value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -539,6 +709,19 @@ extension PreferenciasAppQuerySortBy
     });
   }
 
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy> sortByIdioma() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idioma', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
+  sortByIdiomaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idioma', Sort.desc);
+    });
+  }
+
   QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy> sortByTema() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tema', Sort.asc);
@@ -595,6 +778,19 @@ extension PreferenciasAppQuerySortThenBy
     });
   }
 
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy> thenByIdioma() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idioma', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy>
+  thenByIdiomaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idioma', Sort.desc);
+    });
+  }
+
   QueryBuilder<PreferenciasApp, PreferenciasApp, QAfterSortBy> thenByTema() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tema', Sort.asc);
@@ -622,6 +818,14 @@ extension PreferenciasAppQueryWhereDistinct
   distinctByEscalaTexto() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'escalaTexto');
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, PreferenciasApp, QDistinct> distinctByIdioma({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idioma', caseSensitive: caseSensitive);
     });
   }
 
@@ -653,6 +857,13 @@ extension PreferenciasAppQueryProperty
   escalaTextoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'escalaTexto');
+    });
+  }
+
+  QueryBuilder<PreferenciasApp, IdiomaPreferido, QQueryOperations>
+  idiomaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idioma');
     });
   }
 

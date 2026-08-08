@@ -1,0 +1,18 @@
+{
+  "@@locale": "pt",
+  "appTitle": "CuidarPT",
+  "@appTitle": {
+    "description": "Nome da app, mostrado no topo do ecrã inicial."
+  },
+  "definicoesIdioma": "Idioma",
+  "@definicoesIdioma": {
+    "description": "Título da secção de idioma nas Definições."
+  },
+  "definicoesIdiomaSistema": "Sistema",
+  "@definicoesIdiomaSistema": {
+    "description": "Opção para seguir o idioma do telemóvel."
+  },
+  "definicoesIdiomaPortugues": "Português",
+  "definicoesIdiomaIngles": "English",
+  "definicoesIdiomaEspanhol": "Español"
+}

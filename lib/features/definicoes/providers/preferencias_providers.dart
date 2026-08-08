@@ -16,6 +16,10 @@ final temaPreferidoProvider = Provider<TemaPreferido>((ref) {
   return ref.watch(preferenciasAppProvider).valueOrNull?.tema ?? TemaPreferido.sistema;
 });
 
+final idiomaPreferidoProvider = Provider<IdiomaPreferido>((ref) {
+  return ref.watch(preferenciasAppProvider).valueOrNull?.idioma ?? IdiomaPreferido.sistema;
+});
+
 final escalaTextoProvider = Provider<double>((ref) {
   return ref.watch(preferenciasAppProvider).valueOrNull?.escalaTexto ?? 1.0;
 });

@@ -4,14 +4,20 @@ part 'preferencias_app.g.dart';
 
 enum TemaPreferido { sistema, claro, escuro }
 
+enum IdiomaPreferido { sistema, pt, en, es }
+
 /// Registo único com as preferências de acessibilidade/aparência da app
-/// (tamanho de letra, tema). Guardado localmente, tal como todo o resto.
+/// (tamanho de letra, tema, idioma). Guardado localmente, tal como todo o
+/// resto.
 @collection
 class PreferenciasApp {
   Id id = 0;
 
   @Enumerated(EnumType.name)
   TemaPreferido tema = TemaPreferido.sistema;
+
+  @Enumerated(EnumType.name)
+  IdiomaPreferido idioma = IdiomaPreferido.sistema;
 
   /// Fator de escala do texto: 0.85 (pequeno), 1.0 (médio), 1.3 (grande).
   double escalaTexto = 1.0;

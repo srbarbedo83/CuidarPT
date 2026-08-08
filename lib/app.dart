@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
@@ -8,6 +7,7 @@ import 'features/definicoes/providers/preferencias_providers.dart';
 import 'features/home/presentation/home_shell_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/subscricao/providers/subscricao_providers.dart';
+import 'l10n/app_localizations.dart';
 import 'shared/widgets/logo_app.dart';
 
 class CuidarPTApp extends ConsumerWidget {
@@ -17,11 +17,19 @@ class CuidarPTApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tema = ref.watch(temaPreferidoProvider);
     final escalaTexto = ref.watch(escalaTextoProvider);
+    final idioma = ref.watch(idiomaPreferidoProvider);
 
     final ThemeMode themeMode = switch (tema) {
       TemaPreferido.sistema => ThemeMode.system,
       TemaPreferido.claro => ThemeMode.light,
       TemaPreferido.escuro => ThemeMode.dark,
+    };
+
+    final Locale? locale = switch (idioma) {
+      IdiomaPreferido.sistema => null,
+      IdiomaPreferido.pt => const Locale('pt', 'PT'),
+      IdiomaPreferido.en => const Locale('en'),
+      IdiomaPreferido.es => const Locale('es'),
     };
 
     return MaterialApp(
@@ -30,13 +38,9 @@ class CuidarPTApp extends ConsumerWidget {
       theme: AppTheme.claro,
       darkTheme: AppTheme.escuro,
       themeMode: themeMode,
-      locale: const Locale('pt', 'PT'),
-      supportedLocales: const [Locale('pt', 'PT'), Locale('pt')],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      locale: locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       builder: (context, child) {
         return DecoratedBox(
           decoration: BoxDecoration(gradient: AppTheme.fundoGradiente(Theme.of(context).brightness)),

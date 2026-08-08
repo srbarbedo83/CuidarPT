@@ -25,6 +25,14 @@ class PreferenciasRepository {
     });
   }
 
+  Future<void> definirIdioma(IdiomaPreferido idioma) async {
+    final atual = await obterAtual() ?? PreferenciasApp();
+    atual.idioma = idioma;
+    await _isar.writeTxn(() async {
+      await _isar.preferenciasApps.put(atual);
+    });
+  }
+
   Future<void> definirEscalaTexto(double escala) async {
     final atual = await obterAtual() ?? PreferenciasApp();
     atual.escalaTexto = escala;

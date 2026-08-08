@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/services/notification_service.dart';
 import '../../../data/models/estado_subscricao.dart';
 import '../../../data/models/preferencias_app.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../consultas/providers/consulta_providers.dart';
 import '../../contactos_cuidadores/presentation/contactos_cuidadores_section.dart';
 import '../../idosos/providers/idoso_providers.dart';
@@ -27,6 +28,7 @@ class DefinicoesScreen extends ConsumerWidget {
     final packageInfo = ref.watch(packageInfoProvider).valueOrNull;
     final tema = ref.watch(temaPreferidoProvider);
     final escalaTexto = ref.watch(escalaTextoProvider);
+    final idioma = ref.watch(idiomaPreferidoProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Definições')),
@@ -36,8 +38,10 @@ class DefinicoesScreen extends ConsumerWidget {
           _SeccaoAparencia(
             tema: tema,
             escalaTexto: escalaTexto,
+            idioma: idioma,
             onTemaAlterado: (valor) => ref.read(preferenciasRepositoryProvider).definirTema(valor),
             onEscalaAlterada: (valor) => ref.read(preferenciasRepositoryProvider).definirEscalaTexto(valor),
+            onIdiomaAlterado: (valor) => ref.read(preferenciasRepositoryProvider).definirIdioma(valor),
           ),
           const SizedBox(height: 16),
           _SeccaoSubscricao(estado: estado, onSubscrever: () => mostrarCompraPremium(context)),
@@ -136,19 +140,24 @@ class _SeccaoAparencia extends StatelessWidget {
   const _SeccaoAparencia({
     required this.tema,
     required this.escalaTexto,
+    required this.idioma,
     required this.onTemaAlterado,
     required this.onEscalaAlterada,
+    required this.onIdiomaAlterado,
   });
 
   final TemaPreferido tema;
   final double escalaTexto;
+  final IdiomaPreferido idioma;
   final ValueChanged<TemaPreferido> onTemaAlterado;
   final ValueChanged<double> onEscalaAlterada;
+  final ValueChanged<IdiomaPreferido> onIdiomaAlterado;
 
   static final _opcoesEscala = <double, String>{0.85: 'Pequeno', 1.0: 'Médio', 1.3: 'Grande'};
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -177,6 +186,19 @@ class _SeccaoAparencia extends StatelessWidget {
                   .toList(),
               selected: {escalaTexto},
               onSelectionChanged: (selecao) => onEscalaAlterada(selecao.first),
+            ),
+            const SizedBox(height: 16),
+            Text(l10n.definicoesIdioma, style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            SegmentedButton<IdiomaPreferido>(
+              segments: [
+                ButtonSegment(value: IdiomaPreferido.sistema, label: Text(l10n.definicoesIdiomaSistema)),
+                ButtonSegment(value: IdiomaPreferido.pt, label: Text(l10n.definicoesIdiomaPortugues)),
+                ButtonSegment(value: IdiomaPreferido.en, label: Text(l10n.definicoesIdiomaIngles)),
+                ButtonSegment(value: IdiomaPreferido.es, label: Text(l10n.definicoesIdiomaEspanhol)),
+              ],
+              selected: {idioma},
+              onSelectionChanged: (selecao) => onIdiomaAlterado(selecao.first),
             ),
           ],
         ),
