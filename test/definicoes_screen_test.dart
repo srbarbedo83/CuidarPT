@@ -14,6 +14,7 @@ Future<void> _pumpComTamanhoGrande(WidgetTester tester, Widget home) async {
   await tester.pumpWidget(
     ProviderScope(
       child: MaterialApp(
+        locale: const Locale('pt', 'PT'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: home,

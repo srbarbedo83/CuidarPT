@@ -5,5 +5,24 @@
   "definicoesIdiomaSistema": "System",
   "definicoesIdiomaPortugues": "Português",
   "definicoesIdiomaIngles": "English",
-  "definicoesIdiomaEspanhol": "Español"
+  "definicoesIdiomaEspanhol": "Español",
+
+  "onboardingSlide1Titulo": "Welcome to CuidarPT",
+  "onboardingSlide1Descricao": "Organize medication, appointments and daily care for those you look after, all in one place.",
+  "onboardingSlide2Titulo": "Simple day-to-day records",
+  "onboardingSlide2Descricao": "Medication with reminders, medical appointments, and quick notes on hygiene, meals and mood.",
+  "onboardingSlide3Titulo": "Everything stored on your phone",
+  "onboardingSlide3Descricao": "No accounts, no servers — your data stays only on your device. Start now with 7 days free of all Premium features.",
+  "onboardingQuantosIdososTitulo": "How many people will you be caring for?",
+  "onboardingQuantosIdososOpcaoTresOuMais": "3+",
+  "onboardingQuantosIdososAvisoComLimite": "The Free plan allows up to 2 profiles. For 3 or more, you'll need Premium — already included in your 7 free days.",
+  "onboardingQuantosIdososAvisoSemLimite": "The Free plan allows up to 2 profiles.",
+  "onboardingEmailTitulo": "Your email (optional)",
+  "onboardingEmailDescricao": "Used only to pre-fill the recipient when you share a report. Stored only on this phone.",
+  "onboardingEmailHint": "name@example.com",
+  "onboardingDisclaimerTitulo": "Before you start",
+  "onboardingDisclaimerTexto": "CuidarPT is a care organization tool. It is not a medical device and does not replace assessment, diagnosis or treatment by a health professional. In an emergency, always contact health services.",
+  "onboardingDisclaimerCheckbox": "I've read and understood",
+  "onboardingBotaoComecar": "Start",
+  "onboardingBotaoSeguinte": "Next"
 }

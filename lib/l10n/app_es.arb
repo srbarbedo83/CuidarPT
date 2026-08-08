@@ -5,5 +5,24 @@
   "definicoesIdiomaSistema": "Sistema",
   "definicoesIdiomaPortugues": "Português",
   "definicoesIdiomaIngles": "English",
-  "definicoesIdiomaEspanhol": "Español"
+  "definicoesIdiomaEspanhol": "Español",
+
+  "onboardingSlide1Titulo": "Bienvenido a CuidarPT",
+  "onboardingSlide1Descricao": "Organiza la medicación, las citas y los cuidados diarios de quien cuidas, todo en un solo lugar.",
+  "onboardingSlide2Titulo": "Registros sencillos del día a día",
+  "onboardingSlide2Descricao": "Medicación con recordatorios, citas médicas y notas rápidas de higiene, alimentación y estado de ánimo.",
+  "onboardingSlide3Titulo": "Todo guardado en tu móvil",
+  "onboardingSlide3Descricao": "Sin cuentas ni servidores: los datos quedan solo en tu dispositivo. Empieza ya con 7 días gratis de todas las funciones Premium.",
+  "onboardingQuantosIdososTitulo": "¿A cuántas personas vas a cuidar?",
+  "onboardingQuantosIdososOpcaoTresOuMais": "3+",
+  "onboardingQuantosIdososAvisoComLimite": "El plan Gratis permite hasta 2 perfiles. Para 3 o más, necesitarás Premium, ya incluido en tus 7 días gratis.",
+  "onboardingQuantosIdososAvisoSemLimite": "El plan Gratis permite hasta 2 perfiles.",
+  "onboardingEmailTitulo": "Tu email (opcional)",
+  "onboardingEmailDescricao": "Solo lo usamos para rellenar el destinatario cuando compartes un informe. Se guarda únicamente en este móvil.",
+  "onboardingEmailHint": "nombre@ejemplo.com",
+  "onboardingDisclaimerTitulo": "Antes de empezar",
+  "onboardingDisclaimerTexto": "CuidarPT es una herramienta de organización de cuidados. No es un dispositivo médico y no sustituye la evaluación, el diagnóstico ni el tratamiento de un profesional de la salud. En caso de emergencia, contacta siempre con los servicios de salud.",
+  "onboardingDisclaimerCheckbox": "Lo he leído y entendido",
+  "onboardingBotaoComecar": "Empezar",
+  "onboardingBotaoSeguinte": "Siguiente"
 }

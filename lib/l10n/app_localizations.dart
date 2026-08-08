@@ -135,6 +135,114 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Español'**
   String get definicoesIdiomaEspanhol;
+
+  /// No description provided for @onboardingSlide1Titulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bem-vindo ao CuidarPT'**
+  String get onboardingSlide1Titulo;
+
+  /// No description provided for @onboardingSlide1Descricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Organize a medicação, as consultas e os cuidados diários de quem cuida, tudo num só lugar.'**
+  String get onboardingSlide1Descricao;
+
+  /// No description provided for @onboardingSlide2Titulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Registos simples do dia a dia'**
+  String get onboardingSlide2Titulo;
+
+  /// No description provided for @onboardingSlide2Descricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medicação com lembretes, consultas médicas e notas rápidas de higiene, alimentação e humor.'**
+  String get onboardingSlide2Descricao;
+
+  /// No description provided for @onboardingSlide3Titulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tudo guardado no seu telemóvel'**
+  String get onboardingSlide3Titulo;
+
+  /// No description provided for @onboardingSlide3Descricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem contas nem servidores — os dados ficam só no seu dispositivo. Comece já com 7 dias grátis de todas as funcionalidades Premium.'**
+  String get onboardingSlide3Descricao;
+
+  /// No description provided for @onboardingQuantosIdososTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quantos idosos vais acompanhar?'**
+  String get onboardingQuantosIdososTitulo;
+
+  /// No description provided for @onboardingQuantosIdososOpcaoTresOuMais.
+  ///
+  /// In pt, this message translates to:
+  /// **'3+'**
+  String get onboardingQuantosIdososOpcaoTresOuMais;
+
+  /// No description provided for @onboardingQuantosIdososAvisoComLimite.
+  ///
+  /// In pt, this message translates to:
+  /// **'O plano Grátis permite até 2 perfis de idosos. Para 3 ou mais, vais precisar do Premium — já incluído nos teus 7 dias grátis.'**
+  String get onboardingQuantosIdososAvisoComLimite;
+
+  /// No description provided for @onboardingQuantosIdososAvisoSemLimite.
+  ///
+  /// In pt, this message translates to:
+  /// **'O plano Grátis permite até 2 perfis de idosos.'**
+  String get onboardingQuantosIdososAvisoSemLimite;
+
+  /// No description provided for @onboardingEmailTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'O teu email (opcional)'**
+  String get onboardingEmailTitulo;
+
+  /// No description provided for @onboardingEmailDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usamos apenas para pré-preencher o destinatário quando partilhas um relatório. Fica guardado só neste telemóvel.'**
+  String get onboardingEmailDescricao;
+
+  /// No description provided for @onboardingEmailHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'nome@exemplo.com'**
+  String get onboardingEmailHint;
+
+  /// No description provided for @onboardingDisclaimerTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Antes de começar'**
+  String get onboardingDisclaimerTitulo;
+
+  /// No description provided for @onboardingDisclaimerTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'O CuidarPT é uma ferramenta de organização de cuidados. Não é um dispositivo médico e não substitui a avaliação, o diagnóstico ou o tratamento de um profissional de saúde. Em caso de emergência, contacte sempre os serviços de saúde.'**
+  String get onboardingDisclaimerTexto;
+
+  /// No description provided for @onboardingDisclaimerCheckbox.
+  ///
+  /// In pt, this message translates to:
+  /// **'Li e percebi'**
+  String get onboardingDisclaimerCheckbox;
+
+  /// No description provided for @onboardingBotaoComecar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Começar'**
+  String get onboardingBotaoComecar;
+
+  /// No description provided for @onboardingBotaoSeguinte.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seguinte'**
+  String get onboardingBotaoSeguinte;
 }
 
 class _AppLocalizationsDelegate

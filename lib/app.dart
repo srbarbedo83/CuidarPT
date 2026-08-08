@@ -39,7 +39,15 @@ class CuidarPTApp extends ConsumerWidget {
       darkTheme: AppTheme.escuro,
       themeMode: themeMode,
       locale: locale,
-      supportedLocales: AppLocalizations.supportedLocales,
+      // Ordem começa em português (mercado de origem da app): se o idioma
+      // for "Sistema" e o telemóvel estiver noutro idioma não suportado
+      // (ex.: francês), a app cai em português em vez de inglês.
+      supportedLocales: const [
+        Locale('pt', 'PT'),
+        Locale('pt'),
+        Locale('en'),
+        Locale('es'),
+      ],
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       builder: (context, child) {
         return DecoratedBox(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/logo_app.dart';
 import '../../definicoes/providers/preferencias_providers.dart';
 import '../../relatorios/providers/perfil_relatorio_providers.dart';
@@ -18,29 +19,25 @@ class _OnboardingSlide {
   final String descricao;
 }
 
-const _slides = [
-  _OnboardingSlide(
-    icone: Icons.favorite,
-    titulo: 'Bem-vindo ao CuidarPT',
-    descricao:
-        'Organize a medicação, as consultas e os cuidados diários de quem '
-        'cuida, tudo num só lugar.',
-  ),
-  _OnboardingSlide(
-    icone: Icons.medication_outlined,
-    titulo: 'Registos simples do dia a dia',
-    descricao:
-        'Medicação com lembretes, consultas médicas e notas rápidas de '
-        'higiene, alimentação e humor.',
-  ),
-  _OnboardingSlide(
-    icone: Icons.privacy_tip_outlined,
-    titulo: 'Tudo guardado no seu telemóvel',
-    descricao:
-        'Sem contas nem servidores — os dados ficam só no seu dispositivo. '
-        'Comece já com 7 dias grátis de todas as funcionalidades Premium.',
-  ),
-];
+const _totalSlides = 3;
+
+List<_OnboardingSlide> _slides(AppLocalizations l10n) => [
+      _OnboardingSlide(
+        icone: Icons.favorite,
+        titulo: l10n.onboardingSlide1Titulo,
+        descricao: l10n.onboardingSlide1Descricao,
+      ),
+      _OnboardingSlide(
+        icone: Icons.medication_outlined,
+        titulo: l10n.onboardingSlide2Titulo,
+        descricao: l10n.onboardingSlide2Descricao,
+      ),
+      _OnboardingSlide(
+        icone: Icons.privacy_tip_outlined,
+        titulo: l10n.onboardingSlide3Titulo,
+        descricao: l10n.onboardingSlide3Descricao,
+      ),
+    ];
 
 class _PerguntaQuantosIdosos extends StatelessWidget {
   const _PerguntaQuantosIdosos({required this.quantidade, required this.onAlterado});
@@ -50,6 +47,7 @@ class _PerguntaQuantosIdosos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
@@ -58,16 +56,16 @@ class _PerguntaQuantosIdosos extends StatelessWidget {
           Icon(Icons.groups_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 32),
           Text(
-            'Quantos idosos vais acompanhar?',
+            l10n.onboardingQuantosIdososTitulo,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 24),
           SegmentedButton<int>(
-            segments: const [
-              ButtonSegment(value: 1, label: Text('1')),
-              ButtonSegment(value: 2, label: Text('2')),
-              ButtonSegment(value: 3, label: Text('3+')),
+            segments: [
+              const ButtonSegment(value: 1, label: Text('1')),
+              const ButtonSegment(value: 2, label: Text('2')),
+              ButtonSegment(value: 3, label: Text(l10n.onboardingQuantosIdososOpcaoTresOuMais)),
             ],
             selected: {quantidade},
             onSelectionChanged: (selecao) => onAlterado(selecao.first),
@@ -75,9 +73,8 @@ class _PerguntaQuantosIdosos extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             quantidade >= 3
-                ? 'O plano Grátis permite até 2 perfis de idosos. Para 3 ou mais, '
-                    'vais precisar do Premium — já incluído nos teus 7 dias grátis.'
-                : 'O plano Grátis permite até 2 perfis de idosos.',
+                ? l10n.onboardingQuantosIdososAvisoComLimite
+                : l10n.onboardingQuantosIdososAvisoSemLimite,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
@@ -94,6 +91,7 @@ class _PerguntaEmail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
@@ -102,14 +100,13 @@ class _PerguntaEmail extends StatelessWidget {
           Icon(Icons.email_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 32),
           Text(
-            'O teu email (opcional)',
+            l10n.onboardingEmailTitulo,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 16),
           Text(
-            'Usamos apenas para pré-preencher o destinatário quando partilhas '
-            'um relatório. Fica guardado só neste telemóvel.',
+            l10n.onboardingEmailDescricao,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
@@ -118,7 +115,7 @@ class _PerguntaEmail extends StatelessWidget {
             controller: controller,
             keyboardType: TextInputType.emailAddress,
             textAlign: TextAlign.center,
-            decoration: const InputDecoration(hintText: 'nome@exemplo.com'),
+            decoration: InputDecoration(hintText: l10n.onboardingEmailHint),
           ),
         ],
       ),
@@ -134,6 +131,7 @@ class _PerguntaDisclaimerSaude extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
@@ -142,16 +140,13 @@ class _PerguntaDisclaimerSaude extends StatelessWidget {
           Icon(Icons.health_and_safety_outlined, size: 96, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 32),
           Text(
-            'Antes de começar',
+            l10n.onboardingDisclaimerTitulo,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 16),
           Text(
-            'O CuidarPT é uma ferramenta de organização de cuidados. Não é um '
-            'dispositivo médico e não substitui a avaliação, o diagnóstico ou '
-            'o tratamento de um profissional de saúde. Em caso de emergência, '
-            'contacte sempre os serviços de saúde.',
+            l10n.onboardingDisclaimerTexto,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
@@ -160,7 +155,7 @@ class _PerguntaDisclaimerSaude extends StatelessWidget {
             value: aceite,
             onChanged: (valor) => onAlterado(valor ?? false),
             controlAffinity: ListTileControlAffinity.leading,
-            title: const Text('Li e percebi'),
+            title: Text(l10n.onboardingDisclaimerCheckbox),
           ),
         ],
       ),
@@ -183,7 +178,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   var _quantosIdosos = 1;
   var _disclaimerAceite = false;
 
-  static final _totalPaginas = _slides.length + 3;
+  static const _totalPaginas = _totalSlides + 3;
 
   @override
   void dispose() {
@@ -204,6 +199,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final ultimaPagina = _paginaAtual == _totalPaginas - 1;
 
     return Scaffold(
@@ -216,22 +212,22 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 itemCount: _totalPaginas,
                 onPageChanged: (indice) => setState(() => _paginaAtual = indice),
                 itemBuilder: (context, indice) {
-                  if (indice == _slides.length) {
+                  if (indice == _totalSlides) {
                     return _PerguntaQuantosIdosos(
                       quantidade: _quantosIdosos,
                       onAlterado: (valor) => setState(() => _quantosIdosos = valor),
                     );
                   }
-                  if (indice == _slides.length + 1) {
+                  if (indice == _totalSlides + 1) {
                     return _PerguntaEmail(controller: _emailController);
                   }
-                  if (indice == _slides.length + 2) {
+                  if (indice == _totalSlides + 2) {
                     return _PerguntaDisclaimerSaude(
                       aceite: _disclaimerAceite,
                       onAlterado: (valor) => setState(() => _disclaimerAceite = valor),
                     );
                   }
-                  final slide = _slides[indice];
+                  final slide = _slides(l10n)[indice];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Column(
@@ -293,7 +289,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             );
                           }
                         },
-                  child: Text(ultimaPagina ? 'Começar' : 'Seguinte'),
+                  child: Text(ultimaPagina ? l10n.onboardingBotaoComecar : l10n.onboardingBotaoSeguinte),
                 ),
               ),
             ),

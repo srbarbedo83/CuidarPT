@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:cuidarpt/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:cuidarpt/l10n/app_localizations.dart';
 
 Future<void> _pumpOnboarding(WidgetTester tester) async {
   tester.view.physicalSize = const Size(800, 2000);
@@ -12,7 +13,12 @@ Future<void> _pumpOnboarding(WidgetTester tester) async {
 
   await tester.pumpWidget(
     const ProviderScope(
-      child: MaterialApp(home: OnboardingScreen()),
+      child: MaterialApp(
+        locale: Locale('pt', 'PT'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: OnboardingScreen(),
+      ),
     ),
   );
 }
