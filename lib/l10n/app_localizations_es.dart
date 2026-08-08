@@ -199,4 +199,113 @@ class AppLocalizationsEs extends AppLocalizations {
   String homeIdosoDataNascimento(String data) {
     return 'Nacimiento: $data';
   }
+
+  @override
+  String get idosoDetailLigarEmergencia => 'Llamar al contacto de emergencia';
+
+  @override
+  String get idosoDetailCalendario => 'Calendario';
+
+  @override
+  String get idosoDetailGerarRelatorio => 'Generar informe';
+
+  @override
+  String get idosoDetailEditarPerfil => 'Editar perfil';
+
+  @override
+  String get idosoDetailProfissionais => 'Profesionales';
+
+  @override
+  String get idosoDetailAdicionarMedicacao => 'Añadir medicación';
+
+  @override
+  String idosoDetailErroCarregarMedicacao(String erro) {
+    return 'Error al cargar la medicación: $erro';
+  }
+
+  @override
+  String get idosoDetailConsultasTratamentosTitulo => 'Citas y tratamientos';
+
+  @override
+  String get idosoDetailAdicionarConsulta => 'Añadir cita o tratamiento';
+
+  @override
+  String idosoDetailErroCarregarConsultas(String erro) {
+    return 'Error al cargar las citas: $erro';
+  }
+
+  @override
+  String get idosoDetailGerarRelatorioDiario => 'Generar informe diario';
+
+  @override
+  String get idosoDetailProximaToma => 'Próxima toma';
+
+  @override
+  String get idosoDetailProximaConsulta => 'Próxima cita';
+
+  @override
+  String idosoDetailEmergenciaContacto(String nome, String telefone) {
+    return 'Emergencia: $nome $telefone';
+  }
+
+  @override
+  String get idosoDetailMudarHumor => 'Cambiar';
+
+  @override
+  String get humorComDores => 'Con dolor';
+
+  @override
+  String get humorCansado => 'Cansado';
+
+  @override
+  String get humorSonolento => 'Somnoliento';
+
+  @override
+  String get humorNormal => 'Normal';
+
+  @override
+  String get humorEnergico => 'Enérgico';
+
+  @override
+  String get humorContente => 'Contento';
+
+  @override
+  String get idosoDetailVerMenos => 'Ver menos';
+
+  @override
+  String idosoDetailVerTodas(int total) {
+    return 'Ver todas ($total)';
+  }
+
+  @override
+  String get idosoDetailSemMedicacao => 'Todavía no hay medicación registrada.';
+
+  @override
+  String get idosoDetailSemConsultas =>
+      'Todavía no hay citas ni tratamientos registrados.';
+
+  @override
+  String idosoDetailApagarItemConfirmacao(String nome) {
+    return '¿Seguro que quieres eliminar \"$nome\"?';
+  }
+
+  @override
+  String get idosoDetailApagarMedicacaoTitulo => 'Eliminar medicación';
+
+  @override
+  String get idosoDetailApagarTratamentoTitulo => 'Eliminar tratamiento';
+
+  @override
+  String get idosoDetailApagarConsultaTitulo => 'Eliminar cita';
+
+  @override
+  String get idosoDetailStatusPausada => 'en pausa';
+
+  @override
+  String idosoDetailProximaData(String data) {
+    return 'próxima: $data';
+  }
+
+  @override
+  String get idosoDetailComoSenteHojeTitulo => '¿Cómo te sientes hoy?';
 }

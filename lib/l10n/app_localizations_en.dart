@@ -199,4 +199,114 @@ class AppLocalizationsEn extends AppLocalizations {
   String homeIdosoDataNascimento(String data) {
     return 'Born: $data';
   }
+
+  @override
+  String get idosoDetailLigarEmergencia => 'Call emergency contact';
+
+  @override
+  String get idosoDetailCalendario => 'Calendar';
+
+  @override
+  String get idosoDetailGerarRelatorio => 'Generate report';
+
+  @override
+  String get idosoDetailEditarPerfil => 'Edit profile';
+
+  @override
+  String get idosoDetailProfissionais => 'Professionals';
+
+  @override
+  String get idosoDetailAdicionarMedicacao => 'Add medication';
+
+  @override
+  String idosoDetailErroCarregarMedicacao(String erro) {
+    return 'Error loading medication: $erro';
+  }
+
+  @override
+  String get idosoDetailConsultasTratamentosTitulo =>
+      'Appointments and treatments';
+
+  @override
+  String get idosoDetailAdicionarConsulta => 'Add appointment or treatment';
+
+  @override
+  String idosoDetailErroCarregarConsultas(String erro) {
+    return 'Error loading appointments: $erro';
+  }
+
+  @override
+  String get idosoDetailGerarRelatorioDiario => 'Generate daily report';
+
+  @override
+  String get idosoDetailProximaToma => 'Next dose';
+
+  @override
+  String get idosoDetailProximaConsulta => 'Next appointment';
+
+  @override
+  String idosoDetailEmergenciaContacto(String nome, String telefone) {
+    return 'Emergency: $nome $telefone';
+  }
+
+  @override
+  String get idosoDetailMudarHumor => 'Change';
+
+  @override
+  String get humorComDores => 'In pain';
+
+  @override
+  String get humorCansado => 'Tired';
+
+  @override
+  String get humorSonolento => 'Sleepy';
+
+  @override
+  String get humorNormal => 'Normal';
+
+  @override
+  String get humorEnergico => 'Energetic';
+
+  @override
+  String get humorContente => 'Happy';
+
+  @override
+  String get idosoDetailVerMenos => 'See less';
+
+  @override
+  String idosoDetailVerTodas(int total) {
+    return 'See all ($total)';
+  }
+
+  @override
+  String get idosoDetailSemMedicacao => 'No medication recorded yet.';
+
+  @override
+  String get idosoDetailSemConsultas =>
+      'No appointments or treatments recorded yet.';
+
+  @override
+  String idosoDetailApagarItemConfirmacao(String nome) {
+    return 'Are you sure you want to delete \"$nome\"?';
+  }
+
+  @override
+  String get idosoDetailApagarMedicacaoTitulo => 'Delete medication';
+
+  @override
+  String get idosoDetailApagarTratamentoTitulo => 'Delete treatment';
+
+  @override
+  String get idosoDetailApagarConsultaTitulo => 'Delete appointment';
+
+  @override
+  String get idosoDetailStatusPausada => 'paused';
+
+  @override
+  String idosoDetailProximaData(String data) {
+    return 'next: $data';
+  }
+
+  @override
+  String get idosoDetailComoSenteHojeTitulo => 'How are you feeling today?';
 }

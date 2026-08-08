@@ -83,6 +83,7 @@ class _IdosoDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final medicacaoAsync = ref.watch(medicacaoListProvider(idoso.id));
     final consultasAsync = ref.watch(consultaListProvider(idoso.id));
     final cuidadosAsync = ref.watch(cuidadoDiarioListProvider(idoso.id));
@@ -113,7 +114,7 @@ class _IdosoDetailPage extends ConsumerWidget {
                   color: Colors.redAccent,
                   shadows: glowShadow(Colors.redAccent),
                 ),
-                tooltip: 'Ligar para contacto de emergência',
+                tooltip: l10n.idosoDetailLigarEmergencia,
                 onPressed: () =>
                     launchUrl(Uri(scheme: 'tel', path: telefoneEmergencia)),
               ),
@@ -123,14 +124,14 @@ class _IdosoDetailPage extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.primary,
                 shadows: glowShadow(Theme.of(context).colorScheme.primary),
               ),
-              tooltip: 'Calendário',
+              tooltip: l10n.idosoDetailCalendario,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => CalendarioScreen(idoso: idoso)),
               ),
             ),
             IconButton(
               icon: const GradientIcon(Icons.picture_as_pdf_outlined),
-              tooltip: 'Gerar relatório',
+              tooltip: l10n.idosoDetailGerarRelatorio,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => RelatorioScreen(idoso: idoso)),
               ),
@@ -141,7 +142,7 @@ class _IdosoDetailPage extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.primary,
                 shadows: glowShadow(Theme.of(context).colorScheme.primary),
               ),
-              tooltip: 'Editar perfil',
+              tooltip: l10n.idosoDetailEditarPerfil,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => IdosoFormScreen(idoso: idoso)),
               ),
@@ -158,20 +159,20 @@ class _IdosoDetailPage extends ConsumerWidget {
                     builder: (_) => ProfissionaisScreen(idoso: idoso),
                   ),
                 ),
-                child: const ListTile(
+                child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.badge_outlined),
-                  title: Text('Profissionais'),
+                  leading: const Icon(Icons.badge_outlined),
+                  title: Text(l10n.idosoDetailProfissionais),
                 ),
               ),
               PopupMenuItem(
                 value: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const DefinicoesScreen()),
                 ),
-                child: const ListTile(
+                child: ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(Icons.settings_outlined),
-                  title: Text('Definições'),
+                  leading: const Icon(Icons.settings_outlined),
+                  title: Text(l10n.comumDefinicoes),
                 ),
               ),
             ],
@@ -217,13 +218,13 @@ class _IdosoDetailPage extends ConsumerWidget {
               if (proximo != null) _ProximoEventoCard(proximo: proximo),
               const Divider(height: 32),
               SeccaoColapsavel(
-                titulo: 'Medicação',
+                titulo: l10n.homeAcaoMedicacao,
                 icone: Icons.medication_outlined,
                 expandidoPorOmissao: false,
                 acoes: [
                   IconButton(
                     icon: const Icon(Icons.add),
-                    tooltip: 'Adicionar medicação',
+                    tooltip: l10n.idosoDetailAdicionarMedicacao,
                     onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => MedicacaoFormScreen(idoso: idoso),
@@ -239,19 +240,19 @@ class _IdosoDetailPage extends ConsumerWidget {
                   ),
                   error: (erro, _) => Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text('Erro ao carregar medicação: $erro'),
+                    child: Text(l10n.idosoDetailErroCarregarMedicacao('$erro')),
                   ),
                 ),
               ),
               const Divider(height: 32),
               SeccaoColapsavel(
-                titulo: 'Consultas e tratamentos',
+                titulo: l10n.idosoDetailConsultasTratamentosTitulo,
                 icone: Icons.event_note_outlined,
                 expandidoPorOmissao: false,
                 acoes: [
                   IconButton(
                     icon: const Icon(Icons.add),
-                    tooltip: 'Adicionar consulta ou tratamento',
+                    tooltip: l10n.idosoDetailAdicionarConsulta,
                     onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ConsultaFormScreen(idoso: idoso),
@@ -267,7 +268,7 @@ class _IdosoDetailPage extends ConsumerWidget {
                   ),
                   error: (erro, _) => Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text('Erro ao carregar consultas: $erro'),
+                    child: Text(l10n.idosoDetailErroCarregarConsultas('$erro')),
                   ),
                 ),
               ),
@@ -304,7 +305,10 @@ class _IdosoDetailPage extends ConsumerWidget {
                     ),
                   ),
                   icon: const GradientIcon(Icons.summarize_outlined),
-                  label: const GradientText('Gerar relatório diário', style: TextStyle(fontWeight: FontWeight.w600)),
+                  label: GradientText(
+                    l10n.idosoDetailGerarRelatorioDiario,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
               SizedBox(height: 24 + MediaQuery.of(context).padding.bottom),
@@ -323,8 +327,9 @@ class _ProximoEventoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final ehMedicacao = proximo.tipo == TipoProximoEvento.medicacao;
-    final rotulo = ehMedicacao ? 'Próxima toma' : 'Próxima consulta';
+    final rotulo = ehMedicacao ? l10n.idosoDetailProximaToma : l10n.idosoDetailProximaConsulta;
     final formato = ehMedicacao
         ? DateFormat('HH:mm')
         : DateFormat('dd/MM/yyyy HH:mm');
@@ -339,7 +344,7 @@ class _ProximoEventoCard extends StatelessWidget {
           title: Text('$rotulo: ${proximo.titulo}'),
           subtitle: Text(
             '${formato.format(proximo.dataHora)} · '
-            '${formatarContagem(AppLocalizations.of(context), DateTime.now(), proximo.dataHora)}',
+            '${formatarContagem(l10n, DateTime.now(), proximo.dataHora)}',
           ),
         ),
       ),
@@ -368,6 +373,7 @@ class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    final l10n = AppLocalizations.of(context);
     final fotoPath = idoso.fotoPath;
     return Material(
       color: AppTheme.fundoSolido(Theme.of(context).brightness),
@@ -444,7 +450,7 @@ class _CabecalhoFixoDelegate extends SliverPersistentHeaderDelegate {
                   ),
                   if (idoso.dataNascimento != null)
                     Text(
-                      'Nascimento: ${DateFormat('dd/MM/yyyy').format(idoso.dataNascimento!)}',
+                      l10n.homeIdosoDataNascimento(DateFormat('dd/MM/yyyy').format(idoso.dataNascimento!)),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                 ],
@@ -470,6 +476,7 @@ class _InfoSecundariaIdoso extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (idoso.contactosEmergencia.isEmpty &&
         (idoso.notas == null || idoso.notas!.isEmpty) &&
         idoso.preferencias == null) {
@@ -482,8 +489,7 @@ class _InfoSecundariaIdoso extends StatelessWidget {
         children: [
           for (final contacto in idoso.contactosEmergencia)
             Text(
-              'Emergência: ${contacto.nome ?? ''} ${contacto.telefone ?? ''}'
-                  .trim(),
+              l10n.idosoDetailEmergenciaContacto(contacto.nome ?? '', contacto.telefone ?? '').trim(),
             ),
           if (idoso.notas != null && idoso.notas!.isNotEmpty)
             Padding(
@@ -554,14 +560,14 @@ class _OpcaoHumor {
   final int nivel;
 }
 
-const _opcoesHumorDoDia = [
-  _OpcaoHumor('🤕', 'Com dores', 1),
-  _OpcaoHumor('😩', 'Cansado', 2),
-  _OpcaoHumor('😴', 'Sonolento', 2),
-  _OpcaoHumor('🙂', 'Normal', 3),
-  _OpcaoHumor('⚡', 'Enérgico', 4),
-  _OpcaoHumor('😊', 'Contente', 5),
-];
+List<_OpcaoHumor> _opcoesHumorDoDia(AppLocalizations l10n) => [
+      _OpcaoHumor('🤕', l10n.humorComDores, 1),
+      _OpcaoHumor('😩', l10n.humorCansado, 2),
+      _OpcaoHumor('😴', l10n.humorSonolento, 2),
+      _OpcaoHumor('🙂', l10n.humorNormal, 3),
+      _OpcaoHumor('⚡', l10n.humorEnergico, 4),
+      _OpcaoHumor('😊', l10n.humorContente, 5),
+    ];
 
 bool _mesmoDiaHumor(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
@@ -596,6 +602,8 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final opcoesHumor = _opcoesHumorDoDia(l10n);
     final cuidados =
         ref.watch(cuidadoDiarioListProvider(widget.idoso.id)).valueOrNull ??
         const [];
@@ -607,7 +615,7 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
     );
     final opcaoAtual = registoHoje == null
         ? null
-        : _opcoesHumorDoDia.firstWhereOrNull(
+        : opcoesHumor.firstWhereOrNull(
             (o) => o.rotulo == registoHoje.notaRapida,
           );
 
@@ -615,7 +623,7 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Card(
         child: SeccaoColapsavel(
-          titulo: 'Como se sente hoje?',
+          titulo: l10n.idosoDetailComoSenteHojeTitulo,
           icone: Icons.emoji_emotions_outlined,
           expandidoPorOmissao: false,
           child: Padding(
@@ -631,7 +639,7 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
                       Expanded(child: Text(opcaoAtual.rotulo)),
                       TextButton(
                         onPressed: () => setState(() => _aMudar = true),
-                        child: const Text('Mudar'),
+                        child: Text(l10n.idosoDetailMudarHumor),
                       ),
                     ],
                   )
@@ -640,7 +648,7 @@ class _ComoSenteHojeState extends ConsumerState<_ComoSenteHoje> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      for (final opcao in _opcoesHumorDoDia)
+                      for (final opcao in opcoesHumor)
                         _OpcaoHumorBox(
                           opcao: opcao,
                           selecionado: opcao == opcaoAtual,
@@ -722,11 +730,12 @@ class _MedicacaoListaSectionState extends State<_MedicacaoListaSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final registos = widget.registos;
     if (registos.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text('Ainda não há medicação registada.'),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Text(l10n.idosoDetailSemMedicacao),
       );
     }
     final mostrarExpandir = registos.length > _maxItensCondensados;
@@ -737,7 +746,7 @@ class _MedicacaoListaSectionState extends State<_MedicacaoListaSection> {
         if (mostrarExpandir)
           TextButton(
             onPressed: () => setState(() => _expandido = !_expandido),
-            child: Text(_expandido ? 'Ver menos' : 'Ver todas (${registos.length})'),
+            child: Text(_expandido ? l10n.idosoDetailVerMenos : l10n.idosoDetailVerTodas(registos.length)),
           ),
       ],
     );
@@ -761,11 +770,12 @@ class _ConsultaListaSectionState extends State<_ConsultaListaSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final consultas = widget.consultas;
     if (consultas.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text('Ainda não há consultas ou tratamentos registados.'),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Text(l10n.idosoDetailSemConsultas),
       );
     }
     final mostrarExpandir = consultas.length > _maxItensCondensados;
@@ -776,7 +786,7 @@ class _ConsultaListaSectionState extends State<_ConsultaListaSection> {
         if (mostrarExpandir)
           TextButton(
             onPressed: () => setState(() => _expandido = !_expandido),
-            child: Text(_expandido ? 'Ver menos' : 'Ver todas (${consultas.length})'),
+            child: Text(_expandido ? l10n.idosoDetailVerMenos : l10n.idosoDetailVerTodas(consultas.length)),
           ),
       ],
     );
@@ -790,19 +800,20 @@ class _MedicacaoTile extends ConsumerWidget {
   final RegistoMedicacao registo;
 
   Future<void> _confirmarApagar(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar medicação'),
-        content: Text('Queres mesmo apagar "${registo.nomeMedicamento}"?'),
+        title: Text(l10n.idosoDetailApagarMedicacaoTitulo),
+        content: Text(l10n.idosoDetailApagarItemConfirmacao(registo.nomeMedicamento)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.comumCancelar),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Apagar'),
+            child: Text(l10n.comumApagar),
           ),
         ],
       ),
@@ -815,6 +826,7 @@ class _MedicacaoTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final horarios = registo.horariosMinutos.map(formatarHorario).join(', ');
     return ListTile(
       leading: Icon(
@@ -826,11 +838,11 @@ class _MedicacaoTile extends ConsumerWidget {
         '${registo.dose != null ? '${registo.dose} · ' : ''}'
         '${registo.viaAdministracao != null ? '${registo.viaAdministracao} · ' : ''}$horarios · '
         '${formatarDiasSemana(registo.diasSemana)}'
-        '${registo.ativo ? '' : ' · pausada'}',
+        '${registo.ativo ? '' : ' · ${l10n.idosoDetailStatusPausada}'}',
       ),
       trailing: IconButton(
         icon: const Icon(Icons.delete_outline),
-        tooltip: 'Apagar medicação',
+        tooltip: l10n.idosoDetailApagarMedicacaoTitulo,
         onPressed: () => _confirmarApagar(context, ref),
       ),
       onTap: () => Navigator.of(context).push(
@@ -849,23 +861,24 @@ class _ConsultaTile extends ConsumerWidget {
   final RegistoConsulta consulta;
 
   Future<void> _confirmarApagar(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
           consulta.tipo == TipoRegistoConsulta.tratamento
-              ? 'Apagar tratamento'
-              : 'Apagar consulta',
+              ? l10n.idosoDetailApagarTratamentoTitulo
+              : l10n.idosoDetailApagarConsultaTitulo,
         ),
-        content: Text('Queres mesmo apagar "${consulta.especialidade}"?'),
+        content: Text(l10n.idosoDetailApagarItemConfirmacao(consulta.especialidade)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancelar'),
+            child: Text(l10n.comumCancelar),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Apagar'),
+            child: Text(l10n.comumApagar),
           ),
         ],
       ),
@@ -878,6 +891,7 @@ class _ConsultaTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final proxima = consulta.proximaConsultaData;
     final ehTratamento = consulta.tipo == TipoRegistoConsulta.tratamento;
     return ListTile(
@@ -889,11 +903,11 @@ class _ConsultaTile extends ConsumerWidget {
         '${DateFormat('dd/MM/yyyy HH:mm').format(consulta.dataHora)}'
         '${consulta.local != null ? ' · ${consulta.local}' : ''}'
         '${consulta.nomeMedico != null ? ' · ${consulta.nomeMedico}' : ''}'
-        '${proxima != null ? ' · próxima: ${DateFormat('dd/MM/yyyy').format(proxima)}' : ''}',
+        '${proxima != null ? ' · ${l10n.idosoDetailProximaData(DateFormat('dd/MM/yyyy').format(proxima))}' : ''}',
       ),
       trailing: IconButton(
         icon: const Icon(Icons.delete_outline),
-        tooltip: 'Apagar consulta',
+        tooltip: l10n.idosoDetailApagarConsultaTitulo,
         onPressed: () => _confirmarApagar(context, ref),
       ),
       onTap: () => Navigator.of(context).push(

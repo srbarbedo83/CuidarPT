@@ -87,5 +87,56 @@
   "homeIdosoDataNascimento": "Nascimento: {data}",
   "@homeIdosoDataNascimento": {
     "placeholders": { "data": { "type": "String" } }
-  }
+  },
+
+  "idosoDetailLigarEmergencia": "Ligar para contacto de emergência",
+  "idosoDetailCalendario": "Calendário",
+  "idosoDetailGerarRelatorio": "Gerar relatório",
+  "idosoDetailEditarPerfil": "Editar perfil",
+  "idosoDetailProfissionais": "Profissionais",
+  "idosoDetailAdicionarMedicacao": "Adicionar medicação",
+  "idosoDetailErroCarregarMedicacao": "Erro ao carregar medicação: {erro}",
+  "@idosoDetailErroCarregarMedicacao": {
+    "placeholders": { "erro": { "type": "String" } }
+  },
+  "idosoDetailConsultasTratamentosTitulo": "Consultas e tratamentos",
+  "idosoDetailAdicionarConsulta": "Adicionar consulta ou tratamento",
+  "idosoDetailErroCarregarConsultas": "Erro ao carregar consultas: {erro}",
+  "@idosoDetailErroCarregarConsultas": {
+    "placeholders": { "erro": { "type": "String" } }
+  },
+  "idosoDetailGerarRelatorioDiario": "Gerar relatório diário",
+  "idosoDetailProximaToma": "Próxima toma",
+  "idosoDetailProximaConsulta": "Próxima consulta",
+  "idosoDetailEmergenciaContacto": "Emergência: {nome} {telefone}",
+  "@idosoDetailEmergenciaContacto": {
+    "placeholders": { "nome": { "type": "String" }, "telefone": { "type": "String" } }
+  },
+  "idosoDetailMudarHumor": "Mudar",
+  "humorComDores": "Com dores",
+  "humorCansado": "Cansado",
+  "humorSonolento": "Sonolento",
+  "humorNormal": "Normal",
+  "humorEnergico": "Enérgico",
+  "humorContente": "Contente",
+  "idosoDetailVerMenos": "Ver menos",
+  "idosoDetailVerTodas": "Ver todas ({total})",
+  "@idosoDetailVerTodas": {
+    "placeholders": { "total": { "type": "int" } }
+  },
+  "idosoDetailSemMedicacao": "Ainda não há medicação registada.",
+  "idosoDetailSemConsultas": "Ainda não há consultas ou tratamentos registados.",
+  "idosoDetailApagarItemConfirmacao": "Queres mesmo apagar \"{nome}\"?",
+  "@idosoDetailApagarItemConfirmacao": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "idosoDetailApagarMedicacaoTitulo": "Apagar medicação",
+  "idosoDetailApagarTratamentoTitulo": "Apagar tratamento",
+  "idosoDetailApagarConsultaTitulo": "Apagar consulta",
+  "idosoDetailStatusPausada": "pausada",
+  "idosoDetailProximaData": "próxima: {data}",
+  "@idosoDetailProximaData": {
+    "placeholders": { "data": { "type": "String" } }
+  },
+  "idosoDetailComoSenteHojeTitulo": "Como se sente hoje?"
 }

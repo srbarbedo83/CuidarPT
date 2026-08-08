@@ -387,6 +387,198 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Nascimento: {data}'**
   String homeIdosoDataNascimento(String data);
+
+  /// No description provided for @idosoDetailLigarEmergencia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligar para contacto de emergência'**
+  String get idosoDetailLigarEmergencia;
+
+  /// No description provided for @idosoDetailCalendario.
+  ///
+  /// In pt, this message translates to:
+  /// **'Calendário'**
+  String get idosoDetailCalendario;
+
+  /// No description provided for @idosoDetailGerarRelatorio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar relatório'**
+  String get idosoDetailGerarRelatorio;
+
+  /// No description provided for @idosoDetailEditarPerfil.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar perfil'**
+  String get idosoDetailEditarPerfil;
+
+  /// No description provided for @idosoDetailProfissionais.
+  ///
+  /// In pt, this message translates to:
+  /// **'Profissionais'**
+  String get idosoDetailProfissionais;
+
+  /// No description provided for @idosoDetailAdicionarMedicacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar medicação'**
+  String get idosoDetailAdicionarMedicacao;
+
+  /// No description provided for @idosoDetailErroCarregarMedicacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao carregar medicação: {erro}'**
+  String idosoDetailErroCarregarMedicacao(String erro);
+
+  /// No description provided for @idosoDetailConsultasTratamentosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultas e tratamentos'**
+  String get idosoDetailConsultasTratamentosTitulo;
+
+  /// No description provided for @idosoDetailAdicionarConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar consulta ou tratamento'**
+  String get idosoDetailAdicionarConsulta;
+
+  /// No description provided for @idosoDetailErroCarregarConsultas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao carregar consultas: {erro}'**
+  String idosoDetailErroCarregarConsultas(String erro);
+
+  /// No description provided for @idosoDetailGerarRelatorioDiario.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar relatório diário'**
+  String get idosoDetailGerarRelatorioDiario;
+
+  /// No description provided for @idosoDetailProximaToma.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próxima toma'**
+  String get idosoDetailProximaToma;
+
+  /// No description provided for @idosoDetailProximaConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próxima consulta'**
+  String get idosoDetailProximaConsulta;
+
+  /// No description provided for @idosoDetailEmergenciaContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Emergência: {nome} {telefone}'**
+  String idosoDetailEmergenciaContacto(String nome, String telefone);
+
+  /// No description provided for @idosoDetailMudarHumor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudar'**
+  String get idosoDetailMudarHumor;
+
+  /// No description provided for @humorComDores.
+  ///
+  /// In pt, this message translates to:
+  /// **'Com dores'**
+  String get humorComDores;
+
+  /// No description provided for @humorCansado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cansado'**
+  String get humorCansado;
+
+  /// No description provided for @humorSonolento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sonolento'**
+  String get humorSonolento;
+
+  /// No description provided for @humorNormal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Normal'**
+  String get humorNormal;
+
+  /// No description provided for @humorEnergico.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enérgico'**
+  String get humorEnergico;
+
+  /// No description provided for @humorContente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contente'**
+  String get humorContente;
+
+  /// No description provided for @idosoDetailVerMenos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver menos'**
+  String get idosoDetailVerMenos;
+
+  /// No description provided for @idosoDetailVerTodas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver todas ({total})'**
+  String idosoDetailVerTodas(int total);
+
+  /// No description provided for @idosoDetailSemMedicacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há medicação registada.'**
+  String get idosoDetailSemMedicacao;
+
+  /// No description provided for @idosoDetailSemConsultas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há consultas ou tratamentos registados.'**
+  String get idosoDetailSemConsultas;
+
+  /// No description provided for @idosoDetailApagarItemConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Queres mesmo apagar \"{nome}\"?'**
+  String idosoDetailApagarItemConfirmacao(String nome);
+
+  /// No description provided for @idosoDetailApagarMedicacaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar medicação'**
+  String get idosoDetailApagarMedicacaoTitulo;
+
+  /// No description provided for @idosoDetailApagarTratamentoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar tratamento'**
+  String get idosoDetailApagarTratamentoTitulo;
+
+  /// No description provided for @idosoDetailApagarConsultaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar consulta'**
+  String get idosoDetailApagarConsultaTitulo;
+
+  /// No description provided for @idosoDetailStatusPausada.
+  ///
+  /// In pt, this message translates to:
+  /// **'pausada'**
+  String get idosoDetailStatusPausada;
+
+  /// No description provided for @idosoDetailProximaData.
+  ///
+  /// In pt, this message translates to:
+  /// **'próxima: {data}'**
+  String idosoDetailProximaData(String data);
+
+  /// No description provided for @idosoDetailComoSenteHojeTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como se sente hoje?'**
+  String get idosoDetailComoSenteHojeTitulo;
 }
 
 class _AppLocalizationsDelegate
