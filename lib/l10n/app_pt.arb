@@ -201,5 +201,82 @@
   "@sinaisVitaisHistoricoMedia": {
     "placeholders": { "valor": { "type": "String" }, "unidade": { "type": "String" } }
   },
-  "sinaisVitaisHistoricoSemRegistos": "Ainda não há registos neste período."
+  "sinaisVitaisHistoricoSemRegistos": "Ainda não há registos neste período.",
+
+  "comumNome": "Nome",
+  "comumEmail": "Email",
+
+  "documentosTirarFotografia": "Tirar fotografia",
+  "documentosEscolherGaleria": "Escolher da galeria",
+  "documentosNomeTitulo": "Nome do documento",
+  "documentosNomeHint": "Ex.: Receita Dr. Silva, Análises 2026",
+  "documentosTituloOmissao": "Documento {data}",
+  "@documentosTituloOmissao": {
+    "placeholders": { "data": { "type": "String" } }
+  },
+  "documentosApagarTitulo": "Apagar documento",
+  "documentosApagarConfirmacao": "Queres mesmo apagar \"{titulo}\"?",
+  "@documentosApagarConfirmacao": {
+    "placeholders": { "titulo": { "type": "String" } }
+  },
+  "documentosTitulo": "Documentos",
+  "documentosNenhum": "Nenhum documento",
+  "documentosContagem": "{count, plural, =1{1 documento} other{{count} documentos}}",
+  "@documentosContagem": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "documentosDescricao": "Receitas e exames guardados apenas neste telemóvel.",
+  "documentosAdicionarTooltip": "Adicionar documento",
+  "documentosSemDocumentos": "Ainda não há documentos guardados.",
+
+  "contactosCuidadoresNovoTitulo": "Novo contacto",
+  "contactosCuidadoresTitulo": "Contactos de cuidadores",
+  "contactosCuidadoresAdicionarTooltip": "Adicionar contacto",
+  "contactosCuidadoresDescricao": "Usados para escolher rapidamente com quem partilhar um relatório.",
+  "contactosCuidadoresSemContactos": "Ainda não há contactos guardados.",
+  "contactosCuidadoresApagarTooltip": "Apagar contacto",
+  "contactosCuidadoresErro": "Erro ao carregar contactos: {erro}",
+  "@contactosCuidadoresErro": {
+    "placeholders": { "erro": { "type": "String" } }
+  },
+
+  "rotinaCategoriaHigiene": "Higiene",
+  "rotinaCategoriaAlimentacao": "Alimentação",
+  "rotinaCategoriaSono": "Sono",
+  "rotinaCategoriaAtividade": "Atividade",
+  "rotinaSugestaoBanho": "Banho",
+  "rotinaSugestaoEscovarDentes": "Escovar os dentes",
+  "rotinaSugestaoHigieneIntima": "Higiene íntima",
+  "rotinaSugestaoPentearCabelo": "Pentear/arranjar cabelo",
+  "rotinaSugestaoPequenoAlmoco": "Pequeno-almoço",
+  "rotinaSugestaoAlmoco": "Almoço",
+  "rotinaSugestaoLanche": "Lanche",
+  "rotinaSugestaoJantar": "Jantar",
+  "rotinaSugestaoHidratacao": "Hidratação/Água",
+  "rotinaSugestaoSesta": "Sesta",
+  "rotinaSugestaoDeitarNoite": "Deitar à noite",
+  "rotinaSugestaoAcordar": "Acordar",
+  "rotinaSugestaoPasseio": "Passeio",
+  "rotinaSugestaoExercicios": "Exercícios",
+  "rotinaSugestaoAlongamentos": "Alongamentos",
+  "rotinaNovoItemTitulo": "Novo item de rotina",
+  "rotinaNovoItemHint": "Ex.: Banho, Pequeno-almoço",
+  "rotinaTitulo": "Rotina de higiene, alimentação, sono e atividade",
+  "rotinaNenhumItem": "Nenhum item",
+  "rotinaContagemItens": "{count, plural, =1{1 item} other{{count} itens}}",
+  "@rotinaContagemItens": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "rotinaSelecionarVarios": "Selecionar vários",
+  "rotinaFotoPrato": "Foto do prato",
+  "rotinaApagarItem": "Apagar item",
+  "rotinaMarcarComoFeito": "Marcar como feito",
+  "rotinaMarcarNComoFeito": "Marcar {count} como feito",
+  "@rotinaMarcarNComoFeito": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "rotinaAdicionarItem": "Adicionar item",
+
+  "humorGraficoTitulo": "Estado de Humor",
+  "humorGraficoSemRegistos": "Ainda não há registos de humor neste período."
 }

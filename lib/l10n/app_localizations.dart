@@ -873,6 +873,330 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ainda não há registos neste período.'**
   String get sinaisVitaisHistoricoSemRegistos;
+
+  /// No description provided for @comumNome.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome'**
+  String get comumNome;
+
+  /// No description provided for @comumEmail.
+  ///
+  /// In pt, this message translates to:
+  /// **'Email'**
+  String get comumEmail;
+
+  /// No description provided for @documentosTirarFotografia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tirar fotografia'**
+  String get documentosTirarFotografia;
+
+  /// No description provided for @documentosEscolherGaleria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolher da galeria'**
+  String get documentosEscolherGaleria;
+
+  /// No description provided for @documentosNomeTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do documento'**
+  String get documentosNomeTitulo;
+
+  /// No description provided for @documentosNomeHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Receita Dr. Silva, Análises 2026'**
+  String get documentosNomeHint;
+
+  /// No description provided for @documentosTituloOmissao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Documento {data}'**
+  String documentosTituloOmissao(String data);
+
+  /// No description provided for @documentosApagarTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar documento'**
+  String get documentosApagarTitulo;
+
+  /// No description provided for @documentosApagarConfirmacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Queres mesmo apagar \"{titulo}\"?'**
+  String documentosApagarConfirmacao(String titulo);
+
+  /// No description provided for @documentosTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Documentos'**
+  String get documentosTitulo;
+
+  /// No description provided for @documentosNenhum.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum documento'**
+  String get documentosNenhum;
+
+  /// No description provided for @documentosContagem.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 documento} other{{count} documentos}}'**
+  String documentosContagem(int count);
+
+  /// No description provided for @documentosDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Receitas e exames guardados apenas neste telemóvel.'**
+  String get documentosDescricao;
+
+  /// No description provided for @documentosAdicionarTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar documento'**
+  String get documentosAdicionarTooltip;
+
+  /// No description provided for @documentosSemDocumentos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há documentos guardados.'**
+  String get documentosSemDocumentos;
+
+  /// No description provided for @contactosCuidadoresNovoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo contacto'**
+  String get contactosCuidadoresNovoTitulo;
+
+  /// No description provided for @contactosCuidadoresTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contactos de cuidadores'**
+  String get contactosCuidadoresTitulo;
+
+  /// No description provided for @contactosCuidadoresAdicionarTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar contacto'**
+  String get contactosCuidadoresAdicionarTooltip;
+
+  /// No description provided for @contactosCuidadoresDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usados para escolher rapidamente com quem partilhar um relatório.'**
+  String get contactosCuidadoresDescricao;
+
+  /// No description provided for @contactosCuidadoresSemContactos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há contactos guardados.'**
+  String get contactosCuidadoresSemContactos;
+
+  /// No description provided for @contactosCuidadoresApagarTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar contacto'**
+  String get contactosCuidadoresApagarTooltip;
+
+  /// No description provided for @contactosCuidadoresErro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro ao carregar contactos: {erro}'**
+  String contactosCuidadoresErro(String erro);
+
+  /// No description provided for @rotinaCategoriaHigiene.
+  ///
+  /// In pt, this message translates to:
+  /// **'Higiene'**
+  String get rotinaCategoriaHigiene;
+
+  /// No description provided for @rotinaCategoriaAlimentacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alimentação'**
+  String get rotinaCategoriaAlimentacao;
+
+  /// No description provided for @rotinaCategoriaSono.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sono'**
+  String get rotinaCategoriaSono;
+
+  /// No description provided for @rotinaCategoriaAtividade.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atividade'**
+  String get rotinaCategoriaAtividade;
+
+  /// No description provided for @rotinaSugestaoBanho.
+  ///
+  /// In pt, this message translates to:
+  /// **'Banho'**
+  String get rotinaSugestaoBanho;
+
+  /// No description provided for @rotinaSugestaoEscovarDentes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escovar os dentes'**
+  String get rotinaSugestaoEscovarDentes;
+
+  /// No description provided for @rotinaSugestaoHigieneIntima.
+  ///
+  /// In pt, this message translates to:
+  /// **'Higiene íntima'**
+  String get rotinaSugestaoHigieneIntima;
+
+  /// No description provided for @rotinaSugestaoPentearCabelo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pentear/arranjar cabelo'**
+  String get rotinaSugestaoPentearCabelo;
+
+  /// No description provided for @rotinaSugestaoPequenoAlmoco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pequeno-almoço'**
+  String get rotinaSugestaoPequenoAlmoco;
+
+  /// No description provided for @rotinaSugestaoAlmoco.
+  ///
+  /// In pt, this message translates to:
+  /// **'Almoço'**
+  String get rotinaSugestaoAlmoco;
+
+  /// No description provided for @rotinaSugestaoLanche.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lanche'**
+  String get rotinaSugestaoLanche;
+
+  /// No description provided for @rotinaSugestaoJantar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Jantar'**
+  String get rotinaSugestaoJantar;
+
+  /// No description provided for @rotinaSugestaoHidratacao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hidratação/Água'**
+  String get rotinaSugestaoHidratacao;
+
+  /// No description provided for @rotinaSugestaoSesta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sesta'**
+  String get rotinaSugestaoSesta;
+
+  /// No description provided for @rotinaSugestaoDeitarNoite.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deitar à noite'**
+  String get rotinaSugestaoDeitarNoite;
+
+  /// No description provided for @rotinaSugestaoAcordar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acordar'**
+  String get rotinaSugestaoAcordar;
+
+  /// No description provided for @rotinaSugestaoPasseio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Passeio'**
+  String get rotinaSugestaoPasseio;
+
+  /// No description provided for @rotinaSugestaoExercicios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Exercícios'**
+  String get rotinaSugestaoExercicios;
+
+  /// No description provided for @rotinaSugestaoAlongamentos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alongamentos'**
+  String get rotinaSugestaoAlongamentos;
+
+  /// No description provided for @rotinaNovoItemTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo item de rotina'**
+  String get rotinaNovoItemTitulo;
+
+  /// No description provided for @rotinaNovoItemHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Banho, Pequeno-almoço'**
+  String get rotinaNovoItemHint;
+
+  /// No description provided for @rotinaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Rotina de higiene, alimentação, sono e atividade'**
+  String get rotinaTitulo;
+
+  /// No description provided for @rotinaNenhumItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum item'**
+  String get rotinaNenhumItem;
+
+  /// No description provided for @rotinaContagemItens.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} itens}}'**
+  String rotinaContagemItens(int count);
+
+  /// No description provided for @rotinaSelecionarVarios.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecionar vários'**
+  String get rotinaSelecionarVarios;
+
+  /// No description provided for @rotinaFotoPrato.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto do prato'**
+  String get rotinaFotoPrato;
+
+  /// No description provided for @rotinaApagarItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar item'**
+  String get rotinaApagarItem;
+
+  /// No description provided for @rotinaMarcarComoFeito.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar como feito'**
+  String get rotinaMarcarComoFeito;
+
+  /// No description provided for @rotinaMarcarNComoFeito.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar {count} como feito'**
+  String rotinaMarcarNComoFeito(int count);
+
+  /// No description provided for @rotinaAdicionarItem.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar item'**
+  String get rotinaAdicionarItem;
+
+  /// No description provided for @humorGraficoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estado de Humor'**
+  String get humorGraficoTitulo;
+
+  /// No description provided for @humorGraficoSemRegistos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há registos de humor neste período.'**
+  String get humorGraficoSemRegistos;
 }
 
 class _AppLocalizationsDelegate

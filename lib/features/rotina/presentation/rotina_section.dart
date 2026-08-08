@@ -9,6 +9,7 @@ import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/item_rotina.dart';
 import '../../../data/models/registo_cuidado_diario.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../cuidados_diarios/providers/cuidado_diario_providers.dart';
 import '../providers/rotina_providers.dart';
 
@@ -16,34 +17,56 @@ bool _mesmoDia(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
 
-const _sugestoesHigiene = ['Banho', 'Escovar os dentes', 'Higiene íntima', 'Pentear/arranjar cabelo'];
-const _sugestoesAlimentacao = ['Pequeno-almoço', 'Almoço', 'Lanche', 'Jantar', 'Hidratação/Água'];
-const _sugestoesSono = ['Sesta', 'Deitar à noite', 'Acordar'];
-const _sugestoesAtividade = ['Passeio', 'Exercícios', 'Alongamentos'];
+List<String> _sugestoesHigiene(AppLocalizations l10n) => [
+      l10n.rotinaSugestaoBanho,
+      l10n.rotinaSugestaoEscovarDentes,
+      l10n.rotinaSugestaoHigieneIntima,
+      l10n.rotinaSugestaoPentearCabelo,
+    ];
 
-String _labelCategoria(CategoriaRotina categoria) {
+List<String> _sugestoesAlimentacao(AppLocalizations l10n) => [
+      l10n.rotinaSugestaoPequenoAlmoco,
+      l10n.rotinaSugestaoAlmoco,
+      l10n.rotinaSugestaoLanche,
+      l10n.rotinaSugestaoJantar,
+      l10n.rotinaSugestaoHidratacao,
+    ];
+
+List<String> _sugestoesSono(AppLocalizations l10n) => [
+      l10n.rotinaSugestaoSesta,
+      l10n.rotinaSugestaoDeitarNoite,
+      l10n.rotinaSugestaoAcordar,
+    ];
+
+List<String> _sugestoesAtividade(AppLocalizations l10n) => [
+      l10n.rotinaSugestaoPasseio,
+      l10n.rotinaSugestaoExercicios,
+      l10n.rotinaSugestaoAlongamentos,
+    ];
+
+String _labelCategoria(AppLocalizations l10n, CategoriaRotina categoria) {
   switch (categoria) {
     case CategoriaRotina.higiene:
-      return 'Higiene';
+      return l10n.rotinaCategoriaHigiene;
     case CategoriaRotina.alimentacao:
-      return 'Alimentação';
+      return l10n.rotinaCategoriaAlimentacao;
     case CategoriaRotina.sono:
-      return 'Sono';
+      return l10n.rotinaCategoriaSono;
     case CategoriaRotina.atividade:
-      return 'Atividade';
+      return l10n.rotinaCategoriaAtividade;
   }
 }
 
-List<String> _sugestoesPorCategoria(CategoriaRotina categoria) {
+List<String> _sugestoesPorCategoria(AppLocalizations l10n, CategoriaRotina categoria) {
   switch (categoria) {
     case CategoriaRotina.higiene:
-      return _sugestoesHigiene;
+      return _sugestoesHigiene(l10n);
     case CategoriaRotina.alimentacao:
-      return _sugestoesAlimentacao;
+      return _sugestoesAlimentacao(l10n);
     case CategoriaRotina.sono:
-      return _sugestoesSono;
+      return _sugestoesSono(l10n);
     case CategoriaRotina.atividade:
-      return _sugestoesAtividade;
+      return _sugestoesAtividade(l10n);
   }
 }
 
@@ -80,22 +103,26 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
   Idoso get idoso => widget.idoso;
 
   Future<void> _adicionarItem(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     var categoria = CategoriaRotina.higiene;
     final nomeController = TextEditingController();
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setStateDialog) => AlertDialog(
-          title: const Text('Novo item de rotina'),
+          title: Text(l10n.rotinaNovoItemTitulo),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               SegmentedButton<CategoriaRotina>(
-                segments: const [
-                  ButtonSegment(value: CategoriaRotina.higiene, label: Text('Higiene')),
-                  ButtonSegment(value: CategoriaRotina.alimentacao, label: Text('Alimentação')),
-                  ButtonSegment(value: CategoriaRotina.sono, label: Text('Sono')),
-                  ButtonSegment(value: CategoriaRotina.atividade, label: Text('Atividade')),
+                segments: [
+                  ButtonSegment(value: CategoriaRotina.higiene, label: Text(l10n.rotinaCategoriaHigiene)),
+                  ButtonSegment(
+                    value: CategoriaRotina.alimentacao,
+                    label: Text(l10n.rotinaCategoriaAlimentacao),
+                  ),
+                  ButtonSegment(value: CategoriaRotina.sono, label: Text(l10n.rotinaCategoriaSono)),
+                  ButtonSegment(value: CategoriaRotina.atividade, label: Text(l10n.rotinaCategoriaAtividade)),
                 ],
                 selected: {categoria},
                 onSelectionChanged: (selecao) => setStateDialog(() => categoria = selecao.first),
@@ -107,7 +134,7 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
                   spacing: 8,
                   runSpacing: 4,
                   children: [
-                    for (final sugestao in _sugestoesPorCategoria(categoria))
+                    for (final sugestao in _sugestoesPorCategoria(l10n, categoria))
                       ActionChip(
                         label: Text(sugestao),
                         onPressed: () => setStateDialog(() => nomeController.text = sugestao),
@@ -118,7 +145,7 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
               const SizedBox(height: 12),
               TextField(
                 controller: nomeController,
-                decoration: const InputDecoration(hintText: 'Ex.: Banho, Pequeno-almoço'),
+                decoration: InputDecoration(hintText: l10n.rotinaNovoItemHint),
                 textCapitalization: TextCapitalization.sentences,
                 autofocus: true,
               ),
@@ -127,11 +154,11 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancelar'),
+              child: Text(l10n.comumCancelar),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Guardar'),
+              child: Text(l10n.comumGuardar),
             ),
           ],
         ),
@@ -152,6 +179,7 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
   }
 
   Future<void> _adicionarFoto(BuildContext context, WidgetRef ref, RegistoCuidadoDiario registo) async {
+    final l10n = AppLocalizations.of(context);
     final origem = await showModalBottomSheet<ImageSource>(
       context: context,
       builder: (context) => SafeArea(
@@ -160,12 +188,12 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined),
-              title: const Text('Tirar fotografia'),
+              title: Text(l10n.documentosTirarFotografia),
               onTap: () => Navigator.of(context).pop(ImageSource.camera),
             ),
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
-              title: const Text('Escolher da galeria'),
+              title: Text(l10n.documentosEscolherGaleria),
               onTap: () => Navigator.of(context).pop(ImageSource.gallery),
             ),
           ],
@@ -211,6 +239,7 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final itensAsync = ref.watch(itemRotinaListProvider(idoso.id));
     final cuidados = ref.watch(cuidadoDiarioListProvider(idoso.id)).valueOrNull ?? const [];
     final agora = DateTime.now();
@@ -222,10 +251,10 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
         final pendentes = ativos.where((i) => _conclusaoHoje(i, cuidadosHoje) == null).toList();
         return ExpansionTile(
           title: Text(
-            'Rotina de higiene, alimentação, sono e atividade',
+            l10n.rotinaTitulo,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text(ativos.isEmpty ? 'Nenhum item' : '${ativos.length} itens'),
+          subtitle: Text(ativos.isEmpty ? l10n.rotinaNenhumItem : l10n.rotinaContagemItens(ativos.length)),
           children: [
             if (pendentes.isNotEmpty)
               Padding(
@@ -238,14 +267,14 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
                       _selecionados.clear();
                     }),
                     icon: Icon(_modoSelecaoMultipla ? Icons.close : Icons.checklist),
-                    label: Text(_modoSelecaoMultipla ? 'Cancelar' : 'Selecionar vários'),
+                    label: Text(_modoSelecaoMultipla ? l10n.comumCancelar : l10n.rotinaSelecionarVarios),
                   ),
                 ),
               ),
             for (final item in ativos)
               CheckboxListTile(
                 title: Text(item.nome),
-                subtitle: Text(_labelCategoria(item.categoria)),
+                subtitle: Text(_labelCategoria(l10n, item.categoria)),
                 value: _modoSelecaoMultipla
                     ? (_conclusaoHoje(item, cuidadosHoje) != null || _selecionados.contains(item.id))
                     : _conclusaoHoje(item, cuidadosHoje) != null,
@@ -271,13 +300,13 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
                         _conclusaoHoje(item, cuidadosHoje) != null)
                       IconButton(
                         icon: const Icon(Icons.camera_alt_outlined),
-                        tooltip: 'Foto do prato',
+                        tooltip: l10n.rotinaFotoPrato,
                         onPressed: () =>
                             _adicionarFoto(context, ref, _conclusaoHoje(item, cuidadosHoje)!),
                       ),
                     IconButton(
                       icon: const Icon(Icons.delete_outline),
-                      tooltip: 'Apagar item',
+                      tooltip: l10n.rotinaApagarItem,
                       onPressed: () => _apagarItem(ref, item),
                     ),
                   ],
@@ -303,8 +332,8 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
                     icon: const Icon(Icons.check),
                     label: Text(
                       _selecionados.isEmpty
-                          ? 'Marcar como feito'
-                          : 'Marcar ${_selecionados.length} como feito',
+                          ? l10n.rotinaMarcarComoFeito
+                          : l10n.rotinaMarcarNComoFeito(_selecionados.length),
                     ),
                   ),
                 ),
@@ -316,7 +345,7 @@ class _RotinaSectionState extends ConsumerState<RotinaSection> {
                 child: TextButton.icon(
                   onPressed: () => _adicionarItem(context, ref),
                   icon: const Icon(Icons.add),
-                  label: const Text('Adicionar item'),
+                  label: Text(l10n.rotinaAdicionarItem),
                 ),
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../providers/cuidado_diario_providers.dart';
 import '../services/humor_historico.dart';
 
@@ -25,6 +26,7 @@ class _GraficoHumorCardState extends ConsumerState<GraficoHumorCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final cuidados = ref.watch(cuidadoDiarioListProvider(widget.idosoId)).valueOrNull ?? const [];
     final pontos = humorPorDia(cuidados, dias: _dias);
     final temAlgumRegisto = pontos.any((p) => p.media != null);
@@ -39,14 +41,14 @@ class _GraficoHumorCardState extends ConsumerState<GraficoHumorCard> {
               children: [
                 Expanded(
                   child: Text(
-                    'Estado de Humor',
+                    l10n.humorGraficoTitulo,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
                 SegmentedButton<int>(
-                  segments: const [
-                    ButtonSegment(value: 7, label: Text('7 dias')),
-                    ButtonSegment(value: 30, label: Text('30 dias')),
+                  segments: [
+                    ButtonSegment(value: 7, label: Text(l10n.sinaisVitaisHistorico7Dias)),
+                    ButtonSegment(value: 30, label: Text(l10n.sinaisVitaisHistorico30Dias)),
                   ],
                   selected: {_dias},
                   onSelectionChanged: (selecao) => setState(() => _dias = selecao.first),
@@ -56,7 +58,7 @@ class _GraficoHumorCardState extends ConsumerState<GraficoHumorCard> {
             const SizedBox(height: 12),
             if (!temAlgumRegisto)
               Text(
-                'Ainda não há registos de humor neste período.',
+                l10n.humorGraficoSemRegistos,
                 style: Theme.of(context).textTheme.bodySmall,
               )
             else

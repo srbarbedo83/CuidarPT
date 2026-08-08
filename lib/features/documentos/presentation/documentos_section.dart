@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/photo_storage.dart';
 import '../../../data/models/idoso.dart';
 import '../../../data/models/registo_documento.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/documento_providers.dart';
 
 /// Secção do perfil do idoso para guardar fotografias de receitas e exames.
@@ -18,6 +19,7 @@ class DocumentosSection extends ConsumerWidget {
   final Idoso idoso;
 
   Future<void> _adicionar(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final origem = await showModalBottomSheet<ImageSource>(
       context: context,
       builder: (context) => SafeArea(
@@ -26,12 +28,12 @@ class DocumentosSection extends ConsumerWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined),
-              title: const Text('Tirar fotografia'),
+              title: Text(l10n.documentosTirarFotografia),
               onTap: () => Navigator.of(context).pop(ImageSource.camera),
             ),
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
-              title: const Text('Escolher da galeria'),
+              title: Text(l10n.documentosEscolherGaleria),
               onTap: () => Navigator.of(context).pop(ImageSource.gallery),
             ),
           ],
@@ -51,7 +53,9 @@ class DocumentosSection extends ConsumerWidget {
     final tituloFinal = titulo.trim();
     final documento = RegistoDocumento()
       ..idosoId = idoso.id
-      ..titulo = tituloFinal.isEmpty ? 'Documento ${DateFormat('dd/MM/yyyy').format(agora)}' : tituloFinal
+      ..titulo = tituloFinal.isEmpty
+          ? l10n.documentosTituloOmissao(DateFormat('dd/MM/yyyy').format(agora))
+          : tituloFinal
       ..caminhoFicheiro = caminho
       ..criadoEm = agora;
 
@@ -59,22 +63,23 @@ class DocumentosSection extends ConsumerWidget {
   }
 
   Future<String?> _pedirTitulo(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final controller = TextEditingController();
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Nome do documento'),
+        title: Text(l10n.documentosNomeTitulo),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(hintText: 'Ex.: Receita Dr. Silva, Análises 2026'),
+          decoration: InputDecoration(hintText: l10n.documentosNomeHint),
           textCapitalization: TextCapitalization.sentences,
           autofocus: true,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.comumCancelar)),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(controller.text),
-            child: const Text('Guardar'),
+            child: Text(l10n.comumGuardar),
           ),
         ],
       ),
@@ -82,14 +87,15 @@ class DocumentosSection extends ConsumerWidget {
   }
 
   Future<void> _apagar(BuildContext context, WidgetRef ref, RegistoDocumento documento) async {
+    final l10n = AppLocalizations.of(context);
     final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar documento'),
-        content: Text('Queres mesmo apagar "${documento.titulo}"?'),
+        title: Text(l10n.documentosApagarTitulo),
+        content: Text(l10n.documentosApagarConfirmacao(documento.titulo)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Apagar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.comumCancelar)),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.comumApagar)),
         ],
       ),
     );
@@ -113,15 +119,16 @@ class DocumentosSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final documentos = ref.watch(documentoListProvider(idoso.id)).valueOrNull ?? const [];
 
     return ExpansionTile(
       leading: const Icon(Icons.folder_outlined),
       title: Text(
-        'Documentos',
+        l10n.documentosTitulo,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
       ),
-      subtitle: Text(documentos.isEmpty ? 'Nenhum documento' : '${documentos.length} documentos'),
+      subtitle: Text(documentos.isEmpty ? l10n.documentosNenhum : l10n.documentosContagem(documentos.length)),
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -129,13 +136,13 @@ class DocumentosSection extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Receitas e exames guardados apenas neste telemóvel.',
+                  l10n.documentosDescricao,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
               IconButton(
                 icon: const Icon(Icons.add),
-                tooltip: 'Adicionar documento',
+                tooltip: l10n.documentosAdicionarTooltip,
                 onPressed: () => _adicionar(context, ref),
               ),
             ],
@@ -143,9 +150,9 @@ class DocumentosSection extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         if (documentos.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text('Ainda não há documentos guardados.'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(l10n.documentosSemDocumentos),
           )
         else
           SizedBox(
@@ -178,7 +185,7 @@ class DocumentosSection extends ConsumerWidget {
                             top: -8,
                             child: IconButton(
                               icon: const Icon(Icons.cancel, size: 20),
-                              tooltip: 'Apagar documento',
+                              tooltip: l10n.documentosApagarTitulo,
                               onPressed: () => _apagar(context, ref, documento),
                             ),
                           ),

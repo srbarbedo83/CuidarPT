@@ -470,4 +470,195 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get sinaisVitaisHistoricoSemRegistos =>
       'Todavía no hay registros en este período.';
+
+  @override
+  String get comumNome => 'Nombre';
+
+  @override
+  String get comumEmail => 'Email';
+
+  @override
+  String get documentosTirarFotografia => 'Hacer foto';
+
+  @override
+  String get documentosEscolherGaleria => 'Elegir de la galería';
+
+  @override
+  String get documentosNomeTitulo => 'Nombre del documento';
+
+  @override
+  String get documentosNomeHint => 'Ej.: Receta Dr. García, Análisis 2026';
+
+  @override
+  String documentosTituloOmissao(String data) {
+    return 'Documento $data';
+  }
+
+  @override
+  String get documentosApagarTitulo => 'Eliminar documento';
+
+  @override
+  String documentosApagarConfirmacao(String titulo) {
+    return '¿Seguro que quieres eliminar \"$titulo\"?';
+  }
+
+  @override
+  String get documentosTitulo => 'Documentos';
+
+  @override
+  String get documentosNenhum => 'Ningún documento';
+
+  @override
+  String documentosContagem(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count documentos',
+      one: '1 documento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDescricao =>
+      'Recetas y análisis guardados solo en este móvil.';
+
+  @override
+  String get documentosAdicionarTooltip => 'Añadir documento';
+
+  @override
+  String get documentosSemDocumentos => 'Todavía no hay documentos guardados.';
+
+  @override
+  String get contactosCuidadoresNovoTitulo => 'Nuevo contacto';
+
+  @override
+  String get contactosCuidadoresTitulo => 'Contactos de cuidadores';
+
+  @override
+  String get contactosCuidadoresAdicionarTooltip => 'Añadir contacto';
+
+  @override
+  String get contactosCuidadoresDescricao =>
+      'Se usan para elegir rápidamente con quién compartir un informe.';
+
+  @override
+  String get contactosCuidadoresSemContactos =>
+      'Todavía no hay contactos guardados.';
+
+  @override
+  String get contactosCuidadoresApagarTooltip => 'Eliminar contacto';
+
+  @override
+  String contactosCuidadoresErro(String erro) {
+    return 'Error al cargar los contactos: $erro';
+  }
+
+  @override
+  String get rotinaCategoriaHigiene => 'Higiene';
+
+  @override
+  String get rotinaCategoriaAlimentacao => 'Alimentación';
+
+  @override
+  String get rotinaCategoriaSono => 'Sueño';
+
+  @override
+  String get rotinaCategoriaAtividade => 'Actividad';
+
+  @override
+  String get rotinaSugestaoBanho => 'Baño';
+
+  @override
+  String get rotinaSugestaoEscovarDentes => 'Cepillar los dientes';
+
+  @override
+  String get rotinaSugestaoHigieneIntima => 'Higiene íntima';
+
+  @override
+  String get rotinaSugestaoPentearCabelo => 'Peinar/arreglar el pelo';
+
+  @override
+  String get rotinaSugestaoPequenoAlmoco => 'Desayuno';
+
+  @override
+  String get rotinaSugestaoAlmoco => 'Almuerzo';
+
+  @override
+  String get rotinaSugestaoLanche => 'Merienda';
+
+  @override
+  String get rotinaSugestaoJantar => 'Cena';
+
+  @override
+  String get rotinaSugestaoHidratacao => 'Hidratación/Agua';
+
+  @override
+  String get rotinaSugestaoSesta => 'Siesta';
+
+  @override
+  String get rotinaSugestaoDeitarNoite => 'Acostarse';
+
+  @override
+  String get rotinaSugestaoAcordar => 'Despertar';
+
+  @override
+  String get rotinaSugestaoPasseio => 'Paseo';
+
+  @override
+  String get rotinaSugestaoExercicios => 'Ejercicios';
+
+  @override
+  String get rotinaSugestaoAlongamentos => 'Estiramientos';
+
+  @override
+  String get rotinaNovoItemTitulo => 'Nuevo elemento de rutina';
+
+  @override
+  String get rotinaNovoItemHint => 'Ej.: Baño, Desayuno';
+
+  @override
+  String get rotinaTitulo =>
+      'Rutina de higiene, alimentación, sueño y actividad';
+
+  @override
+  String get rotinaNenhumItem => 'Ningún elemento';
+
+  @override
+  String rotinaContagemItens(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count elementos',
+      one: '1 elemento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rotinaSelecionarVarios => 'Seleccionar varios';
+
+  @override
+  String get rotinaFotoPrato => 'Foto del plato';
+
+  @override
+  String get rotinaApagarItem => 'Eliminar elemento';
+
+  @override
+  String get rotinaMarcarComoFeito => 'Marcar como hecho';
+
+  @override
+  String rotinaMarcarNComoFeito(int count) {
+    return 'Marcar $count como hecho';
+  }
+
+  @override
+  String get rotinaAdicionarItem => 'Añadir elemento';
+
+  @override
+  String get humorGraficoTitulo => 'Estado de ánimo';
+
+  @override
+  String get humorGraficoSemRegistos =>
+      'Todavía no hay registros de ánimo en este período.';
 }
