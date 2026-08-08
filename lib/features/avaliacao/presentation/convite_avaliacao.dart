@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../subscricao/providers/subscricao_providers.dart';
 import '../providers/avaliacao_providers.dart';
 import '../services/convite_avaliacao_logica.dart';
@@ -35,18 +36,16 @@ Future<void> mostrarConviteAvaliacaoSeNecessario(
   await repository.marcarComoMostrado(agora);
   if (!context.mounted) return;
 
+  final l10n = AppLocalizations.of(context);
   final avaliar = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
       icon: const Icon(Icons.favorite_outline),
-      title: const Text('Estás a gostar do CuidarPT?'),
-      content: const Text(
-        'Se o CuidarPT te está a ajudar a cuidar de quem mais precisa, uma '
-        'avaliação na loja ajuda outras famílias a encontrarem a app.',
-      ),
+      title: Text(l10n.avaliacaoTitulo),
+      content: Text(l10n.avaliacaoDescricao),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Agora não')),
-        FilledButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Avaliar a app')),
+        TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.avaliacaoAgoraNao)),
+        FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.avaliacaoAvaliar)),
       ],
     ),
   );

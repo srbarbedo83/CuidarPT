@@ -1947,6 +1947,186 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Freq. cardíaca'**
   String get relatorioPdfColunaFreqCardiaca;
+
+  /// No description provided for @calendarioTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Calendário · {nome}'**
+  String calendarioTitulo(String nome);
+
+  /// No description provided for @calendarioFiltroConsultas.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultas'**
+  String get calendarioFiltroConsultas;
+
+  /// No description provided for @calendarioFiltroTratamentos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tratamentos'**
+  String get calendarioFiltroTratamentos;
+
+  /// No description provided for @calendarioFiltroCuidados.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cuidados diários'**
+  String get calendarioFiltroCuidados;
+
+  /// No description provided for @calendarioMesFormato.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mês'**
+  String get calendarioMesFormato;
+
+  /// No description provided for @calendarioSemEventos.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem eventos neste dia.'**
+  String get calendarioSemEventos;
+
+  /// No description provided for @avaliacaoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estás a gostar do CuidarPT?'**
+  String get avaliacaoTitulo;
+
+  /// No description provided for @avaliacaoDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se o CuidarPT te está a ajudar a cuidar de quem mais precisa, uma avaliação na loja ajuda outras famílias a encontrarem a app.'**
+  String get avaliacaoDescricao;
+
+  /// No description provided for @avaliacaoAgoraNao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agora não'**
+  String get avaliacaoAgoraNao;
+
+  /// No description provided for @avaliacaoAvaliar.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avaliar a app'**
+  String get avaliacaoAvaliar;
+
+  /// No description provided for @freqCardiacaTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medir frequência cardíaca'**
+  String get freqCardiacaTitulo;
+
+  /// No description provided for @freqCardiacaErroGenerico.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ocorreu um erro.'**
+  String get freqCardiacaErroGenerico;
+
+  /// No description provided for @freqCardiacaComoMedir.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como medir'**
+  String get freqCardiacaComoMedir;
+
+  /// No description provided for @freqCardiacaInstrucoesIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na parte de trás do telemóvel, a lente da câmara e o pequeno LED do flash ficam normalmente muito próximos um do outro, junto ao canto superior. Precisas de tapar os dois ao mesmo tempo:'**
+  String get freqCardiacaInstrucoesIntro;
+
+  /// No description provided for @freqCardiacaPasso1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Liga o flash: acende-se sozinho quando a medição começa.'**
+  String get freqCardiacaPasso1;
+
+  /// No description provided for @freqCardiacaPasso2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Coloca a ponta de um dedo (não a unha) a tapar completamente a lente da câmara e o flash ao mesmo tempo.'**
+  String get freqCardiacaPasso2;
+
+  /// No description provided for @freqCardiacaPasso3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Faz um pouco de pressão — o suficiente para não entrar luz pelas bordas, mas sem apertar com força.'**
+  String get freqCardiacaPasso3;
+
+  /// No description provided for @freqCardiacaPasso4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mantém o dedo completamente parado até à medição terminar (~12 segundos).'**
+  String get freqCardiacaPasso4;
+
+  /// No description provided for @freqCardiacaAvisoNaoMedico.
+  ///
+  /// In pt, this message translates to:
+  /// **'A app não é um dispositivo médico — o valor é apenas informativo.'**
+  String get freqCardiacaAvisoNaoMedico;
+
+  /// No description provided for @freqCardiacaDicasTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se falhar muitas vezes, tenta isto:'**
+  String get freqCardiacaDicasTitulo;
+
+  /// No description provided for @freqCardiacaDicasTexto.
+  ///
+  /// In pt, this message translates to:
+  /// **'• Confirma que estás a tapar a câmara E o flash, não só um dos dois.\n• Não apertes com força — cortar a circulação piora a leitura.\n• Encosta o cotovelo a algo estável para o dedo não tremer.\n• Limpa a lente se tiver dedadas ou sujidade.\n• Tira uma capa muito grossa que tape mal o flash.'**
+  String get freqCardiacaDicasTexto;
+
+  /// No description provided for @freqCardiacaAMedir.
+  ///
+  /// In pt, this message translates to:
+  /// **'A medir... mantém o dedo parado, a tapar bem a câmara e o flash.'**
+  String get freqCardiacaAMedir;
+
+  /// No description provided for @freqCardiacaResultadoTitulo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Frequência cardíaca'**
+  String get freqCardiacaResultadoTitulo;
+
+  /// No description provided for @freqCardiacaAvisoResultado.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este valor é apenas informativo e não é um diagnóstico. Em caso de dúvida ou sintomas, consulta um profissional de saúde.'**
+  String get freqCardiacaAvisoResultado;
+
+  /// No description provided for @freqCardiacaUsarValor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usar este valor'**
+  String get freqCardiacaUsarValor;
+
+  /// No description provided for @freqCardiacaMedirNovamente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Medir novamente'**
+  String get freqCardiacaMedirNovamente;
+
+  /// No description provided for @freqCardiacaTentarNovamente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tentar novamente'**
+  String get freqCardiacaTentarNovamente;
+
+  /// No description provided for @faixaBaixa.
+  ///
+  /// In pt, this message translates to:
+  /// **'Baixa'**
+  String get faixaBaixa;
+
+  /// No description provided for @faixaNormal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Normal'**
+  String get faixaNormal;
+
+  /// No description provided for @faixaElevada.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elevada'**
+  String get faixaElevada;
 }
 
 class _AppLocalizationsDelegate

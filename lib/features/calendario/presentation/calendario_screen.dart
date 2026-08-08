@@ -24,12 +24,12 @@ class CalendarioScreen extends ConsumerStatefulWidget {
   ConsumerState<CalendarioScreen> createState() => _CalendarioScreenState();
 }
 
-const _rotulosFiltro = {
-  TipoEventoCalendario.medicacao: 'Medicação',
-  TipoEventoCalendario.consulta: 'Consultas',
-  TipoEventoCalendario.tratamento: 'Tratamentos',
-  TipoEventoCalendario.cuidado: 'Cuidados diários',
-};
+Map<TipoEventoCalendario, String> _rotulosFiltro(AppLocalizations l10n) => {
+      TipoEventoCalendario.medicacao: l10n.homeAcaoMedicacao,
+      TipoEventoCalendario.consulta: l10n.calendarioFiltroConsultas,
+      TipoEventoCalendario.tratamento: l10n.calendarioFiltroTratamentos,
+      TipoEventoCalendario.cuidado: l10n.calendarioFiltroCuidados,
+    };
 
 class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
   DateTime _focusedDay = DateTime.now();
@@ -65,8 +65,14 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
       );
     }
 
+    final tableCalendarLocale = switch (l10n.localeName) {
+      'en' => 'en_US',
+      'es' => 'es_ES',
+      _ => 'pt_PT',
+    };
+
     return Scaffold(
-      appBar: AppBar(title: Text('Calendário · ${widget.idoso.nome}')),
+      appBar: AppBar(title: Text(l10n.calendarioTitulo(widget.idoso.nome))),
       body: Column(
         children: [
           Padding(
@@ -76,7 +82,7 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
               children: [
                 for (final tipo in TipoEventoCalendario.values)
                   FilterChip(
-                    label: Text(_rotulosFiltro[tipo]!),
+                    label: Text(_rotulosFiltro(l10n)[tipo]!),
                     selected: _filtro.contains(tipo),
                     onSelected: (_) => _alternarFiltro(tipo),
                   ),
@@ -84,12 +90,12 @@ class _CalendarioScreenState extends ConsumerState<CalendarioScreen> {
             ),
           ),
           TableCalendar<EventoCalendario>(
-            locale: 'pt_PT',
+            locale: tableCalendarLocale,
             firstDay: DateTime(2000),
             lastDay: DateTime(DateTime.now().year + 5),
             focusedDay: _focusedDay,
             calendarFormat: CalendarFormat.month,
-            availableCalendarFormats: const {CalendarFormat.month: 'Mês'},
+            availableCalendarFormats: {CalendarFormat.month: l10n.calendarioMesFormato},
             startingDayOfWeek: StartingDayOfWeek.monday,
             selectedDayPredicate: (dia) => _mesmoDia(dia, _selectedDay),
             eventLoader: (dia) => _filtrar(
@@ -199,7 +205,7 @@ class _ListaEventosDia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (eventos.isEmpty) {
-      return const Center(child: Text('Sem eventos neste dia.'));
+      return Center(child: Text(AppLocalizations.of(context).calendarioSemEventos));
     }
     return ListView.builder(
       itemCount: eventos.length,

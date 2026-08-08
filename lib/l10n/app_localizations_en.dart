@@ -1062,4 +1062,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get relatorioPdfColunaFreqCardiaca => 'Heart rate';
+
+  @override
+  String calendarioTitulo(String nome) {
+    return 'Calendar · $nome';
+  }
+
+  @override
+  String get calendarioFiltroConsultas => 'Appointments';
+
+  @override
+  String get calendarioFiltroTratamentos => 'Treatments';
+
+  @override
+  String get calendarioFiltroCuidados => 'Daily care';
+
+  @override
+  String get calendarioMesFormato => 'Month';
+
+  @override
+  String get calendarioSemEventos => 'No events on this day.';
+
+  @override
+  String get avaliacaoTitulo => 'Are you enjoying CuidarPT?';
+
+  @override
+  String get avaliacaoDescricao =>
+      'If CuidarPT is helping you care for someone who needs it, a store review helps other families find the app.';
+
+  @override
+  String get avaliacaoAgoraNao => 'Not now';
+
+  @override
+  String get avaliacaoAvaliar => 'Rate the app';
+
+  @override
+  String get freqCardiacaTitulo => 'Measure heart rate';
+
+  @override
+  String get freqCardiacaErroGenerico => 'An error occurred.';
+
+  @override
+  String get freqCardiacaComoMedir => 'How to measure';
+
+  @override
+  String get freqCardiacaInstrucoesIntro =>
+      'On the back of your phone, the camera lens and the small flash LED are usually very close to each other, near the top corner. You need to cover both at the same time:';
+
+  @override
+  String get freqCardiacaPasso1 =>
+      'Turn on the flash: it lights up on its own when the measurement starts.';
+
+  @override
+  String get freqCardiacaPasso2 =>
+      'Place the tip of a finger (not the nail) to fully cover the camera lens and the flash at the same time.';
+
+  @override
+  String get freqCardiacaPasso3 =>
+      'Press lightly — enough that no light gets in from the edges, but without squeezing hard.';
+
+  @override
+  String get freqCardiacaPasso4 =>
+      'Keep your finger completely still until the measurement finishes (~12 seconds).';
+
+  @override
+  String get freqCardiacaAvisoNaoMedico =>
+      'The app is not a medical device — the value is for information only.';
+
+  @override
+  String get freqCardiacaDicasTitulo => 'If it keeps failing, try this:';
+
+  @override
+  String get freqCardiacaDicasTexto =>
+      '• Make sure you\'re covering the camera AND the flash, not just one of them.\n• Don\'t press hard — cutting off circulation makes the reading worse.\n• Rest your elbow on something stable so your finger doesn\'t shake.\n• Clean the lens if it has fingerprints or dirt.\n• Remove a very thick case that covers the flash poorly.';
+
+  @override
+  String get freqCardiacaAMedir =>
+      'Measuring... keep your finger still, covering the camera and flash well.';
+
+  @override
+  String get freqCardiacaResultadoTitulo => 'Heart rate';
+
+  @override
+  String get freqCardiacaAvisoResultado =>
+      'This value is for information only and is not a diagnosis. If in doubt or you have symptoms, consult a health professional.';
+
+  @override
+  String get freqCardiacaUsarValor => 'Use this value';
+
+  @override
+  String get freqCardiacaMedirNovamente => 'Measure again';
+
+  @override
+  String get freqCardiacaTentarNovamente => 'Try again';
+
+  @override
+  String get faixaBaixa => 'Low';
+
+  @override
+  String get faixaNormal => 'Normal';
+
+  @override
+  String get faixaElevada => 'High';
 }

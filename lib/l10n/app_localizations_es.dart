@@ -1068,4 +1068,106 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get relatorioPdfColunaFreqCardiaca => 'Frec. cardíaca';
+
+  @override
+  String calendarioTitulo(String nome) {
+    return 'Calendario · $nome';
+  }
+
+  @override
+  String get calendarioFiltroConsultas => 'Citas';
+
+  @override
+  String get calendarioFiltroTratamentos => 'Tratamientos';
+
+  @override
+  String get calendarioFiltroCuidados => 'Cuidados diarios';
+
+  @override
+  String get calendarioMesFormato => 'Mes';
+
+  @override
+  String get calendarioSemEventos => 'Sin eventos en este día.';
+
+  @override
+  String get avaliacaoTitulo => '¿Te está gustando CuidarPT?';
+
+  @override
+  String get avaliacaoDescricao =>
+      'Si CuidarPT te está ayudando a cuidar de quien más lo necesita, una reseña en la tienda ayuda a otras familias a encontrar la app.';
+
+  @override
+  String get avaliacaoAgoraNao => 'Ahora no';
+
+  @override
+  String get avaliacaoAvaliar => 'Valorar la app';
+
+  @override
+  String get freqCardiacaTitulo => 'Medir frecuencia cardíaca';
+
+  @override
+  String get freqCardiacaErroGenerico => 'Se produjo un error.';
+
+  @override
+  String get freqCardiacaComoMedir => 'Cómo medir';
+
+  @override
+  String get freqCardiacaInstrucoesIntro =>
+      'En la parte trasera del móvil, la lente de la cámara y el pequeño LED del flash suelen estar muy cerca uno del otro, junto a la esquina superior. Necesitas tapar ambos a la vez:';
+
+  @override
+  String get freqCardiacaPasso1 =>
+      'Enciende el flash: se enciende solo cuando empieza la medición.';
+
+  @override
+  String get freqCardiacaPasso2 =>
+      'Coloca la yema de un dedo (no la uña) tapando completamente la lente de la cámara y el flash a la vez.';
+
+  @override
+  String get freqCardiacaPasso3 =>
+      'Haz un poco de presión, la suficiente para que no entre luz por los bordes, pero sin apretar con fuerza.';
+
+  @override
+  String get freqCardiacaPasso4 =>
+      'Mantén el dedo completamente quieto hasta que termine la medición (~12 segundos).';
+
+  @override
+  String get freqCardiacaAvisoNaoMedico =>
+      'La app no es un dispositivo médico: el valor es solo informativo.';
+
+  @override
+  String get freqCardiacaDicasTitulo => 'Si falla muchas veces, prueba esto:';
+
+  @override
+  String get freqCardiacaDicasTexto =>
+      '• Confirma que estás tapando la cámara Y el flash, no solo uno de ellos.\n• No aprietes con fuerza: cortar la circulación empeora la lectura.\n• Apoya el codo en algo estable para que el dedo no tiemble.\n• Limpia la lente si tiene huellas o suciedad.\n• Quita una funda muy gruesa que tape mal el flash.';
+
+  @override
+  String get freqCardiacaAMedir =>
+      'Midiendo... mantén el dedo quieto, tapando bien la cámara y el flash.';
+
+  @override
+  String get freqCardiacaResultadoTitulo => 'Frecuencia cardíaca';
+
+  @override
+  String get freqCardiacaAvisoResultado =>
+      'Este valor es solo informativo y no es un diagnóstico. Si tienes dudas o síntomas, consulta a un profesional de la salud.';
+
+  @override
+  String get freqCardiacaUsarValor => 'Usar este valor';
+
+  @override
+  String get freqCardiacaMedirNovamente => 'Medir de nuevo';
+
+  @override
+  String get freqCardiacaTentarNovamente => 'Intentar de nuevo';
+
+  @override
+  String get faixaBaixa => 'Baja';
+
+  @override
+  String get faixaNormal => 'Normal';
+
+  @override
+  String get faixaElevada => 'Alta';
 }

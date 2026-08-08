@@ -1,5 +1,8 @@
 import 'package:cuidarpt/features/frequencia_cardiaca/services/faixa_frequencia_cardiaca.dart';
+import 'package:cuidarpt/l10n/app_localizations_pt.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+final _l10n = AppLocalizationsPt();
 
 void main() {
   group('calcularIdadeAnos', () {
@@ -35,9 +38,9 @@ void main() {
 
   group('labelFaixaFrequenciaCardiaca', () {
     test('devolve o rótulo certo para cada faixa', () {
-      expect(labelFaixaFrequenciaCardiaca(FaixaFrequenciaCardiaca.baixa), 'Baixa');
-      expect(labelFaixaFrequenciaCardiaca(FaixaFrequenciaCardiaca.normal), 'Normal');
-      expect(labelFaixaFrequenciaCardiaca(FaixaFrequenciaCardiaca.elevada), 'Elevada');
+      expect(labelFaixaFrequenciaCardiaca(_l10n, FaixaFrequenciaCardiaca.baixa), 'Baixa');
+      expect(labelFaixaFrequenciaCardiaca(_l10n, FaixaFrequenciaCardiaca.normal), 'Normal');
+      expect(labelFaixaFrequenciaCardiaca(_l10n, FaixaFrequenciaCardiaca.elevada), 'Elevada');
     });
   });
 }

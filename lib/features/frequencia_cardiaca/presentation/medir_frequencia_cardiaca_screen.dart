@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models/idoso.dart';
+import '../../../l10n/app_localizations.dart';
 import '../services/faixa_frequencia_cardiaca.dart';
 import '../services/medicao_ppg_camera.dart';
 import '../services/processador_ppg.dart';
@@ -52,7 +53,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Medir frequência cardíaca')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).freqCardiacaTitulo)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Center(child: _conteudo(context)),
@@ -61,6 +62,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
   }
 
   Widget _conteudo(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     switch (_resultado.status) {
       case StatusPpg.semDedo:
         return _aguardandoDedo(context);
@@ -69,11 +71,12 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
       case StatusPpg.concluido:
         return _resultadoWidget(context);
       case StatusPpg.erro:
-        return _erroWidget(context, _resultado.mensagemErro ?? 'Ocorreu um erro.');
+        return _erroWidget(context, _resultado.mensagemErro ?? l10n.freqCardiacaErroGenerico);
     }
   }
 
   Widget _aguardandoDedo(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -81,39 +84,27 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
           Icon(Icons.touch_app_outlined, size: 80, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 16),
           Text(
-            'Como medir',
+            l10n.freqCardiacaComoMedir,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Na parte de trás do telemóvel, a lente da câmara e o pequeno LED do '
-              'flash ficam normalmente muito próximos um do outro, junto ao canto '
-              'superior. Precisas de tapar os dois ao mesmo tempo:',
+              l10n.freqCardiacaInstrucoesIntro,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           const SizedBox(height: 12),
-          _passo(context, '1', 'Liga o flash: acende-se sozinho quando a medição começa.'),
-          _passo(
-            context,
-            '2',
-            'Coloca a ponta de um dedo (não a unha) a tapar completamente a lente '
-                'da câmara e o flash ao mesmo tempo.',
-          ),
-          _passo(
-            context,
-            '3',
-            'Faz um pouco de pressão — o suficiente para não entrar luz pelas '
-                'bordas, mas sem apertar com força.',
-          ),
-          _passo(context, '4', 'Mantém o dedo completamente parado até à medição terminar (~12 segundos).'),
+          _passo(context, '1', l10n.freqCardiacaPasso1),
+          _passo(context, '2', l10n.freqCardiacaPasso2),
+          _passo(context, '3', l10n.freqCardiacaPasso3),
+          _passo(context, '4', l10n.freqCardiacaPasso4),
           const SizedBox(height: 20),
           _cartaoDicas(context),
           const SizedBox(height: 16),
           Text(
-            'A app não é um dispositivo médico — o valor é apenas informativo.',
+            l10n.freqCardiacaAvisoNaoMedico,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -148,6 +139,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
   }
 
   Widget _cartaoDicas(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
       child: Padding(
@@ -160,18 +152,14 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
                 Icon(Icons.lightbulb_outline, size: 18, color: Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 8),
                 Text(
-                  'Se falhar muitas vezes, tenta isto:',
+                  l10n.freqCardiacaDicasTitulo,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             const SizedBox(height: 6),
             Text(
-              '• Confirma que estás a tapar a câmara E o flash, não só um dos dois.\n'
-              '• Não apertes com força — cortar a circulação piora a leitura.\n'
-              '• Encosta o cotovelo a algo estável para o dedo não tremer.\n'
-              '• Limpa a lente se tiver dedadas ou sujidade.\n'
-              '• Tira uma capa muito grossa que tape mal o flash.',
+              l10n.freqCardiacaDicasTexto,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -197,7 +185,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
         ),
         const SizedBox(height: 24),
         Text(
-          'A medir... mantém o dedo parado, a tapar bem a câmara e o flash.',
+          AppLocalizations.of(context).freqCardiacaAMedir,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
@@ -206,6 +194,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
   }
 
   Widget _resultadoWidget(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final bpm = _resultado.bpm!;
     final dataNascimento = widget.idoso.dataNascimento;
     final idade = dataNascimento != null ? calcularIdadeAnos(dataNascimento) : null;
@@ -219,7 +208,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('Frequência cardíaca', style: Theme.of(context).textTheme.titleMedium),
+        Text(l10n.freqCardiacaResultadoTitulo, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
         Text(
           '$bpm BPM',
@@ -228,15 +217,14 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
         const SizedBox(height: 8),
         Chip(
           label: Text(
-            labelFaixaFrequenciaCardiaca(faixa),
+            labelFaixaFrequenciaCardiaca(l10n, faixa),
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: cor,
         ),
         const SizedBox(height: 16),
         Text(
-          'Este valor é apenas informativo e não é um diagnóstico. Em caso de dúvida '
-          'ou sintomas, consulta um profissional de saúde.',
+          l10n.freqCardiacaAvisoResultado,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodySmall,
         ),
@@ -244,12 +232,12 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
         FilledButton.icon(
           onPressed: () => Navigator.of(context).pop(bpm),
           icon: const Icon(Icons.check),
-          label: const Text('Usar este valor'),
+          label: Text(l10n.freqCardiacaUsarValor),
         ),
         const SizedBox(height: 8),
         TextButton(
           onPressed: _reiniciar,
-          child: const Text('Medir novamente'),
+          child: Text(l10n.freqCardiacaMedirNovamente),
         ),
       ],
     );
@@ -269,7 +257,7 @@ class _MedirFrequenciaCardiacaScreenState extends State<MedirFrequenciaCardiacaS
           FilledButton.icon(
             onPressed: _reiniciar,
             icon: const Icon(Icons.refresh),
-            label: const Text('Tentar novamente'),
+            label: Text(AppLocalizations.of(context).freqCardiacaTentarNovamente),
           ),
         ],
       ),

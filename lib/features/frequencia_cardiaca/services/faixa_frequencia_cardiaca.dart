@@ -1,3 +1,5 @@
+import '../../../l10n/app_localizations.dart';
+
 /// Classificação do valor de BPM medido, para dar uma indicação visual
 /// rápida (Normal/Baixa/Elevada) — não é um diagnóstico.
 enum FaixaFrequenciaCardiaca { baixa, normal, elevada }
@@ -31,10 +33,10 @@ FaixaFrequenciaCardiaca classificarFrequenciaCardiaca(int bpm, {int? idadeAnos})
   return (minimo: 60, maximo: 100);
 }
 
-String labelFaixaFrequenciaCardiaca(FaixaFrequenciaCardiaca faixa) {
+String labelFaixaFrequenciaCardiaca(AppLocalizations l10n, FaixaFrequenciaCardiaca faixa) {
   return switch (faixa) {
-    FaixaFrequenciaCardiaca.baixa => 'Baixa',
-    FaixaFrequenciaCardiaca.normal => 'Normal',
-    FaixaFrequenciaCardiaca.elevada => 'Elevada',
+    FaixaFrequenciaCardiaca.baixa => l10n.faixaBaixa,
+    FaixaFrequenciaCardiaca.normal => l10n.faixaNormal,
+    FaixaFrequenciaCardiaca.elevada => l10n.faixaElevada,
   };
 }
