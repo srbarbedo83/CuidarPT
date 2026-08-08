@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/models/idoso.dart';
 import '../../../data/models/info_profissional.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/consulta_providers.dart';
 import '../providers/info_profissional_providers.dart';
 import '../services/profissionais.dart';
@@ -19,6 +20,7 @@ class ProfissionaisScreen extends ConsumerWidget {
   final Idoso idoso;
 
   Future<void> _editar(BuildContext context, WidgetRef ref, Profissional profissional) async {
+    final l10n = AppLocalizations.of(context);
     final especialidadeController = TextEditingController(text: profissional.especialidadeManual ?? '');
     final instituicaoController = TextEditingController(text: profissional.instituicao ?? '');
     final contactoController = TextEditingController(text: profissional.contacto ?? '');
@@ -34,37 +36,37 @@ class ProfissionaisScreen extends ConsumerWidget {
             children: [
               TextField(
                 controller: especialidadeController,
-                decoration: const InputDecoration(
-                  labelText: 'Especialidade',
-                  hintText: 'Ex.: Cardiologia',
+                decoration: InputDecoration(
+                  labelText: l10n.profissionaisEspecialidadeLabel,
+                  hintText: l10n.profissionaisEspecialidadeHint,
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: instituicaoController,
-                decoration: const InputDecoration(
-                  labelText: 'Instituição',
-                  hintText: 'Ex.: Hospital, clínica, farmácia',
+                decoration: InputDecoration(
+                  labelText: l10n.profissionaisInstituicao,
+                  hintText: l10n.profissionaisInstituicaoHint,
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: contactoController,
-                decoration: const InputDecoration(labelText: 'Contacto'),
+                decoration: InputDecoration(labelText: l10n.profissionaisContacto),
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: notasController,
-                decoration: const InputDecoration(labelText: 'Notas'),
+                decoration: InputDecoration(labelText: l10n.sinaisVitaisFormNotas),
                 maxLines: 3,
               ),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
-          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Guardar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.comumCancelar)),
+          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.comumGuardar)),
         ],
       ),
     );
@@ -88,20 +90,19 @@ class ProfissionaisScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final consultas = ref.watch(consultaListProvider(idoso.id)).valueOrNull ?? const [];
     final infos = ref.watch(infoProfissionalListProvider(idoso.id)).valueOrNull ?? const [];
     final profissionais = profissionaisDoIdoso(consultas, infos: infos);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profissionais')),
+      appBar: AppBar(title: Text(l10n.idosoDetailProfissionais)),
       body: profissionais.isEmpty
-          ? const Center(
+          ? Center(
               child: Padding(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Ainda não há profissionais registados. Ficam aqui automaticamente '
-                  'à medida que preenches o nome do médico/profissional numa consulta '
-                  'ou tratamento.',
+                  l10n.profissionaisVazio,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -129,7 +130,7 @@ class ProfissionaisScreen extends ConsumerWidget {
                         if (profissional.contacto != null && profissional.contacto!.isNotEmpty)
                           IconButton(
                             icon: const Icon(Icons.phone_outlined),
-                            tooltip: 'Ligar',
+                            tooltip: l10n.profissionaisLigarTooltip,
                             onPressed: () =>
                                 launchUrl(Uri(scheme: 'tel', path: profissional.contacto)),
                           ),

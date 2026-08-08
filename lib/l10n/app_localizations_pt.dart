@@ -758,4 +758,126 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get medicacaoFormLembretesDescricao =>
       'Desliga para pausar sem apagar o registo';
+
+  @override
+  String get consultaFormEditarTratamento => 'Editar tratamento';
+
+  @override
+  String get consultaFormEditarConsulta => 'Editar consulta';
+
+  @override
+  String get consultaFormNovoTratamento => 'Novo tratamento';
+
+  @override
+  String get consultaFormNovaConsulta => 'Nova consulta';
+
+  @override
+  String get consultaFormDataConsulta => 'Data da consulta';
+
+  @override
+  String get consultaFormHoraConsulta => 'Hora da consulta';
+
+  @override
+  String get consultaFormTipoConsultaMedica => 'Consulta médica';
+
+  @override
+  String get consultaFormTipoTratamento => 'Tratamento';
+
+  @override
+  String get consultaFormTipoTratamentoLabel => 'Tipo de tratamento *';
+
+  @override
+  String get consultaFormEspecialidadeLabel => 'Especialidade *';
+
+  @override
+  String get consultaFormTipoTratamentoHint => 'Ex.: Fisioterapia, Enfermagem';
+
+  @override
+  String get consultaFormEspecialidadeHint => 'Ex.: Clínica geral, Cardiologia';
+
+  @override
+  String get consultaFormTipoTratamentoErro => 'Indica o tipo de tratamento';
+
+  @override
+  String get consultaFormEspecialidadeErro => 'Indica a especialidade';
+
+  @override
+  String get consultaFormLocal => 'Local';
+
+  @override
+  String get consultaFormLocalHint =>
+      'Ex.: Centro de Saúde, Hospital, Clínica privada';
+
+  @override
+  String get consultaFormProfissional => 'Profissional';
+
+  @override
+  String get consultaFormNomeMedico => 'Nome do médico';
+
+  @override
+  String get consultaFormProfissionalHint => 'Ex.: Enf. Maria Santos';
+
+  @override
+  String get consultaFormNomeMedicoHint => 'Ex.: Dr. António Silva';
+
+  @override
+  String get consultaFormTratamentoRecorrente => 'Tratamento recorrente';
+
+  @override
+  String get consultaFormTratamentoRecorrenteDescricao =>
+      'Repete-se diariamente ou em dias específicos da semana';
+
+  @override
+  String get consultaFormDataHoraInicio => 'Data e hora de início';
+
+  @override
+  String get consultaFormDataHora => 'Data e hora';
+
+  @override
+  String get consultaFormDiasSemanaDescricao =>
+      'Não escolhas nenhum para repetir todos os dias.';
+
+  @override
+  String get consultaFormProximoTratamento => 'Próximo tratamento (opcional)';
+
+  @override
+  String get consultaFormProximaConsultaOpcional =>
+      'Próxima consulta (opcional)';
+
+  @override
+  String get consultaFormLembreteAtivo => 'Lembrete ativo';
+
+  @override
+  String get consultaFormLembreteRecorrente =>
+      'Avisa todos os dias (ou nos dias escolhidos) à hora definida';
+
+  @override
+  String get consultaFormLembreteTratamento =>
+      'Avisa antes do tratamento e do próximo, se forem futuros';
+
+  @override
+  String get consultaFormLembreteConsulta =>
+      'Avisa antes da consulta e da próxima consulta, se forem futuras';
+
+  @override
+  String get profissionaisEspecialidadeLabel => 'Especialidade';
+
+  @override
+  String get profissionaisEspecialidadeHint => 'Ex.: Cardiologia';
+
+  @override
+  String get profissionaisInstituicao => 'Instituição';
+
+  @override
+  String get profissionaisInstituicaoHint => 'Ex.: Hospital, clínica, farmácia';
+
+  @override
+  String get profissionaisContacto => 'Contacto';
+
+  @override
+  String get profissionaisVazio =>
+      'Ainda não há profissionais registados. Ficam aqui automaticamente à medida que preenches o nome do médico/profissional numa consulta ou tratamento.';
+
+  @override
+  String get profissionaisLigarTooltip => 'Ligar';
 }

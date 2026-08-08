@@ -66,19 +66,20 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   }
 
   Future<void> _escolherDataHora() async {
+    final l10n = AppLocalizations.of(context);
     final data = await showDatePicker(
       context: context,
       initialDate: _dataHora,
       firstDate: DateTime(2000),
       lastDate: DateTime(DateTime.now().year + 5),
-      helpText: 'Data da consulta',
+      helpText: l10n.consultaFormDataConsulta,
     );
     if (data == null || !mounted) return;
 
     final hora = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_dataHora),
-      helpText: 'Hora da consulta',
+      helpText: l10n.consultaFormHoraConsulta,
     );
     if (hora == null) return;
 
@@ -94,13 +95,14 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   }
 
   Future<void> _escolherProximaConsulta() async {
+    final l10n = AppLocalizations.of(context);
     final agora = DateTime.now();
     final escolhida = await showDatePicker(
       context: context,
       initialDate: _proximaConsultaData ?? agora,
       firstDate: DateTime(2000),
       lastDate: DateTime(agora.year + 5),
-      helpText: 'Próxima consulta',
+      helpText: l10n.idosoDetailProximaConsulta,
     );
     if (escolhida != null) {
       setState(() => _proximaConsultaData = escolhida);
@@ -145,8 +147,8 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final tituloEcra = _aEditar
-        ? (_ehTratamento ? 'Editar tratamento' : 'Editar consulta')
-        : (_ehTratamento ? 'Novo tratamento' : 'Nova consulta');
+        ? (_ehTratamento ? l10n.consultaFormEditarTratamento : l10n.consultaFormEditarConsulta)
+        : (_ehTratamento ? l10n.consultaFormNovoTratamento : l10n.consultaFormNovaConsulta);
     final opcoesEspecialidade = _ehTratamento ? tratamentosComuns : especialidadesComuns;
     final consultasDoIdoso = ref.watch(consultaListProvider(widget.idoso.id)).valueOrNull ?? const [];
     final nomesProfissionais = profissionaisDoIdoso(consultasDoIdoso).map((p) => p.nome).toList();
@@ -159,9 +161,12 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
           padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
             SegmentedButton<TipoRegistoConsulta>(
-              segments: const [
-                ButtonSegment(value: TipoRegistoConsulta.consulta, label: Text('Consulta médica')),
-                ButtonSegment(value: TipoRegistoConsulta.tratamento, label: Text('Tratamento')),
+              segments: [
+                ButtonSegment(
+                  value: TipoRegistoConsulta.consulta,
+                  label: Text(l10n.consultaFormTipoConsultaMedica),
+                ),
+                ButtonSegment(value: TipoRegistoConsulta.tratamento, label: Text(l10n.consultaFormTipoTratamento)),
               ],
               selected: {_tipo},
               onSelectionChanged: (selecao) => setState(() => _tipo = selecao.first),
@@ -182,15 +187,13 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                   controller: controller,
                   focusNode: focusNode,
                   decoration: InputDecoration(
-                    labelText: _ehTratamento ? 'Tipo de tratamento *' : 'Especialidade *',
-                    hintText: _ehTratamento
-                        ? 'Ex.: Fisioterapia, Enfermagem'
-                        : 'Ex.: Clínica geral, Cardiologia',
+                    labelText: _ehTratamento ? l10n.consultaFormTipoTratamentoLabel : l10n.consultaFormEspecialidadeLabel,
+                    hintText: _ehTratamento ? l10n.consultaFormTipoTratamentoHint : l10n.consultaFormEspecialidadeHint,
                   ),
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (valor) => _especialidade = valor,
                   validator: (valor) => (valor == null || valor.trim().isEmpty)
-                      ? (_ehTratamento ? 'Indica o tipo de tratamento' : 'Indica a especialidade')
+                      ? (_ehTratamento ? l10n.consultaFormTipoTratamentoErro : l10n.consultaFormEspecialidadeErro)
                       : null,
                 );
               },
@@ -208,9 +211,9 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                 return TextFormField(
                   controller: controller,
                   focusNode: focusNode,
-                  decoration: const InputDecoration(
-                    labelText: 'Local',
-                    hintText: 'Ex.: Centro de Saúde, Hospital, Clínica privada',
+                  decoration: InputDecoration(
+                    labelText: l10n.consultaFormLocal,
+                    hintText: l10n.consultaFormLocalHint,
                   ),
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (valor) => _local = valor,
@@ -232,8 +235,8 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                   controller: controller,
                   focusNode: focusNode,
                   decoration: InputDecoration(
-                    labelText: _ehTratamento ? 'Profissional' : 'Nome do médico',
-                    hintText: _ehTratamento ? 'Ex.: Enf. Maria Santos' : 'Ex.: Dr. António Silva',
+                    labelText: _ehTratamento ? l10n.consultaFormProfissional : l10n.consultaFormNomeMedico,
+                    hintText: _ehTratamento ? l10n.consultaFormProfissionalHint : l10n.consultaFormNomeMedicoHint,
                   ),
                   textCapitalization: TextCapitalization.words,
                   onChanged: (valor) => _medico = valor,
@@ -244,24 +247,24 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             if (_ehTratamento)
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Tratamento recorrente'),
-                subtitle: const Text('Repete-se diariamente ou em dias específicos da semana'),
+                title: Text(l10n.consultaFormTratamentoRecorrente),
+                subtitle: Text(l10n.consultaFormTratamentoRecorrenteDescricao),
                 value: _recorrente,
                 onChanged: (valor) => setState(() => _recorrente = valor),
               ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text(_ehTratamento && _recorrente ? 'Data e hora de início' : 'Data e hora'),
+              title: Text(_ehTratamento && _recorrente ? l10n.consultaFormDataHoraInicio : l10n.consultaFormDataHora),
               subtitle: Text(DateFormat('dd/MM/yyyy HH:mm').format(_dataHora)),
               trailing: const Icon(Icons.calendar_today),
               onTap: _escolherDataHora,
             ),
             if (_ehTratamento && _recorrente) ...[
               const SizedBox(height: 16),
-              Text('Dias da semana', style: Theme.of(context).textTheme.titleSmall),
+              Text(l10n.medicacaoFormDiasSemanaTitulo, style: Theme.of(context).textTheme.titleSmall),
               const SizedBox(height: 4),
               Text(
-                'Não escolhas nenhum para repetir todos os dias.',
+                l10n.consultaFormDiasSemanaDescricao,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 8),
@@ -269,7 +272,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                 spacing: 8,
                 children: [
                   FilterChip(
-                    label: const Text('Todos os dias'),
+                    label: Text(l10n.horariosTodosDias),
                     selected: _diasSemanaRecorrencia.isEmpty,
                     onSelected: (_) => setState(() => _diasSemanaRecorrencia = []),
                   ),
@@ -286,12 +289,13 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
               const SizedBox(height: 16),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title:
-                    Text(_ehTratamento ? 'Próximo tratamento (opcional)' : 'Próxima consulta (opcional)'),
+                title: Text(
+                  _ehTratamento ? l10n.consultaFormProximoTratamento : l10n.consultaFormProximaConsultaOpcional,
+                ),
                 subtitle: Text(
                   _proximaConsultaData != null
                       ? DateFormat('dd/MM/yyyy').format(_proximaConsultaData!)
-                      : 'Sem data definida',
+                      : l10n.medicacaoFormSemDataDefinida,
                 ),
                 trailing: _proximaConsultaData != null
                     ? IconButton(
@@ -305,13 +309,13 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             const SizedBox(height: 16),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Lembrete ativo'),
+              title: Text(l10n.consultaFormLembreteAtivo),
               subtitle: Text(
                 _ehTratamento && _recorrente
-                    ? 'Avisa todos os dias (ou nos dias escolhidos) à hora definida'
+                    ? l10n.consultaFormLembreteRecorrente
                     : _ehTratamento
-                        ? 'Avisa antes do tratamento e do próximo, se forem futuros'
-                        : 'Avisa antes da consulta e da próxima consulta, se forem futuras',
+                        ? l10n.consultaFormLembreteTratamento
+                        : l10n.consultaFormLembreteConsulta,
               ),
               value: _lembreteAtivo,
               onChanged: (valor) => setState(() => _lembreteAtivo = valor),
@@ -319,7 +323,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
             const SizedBox(height: 8),
             TextFormField(
               controller: _notasController,
-              decoration: const InputDecoration(labelText: 'Notas'),
+              decoration: InputDecoration(labelText: l10n.sinaisVitaisFormNotas),
               maxLines: 3,
             ),
             const SizedBox(height: 24),
@@ -331,7 +335,7 @@ class _ConsultaFormScreenState extends ConsumerState<ConsultaFormScreen> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Guardar'),
+                  : Text(l10n.comumGuardar),
             ),
           ],
         ),

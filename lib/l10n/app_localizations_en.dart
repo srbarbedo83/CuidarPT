@@ -755,4 +755,127 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get medicacaoFormLembretesDescricao =>
       'Turn off to pause without deleting the record';
+
+  @override
+  String get consultaFormEditarTratamento => 'Edit treatment';
+
+  @override
+  String get consultaFormEditarConsulta => 'Edit appointment';
+
+  @override
+  String get consultaFormNovoTratamento => 'New treatment';
+
+  @override
+  String get consultaFormNovaConsulta => 'New appointment';
+
+  @override
+  String get consultaFormDataConsulta => 'Appointment date';
+
+  @override
+  String get consultaFormHoraConsulta => 'Appointment time';
+
+  @override
+  String get consultaFormTipoConsultaMedica => 'Medical appointment';
+
+  @override
+  String get consultaFormTipoTratamento => 'Treatment';
+
+  @override
+  String get consultaFormTipoTratamentoLabel => 'Treatment type *';
+
+  @override
+  String get consultaFormEspecialidadeLabel => 'Specialty *';
+
+  @override
+  String get consultaFormTipoTratamentoHint => 'E.g.: Physiotherapy, Nursing';
+
+  @override
+  String get consultaFormEspecialidadeHint =>
+      'E.g.: General practice, Cardiology';
+
+  @override
+  String get consultaFormTipoTratamentoErro => 'Enter the treatment type';
+
+  @override
+  String get consultaFormEspecialidadeErro => 'Enter the specialty';
+
+  @override
+  String get consultaFormLocal => 'Location';
+
+  @override
+  String get consultaFormLocalHint =>
+      'E.g.: Health center, Hospital, Private clinic';
+
+  @override
+  String get consultaFormProfissional => 'Professional';
+
+  @override
+  String get consultaFormNomeMedico => 'Doctor\'s name';
+
+  @override
+  String get consultaFormProfissionalHint => 'E.g.: Nurse Mary Smith';
+
+  @override
+  String get consultaFormNomeMedicoHint => 'E.g.: Dr. John Smith';
+
+  @override
+  String get consultaFormTratamentoRecorrente => 'Recurring treatment';
+
+  @override
+  String get consultaFormTratamentoRecorrenteDescricao =>
+      'Repeats daily or on specific days of the week';
+
+  @override
+  String get consultaFormDataHoraInicio => 'Start date and time';
+
+  @override
+  String get consultaFormDataHora => 'Date and time';
+
+  @override
+  String get consultaFormDiasSemanaDescricao =>
+      'Leave none selected to repeat every day.';
+
+  @override
+  String get consultaFormProximoTratamento => 'Next treatment (optional)';
+
+  @override
+  String get consultaFormProximaConsultaOpcional =>
+      'Next appointment (optional)';
+
+  @override
+  String get consultaFormLembreteAtivo => 'Reminder active';
+
+  @override
+  String get consultaFormLembreteRecorrente =>
+      'Notifies every day (or on the chosen days) at the set time';
+
+  @override
+  String get consultaFormLembreteTratamento =>
+      'Notifies before the treatment and the next one, if in the future';
+
+  @override
+  String get consultaFormLembreteConsulta =>
+      'Notifies before the appointment and the next one, if in the future';
+
+  @override
+  String get profissionaisEspecialidadeLabel => 'Specialty';
+
+  @override
+  String get profissionaisEspecialidadeHint => 'E.g.: Cardiology';
+
+  @override
+  String get profissionaisInstituicao => 'Institution';
+
+  @override
+  String get profissionaisInstituicaoHint => 'E.g.: Hospital, clinic, pharmacy';
+
+  @override
+  String get profissionaisContacto => 'Contact';
+
+  @override
+  String get profissionaisVazio =>
+      'No professionals recorded yet. They\'ll appear here automatically as you fill in the doctor\'s/professional\'s name in an appointment or treatment.';
+
+  @override
+  String get profissionaisLigarTooltip => 'Call';
 }

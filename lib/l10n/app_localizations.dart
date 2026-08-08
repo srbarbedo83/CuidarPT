@@ -1389,6 +1389,234 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Desliga para pausar sem apagar o registo'**
   String get medicacaoFormLembretesDescricao;
+
+  /// No description provided for @consultaFormEditarTratamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar tratamento'**
+  String get consultaFormEditarTratamento;
+
+  /// No description provided for @consultaFormEditarConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar consulta'**
+  String get consultaFormEditarConsulta;
+
+  /// No description provided for @consultaFormNovoTratamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo tratamento'**
+  String get consultaFormNovoTratamento;
+
+  /// No description provided for @consultaFormNovaConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova consulta'**
+  String get consultaFormNovaConsulta;
+
+  /// No description provided for @consultaFormDataConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data da consulta'**
+  String get consultaFormDataConsulta;
+
+  /// No description provided for @consultaFormHoraConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hora da consulta'**
+  String get consultaFormHoraConsulta;
+
+  /// No description provided for @consultaFormTipoConsultaMedica.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consulta médica'**
+  String get consultaFormTipoConsultaMedica;
+
+  /// No description provided for @consultaFormTipoTratamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tratamento'**
+  String get consultaFormTipoTratamento;
+
+  /// No description provided for @consultaFormTipoTratamentoLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo de tratamento *'**
+  String get consultaFormTipoTratamentoLabel;
+
+  /// No description provided for @consultaFormEspecialidadeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Especialidade *'**
+  String get consultaFormEspecialidadeLabel;
+
+  /// No description provided for @consultaFormTipoTratamentoHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Fisioterapia, Enfermagem'**
+  String get consultaFormTipoTratamentoHint;
+
+  /// No description provided for @consultaFormEspecialidadeHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Clínica geral, Cardiologia'**
+  String get consultaFormEspecialidadeHint;
+
+  /// No description provided for @consultaFormTipoTratamentoErro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Indica o tipo de tratamento'**
+  String get consultaFormTipoTratamentoErro;
+
+  /// No description provided for @consultaFormEspecialidadeErro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Indica a especialidade'**
+  String get consultaFormEspecialidadeErro;
+
+  /// No description provided for @consultaFormLocal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Local'**
+  String get consultaFormLocal;
+
+  /// No description provided for @consultaFormLocalHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Centro de Saúde, Hospital, Clínica privada'**
+  String get consultaFormLocalHint;
+
+  /// No description provided for @consultaFormProfissional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Profissional'**
+  String get consultaFormProfissional;
+
+  /// No description provided for @consultaFormNomeMedico.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do médico'**
+  String get consultaFormNomeMedico;
+
+  /// No description provided for @consultaFormProfissionalHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Enf. Maria Santos'**
+  String get consultaFormProfissionalHint;
+
+  /// No description provided for @consultaFormNomeMedicoHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Dr. António Silva'**
+  String get consultaFormNomeMedicoHint;
+
+  /// No description provided for @consultaFormTratamentoRecorrente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tratamento recorrente'**
+  String get consultaFormTratamentoRecorrente;
+
+  /// No description provided for @consultaFormTratamentoRecorrenteDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Repete-se diariamente ou em dias específicos da semana'**
+  String get consultaFormTratamentoRecorrenteDescricao;
+
+  /// No description provided for @consultaFormDataHoraInicio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data e hora de início'**
+  String get consultaFormDataHoraInicio;
+
+  /// No description provided for @consultaFormDataHora.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data e hora'**
+  String get consultaFormDataHora;
+
+  /// No description provided for @consultaFormDiasSemanaDescricao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não escolhas nenhum para repetir todos os dias.'**
+  String get consultaFormDiasSemanaDescricao;
+
+  /// No description provided for @consultaFormProximoTratamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próximo tratamento (opcional)'**
+  String get consultaFormProximoTratamento;
+
+  /// No description provided for @consultaFormProximaConsultaOpcional.
+  ///
+  /// In pt, this message translates to:
+  /// **'Próxima consulta (opcional)'**
+  String get consultaFormProximaConsultaOpcional;
+
+  /// No description provided for @consultaFormLembreteAtivo.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lembrete ativo'**
+  String get consultaFormLembreteAtivo;
+
+  /// No description provided for @consultaFormLembreteRecorrente.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisa todos os dias (ou nos dias escolhidos) à hora definida'**
+  String get consultaFormLembreteRecorrente;
+
+  /// No description provided for @consultaFormLembreteTratamento.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisa antes do tratamento e do próximo, se forem futuros'**
+  String get consultaFormLembreteTratamento;
+
+  /// No description provided for @consultaFormLembreteConsulta.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisa antes da consulta e da próxima consulta, se forem futuras'**
+  String get consultaFormLembreteConsulta;
+
+  /// No description provided for @profissionaisEspecialidadeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Especialidade'**
+  String get profissionaisEspecialidadeLabel;
+
+  /// No description provided for @profissionaisEspecialidadeHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Cardiologia'**
+  String get profissionaisEspecialidadeHint;
+
+  /// No description provided for @profissionaisInstituicao.
+  ///
+  /// In pt, this message translates to:
+  /// **'Instituição'**
+  String get profissionaisInstituicao;
+
+  /// No description provided for @profissionaisInstituicaoHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ex.: Hospital, clínica, farmácia'**
+  String get profissionaisInstituicaoHint;
+
+  /// No description provided for @profissionaisContacto.
+  ///
+  /// In pt, this message translates to:
+  /// **'Contacto'**
+  String get profissionaisContacto;
+
+  /// No description provided for @profissionaisVazio.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ainda não há profissionais registados. Ficam aqui automaticamente à medida que preenches o nome do médico/profissional numa consulta ou tratamento.'**
+  String get profissionaisVazio;
+
+  /// No description provided for @profissionaisLigarTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ligar'**
+  String get profissionaisLigarTooltip;
 }
 
 class _AppLocalizationsDelegate
