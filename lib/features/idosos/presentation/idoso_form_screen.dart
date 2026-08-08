@@ -198,191 +198,200 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
         child: ListView(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
           children: [
-            Center(
-              child: GestureDetector(
-                onTap: _escolherFoto,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    CircleAvatar(
-                      radius: 48,
-                      backgroundImage: _fotoPath != null ? FileImage(File(_fotoPath!)) : null,
-                      child: _fotoPath == null ? const Icon(Icons.add_a_photo, size: 32) : null,
-                    ),
-                    if (_mobilidadeReduzida)
-                      Positioned(
-                        right: -4,
-                        bottom: -4,
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: const Icon(Icons.accessible, color: Colors.white, size: 18),
-                        ),
-                      ),
-                    if (_acamado)
-                      Positioned(
-                        left: -4,
-                        bottom: -4,
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: const Icon(Icons.bed, color: Colors.white, size: 18),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              secondary: const Icon(Icons.accessible),
-              title: const Text('Mobilidade reduzida'),
-              value: _mobilidadeReduzida,
-              onChanged: (valor) => setState(() => _mobilidadeReduzida = valor),
-            ),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              secondary: const Icon(Icons.bed_outlined),
-              title: const Text('Acamado'),
-              value: _acamado,
-              onChanged: (valor) => setState(() => _acamado = valor),
-            ),
-            const SizedBox(height: 16),
-            Text('Sexo', style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 8),
-            SegmentedButton<Sexo>(
-              segments: const [
-                ButtonSegment(value: Sexo.masculino, label: Text('Masculino')),
-                ButtonSegment(value: Sexo.feminino, label: Text('Feminino')),
-              ],
-              selected: _sexo == null ? {} : {_sexo!},
-              emptySelectionAllowed: true,
-              onSelectionChanged: (selecao) =>
-                  setState(() => _sexo = selecao.isEmpty ? null : selecao.first),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _nomeController,
-              decoration: const InputDecoration(labelText: 'Nome *'),
-              textCapitalization: TextCapitalization.words,
-              validator: (valor) =>
-                  (valor == null || valor.trim().isEmpty) ? 'Indica o nome do idoso' : null,
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Data de nascimento'),
-              subtitle: Text(
-                _dataNascimento != null
-                    ? DateFormat('dd/MM/yyyy').format(_dataNascimento!)
-                    : 'Não definida',
-              ),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: _escolherDataNascimento,
-            ),
-            const SizedBox(height: 16),
-            Row(
+            _CartaoSeccao(
+              titulo: 'Identificação',
+              icone: Icons.badge_outlined,
               children: [
-                Icon(Icons.emergency_outlined, color: Colors.red.shade700, size: 20),
-                const SizedBox(width: 6),
-                Text(
-                  'Contactos de emergência',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Colors.red.shade700,
-                        fontWeight: FontWeight.bold,
-                      ),
+                Center(
+                  child: GestureDetector(
+                    onTap: _escolherFoto,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundImage: _fotoPath != null ? FileImage(File(_fotoPath!)) : null,
+                          child: _fotoPath == null ? const Icon(Icons.add_a_photo, size: 32) : null,
+                        ),
+                        if (_mobilidadeReduzida)
+                          Positioned(
+                            right: -4,
+                            bottom: -4,
+                            child: CircleAvatar(
+                              radius: 16,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              child: const Icon(Icons.accessible, color: Colors.white, size: 18),
+                            ),
+                          ),
+                        if (_acamado)
+                          Positioned(
+                            left: -4,
+                            bottom: -4,
+                            child: CircleAvatar(
+                              radius: 16,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              child: const Icon(Icons.bed, color: Colors.white, size: 18),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: const Icon(Icons.accessible),
+                  title: const Text('Mobilidade reduzida'),
+                  value: _mobilidadeReduzida,
+                  onChanged: (valor) => setState(() => _mobilidadeReduzida = valor),
+                ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: const Icon(Icons.bed_outlined),
+                  title: const Text('Acamado'),
+                  value: _acamado,
+                  onChanged: (valor) => setState(() => _acamado = valor),
+                ),
+                const SizedBox(height: 16),
+                Text('Sexo', style: Theme.of(context).textTheme.titleSmall),
+                const SizedBox(height: 8),
+                SegmentedButton<Sexo>(
+                  segments: const [
+                    ButtonSegment(value: Sexo.masculino, label: Text('Masculino')),
+                    ButtonSegment(value: Sexo.feminino, label: Text('Feminino')),
+                  ],
+                  selected: _sexo == null ? {} : {_sexo!},
+                  emptySelectionAllowed: true,
+                  onSelectionChanged: (selecao) =>
+                      setState(() => _sexo = selecao.isEmpty ? null : selecao.first),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _nomeController,
+                  decoration: const InputDecoration(labelText: 'Nome *'),
+                  textCapitalization: TextCapitalization.words,
+                  validator: (valor) =>
+                      (valor == null || valor.trim().isEmpty) ? 'Indica o nome do idoso' : null,
+                ),
+                const SizedBox(height: 16),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Data de nascimento'),
+                  subtitle: Text(
+                    _dataNascimento != null
+                        ? DateFormat('dd/MM/yyyy').format(_dataNascimento!)
+                        : 'Não definida',
+                  ),
+                  trailing: const Icon(Icons.calendar_today),
+                  onTap: _escolherDataNascimento,
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            for (var indice = 0; indice < _contactos.length; indice++)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: _contactos[indice].nomeController,
-                            decoration: const InputDecoration(labelText: 'Nome'),
-                            textCapitalization: TextCapitalization.words,
+            const SizedBox(height: 16),
+            _CartaoSeccao(
+              titulo: 'Contactos de emergência',
+              icone: Icons.emergency_outlined,
+              corTitulo: Colors.red.shade700,
+              children: [
+                for (var indice = 0; indice < _contactos.length; indice++)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: _contactos[indice].nomeController,
+                                decoration: const InputDecoration(labelText: 'Nome'),
+                                textCapitalization: TextCapitalization.words,
+                              ),
+                              const SizedBox(height: 8),
+                              TextFormField(
+                                controller: _contactos[indice].telefoneController,
+                                decoration: const InputDecoration(labelText: 'Telefone'),
+                                keyboardType: TextInputType.phone,
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          TextFormField(
-                            controller: _contactos[indice].telefoneController,
-                            decoration: const InputDecoration(labelText: 'Telefone'),
-                            keyboardType: TextInputType.phone,
+                        ),
+                        if (_contactos.length > 1)
+                          IconButton(
+                            icon: const Icon(Icons.remove_circle_outline),
+                            tooltip: 'Remover contacto',
+                            onPressed: () => _removerContacto(indice),
                           ),
-                        ],
-                      ),
+                      ],
                     ),
-                    if (_contactos.length > 1)
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        tooltip: 'Remover contacto',
-                        onPressed: () => _removerContacto(indice),
-                      ),
-                  ],
+                  ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton.icon(
+                    onPressed: _adicionarContacto,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Adicionar contacto'),
+                  ),
                 ),
-              ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                onPressed: _adicionarContacto,
-                icon: const Icon(Icons.add),
-                label: const Text('Adicionar contacto'),
-              ),
+              ],
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _notasController,
-              decoration: const InputDecoration(
-                labelText: 'Notas (alergias, condições de saúde)',
-              ),
-              maxLines: 3,
+            _CartaoSeccao(
+              titulo: 'Saúde',
+              icone: Icons.health_and_safety_outlined,
+              children: [
+                TextFormField(
+                  controller: _notasController,
+                  decoration: const InputDecoration(
+                    labelText: 'Notas (alergias, condições de saúde)',
+                  ),
+                  maxLines: 3,
+                ),
+              ],
             ),
             const SizedBox(height: 16),
-            Text('Preferências e hábitos', style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 8),
-            TextFormField(
-              controller: _comidaPreferidaController,
-              decoration: const InputDecoration(
-                labelText: 'Comida preferida',
-                prefixIcon: Icon(Icons.restaurant_outlined),
-              ),
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _musicaController,
-              decoration: const InputDecoration(
-                labelText: 'Música',
-                prefixIcon: Icon(Icons.music_note_outlined),
-              ),
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _interessesController,
-              decoration: const InputDecoration(
-                labelText: 'Interesses pessoais',
-                prefixIcon: Icon(Icons.interests_outlined),
-              ),
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 8),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Rotina de higiene, alimentação e sono'),
-              subtitle: const Text(
-                'Funcionalidade Premium. Regista itens recorrentes (ex.: banho, '
-                'refeições, sesta) e marca-os como feitos no dia.',
-              ),
-              value: _rotinasAtivas,
-              onChanged: _alternarRotinas,
+            _CartaoSeccao(
+              titulo: 'Preferências e hábitos',
+              icone: Icons.favorite_outline,
+              children: [
+                TextFormField(
+                  controller: _comidaPreferidaController,
+                  decoration: const InputDecoration(
+                    labelText: 'Comida preferida',
+                    prefixIcon: Icon(Icons.restaurant_outlined),
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _musicaController,
+                  decoration: const InputDecoration(
+                    labelText: 'Música',
+                    prefixIcon: Icon(Icons.music_note_outlined),
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _interessesController,
+                  decoration: const InputDecoration(
+                    labelText: 'Interesses pessoais',
+                    prefixIcon: Icon(Icons.interests_outlined),
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                ),
+                const SizedBox(height: 8),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Rotina de higiene, alimentação e sono'),
+                  subtitle: const Text(
+                    'Funcionalidade Premium. Regista itens recorrentes (ex.: banho, '
+                    'refeições, sesta) e marca-os como feitos no dia.',
+                  ),
+                  value: _rotinasAtivas,
+                  onChanged: _alternarRotinas,
+                ),
+              ],
             ),
             const SizedBox(height: 24),
             FilledButton(
@@ -395,6 +404,54 @@ class _IdosoFormScreenState extends ConsumerState<IdosoFormScreen> {
                     )
                   : const Text('Guardar'),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Caixa visual para agrupar um conjunto de campos do formulário por tipo
+/// (identificação, contactos de emergência, saúde, preferências), com um
+/// ícone e título no topo.
+class _CartaoSeccao extends StatelessWidget {
+  const _CartaoSeccao({
+    required this.titulo,
+    required this.children,
+    this.icone,
+    this.corTitulo,
+  });
+
+  final String titulo;
+  final List<Widget> children;
+  final IconData? icone;
+  final Color? corTitulo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                if (icone != null) ...[
+                  Icon(icone, color: corTitulo, size: 20),
+                  const SizedBox(width: 8),
+                ],
+                Text(
+                  titulo,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: corTitulo,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ...children,
           ],
         ),
       ),
