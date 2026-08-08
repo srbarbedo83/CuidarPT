@@ -127,11 +127,19 @@ class _HomeShellScreenState extends ConsumerState<HomeShellScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (erro, stackTrace) => Center(child: Text('Erro ao carregar perfis: $erro')),
       ),
-      floatingActionButton: idososAsync.maybeWhen(
-        data: (idosos) => FloatingActionButton(
-          onPressed: () => _adicionarIdoso(context, ref, idosos.length),
-          tooltip: 'Adicionar perfil de idoso',
-          child: const Icon(Icons.add),
+      bottomNavigationBar: idososAsync.maybeWhen(
+        data: (idosos) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                icon: const Icon(Icons.add),
+                label: const Text('Criar novo perfil'),
+                onPressed: () => _adicionarIdoso(context, ref, idosos.length),
+              ),
+            ),
+          ),
         ),
         orElse: () => null,
       ),
@@ -153,7 +161,7 @@ class _EmptyState extends StatelessWidget {
             Icon(Icons.elderly, size: 64, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 16),
             Text(
-              'Ainda não tens nenhum perfil de idoso.\nToca no botão + para criar o primeiro.',
+              'Ainda não tens nenhum perfil de idoso.\nToca em "Criar novo perfil" para criares o primeiro.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
